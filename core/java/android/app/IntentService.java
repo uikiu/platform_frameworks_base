@@ -31,6 +31,8 @@ import android.os.Message;
  * through {@link android.content.Context#startService(Intent)} calls; the
  * service is started as needed, handles each Intent in turn using a worker
  * thread, and stops itself when it runs out of work.
+ * //---------------------------------------------------------------------------
+ * IntentService 是一个
  *
  * <p>This "work queue processor" pattern is commonly used to offload tasks
  * from an application's main thread.  The IntentService class exists to
@@ -38,6 +40,10 @@ import android.os.Message;
  * IntentService and implement {@link #onHandleIntent(Intent)}.  IntentService
  * will receive the Intents, launch a worker thread, and stop the service as
  * appropriate.
+ * //--------------------------------------------------------------------------
+ * “工作队列处理器”模式通常用于从应用程序的主线程中卸载任务。IntentService类的存在是为了简化这种模式并照顾这种机制。
+ * 使用这个类，继承IntentService并且实现{@link #onHandleIntent(Intent)}这个方法。IntentService将会接收Intent，
+ * 启动一个工作线程，并酌情停止服务。
  *
  * <p>All requests are handled on a single worker thread -- they may take as
  * long as necessary (and will not block the application's main loop), but
@@ -51,6 +57,10 @@ import android.os.Message;
  * </div>
  *
  * @see android.os.AsyncTask
+ * //--------------------------------------------------------------------------
+ * 所有请求处理在同一个单独的工作线程中。它们会一直进行只要有需要（不会阻塞应用程序的主轮训器）。
+ * 但是同一时间只能处理一个请求。就是一条线程处理所有的请求，一个一个的处理。
+ * 参考对比：AsyncTask
  */
 public abstract class IntentService extends Service {
     private volatile Looper mServiceLooper;
