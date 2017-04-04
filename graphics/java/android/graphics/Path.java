@@ -25,25 +25,35 @@ import android.annotation.Nullable;
  * It can be drawn with canvas.drawPath(path, paint), either filled or stroked
  * (based on the paint's Style), or it can be used for clipping or to draw
  * text on a path.
+ * //--------------------------------------------------------------------------
+ * Path原意“路径”，这里翻译为轨道。它是用来“画几何路径”
+ * Path类封装了由直线段、二次曲线和三次曲线组合组成的符合（多轮廓）几何路径。
+ * 它可以用canvas.drawPath(path,paint)将Path画出来。
+ * Path不仅可以使用Paint的填充模式和描边模式，也可以使用于画布剪裁或者画文字
+ * //--------------------------------------------------------------------------
+ * 画几何路径，需要确定画画的：1、范围；2、方向
+ * 
+ * 
  */
 public class Path {
     /**
      * @hide
      */
-    public long mNativePath;
+    public long mNativePath;//native层的Path，long类型
 
     /**
      * @hide
      */
-    public boolean isSimplePath = true;
+    public boolean isSimplePath = true;//是否为简单的path
     /**
      * @hide
      */
-    public Region rects;
-    private Direction mLastDirection = null;
+    public Region rects;//范围、部位
+    private Direction mLastDirection = null;//方向
 
     /**
      * Create an empty path
+	 * 创建一个空的轨道path
      */
     public Path() {
         mNativePath = init1();
@@ -53,6 +63,9 @@ public class Path {
      * Create a new path, copying the contents from the src path.
      *
      * @param src The path to copy from when initializing the new path
+	 * //--------------------------------------------------------------------
+	 * 创建新的path，从src中复制内容。
+	 *
      */
     public Path(Path src) {
         long valNative = 0;
