@@ -6048,6 +6048,8 @@ public class Intent implements Parcelable, Cloneable {
      * Returns true if an extra value is associated with the given name.
      * @param name the extra's name
      * @return true if the given extra is present.
+	 * //--------------------------------------------------------------------
+	 * 如果extra中包含给定的名称对应的值，则返回true。否则返回false
      */
     public boolean hasExtra(String name) {
         return mExtras != null && mExtras.containsKey(name);
