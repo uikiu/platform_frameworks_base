@@ -50,6 +50,16 @@ import android.util.Printer;
   *          Looper.loop();
   *      }
   *  }</pre>
+  * //-----------------------------------------------------------------------------
+  * Looper的本质就是局部线程的“变量副本”ThreadLocal的升级版：添加了轮训功能。
+  * 每个线程只能由一个Looper类的实例对象。Looper类的实例对象必须通过prepare()创建。
+  * prepare()方法会创建一个Looper对象，并把它保存在变量副本mThreadLocal中。一个线程中多次调用prepare()方法将会抛出异常：每个线程只能创建一个looper
+  * 线程在默认情况下是没有消息轮训器关联到它们的。其实就是局部线程默认情况下是没有“变量副本”的。
+  * 创建Looper{@link Looper.prepare()}其实就是：1、new 一个Looper对象;2、将这个Looper对象设置局部线程的“变量副本”。
+  * 开启变量副本自身的特性--消息轮训：Looper.loop()
+  * //-----------------------------------------------------------------------------
+  * 模仿秀：
+  * 我们可以模仿Looper这个变量为线程池中的工作线程添加一个“变量副本”以便监听线程的对任务执行状态的监听。
   */
 public final class Looper {
     /*
@@ -60,11 +70,28 @@ public final class Looper {
      * defined on MessageQueue or Handler rather than on Looper itself.  For example,
      * idle handlers and sync barriers are defined on the queue whereas preparing the
      * thread, looping, and quitting are defined on the looper.
+	 * //------------------------------------------------------------------------------
+	 * 该类包含设置和管理基于消息队列的事件轮训所需的代码。
+	 * 这个类针对：事件轮训
+	 * 对事件轮训的操作：1、设置；2、管理
+	 * 影响消息队列状态的API应该定义在MessageQueue或者Handler，而不是looper自身。例如：
+	 * 
+	 * 
      */
 
     private static final String TAG = "Looper";
 
     // sThreadLocal.get() will return null unless you've called prepare().
+	/**
+	* sThreadLocal会返回null，除非你调用prepare()方法。
+	* ThreadLocal这个类比较特殊，需要说明一下。
+	* 通常某一对象，当一个线程修改其数据后，另一个线程访问时会获取到变更后的数据。
+	* ThreadLocal可以在任意线程中声明，但是它会在单独的局部线程中保存一份对象的副本。所以线程之间对对象操作不会相互干扰。
+	* 这个特性可以利用：1、某个对象数据只能由特性的线程读写（极少）；2、对线程状态监听（多）；3、对线程单一类型任务的处理（一般），比如Looper
+	* ThreadLocal的作用域：thread的生命周期。
+	* 本类属性sThreadLocal将自身Looper存进去。那么就可以通过threadLocal的set 和 get方法来分别设置和获取特定线程的Looper对象。
+	*
+	*/
     static final ThreadLocal<Looper> sThreadLocal = new ThreadLocal<Looper>();
     private static Looper sMainLooper;  // guarded by Looper.class
 
@@ -79,16 +106,24 @@ public final class Looper {
       * this looper, before actually starting the loop. Be sure to call
       * {@link #loop()} after calling this method, and end it by calling
       * {@link #quit()}.
+	  * //----------------------------------------------------------------
+	  * 将当前线程初始化为轮训器。
+	  * 在真正的开启轮训之前：你有机会创建Handler随后引用此loopr。
+	  * 在调用此方法之后，确保调用了{@link #loop()},最后调用{@link #quit()}
+	  * 整个loop的调用顺序：创建{@link #prepare()}--->轮训{@link #loop()}---->结束{@link #quit()}
       */
     public static void prepare() {
         prepare(true);
     }
 
+	/**
+	* 创建Looper其实就是：1、new 一个Looper对象;2、将这个Looper对象设置局部线程的“变量副本”。
+	*/
     private static void prepare(boolean quitAllowed) {
-        if (sThreadLocal.get() != null) {
-            throw new RuntimeException("Only one Looper may be created per thread");
+        if (sThreadLocal.get() != null) {//如果线程中已经存在Looper对象则不能再次设置：这个检测也就间接的证明了线程只能存在一个“变量副本”
+            throw new RuntimeException("Only one Looper may be created per thread---每个线程只能创建一个looper");
         }
-        sThreadLocal.set(new Looper(quitAllowed));
+        sThreadLocal.set(new Looper(quitAllowed));//将本类Looper设置为局部线程的“变量副本”
     }
 
     /**
@@ -180,6 +215,9 @@ public final class Looper {
     /**
      * Return the Looper object associated with the current thread.  Returns
      * null if the calling thread is not associated with a Looper.
+	 * //-------------------------------------------------------------------
+	 * 返回关联到当前线程的looper对象。如果调用的线程没有关联looper则返回null
+	 * 
      */
     public static @Nullable Looper myLooper() {
         return sThreadLocal.get();
@@ -189,11 +227,19 @@ public final class Looper {
      * Return the {@link MessageQueue} object associated with the current
      * thread.  This must be called from a thread running a Looper, or a
      * NullPointerException will be thrown.
+	 * //---------------------------------------------------------------------
+	 * 返回当前线程关联的消息队列。这个方法的调用，必须是在运行looper的线程中调用。
+	 * 否则会抛出空指针异常。
      */
     public static @NonNull MessageQueue myQueue() {
         return myLooper().mQueue;
     }
 
+	/**
+	 * Looper的构造方法：私有的
+	 * 通过构造方法的源码，我们可以知道：Looper.perpare()方法在newLooper()的时候其实已经创建了MessageQueue对象mQueue
+	 *
+	 */
     private Looper(boolean quitAllowed) {
         mQueue = new MessageQueue(quitAllowed);
         mThread = Thread.currentThread();

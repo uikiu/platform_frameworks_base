@@ -34,12 +34,15 @@ import java.util.ArrayList;
  * 
  * <p>You can retrieve the MessageQueue for the current thread with
  * {@link Looper#myQueue() Looper.myQueue()}.
+ * //---------------------------------------------------------------------
+ * 
+ *
  */
 public final class MessageQueue {
     private static final String TAG = "MessageQueue";
     private static final boolean DEBUG = false;
 
-    // True if the message queue can be quit.
+    // True if the message queue can be quit.如果消息队列可以退出停止轮训则为ture
     private final boolean mQuitAllowed;
 
     @SuppressWarnings("unused")
