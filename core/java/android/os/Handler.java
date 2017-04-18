@@ -76,6 +76,10 @@ public class Handler {
      *
      * @param msg A {@link android.os.Message Message} object
      * @return True if no further handling is desired
+	 * //------------------------------------------------------------------------
+	 * Handler的内部回调接口，它的所用是将handleMessage处理方法封装为接口，避免必须实现handler的handleMessage方法
+	 *
+	 *
      */
     public interface Callback {
         public boolean handleMessage(Message msg);
@@ -83,23 +87,29 @@ public class Handler {
     
     /**
      * Subclasses must implement this to receive messages.
+	 * 子类必须实现这个方法以接收消息，最后的处理办法。处理消息的顺序，见{@link #dispatchMessage(Message msg)}
      */
     public void handleMessage(Message msg) {
     }
     
     /**
      * Handle system messages here.
+	 * 派发消息，派发消息主要是确定处理消息的先后顺序
+	 * 处理消息先后顺序：
+	 * 1>Message自身的Callback属性处理
+	 * 2>本Handler自身的Callback属性处理
+	 * 3>本Handler的子类的handleMessage方法处理
      */
     public void dispatchMessage(Message msg) {
-        if (msg.callback != null) {
+        if (msg.callback != null) {//如果要派发的Message中，属性callback不为空，则使用Message自带的Callback处理消息
             handleCallback(msg);
         } else {
-            if (mCallback != null) {
+            if (mCallback != null) {//如果本handler的内部属性Callback不为空，则使用本handler自带的Callback处理消息
                 if (mCallback.handleMessage(msg)) {
                     return;
                 }
             }
-            handleMessage(msg);
+            handleMessage(msg);//本handler的子类的handleMessage方法处理
         }
     }
 
@@ -132,6 +142,8 @@ public class Handler {
      * Use the provided {@link Looper} instead of the default one.
      *
      * @param looper The looper, must not be null.
+	 * //----------------------------------------------------------------------
+	 * 使用指定Looper对象，代替本Handler内部的Looper。也即是说handler发送消息到指定的轮训器Looper
      */
     public Handler(Looper looper) {
         this(looper, null, false);
@@ -143,6 +155,9 @@ public class Handler {
      *
      * @param looper The looper, must not be null.
      * @param callback The callback interface in which to handle messages, or null.
+	 * //------------------------------------------------------------------------------------
+	 * 使用提供的Looper对象代替默认的Looper，此Looper不能为空。使用提供的Callback对象作为本Handler的内部属性mCallback
+	 * 
      */
     public Handler(Looper looper, Callback callback) {
         this(looper, callback, false);
@@ -262,6 +277,9 @@ public class Handler {
      * Returns a new {@link android.os.Message Message} from the global message pool. More efficient than
      * creating and allocating new instances. The retrieved message has its handler set to this instance (Message.target == this).
      *  If you don't want that facility, just call Message.obtain() instead.
+	 * //------------------------------------------------------------------------------------------------------------------------------
+	 * 等价于
+	 *
      */
     public final Message obtainMessage()
     {
@@ -751,8 +769,8 @@ public class Handler {
         message.callback.run();
     }
 
-    final Looper mLooper;
-    final MessageQueue mQueue;
+    final Looper mLooper;//handler内部自带的Looper对象
+    final MessageQueue mQueue;//handler内部自带的MessageQueue对象
     final Callback mCallback;
     final boolean mAsynchronous;
     IMessenger mMessenger;

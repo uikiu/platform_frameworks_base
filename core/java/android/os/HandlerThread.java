@@ -20,7 +20,7 @@ package android.os;
  * Handy class for starting a new thread that has a looper. The looper can then be 
  * used to create handler classes. Note that start() must still be called.
  * //---
- * HandlerThread意即：处理线程，就是可以处理任务的线程。通常处理handler发送Message来的任务。
+ * HandlerThread意即：处理线程，对所有处理任务结果做统一处理的线程。通常处理handler发送Message来的任务。
  * 已添加"变量副本"Looper的线程：HandlerThread是特殊的线程，此线程已经为线程添加"变量副本"-Looper。
  *
  *

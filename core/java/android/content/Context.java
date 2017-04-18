@@ -684,6 +684,9 @@ public abstract class Context {
      *         to retrieve and modify the preference values.
      *
      * @see #MODE_PRIVATE
+	 * //---------------------------------------------------------------------------
+	 * 获取并持有一个指定名称的SharedPreferences，
+	 *
      */
     public abstract SharedPreferences getSharedPreferences(String name, int mode);
 

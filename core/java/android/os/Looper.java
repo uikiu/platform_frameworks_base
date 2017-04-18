@@ -186,7 +186,7 @@ public final class Looper {
                 Trace.traceBegin(traceTag, msg.target.getTraceName(msg));
             }
             try {
-                msg.target.dispatchMessage(msg);
+                msg.target.dispatchMessage(msg);//Looper轮训到Message后，通过这行代码对消息进行处理。
             } finally {
                 if (traceTag != 0) {
                     Trace.traceEnd(traceTag);

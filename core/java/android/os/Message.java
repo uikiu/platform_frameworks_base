@@ -118,6 +118,10 @@ public final class Message implements Parcelable {
     /**
      * Return a new Message instance from the global pool. Allows us to
      * avoid allocating new objects in many cases.
+	 * //----------------------------------------------------------------------
+	 * 从全局的Message实例池中返回一个Message实例。在很多情况下，允许我们避免分配一个新的Message对象
+	 *
+	 *
      */
     public static Message obtain() {
         synchronized (sPoolSync) {
@@ -160,6 +164,9 @@ public final class Message implements Parcelable {
      * Same as {@link #obtain()}, but sets the value for the <em>target</em> member on the Message returned.
      * @param h  Handler to assign to the returned Message object's <em>target</em> member.
      * @return A Message object from the global pool.
+	 * //---------------------------------------------------------------------------------------------------------
+	 *
+	 *
      */
     public static Message obtain(Handler h) {
         Message m = obtain();
@@ -174,6 +181,10 @@ public final class Message implements Parcelable {
      * @param h  Handler to assign to the returned Message object's <em>target</em> member.
      * @param callback Runnable that will execute when the message is handled.
      * @return A Message object from the global pool.
+	 * //-------------------------------------------------------------------------------------------
+	 *
+	 *
+	 *
      */
     public static Message obtain(Handler h, Runnable callback) {
         Message m = obtain();

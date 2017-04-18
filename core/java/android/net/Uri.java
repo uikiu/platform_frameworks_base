@@ -206,6 +206,12 @@ public abstract class Uri implements Parcelable, Comparable<Uri> {
      * <p>Examples: "google.com", "bob@google.com:80"
      *
      * @return the authority for this URI or null if not present
+	 * //------------------------------------------------------------------------
+	 * 获取URI的authority部分，即：所有者部分。如果authority没有提供则返回null
+	 * 那一部分是authoriy：@标识符以后，port端口之前。
+	 * 例如：“bob@google.com:80”的authority是“google.com”
+	 * 
+	 *
      */
     public abstract String getAuthority();
 

@@ -177,6 +177,7 @@ public class DownloadManager {
 
     /**
      * Value of {@link #COLUMN_STATUS} when the download is currently running.
+	 * 正在执行下载时的状态标记COLUMN_STATUS
      */
     public final static int STATUS_RUNNING = 1 << 1;
 
@@ -355,6 +356,9 @@ public class DownloadManager {
      * Note that the default download destination is a shared volume where the system might delete
      * your file if it needs to reclaim space for system use. If this is a problem, use a location
      * on external storage (see {@link #setDestinationUri(Uri)}.
+	 * //---------------------------------------------------------------------------------------------
+	 * 发起一个下载请求
+	 * DownloadManager.Request request = new DownloadManager.Request(Uri.parse("下载地址"));
      */
     public static class Request {
         /**
@@ -463,6 +467,10 @@ public class DownloadManager {
          * may be deleted by the system at any time to reclaim space.
          *
          * @return this object
+		 * //--------------------------------------------------------------------------------------
+		 * 设置下载文件的本地存储路径。
+		 *
+		 *
          */
         public Request setDestinationUri(Uri uri) {
             mDestinationUri = uri;
@@ -602,6 +610,10 @@ public class DownloadManager {
          * title is given, a default one will be assigned based on the download filename, once the
          * download starts.
          * @return this object
+		 * //---------------------------------------------------------------------------------------------
+		 * 设置Notification的title信息
+		 *
+		 *
          */
         public Request setTitle(CharSequence title) {
             mTitle = title;
@@ -611,6 +623,8 @@ public class DownloadManager {
         /**
          * Set a description of this download, to be displayed in notifications (if enabled)
          * @return this object
+		 * //----------------------------------------------------------------------------------------
+		 * 设置Notification的message信息
          */
         public Request setDescription(CharSequence description) {
             mDescription = description;
@@ -816,6 +830,7 @@ public class DownloadManager {
 
     /**
      * This class may be used to filter download manager queries.
+	 * 查询下载信息
      */
     public static class Query {
         /**
@@ -1008,6 +1023,9 @@ public class DownloadManager {
      * @param request the parameters specifying this download
      * @return an ID for the download, unique across the system.  This ID is used to make future
      * calls related to this download.
+	 * //------------------------------------------------------------------------------------------------
+	 * 开启一个先的下载。此方法返回一个编号用于标示此下载任务。
+	 *
      */
     public long enqueue(Request request) {
         ContentValues values = request.toContentValues(mPackageName);
@@ -1050,6 +1068,10 @@ public class DownloadManager {
      * @param query parameters specifying filters for this query
      * @return a Cursor over the result set of downloads, with columns consisting of all the
      * COLUMN_* constants.
+	 * //----------------------------------------------------------------------------------------
+	 * 
+	 * 查询根据filter匹配(filter可设定值为COLUMN_STATUS所有类型)的所有下载任务，以Cursor形式返回。
+	 * 
      */
     public Cursor query(Query query) {
         Cursor underlyingCursor = query.runQuery(mResolver, UNDERLYING_COLUMNS, mBaseUri);
