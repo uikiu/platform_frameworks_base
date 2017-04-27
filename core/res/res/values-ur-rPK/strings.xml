@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"‏کنکشن مسئلہ یا غلط MMI کوڈ۔"</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"آپریشن صرف متعین ڈائلنگ نمبرز تک محدود ہے۔"</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"جب آپ رومنگ پر ہوں تو اپنے فون سے کال فارورڈنگ کی ترتیبات تبدیل نہیں کی جا سکتیں۔"</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"سروس فعال کی گئی۔"</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"سروس فعال کی گئی برائے:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"سروس غیر فعال کر دی گئی ہے۔"</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"‏کالر ID کی ڈیفالٹ ترتیب غیر محدود کردہ ہے۔ اگلی کال: غیر محدود کردہ"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"سروس فراہم نہیں کی گئی۔"</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"‏آپ کالر ID کی ترتیبات تبدیل نہیں کر سکتے ہیں۔"</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"ڈیٹا سروس مسدود ہے۔"</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"ہنگامی سروس مسدود ہے۔"</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"صوتی سروس مسدود ہے۔"</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"سبھی صوتی سروسز مسدود کر دی گئی ہیں۔"</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"‏SMS سروس مسدود ہے۔"</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"صوتی/ڈیٹا سروسز مسدود کر دی گئی ہیں۔"</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"‏وائس/SMS سروسز مسدود ہیں۔"</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"‏سبھی صوتی/ڈیٹا/SMS سروسز مسدود کر دی گئی ہیں۔"</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"نیٹ ورک تک نہیں پہنچا جا سکتا"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"ریسپشن کو بہتر بنانے کیلئے، ترتیبات &gt; سیلولر نیٹ ورکس &gt; ترجیحی نیٹ ورک کی قسم پرمنتخب کی گئی قسم تبدیل کرنے کی کوشش کریں۔"</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"‏ہمسر نے TTY وضع مکمل کی درخواست کی"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"‏ہمسر نے TTY وضع HCO کی درخواست کی"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"‏ہمسر نے TTY وضع VCO کی درخواست کی"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"گمشدہ منتظم ایپ کی وجہ سے دفتری پروفائل حذف کر دیا گیا۔"</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"دفتری پروفائل کی منتظم ایپ یا تو غائب ہے یا خراب ہے۔ اس کی وجہ سے، آپ کا دفتری پروفائل اور متعلقہ ڈیٹا حذف کر دیے گئے ہیں۔ مدد کیلئے اپنے منتظم سے رابطہ کریں۔"</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"آپ کا دفتری پروفائل اس آلہ پر مزید دستیاب نہیں ہے۔"</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"نیٹ ورک ٹریفک مانیٹر ہو رہی ہے"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"مزید جاننے کیلئے تھپتھپائیں"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"آپ کا آلہ صاف کر دیا جائے گا"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"منتظم کی ایپ میں گمشدہ اجزاء ہیں یا وہ خراب ہے اور اسے استعمال نہیں کیا جا سکتا ہے۔ آپ کے آلہ کو اب صاف کر دیا جائے گا۔ مدد کیلئے اپنے منتظم سے رابطہ کریں۔"</string>
     <string name="me" msgid="6545696007631404292">"میں"</string>
@@ -265,7 +278,7 @@
     <string name="capability_desc_canRetrieveWindowContent" msgid="3772225008605310672">"کسی ایسی ونڈو کے مواد کا معائنہ کریں جس کے ساتھ آپ تعامل کر رہے ہیں۔"</string>
     <string name="capability_title_canRequestTouchExploration" msgid="3108723364676667320">"ٹچ کے ذریعے دریافت کریں کو آن کرنے کی"</string>
     <string name="capability_desc_canRequestTouchExploration" msgid="7543249041581408313">"تھپتھپائے گئے آئٹمز کو باآواز بلند بولا جائے گا اور اشاروں کا استعمال کرکے اسکرین کو دریافت کیا جا سکتا ہے۔"</string>
-    <string name="capability_title_canRequestEnhancedWebAccessibility" msgid="1739881766522594073">"‏بہتر ویب accessibility کو آن کرنے کی"</string>
+    <string name="capability_title_canRequestEnhancedWebAccessibility" msgid="1739881766522594073">"بہتر ویب ایکسیسبیلٹی کو آن کرنے کی"</string>
     <string name="capability_desc_canRequestEnhancedWebAccessibility" msgid="7881063961507511765">"ایپ کا مواد مزید قابل رسائی بنانے کیلئے اسکرپٹس کو انسٹال کیا جا سکتا ہے۔"</string>
     <string name="capability_title_canRequestFilterKeyEvents" msgid="2103440391902412174">"آپکے ٹائپ کردہ متن کا مشاہدہ کرنے کی"</string>
     <string name="capability_desc_canRequestFilterKeyEvents" msgid="7463135292204152818">"اس میں ذاتی ڈیٹا جیسے کریڈٹ کارڈ نمبرز اور پاس ورڈز شامل ہیں۔"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"‏آپ کی مداخلت کے بغیر کالیں کرنے کیلئے ایپ کو IMS سروس استعمال کرنے کی اجازت دیتی ہے۔"</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"فون کے اسٹیٹس اور شناخت کو پڑھیں"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"‏ایپ کو آلے کی فون والی خصوصیات تک رسائی حاصل کرنے کی اجازت دیتا ہے۔ یہ اجازت ایپ کو فون نمبر اور آلے کے IDs کا تعین کرنے، آیا کوئی کال فعال ہے، اور کال کے ذریعہ مربوط ریموٹ نمبر کا تعین کرنے دیتی ہے۔"</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"سسٹم کے ذریعہ کالز روٹ کریں"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"کالںگ کا تجربہ بہتر بنانے کے لیے سسٹم کے ذریعہ ایپ کو کالز روٹ کرنے کی اجازت دیتا ہے۔"</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"ٹیبلیٹ کو سلیپ وضع میں جانے سے روکیں"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"‏TV کو سلیپ وضع میں جانے سے روکیں"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"فون کو سلیپ وضع میں جانے سے روکیں"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"کوئی نہیں"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"رنگ ٹونز"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"نامعلوم رنگ ٹون"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">‏Wi-Fi نیٹ ورکس دستیاب ہیں</item>
-      <item quantity="one">‏Wi-Fi نیٹ ورک دستیاب ہے</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">‏عوامی Wi-Fi نیٹ ورکس دستیاب ہیں</item>
-      <item quantity="one">‏عوامی Wi-Fi نیٹ ورک دستیاب ہے</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"‏Wi-Fi نیٹ ورک میں سائن ان کریں"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"نیٹ ورک میں سائن ان کریں"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"ایک ایپلیکیشن کو انسٹال سیشنز پڑھنے کی اجازت دیتا ہے۔ یہ اسے فعال پیکیج انسٹالیشنز کے بارے میں تفصیلات دیکھنے کی اجازت دیتا ہے۔"</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"پیکجز انسٹال کرنے کی درخواست کریں"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"ایک ایپلیکیشن کو پیکجز انسٹال کرنے کی اجازت دیتی ہے۔"</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"بیٹری کی بہتریاں نظر انداز کرنے کا پوچھیں"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"اس ایپ کیلئے ایک ایپ کو بیٹری کی کارکردگی  بہتر بنانے کو نظر انداز کرنے کی اجازت دیں۔"</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"زوم کنٹرول کیلئے دوبار تھپتھپائیں"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"ویجٹس کو شامل نہیں کرسکا۔"</string>
     <string name="ime_action_go" msgid="8320845651737369027">"جائیں"</string>
@@ -1230,7 +1239,7 @@
     <string name="forward_intent_to_work" msgid="621480743856004612">"آپ اس ایپ کو اپنے دفتری پروفائل میں استعمال کر رہے ہیں"</string>
     <string name="input_method_binding_label" msgid="1283557179944992649">"اندراج کا طریقہ"</string>
     <string name="sync_binding_label" msgid="3687969138375092423">"مطابقت پذیری کریں"</string>
-    <string name="accessibility_binding_label" msgid="4148120742096474641">"Accessibility"</string>
+    <string name="accessibility_binding_label" msgid="4148120742096474641">"ایکسیسبیلٹی"</string>
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"وال پیپر"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"وال پیپر تبدیل کریں"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"اطلاع سننے والا"</string>
@@ -1432,9 +1441,9 @@
     <string name="kg_text_message_separator" product="default" msgid="4160700433287233771">" — "</string>
     <string name="kg_reordering_delete_drop_target_text" msgid="7899202978204438708">"ہٹائیں"</string>
     <string name="safe_media_volume_warning" product="default" msgid="2276318909314492312">"والیوم کو تجویز کردہ سطح سے زیادہ کریں؟\n\nزیادہ وقت تک اونچی آواز میں سننے سے آپ کی سماعت کو نقصان پہنچ سکتا ہے۔"</string>
-    <string name="continue_to_enable_accessibility" msgid="1626427372316070258">"‏accessibility فعال کرنے کیلئے دو انگلیاں نیچے دبائے رکھیں۔"</string>
-    <string name="accessibility_enabled" msgid="1381972048564547685">"‏Accessibility فعال۔"</string>
-    <string name="enable_accessibility_canceled" msgid="3833923257966635673">"‏Accessibility منسوخ ہوگئی۔"</string>
+    <string name="continue_to_enable_accessibility" msgid="1626427372316070258">"ایکسیسبیلٹی فعال کرنے کیلئے دو انگلیاں نیچے دبائے رکھیں۔"</string>
+    <string name="accessibility_enabled" msgid="1381972048564547685">"ایکسیسبیلٹی فعال۔"</string>
+    <string name="enable_accessibility_canceled" msgid="3833923257966635673">"ایکسیسبیلٹی منسوخ ہوگئی۔"</string>
     <string name="user_switched" msgid="3768006783166984410">"موجودہ صارف <xliff:g id="NAME">%1$s</xliff:g>۔"</string>
     <string name="user_switching_message" msgid="2871009331809089783">"<xliff:g id="NAME">%1$s</xliff:g> پر سوئچ کیا جا رہا ہے…"</string>
     <string name="user_logging_out_message" msgid="8939524935808875155">"<xliff:g id="NAME">%1$s</xliff:g> لاگ آؤٹ ہو رہا ہے…"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"سال منتخب کریں"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> کو حذف کر دیا گیا"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"دفتر <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"اس اسکرین سے پن ہٹانے کیلئے، پیچھے کو تھپتھپائیں اور دبا کر رکھیں۔"</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"اس اسکرین سے پن ہٹانے کیلئے، ٹچ کریں، دبائیں اور مجموعی جائزہ۔"</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"ایپ کو پن کر دیا گیا ہے: اس آلہ پر پن ہٹانے کی اجازت نہیں ہے۔"</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"اسکرین کو پن کر دیا گیا"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"اسکرین کا پن ہٹا دیا گیا"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"مزید جاننے کیلئے ٹچ کریں۔"</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"غیر فعال کردہ <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"کانفرنس کال"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"پُرسکون رہیں اور قریبی پناہ حاصل کریں۔"</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"ساحلی خطوں اور دریائی کناروں کے علاقوں کو فوری طور پر خالی کر کے اونچے ٹیلے جیسے کسی زیادہ محفوظ مقام پر چلے جائیں۔"</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"پُرسکون رہیں اور قریبی پناہ حاصل کریں۔"</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"ایمرجنسی پیغامات کی جانچ"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

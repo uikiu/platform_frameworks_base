@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"ဆက်သွယ်မှုဆိုင်ရာပြသနာ သို့မဟုတ် မမှန်ကန်သောMMIကုတ်"</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"သတ်မှတ်ခေါ်ဆိုနိုင်သောနံပါတ်များထံသာ ကန့်သတ်ထားသည်"</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"ကွန်ရက်ပြင်ပဒေတာအသုံးပြုခြင်းကို ဖွင့်ထားသည့်အခါ သင့်ဖုန်းမှနေ၍ ခေါ်ဆိုမှုထပ်ဆင့်ပို့ခြင်းဆက်တင်အား ပြောင်း၍မရပါ။"</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"ဝန်ဆောင်မှု လုပ်ဆောင်နိုင်မည်"</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"ဝန်ဆောင်မှု ရရှိမည်"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"ဝန်ဆောင်မှုအား ရပ်ဆိုင်းသည်"</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"ပုံသေအားဖြင့် ခေါ်ဆိုသူအိုင်ဒီ(Caller ID)အား ကန့်သတ်မထားပါ။ နောက်ထပ်အဝင်ခေါ်ဆိုမှု-ကန့်သတ်မထားပါ။"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"ဝန်ဆောင်မှုအား ကန့်သတ်မထားပါ"</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"သင်သည် ခေါ်ဆိုသူ ID ဆက်တင်ကို မပြောင်းလဲနိုင်ပါ။"</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"ဒေတာဝန်ဆောင်မှုပိတ်ထားသည်။"</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"အရေးပေါ်ဝန်ဆောင်မှုပိတ်ထားသည်။"</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"အသံဝန်ဆောင်မှုပိတ်ထားသည်။"</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"အသံဆားဗစ်များအားလုံး ပိတ်ထားပါသည်"</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMSဝန်ဆောင်မှုပိတ်ထားသည်။"</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"အသံ၊ဒေတာ ဆားဗစ်များအားလုံး ပိတ်ထားပါသည်"</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"အသံ/SMSဝန်ဆောင်မှုများအားပိတ်ထားသည်။"</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"အသံ၊အချက်အလက်၊စာတိုဆားဗစ်များအားလုံး ပိတ်ထားပါသည်"</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"ကွန်ရက်ကို ချိတ်ဆက်၍မရပါ"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"လိုင်းကောင်းစေရန်အတွက် ဆက်တင် &gt; ဆယ်လူလာကွန်ရက်များ &gt; ပိုနှစ်သက်သည့် ကွန်ရက်အမျိုးအစားထဲတွင် ရွေးချယ်ထားသည့် အမျိုးအစားကို ပြောင်းကြည့်ပါ။"</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"အခြားစက်မှ TTY မုဒ် FULL ပြုရန် တောင်းဆို၏"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"အခြားစက်မှ TTY မုဒ် HCO ပြုရန် တောင်းဆို၏"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"TTY မုဒ် VCO ပြုရန် အခြားစက်မှ တောင်းဆို၏"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"အက်ဒမင် အက်ပ်ပျောက်နေသောကြောင့် အလုပ်ပရိုဖိုင် ပျက်သွားသည်။"</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"အလုပ်ပရိုဖိုင် အက်ဒမင် အပလီကေးရှင်းပျောက်နေသည် သို့မဟုတ် ပျက်စီးနေသည်။ ထို့ကြောင့် သင့်အလုပ်ပရိုဖိုင်နှင့် ဆက်စပ်နေသော ဒေတာများအား ပယ်ဖျက်ခြင်းခံရမည်။ အကူအညီတောင်းခံရန် သင့်အက်ဒမင်အား ဆက်သွယ်ပါ။"</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"ဤစက်ကိရိယာတွင် သင့်အလုပ်ပရိုဖိုင် မရှိတော့ပါ။"</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"ကွန်ရက်အသွားအလာကို စောင့်ကြည့်နေပါသည်"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"ပိုမိုလေ့လာရန် တို့ပါ"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"သင့်ကိရိယာအား ပယ်ဖျက်လိမ့်မည်"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"အက်ဒမင် အက်ပ်၏ အစိတ်အပိုင်းများ ပျောက်နေသည် သို့မဟုတ် ပျက်စီးနေသည်။ သင့်ကိရိယာအား ပယ်ဖျက်လိမ့်မည်။ အကူအညီတောင်းခံရန် သင့်အက်ဒမင်အား ဆက်သွယ်ပါ။"</string>
     <string name="me" msgid="6545696007631404292">"ကျွန်ုပ်"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"သင့်ရဲ့ဝင်ရောက်စွက်ဖက်မှုမပါဘဲ IMS ဝန်ဆောင်မှုကိုအသုံးပြုပြီး ဖုန်းခေါ်ဆိုနိုင်ရန် အပ်ဖ်ကို ခွင့်ပြုထားပါ။"</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"ဖုန်းရဲ့ အခြေအနေ နှင့် အမှတ်သညာအား ဖတ်ခြင်း"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"အပလီကေးရှင်းအား ဖုန်းရဲ့ စွမ်းဆောင်ချက်များအား သုံးခွင့်ပြုပါ။ အပလီကေးရှင်းအနေဖြင့် ဖုန်းနံပါတ်၊ စက်နံပါတ်၊ ဖုန်းခေါ်နေမှု ရှိမရှိနှင့် တဖက်မှ ဖုန်းနံပါတ် များအား သိရှိနိုင်ပါသည်"</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"ခေါ်ဆိုမှုများကို စနစ်မှတစ်ဆင့် ဖြတ်သန်းခွင့်ပြုပါ"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"ခေါ်ဆိုမှု အတွေ့အကြုံ ပိုမိုကောင်းမွန်လာစေရန်အတွက် အက်ပ်၏ ခေါ်ဆိုမှုအား စနစ်မှတစ်ဆင့် ဖြတ်သန်းရန် ခွင့်ပြုပါသည်။"</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"တက်ပလက်အား ပိတ်ခြင်းမှ ကာကွယ်ခြင်း"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"တီဗွီအား နားနေခြင်းမှ ကာကွယ်ရန်"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"ဖုန်းအနားယူခြင်းမပြုလုပ်စေရန်"</string>
@@ -643,7 +658,7 @@
     <string name="relationTypeAssistant" msgid="6274334825195379076">"အထောက်အကူ"</string>
     <string name="relationTypeBrother" msgid="8757913506784067713">"ညီအကို"</string>
     <string name="relationTypeChild" msgid="1890746277276881626">"သားသမီး"</string>
-    <string name="relationTypeDomesticPartner" msgid="6904807112121122133">"အတူနေအပေါင်းအဖော်"</string>
+    <string name="relationTypeDomesticPartner" msgid="6904807112121122133">"အတူနေအဖော်"</string>
     <string name="relationTypeFather" msgid="5228034687082050725">"ဖခင်"</string>
     <string name="relationTypeFriend" msgid="7313106762483391262">"သူငယ်ချင်း"</string>
     <string name="relationTypeManager" msgid="6365677861610137895">"မန်နေဂျာ"</string>
@@ -651,7 +666,7 @@
     <string name="relationTypeParent" msgid="4755635567562925226">"မိဘ"</string>
     <string name="relationTypePartner" msgid="7266490285120262781">"လုပ်ဖော်ကိုင်ဖက်"</string>
     <string name="relationTypeReferredBy" msgid="101573059844135524">"မှရည်ညွှန်းပေးသည်"</string>
-    <string name="relationTypeRelative" msgid="1799819930085610271">"ဆွေးမျိုး"</string>
+    <string name="relationTypeRelative" msgid="1799819930085610271">"ဆွေမျိုး"</string>
     <string name="relationTypeSister" msgid="1735983554479076481">"ညီအမ"</string>
     <string name="relationTypeSpouse" msgid="394136939428698117">"အိမ်ထောင်ဖက်"</string>
     <string name="sipAddressTypeCustom" msgid="2473580593111590945">"မိမိစိတ်ကြိုက်"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"တစ်ခုမှမဟုတ်"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"မြည်သံများ"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"မသိသောမြည်သံ"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Wi-Fi ကွန်ယက်များရရှိနိုင်သည်</item>
-      <item quantity="one">Wi-Fi ကွန်ယက်ရရှိနိုင်သည်</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Wi-Fi ကွန်ယက်များရရှိနိုင်သည်အား ဖွင့်ပါ</item>
-      <item quantity="one">Wi-Fi ကွန်ယက်ရရှိနိုင်သည်အား ဖွင့်ပါ</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"ဝိုင်ဖိုင်ကွန်ရက်သို့ လက်မှတ်ထိုးဝင်ပါ"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"ကွန်ယက်သို့ လက်မှတ်ထိုးဝင်ရန်"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"အပလီကေးရှင်းအား တပ်ဆင်ရေး ချိတ်ဆက်မှုများကို ဖတ်ခွင့်ပြုသည်။ ၎င်းသည် ဖွင့်သုံးနေသည့် အထုပ်အား တပ်ဆင်မှုဆိုင်ရာ အသေးိစတ်များကို ကြည့်ရှုခွင့် ပြုသည်။"</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"တပ်ဆင်ရေး အထုပ်များကို တောင်းဆိုပါ"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"ပက်ကေ့များ သွင်းယူခြင်းအတွက် တောင်းဆိုရန် အပလီကေးရှင်းအား ခွင့်ပြုပါ"</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"ဘက်ထရီ ပိုမိုကောင်းမွန်အောင် ပြုလုပ်ခြင်းကို လျစ်လျူရှုရန် တောင်းဆိုပါ"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"ဘက်ထရီ ပိုမိုကောင်းမွန်အောင် ပြုလုပ်ခြင်းကို လျစ်လျူရှုရန်အတွက် ခွင့်ပြုချက်တောင်းရန် အက်ပ်ကို ခွင့်ပြုပါ။"</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"ဇူးမ်အသုံးပြုရန် နှစ်ချက်တို့ပါ"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"ဝဒ်ဂျက်ထည့်လို့ မရပါ"</string>
     <string name="ime_action_go" msgid="8320845651737369027">"သွားပါ"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"ခုနှစ်ကို ရွေးပါ"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> ကို ဖျက်ပြီးပါပြီ"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"အလုပ် <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"ဤမျက်နှာပြင်ကို ပင်ဖြုတ်ရန် \"နောက်သို့\" ကိုထိပြီးဖိထားပါ။"</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"ဤမျက်နှာပြင်ကို ပင်ဖြုတ်ရန်အတွက် Back နှင့် Overview ကိုနှိပ်၍ ဖိထားပါ။"</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"အက်ပ်ကို ပင်ထိုးထားသည်။ ပင်ဖျက်ခြင်းကို ဒီစက်မှာ မရနိုင်ပါ။"</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"မျက်နှာပြင်ကို ပင်ထိုးထား"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"မျက်နှာပြင် ပင်ထိုးမှု ဖြတ်လိုက်ပြီ"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"ပိုမိုလေ့လာရန် တို့ပါ။"</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"ပိတ်ထားသည့် <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"လူအမြောက်အမြားတပြိုင်နက် ခေါ်ဆိုမှု"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"စိတ်ငြိမ်ငြိမ်ထားပြီး အနီးအနားတဝိုက်တွင် ခိုနားစရာ နေရာရှာပါ။"</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"ကမ်းရိုးတန်းနှင့် မြစ်ကမ်းရိုးတစ်လျှောက်ရှိ နေရာဒေသတို့မှ ချက်ချင်းထွက်ခွာပြီး ဘေးကင်းရာကုန်းမြင့်ဒေသသို့ ပြောင်းရွှေ့ပါ။"</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"စိတ်ငြိမ်ငြိမ်ထားပြီး အနီးအနားတဝိုက်တွင် ခိုနားစရာ နေရာရှာပါ။"</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"အရေးပေါ် မက်ဆေ့ဂျ် စမ်းသပ်မှု"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

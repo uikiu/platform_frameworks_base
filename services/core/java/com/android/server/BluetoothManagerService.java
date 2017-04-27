@@ -28,6 +28,7 @@ import android.bluetooth.IBluetoothManager;
 import android.bluetooth.IBluetoothManagerCallback;
 import android.bluetooth.IBluetoothProfileServiceConnection;
 import android.bluetooth.IBluetoothStateChangeCallback;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -306,6 +307,14 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
                 if (newName != null) {
                     storeNameAndAddress(newName, null);
                 }
+            } else if (BluetoothAdapter.ACTION_BLUETOOTH_ADDRESS_CHANGED.equals(action)) {
+                String newAddress = intent.getStringExtra(BluetoothAdapter.EXTRA_BLUETOOTH_ADDRESS);
+                if (newAddress != null) {
+                    if (DBG) Slog.d(TAG, "Bluetooth Adapter address changed to " + newAddress);
+                    storeNameAndAddress(null, newAddress);
+                } else {
+                    if (DBG) Slog.e(TAG, "No Bluetooth Adapter address parameter found");
+                }
             }
         }
     };
@@ -342,8 +351,12 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_LOCAL_NAME_CHANGED);
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         mContext.registerReceiver(mReceiver, filter);
+        filter = new IntentFilter(BluetoothAdapter.ACTION_BLUETOOTH_ADDRESS_CHANGED);
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        mContext.registerReceiver(mReceiver, filter);
         loadStoredNameAndAddress();
         if (isBluetoothPersistedStateOn()) {
+            if (DBG) Slog.d(TAG, "Startup: Bluetooth persisted state is ON.");
             mEnableExternal = true;
         }
 
@@ -379,8 +392,10 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
      *  Returns true if the Bluetooth saved state is "on"
      */
     private final boolean isBluetoothPersistedStateOn() {
-        return Settings.Global.getInt(mContentResolver,
-                Settings.Global.BLUETOOTH_ON, BLUETOOTH_ON_BLUETOOTH) != BLUETOOTH_OFF;
+        int state = Settings.Global.getInt(mContentResolver,
+                                           Settings.Global.BLUETOOTH_ON, -1);
+        if (DBG) Slog.d(TAG, "Bluetooth persisted state: " + state);
+        return state != BLUETOOTH_OFF;
     }
 
     /**
@@ -780,8 +795,9 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
             mContext.enforceCallingOrSelfPermission(BLUETOOTH_ADMIN_PERM,
                     "Need BLUETOOTH ADMIN permission");
 
-            if (!isEnabled() && mPermissionReviewRequired) {
-                startConsentUi(packageName, callingUid, BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            if (!isEnabled() && mPermissionReviewRequired
+                    && startConsentUiIfNeeded(packageName, callingUid,
+                            BluetoothAdapter.ACTION_REQUEST_ENABLE)) {
                 return false;
             }
         }
@@ -815,8 +831,9 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
             mContext.enforceCallingOrSelfPermission(BLUETOOTH_ADMIN_PERM,
                     "Need BLUETOOTH ADMIN permission");
 
-            if (isEnabled() && mPermissionReviewRequired) {
-                startConsentUi(packageName, callingUid, BluetoothAdapter.ACTION_REQUEST_DISABLE);
+            if (isEnabled() && mPermissionReviewRequired
+                    && startConsentUiIfNeeded(packageName, callingUid,
+                            BluetoothAdapter.ACTION_REQUEST_DISABLE)) {
                 return false;
             }
         }
@@ -836,8 +853,8 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
         return true;
     }
 
-    private void startConsentUi(String packageName, int callingUid, String intentAction)
-            throws RemoteException {
+    private boolean startConsentUiIfNeeded(String packageName,
+            int callingUid, String intentAction) throws RemoteException {
         try {
             // Validate the package only if we are going to use it
             ApplicationInfo applicationInfo = mContext.getPackageManager()
@@ -849,9 +866,18 @@ class BluetoothManagerService extends IBluetoothManager.Stub {
                         + " not in uid " + callingUid);
             }
 
-            // Permission review mode, trigger a user prompt
             Intent intent = new Intent(intentAction);
-            mContext.startActivity(intent);
+            intent.putExtra(Intent.EXTRA_PACKAGE_NAME, packageName);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            try {
+                mContext.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                // Shouldn't happen
+                Slog.e(TAG, "Intent to handle action " + intentAction + " missing");
+                return false;
+            }
+            return true;
         } catch (PackageManager.NameNotFoundException e) {
             throw new RemoteException(e.getMessage());
         }

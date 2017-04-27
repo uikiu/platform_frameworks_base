@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Bağlantı problemi və ya yalnış MM kodu."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Əməliyyat yalnız sabit nömrələrə yığımla məhdudlaşıb."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Roaminqdə olarkən zəng yönləndirmə ayarlarını telefonunuzdan dəyişə bilməz."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Servis işə salındı."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Xidmət aktiv edilmişdir:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Xidmət deaktiv edilib."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Zəng edənin kimliyi defolt olaraq qadağan deyil. Növbəti zəng: Qadağan deyil"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Xidmət təmin edilməyib."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Çağrı kimliyi ayarını dəyişə bilməzsiniz."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Data xidmət bağlıdır."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Təcili xidmət bağlıdır."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Səs xidməti bağlıdır."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Bütün Səs xidmətləri bağlıdır"</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS xidməti bloklanıb."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Səs/data xidmətləri bloklanıb."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Səs/SMS xidmətləri bloklanıb."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Bütün səs/data/SMS xidmətləri bağlıdır."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Şəbəkəyə daxil olmaq mümkün deyil"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Qəbulu inkişaf etdirmək üçün, Ayarlar &gt; Mobil Şəbəkə &gt; Tərcih edilən şəbəkə növü bölməsindən seçilmiş növü dəyişməyə çalışın."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Eskpert TTY Rejimi FULL-u sorğuladı"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Ekspert TTY Rejimi HCO-nu sorğuladı"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Ekspert TTY Rejimi VCO-nu sorğuladı"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"İnzibatçı proqramı olmadığından iş profili silindi."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"İnzibatçı proqramın iş profili ya yoxdur, ya da korlanıb. Nəticədə iş profiliniz və onunla bağlı məlumatlar silinib. Yardım üçün inzibatçınızla əlaqə saxlayın."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"İş profiliniz daha bu cihazda əlçatan deyil."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Şəbəkə trafikinə nəzarət edilir"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Ətraflı məlumat üçün klikləyin"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Cihazınız təmizlənəcəkdir"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"İnzibatçı proqramında komponentlər yoxdur və ya korlanıb və istifadə oluna bilməz. Cihazınız indi təmizlənəcəkdir. Yardım üçün inzibatçınızla əlaqə saxlayın."</string>
     <string name="me" msgid="6545696007631404292">"Mən"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Tətbiqə müdaxilə olmadan zəng etmək üçün IMS xidmətindən istifadə etməyə imkan verir."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"telefon statusunu və identifikasiyanı oxuyur"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Tətbiqə cihazın telefon funksiyalarına giriş icazəsi verir. Belə icazəli tətbiq bu telefonun nömrəsini və cihaz İD\'ni, zəngin aktiv olub-olmadığını və zəng edilən nömrəni müəyyən edə bilər."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"zəngləri sistem üzərindən yönləndirin"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Tətbiqə, zəng təcrübəsini yaxşılaşdırmaq üçün, zəngləri sistem üzərindən yönləndirməyə icazə verilir."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"planşetin yuxu rejiminin qarşısını almaq"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"TV-ni yuxu rejiminə keçməyə qoyma"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"telefonun yuxu rejiminə keçməsini əngəllə"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Heç biri"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Zəng səsləri"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Naməlum rinqton"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Əlçatan Wi-Fi şəbəkələri</item>
-      <item quantity="one">Əlçatan Wi-Fi şəbəkəsi</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Əlçatan açıq Wi-Fi şəbəkələri</item>
-      <item quantity="one">Əlçatan açıq Wi-Fi şəbəkəsi</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Wi-Fi şəbəkəsinə daxil ol"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Şəbəkəyə daxil olun"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Tətbiqə quraşdırma sessiyalarını oxumağa yardım edir. Bu da aktiv paket quraşdırmaları haqqında məlumatları görməyə imkan verir."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"paketləri quraşdırma sorğusu"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Tətbiqə paketləri quraşdırma sorğusu göndərməyə icazə verir."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"batareya optimallaşdırmasını iqnor etmək üçün soruşun"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Tatareya optimallaşdırılmasını o tətbiq üçün iqnor edilməsinə icazə vermək məqsədilə soruşmağa tətbiqə icazə verilir."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Zoom kontrolu üçün iki dəfə toxunun"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Widget əlavə edilə bilmədi."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Get"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"İl seçin"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> silindi"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"İş <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Sancağı götürmək üçün Geri düyməsinə toxunun və saxlayın."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Sancağı götürmək üçün Geri və İcmal düymələrinə basıb saxlayın"</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Tətbiq sancılıb: Açmağa bu cihazda icazə verilmir."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Screen pinned"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Screen unpinned"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Daha çox məlumat üçün toxunun."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> deaktiv edildi"</string>
     <string name="conference_call" msgid="3751093130790472426">"Konfrans Zəngi"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Sakit qalın və yaxınlıqda sığınacaq axtarın."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Dərhal sahil bölgələrindən və çay kənarı ərazilərdən daha təhlükəsiz yüksək yerlərə evakuasiya edin."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Sakit qalın və yaxınlıqda sığınacaq axtarın."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Təcili mesaj testi"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"కనెక్షన్ సమస్య లేదా చెల్లని MMI కోడ్."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"చర్య స్థిరమైన డయలింగ్ నంబర్‌లకు మాత్రమే పరిమితం చేయబడింది."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"మీరు రోమింగ్‌లో ఉన్నప్పుడు మీ ఫోన్‌ నుండి కాల్ ఫార్వార్డింగ్ సెట్టింగ్‌లను మార్చలేరు."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"సేవ ప్రారంభించబడింది."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"వీటి కోసం సేవ ప్రారంభించబడింది:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"సేవ నిలిపివేయబడింది."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"కాలర్ ID డిఫాల్ట్‌గా అపరిమితానికి ఉంటుంది. తదుపరి కాల్: అపరిమితం"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"సేవ కేటాయించబడలేదు."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"మీరు కాలర్ ID సెట్టింగ్‌ను మార్చలేరు."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"డేటా సేవ బ్లాక్ చేయబడింది."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"అత్యవసర సేవ బ్లాక్ చేయబడింది."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"వాయిస్ సేవ బ్లాక్ చేయబడింది."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"అన్ని వాయిస్ సేవలు బ్లాక్ చేయబడ్డాయి."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS సేవ బ్లాక్ చేయబడింది."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"వాయిస్/డేటా సేవలు బ్లాక్ చేయబడ్డాయి."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"వాయిస్/SMS సేవలు బ్లాక్ చేయబడ్డాయి."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"అన్ని వాయిస్/డేటా/SMS సేవలు బ్లాక్ చేయబడ్డాయి."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"నెట్‌వర్క్‌ను చేరుకోలేరు"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"స్వీకరణను మెరుగుపరచడానికి, సెట్టింగ్‌లు &gt; సెల్యులార్ నెట్‌వర్క్‌లు &gt; ప్రాధాన్య నెట్‌వర్క్ రకం ఎంపికలో ఎంచుకున్న రకాన్ని మార్చడానికి ప్రయత్నించండి."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"అవతలి వారు FULL TTY మోడ్‌ని అభ్యర్థించారు"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"అవతలి వారు HCO TTY మోడ్‌ని అభ్యర్థించారు"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"అవతలి వారు VCO TTY మోడ్‌ని అభ్యర్థించారు"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"నిర్వాహక అనువర్తనం లేనందున కార్యాలయ ప్రొఫైల్ తొలగించబడింది."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"కార్యాలయ ప్రొఫైల్ నిర్వాహక అనువర్తనం లేదు లేదా పాడైంది. తత్ఫలితంగా, మీ కార్యాలయ ప్రొఫైల్ మరియు సంబంధిత డేటా తొలగించబడ్డాయి. సహాయం కోసం మీ నిర్వాహకుడిని సంప్రదించండి."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"ఈ పరికరంలో మీ కార్యాలయ ప్రొఫైల్ ఇప్పుడు అందుబాటులో లేదు."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"నెట్‌వర్క్ ట్రాఫిక్ పర్యవేక్షించబడుతోంది"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"మరింత తెలుసుకోవడానికి నొక్కండి"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"మీ పరికరంలోని డేటా తొలగించబడుతుంది"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"నిర్వాహక అనువర్తనంలో కొన్ని అంతర్భాగాలు లేవు లేదా అది పాడైపోయి, నిరుపయోగంగా మారింది. మీ పరికరంలోని డేటా ఇప్పుడు తొలగించబడుతుంది. సహాయం కోసం మీ నిర్వాహకుడిని సంప్రదించండి."</string>
     <string name="me" msgid="6545696007631404292">"నేను"</string>
@@ -250,7 +263,7 @@
     <string name="permgrouplab_calendar" msgid="5863508437783683902">"క్యాలెండర్"</string>
     <string name="permgroupdesc_calendar" msgid="3889615280211184106">"మీ క్యాలెండర్‌ను ప్రాప్యత చేయడానికి"</string>
     <string name="permgrouplab_sms" msgid="228308803364967808">"SMS"</string>
-    <string name="permgroupdesc_sms" msgid="4656988620100940350">"SMS సందేశాలను పంపడానికి మరియు వీక్షించడానికి"</string>
+    <string name="permgroupdesc_sms" msgid="4656988620100940350">"SMS సందేశాలను పంపడం మరియు వీక్షించడం"</string>
     <string name="permgrouplab_storage" msgid="1971118770546336966">"నిల్వ"</string>
     <string name="permgroupdesc_storage" msgid="637758554581589203">"మీ పరికరంలోని ఫోటోలు, మీడియా మరియు ఫైల్‌లను ప్రాప్యత చేయడానికి"</string>
     <string name="permgrouplab_microphone" msgid="171539900250043464">"మైక్రోఫోన్"</string>
@@ -258,7 +271,7 @@
     <string name="permgrouplab_camera" msgid="4820372495894586615">"కెమెరా"</string>
     <string name="permgroupdesc_camera" msgid="3250611594678347720">"చిత్రాలను తీయడానికి మరియు వీడియోను రికార్డ్ చేయడానికి"</string>
     <string name="permgrouplab_phone" msgid="5229115638567440675">"ఫోన్"</string>
-    <string name="permgroupdesc_phone" msgid="6234224354060641055">"ఫోన్ కాల్‌లను చేయడానికి మరియు నిర్వహించడానికి"</string>
+    <string name="permgroupdesc_phone" msgid="6234224354060641055">"ఫోన్ కాల్‌లు చేయడం మరియు నిర్వహించడం"</string>
     <string name="permgrouplab_sensors" msgid="416037179223226722">"శరీర సెన్సార్‌లు"</string>
     <string name="permgroupdesc_sensors" msgid="7147968539346634043">"మీ అత్యంత కీలకమైన గుర్తుల గురించి సెన్సార్ డేటాని ప్రాప్యత చేస్తుంది"</string>
     <string name="capability_title_canRetrieveWindowContent" msgid="3901717936930170320">"విండో కంటెంట్‍ను తిరిగి పొందుతుంది"</string>
@@ -293,7 +306,7 @@
     <string name="permdesc_readCellBroadcasts" msgid="6361972776080458979">"మీ పరికరం స్వీకరించిన సెల్ ప్రసార సందేశాలను చదవడానికి అనువర్తనాన్ని అనుమతిస్తుంది. సెల్ ప్రసార హెచ్చరికలు అత్యవసర పరిస్థితుల గురించి మిమ్మల్ని హెచ్చరించడానికి కొన్ని స్థానాల్లో అందించబడతాయి. అత్యవసర సెల్ ప్రసారం స్వీకరించినప్పుడు హానికరమైన అనువర్తనాలు మీ పరికరం యొక్క పనితీరు లేదా నిర్వహణకు అంతరాయం కలిగించవచ్చు."</string>
     <string name="permlab_subscribedFeedsRead" msgid="4756609637053353318">"చందా చేయబడిన ఫీడ్‌లను చదవడం"</string>
     <string name="permdesc_subscribedFeedsRead" msgid="5557058907906144505">"ప్రస్తుతం సమకాలీకరించిన ఫీడ్‌ల గురించి వివరాలను పొందడానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
-    <string name="permlab_sendSms" msgid="7544599214260982981">"SMS సందేశాలను పంపడానికి మరియు వీక్షించడానికి"</string>
+    <string name="permlab_sendSms" msgid="7544599214260982981">"SMS సందేశాలను పంపడం మరియు వీక్షించడం"</string>
     <string name="permdesc_sendSms" msgid="7094729298204937667">"SMS సందేశాలు పంపడానికి అనువర్తనాన్ని అనుమతిస్తుంది. దీని వలన ఊహించని ఛార్జీలు విధించబడవచ్చు. హానికరమైన అనువర్తనాలు మీ నిర్ధారణ లేకుండానే సందేశాలను పంపడం ద్వారా మీకు డబ్బు ఖర్చయ్యేలా చేయవచ్చు."</string>
     <string name="permlab_readSms" msgid="8745086572213270480">"మీ వచన సందేశాలు (SMS లేదా MMS) చదవడం"</string>
     <string name="permdesc_readSms" product="tablet" msgid="2467981548684735522">"మీ టాబ్లెట్ లేదా సిమ్ కార్డు‌లో నిల్వ చేయబడిన SMS సందేశాలను చదవడానికి అనువర్తనాన్ని అనుమతిస్తుంది. ఇది కంటెంట్ లేదా గోప్యతతో సంబంధం లేకుండా అన్ని SMS సందేశాలను చదవడానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"మీ ప్రమేయం లేకుండా కాల్‌లు చేయడం కోసం IMS సేవను ఉపయోగించడానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"ఫోన్ స్థితి మరియు గుర్తింపుని చదవడం"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"పరికరం యొక్క ఫోన్ లక్షణాలను ప్రాప్యత చేయడానికి అనువర్తనాన్ని అనుమతిస్తుంది. ఈ అనుమతి ఫోన్ నంబర్ మరియు పరికరం IDలను, కాల్ సక్రియంగా ఉందా లేదా అనే విషయాన్ని మరియు కాల్ ద్వారా కనెక్ట్ చేయబడిన రిమోట్ నంబర్‌ను కనుగొనడానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"కాల్‌లను సిస్టమ్ ద్వారా వెళ్లేలా చేయి"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"కాలింగ్ అనుభవాన్ని మెరుగుపరచడం కోసం తన కాల్‌లను సిస్టమ్ ద్వారా వెళ్లేలా చేయడానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"టాబ్లెట్‌ను నిద్రావస్థకు వెళ్లనీయకుండా నిరోధించడం"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"టీవీ నిద్రావస్థకు వెళ్లకుండా నిరోధించడం"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"ఫోన్‌ను నిద్రావస్థకు వెళ్లనీయకుండా నిరోధించడం"</string>
@@ -538,7 +553,7 @@
     <string name="policylab_setGlobalProxy" msgid="2784828293747791446">"పరికరం గ్లోబల్ ప్రాక్సీని సెట్ చేయండి"</string>
     <string name="policydesc_setGlobalProxy" msgid="8459859731153370499">"విధానాన్ని ప్రారంభించినప్పుడు ఉపయోగించడానికి పరికర గ్లోబల్ ప్రాక్సీని సెట్ చేస్తుంది. పరికర యజమాని మాత్రమే గ్లోబల్ ప్రాక్సీని సెట్ చేయగలరు."</string>
     <string name="policylab_expirePassword" msgid="5610055012328825874">"స్క్రీన్ లాక్ పాస్‌వర్డ్ గడువు ముగింపుని సెట్ చేయండి"</string>
-    <string name="policydesc_expirePassword" msgid="5367525762204416046">"స్క్రీన్ లాక్ పాస్‌వర్డ్, PIN లేదా నమూనాని తప్పనిసరిగా ఎంత తరచుగా మార్చాలనే దాన్ని మారుస్తుంది."</string>
+    <string name="policydesc_expirePassword" msgid="5367525762204416046">"స్క్రీన్ లాక్ పాస్‌వర్డ్, పిన్ లేదా నమూనాని తప్పనిసరిగా ఎంత తరచుగా మార్చాలనే దాన్ని మారుస్తుంది."</string>
     <string name="policylab_encryptedStorage" msgid="8901326199909132915">"నిల్వ గుప్తీకరణను సెట్ చేయండి"</string>
     <string name="policydesc_encryptedStorage" msgid="2637732115325316992">"నిల్వ చేయబడిన అనువర్తన డేటా గుప్తీకరించబడి ఉండటం అవసరం."</string>
     <string name="policylab_disableCamera" msgid="6395301023152297826">"కెమెరాలను నిలిపివేయండి"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"ఏదీ వద్దు"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"రింగ్‌టోన్‌లు"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"తెలియని రింగ్‌టోన్"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Wi-Fi నెట్‌వర్క్‌లు అందుబాటులో ఉన్నాయి</item>
-      <item quantity="one">Wi-Fi నెట్‌వర్క్ అందుబాటులో ఉంది</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">ఓపెన్ Wi-Fi నెట్‌వర్క్‌లు అందుబాటులో ఉన్నాయి</item>
-      <item quantity="one">ఓపెన్ Wi-Fi నెట్‌వర్క్ అందుబాటులో ఉంది</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Wi-Fi నెట్‌వర్క్‌కి సైన్ ఇన్ చేయండి"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"నెట్‌వర్క్‌కి సైన్ ఇన్ చేయండి"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"ఇన్‌స్టాల్ సెషన్‌లను చదవడానికి అనువర్తనాన్ని అనుమతిస్తుంది. ఇది సక్రియ ప్యాకేజీ ఇన్‌స్టాలేషన్‌ల గురించి వివరాలను చూడటానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"ఇన్‌స్టాల్ ప్యాకేజీలను అభ్యర్థించడం"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"ప్యాకేజీల ఇన్‌స్టాలేషన్ అభ్యర్థించడానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"బ్యాటరీ అనుకూలీకరణలను విస్మరించడానికి అడగాలి"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"ఆ అనువర్తనం కోసం బ్యాటరీ అనుకూలీకరణలు విస్మరించేలా అనుమతి కోరడానికి అనువర్తనాన్ని అనుమతిస్తుంది."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"జూమ్ నియంత్రణ కోసం రెండుసార్లు నొక్కండి"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"విడ్జెట్‌ను జోడించడం సాధ్యపడలేదు."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"వెళ్లు"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"సంవత్సరాన్ని ఎంచుకోండి"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> తొలగించబడింది"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"కార్యాలయం <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"ఈ స్క్రీన్‌ని అన్‌పిన్ చేయడానికి, వెనుకకు తాకి &amp; అలాగే పట్టుకోండి."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"ఈ స్క్రీన్‌ను అన్‌పిన్ చేయడానికి, వెనుకకు మరియు స్థూలదృష్టి తాకి &amp; అలాగే పట్టుకోండి."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"అనువర్తనం పిన్ చేయబడింది: ఈ పరికరంలో అన్‌పిన్ చేయడానికి అనుమతి లేదు."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"స్క్రీన్ పిన్ చేయబడింది"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"స్క్రీన్ అన్‌పిన్ చేయబడింది"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"మరింత తెలుసుకోవడానికి తాకండి."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> నిలిపివేయబడింది"</string>
     <string name="conference_call" msgid="3751093130790472426">"కాన్ఫరెన్స్ కాల్"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"ప్రశాంతంగా ఉండండి మరియు దగ్గర్లో తలదాచుకోండి."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"వెంటనే తీర ప్రాంతాలు మరియు నదీ పరీవాహక ప్రాంతాలను ఖాళీ చేసి మెట్ట ప్రాంతాలకు తరలి వెళ్లండి."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"ప్రశాంతంగా ఉండండి మరియు దగ్గర్లో తలదాచుకోండి."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"అత్యవసర సందేశాల పరీక్ష"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

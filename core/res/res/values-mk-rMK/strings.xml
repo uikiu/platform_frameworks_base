@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Проблем со поврзување или неважечки MMI код."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Операцијата е ограничена на бирање само фиксни броеви."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Не може да се сменат поставките за проследување повик од телефонот додека сте во роаминг."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Услугата беше овозможена."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Услугата беше овозможена за:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Услугата е оневозможена."</string>
@@ -82,20 +83,30 @@
     <string name="RuacMmi" msgid="7827887459138308886">"Одбивање несакани вознемирувачки повици"</string>
     <string name="CndMmi" msgid="3116446237081575808">"Испорака на повикувачки број"</string>
     <string name="DndMmi" msgid="1265478932418334331">"Не вознемирувај"</string>
-    <string name="CLIRDefaultOnNextCallOn" msgid="429415409145781923">"Стандардно, повикувачот со овој ИД е ограничен. Следен повик: ограничен"</string>
-    <string name="CLIRDefaultOnNextCallOff" msgid="3092918006077864624">"Стандардно, повикувачот со овој ИД е ограничен. Следен повик: не е ограничен"</string>
-    <string name="CLIRDefaultOffNextCallOn" msgid="6179425182856418465">"Стандардно, повикувачот со овој ИД не е ограничен. Следен повик: ограничен"</string>
-    <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Стандардно, повикувачот со овој ИД не е ограничен. Следен повик: не е ограничен"</string>
+    <string name="CLIRDefaultOnNextCallOn" msgid="429415409145781923">"Стандардно, повикувачот со овој ID е ограничен. Следен повик: ограничен"</string>
+    <string name="CLIRDefaultOnNextCallOff" msgid="3092918006077864624">"Стандардно, повикувачот со овој ID е ограничен. Следен повик: не е ограничен"</string>
+    <string name="CLIRDefaultOffNextCallOn" msgid="6179425182856418465">"Стандардно, повикувачот со овој ID не е ограничен. Следен повик: ограничен"</string>
+    <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Стандардно, повикувачот со овој ID не е ограничен. Следен повик: не е ограничен"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Услугата не е предвидена."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Не може да го промените поставувањето за ID на повикувач."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Услугата за податоци е блокирана."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Услугата за итни повици е блокирана."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Услугата за гласовно бирање е блокирана."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Сите услуги со говор се блокирани."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Услугата за SMS пораки е блокирана."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Услугите со говор/податоци се блокирани."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Услугите за гласовно бирање/SMS пораки се блокирани."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Сите услугите со говор/податоци/SMS пораки се блокирани."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Не може да се дојде до мрежата"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"За да се подобри приемот, обидете се да го смените избраниот тип во „Поставки“ &gt; „Мобилни мрежи“ &gt; „Претпочитан тип мрежа“."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Рамноправен уред го побара режимот на TTY „FULL“"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Рамноправен уред го побара режимот на TTY „HCO“"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Рамноправен уред го побара режимот на TTY „VCO“"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Работниот профил е избришан заради отсуството на апликација на администратор."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Апликацијата на администраторот за работниот профил недостасува или е оштетена. Како резултат на тоа, работниот профил и поврзаните податоци ќе се избришат. Контактирајте со администраторот за помош."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Работниот профил веќе не е достапен на уредов."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Се следи сообраќајот на мрежата"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Допрете за да дознаете повеќе"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Уредот ќе се избрише"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"На апликацијата на администраторот ѝ недостасуваат компоненти или е оштетена, па не може да се користи. Уредот ќе се избрише сега. Контактирајте со администраторот за помош."</string>
     <string name="me" msgid="6545696007631404292">"Јас"</string>
@@ -196,9 +209,9 @@
     <string name="reboot_to_update_title" msgid="6212636802536823850">"Системско ажурирање на Android"</string>
     <string name="reboot_to_update_prepare" msgid="6305853831955310890">"Се подготвува ажурирањето…"</string>
     <string name="reboot_to_update_package" msgid="3871302324500927291">"Пакетот за ажурирање се обработува..."</string>
-    <string name="reboot_to_update_reboot" msgid="6428441000951565185">"Се престартува…"</string>
+    <string name="reboot_to_update_reboot" msgid="6428441000951565185">"Се рестартира…"</string>
     <string name="reboot_to_reset_title" msgid="4142355915340627490">"Ресетирање фабрички податоци"</string>
-    <string name="reboot_to_reset_message" msgid="2432077491101416345">"Се престартува…"</string>
+    <string name="reboot_to_reset_message" msgid="2432077491101416345">"Се рестартира…"</string>
     <string name="shutdown_progress" msgid="2281079257329981203">"Се исклучува..."</string>
     <string name="shutdown_confirm" product="tablet" msgid="3385745179555731470">"Вашиот таблет ќе се исклучи."</string>
     <string name="shutdown_confirm" product="tv" msgid="476672373995075359">"Вашиот телевизор ќе се исклучи."</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Дозволува апликацијата да ја користи услугата IMS за повици без ваша интервенција."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"прочитај ги статусот и идентитетот  на телефонот"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Овозможува апликацијата да пристапи кон карактеристиките на телефонот на уредот. Оваа дозвола овозможува апликацијата да ги утврди телефонскиот број и ID на уредот, дали повикот е активен и далечинскиот број поврзан со повикот."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"пренасочи повици преку системот"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Дозволете ѝ на апликацијата да ги пренасочи повиците преку системот за да го подобри искуството при јавувањето."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"спречи режим на штедење кај таблет"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"спречи го телевизорот да премине во режим на мирување"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"спречи телефон од режим на штедење"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Ниедна"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Мелодии"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Непозната мелодија"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Wi-Fi мрежи се достапни</item>
-      <item quantity="other">Wi-Fi мрежи се достапни</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">Отворени Wi-Fi мрежи се достапни</item>
-      <item quantity="other">Отворени Wi-Fi мрежи се достапни</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Најавете се на мрежа на Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Најавете се на мрежа"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Дозволува апликација да чита сесии на инсталирање. Тоа овозможува апликацијата да гледа детали за активни инсталации на пакет."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"барање пакети за инсталирање"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Дозволува апликацијата да бара инсталација на пакети."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"прашај дали да се игнорираат оптимизациите на батеријата"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Овозможува апликацијата да побара дозвола за игнорирање на оптимизациите на батеријата за таа апликација."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Допрете двапати за контрола на зумот"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Не можеше да се додаде виџет."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Оди"</string>
@@ -1560,7 +1569,7 @@
     <string name="select_year" msgid="7952052866994196170">"Избери година"</string>
     <string name="deleted_key" msgid="7659477886625566590">"Избришано <xliff:g id="KEY">%1$s</xliff:g>"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Работа <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"За откачување на екранов, допрете и задржете Назад."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"За откачување на екранов, допрете и задржете Назад и Краток преглед."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Апликацијата е закачена: откачување не е дозволено на уредов."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Екранот е закачен"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Екранот е откачен"</string>
@@ -1680,4 +1689,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Допрете за да дознаете повеќе."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Оневозможен <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"Конференциски повик"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Бидете смирени и побарајте засолниште во близина."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Итна евакуација од крајбрежните региони и областите покрај реки на побезбедно место, како на пр., терени на повисока надморска височина."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Бидете смирени и побарајте засолниште во близина."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Тестирање пораки за итни случаи"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

@@ -16,6 +16,17 @@
 
 package com.android.server.connectivity;
 
+import static com.android.server.connectivity.MetricsTestUtil.aBool;
+import static com.android.server.connectivity.MetricsTestUtil.aByteArray;
+import static com.android.server.connectivity.MetricsTestUtil.aLong;
+import static com.android.server.connectivity.MetricsTestUtil.aString;
+import static com.android.server.connectivity.MetricsTestUtil.aType;
+import static com.android.server.connectivity.MetricsTestUtil.anInt;
+import static com.android.server.connectivity.MetricsTestUtil.anIntArray;
+import static com.android.server.connectivity.MetricsTestUtil.b;
+import static com.android.server.connectivity.MetricsTestUtil.describeIpEvent;
+import static com.android.server.connectivity.metrics.IpConnectivityLogClass.IpConnectivityLog;
+
 import android.net.ConnectivityMetricsEvent;
 import android.net.metrics.ApfProgramEvent;
 import android.net.metrics.ApfStats;
@@ -28,24 +39,13 @@ import android.net.metrics.IpReachabilityEvent;
 import android.net.metrics.NetworkEvent;
 import android.net.metrics.RaEvent;
 import android.net.metrics.ValidationProbeEvent;
-import com.google.protobuf.nano.MessageNano;
+import android.test.suitebuilder.annotation.SmallTest;
 import java.util.Arrays;
 import junit.framework.TestCase;
 
-import static com.android.server.connectivity.metrics.IpConnectivityLogClass.IpConnectivityLog;
-import static com.android.server.connectivity.MetricsTestUtil.aBool;
-import static com.android.server.connectivity.MetricsTestUtil.aByteArray;
-import static com.android.server.connectivity.MetricsTestUtil.aLong;
-import static com.android.server.connectivity.MetricsTestUtil.aString;
-import static com.android.server.connectivity.MetricsTestUtil.aType;
-import static com.android.server.connectivity.MetricsTestUtil.anInt;
-import static com.android.server.connectivity.MetricsTestUtil.anIntArray;
-import static com.android.server.connectivity.MetricsTestUtil.b;
-import static com.android.server.connectivity.MetricsTestUtil.describeIpEvent;
-import static com.android.server.connectivity.MetricsTestUtil.ipEv;
-
 public class IpConnectivityEventBuilderTest extends TestCase {
 
+    @SmallTest
     public void testDefaultNetworkEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(DefaultNetworkEvent.class),
@@ -71,12 +71,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    transport_types: 3",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testDhcpClientEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(DhcpClientEvent.class),
@@ -94,12 +96,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    state_transition: \"SomeState\"",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testDhcpErrorEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(DhcpErrorEvent.class),
@@ -116,12 +120,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    state_transition: \"\"",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testDnsEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(DnsEvent.class),
@@ -163,12 +169,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    return_codes: 178",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testIpManagerEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(IpManagerEvent.class),
@@ -185,12 +193,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    latency_ms: 5678",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testIpReachabilityEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(IpReachabilityEvent.class),
@@ -205,12 +215,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    if_name: \"wlan0\"",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testNetworkEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(NetworkEvent.class),
@@ -229,12 +241,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    >",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testValidationProbeEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(ValidationProbeEvent.class),
@@ -247,6 +261,7 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "dropped_events: 0",
                 "events <",
                 "  time_ms: 1",
+                "  transport: 0",
                 "  validation_probe_event <",
                 "    latency_ms: 40730",
                 "    network_id <",
@@ -261,6 +276,7 @@ public class IpConnectivityEventBuilderTest extends TestCase {
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testApfProgramEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(ApfProgramEvent.class),
@@ -282,12 +298,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    program_length: 2048",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testApfStatsSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(ApfStats.class),
@@ -314,12 +332,14 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    zero_lifetime_ras: 1",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
         verifySerialization(want, ev);
     }
 
+    @SmallTest
     public void testRaEventSerialization() {
         ConnectivityMetricsEvent ev = describeIpEvent(
                 aType(RaEvent.class),
@@ -342,6 +362,7 @@ public class IpConnectivityEventBuilderTest extends TestCase {
                 "    router_lifetime: 2000",
                 "  >",
                 "  time_ms: 1",
+                "  transport: 0",
                 ">",
                 "version: 2");
 
@@ -350,9 +371,9 @@ public class IpConnectivityEventBuilderTest extends TestCase {
 
     static void verifySerialization(String want, ConnectivityMetricsEvent... input) {
         try {
-            byte[] got = IpConnectivityEventBuilder.serialize(0, Arrays.asList(input));
-            IpConnectivityLog log = new IpConnectivityLog();
-            MessageNano.mergeFrom(log, got);
+            byte[] got = IpConnectivityEventBuilder.serialize(0,
+                    IpConnectivityEventBuilder.toProto(Arrays.asList(input)));
+            IpConnectivityLog log = IpConnectivityLog.parseFrom(got);
             assertEquals(want, log.toString());
         } catch (Exception e) {
             fail(e.toString());

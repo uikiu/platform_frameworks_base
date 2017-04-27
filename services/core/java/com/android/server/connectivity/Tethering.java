@@ -77,6 +77,7 @@ import com.android.server.connectivity.tethering.IControlsTethering;
 import com.android.server.connectivity.tethering.IPv6TetheringCoordinator;
 import com.android.server.connectivity.tethering.IPv6TetheringInterfaceServices;
 import com.android.server.connectivity.tethering.OffloadController;
+import com.android.server.connectivity.tethering.SimChangeListener;
 import com.android.server.connectivity.tethering.TetherInterfaceStateMachine;
 import com.android.server.connectivity.tethering.TetheringConfiguration;
 import com.android.server.connectivity.tethering.UpstreamNetworkMonitor;
@@ -90,7 +91,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -122,11 +125,22 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         public final TetherInterfaceStateMachine stateMachine;
         public int lastState;
         public int lastError;
+
         public TetherState(TetherInterfaceStateMachine sm) {
             stateMachine = sm;
             // Assume all state machines start out available and with no errors.
             lastState = IControlsTethering.STATE_AVAILABLE;
             lastError = ConnectivityManager.TETHER_ERROR_NO_ERROR;
+        }
+
+        public boolean isCurrentlyServing() {
+            switch (lastState) {
+                case IControlsTethering.STATE_TETHERED:
+                case IControlsTethering.STATE_LOCAL_ONLY:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 
@@ -143,11 +157,14 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
     private final StateMachine mTetherMasterSM;
     private final OffloadController mOffloadController;
     private final UpstreamNetworkMonitor mUpstreamNetworkMonitor;
+    private final HashSet<TetherInterfaceStateMachine> mForwardedDownstreams;
+    private final SimChangeListener mSimChange;
 
     private volatile TetheringConfiguration mConfig;
     private String mCurrentUpstreamIface;
     private Notification.Builder mTetheredNotificationBuilder;
     private int mLastNotificationId;
+
     private boolean mRndisEnabled;       // track the RNDIS function enabled state
     private boolean mUsbTetherRequested; // true if USB tethering should be started
                                          // when RNDIS is enabled
@@ -174,6 +191,9 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         mOffloadController = new OffloadController(mTetherMasterSM.getHandler());
         mUpstreamNetworkMonitor = new UpstreamNetworkMonitor(
                 mContext, mTetherMasterSM, TetherMasterSM.EVENT_UPSTREAM_CALLBACK);
+        mForwardedDownstreams = new HashSet<>();
+        mSimChange = new SimChangeListener(
+                mContext, mTetherMasterSM.getHandler(), () -> reevaluateSimCardProvisioning());
 
         mStateReceiver = new StateReceiver();
         IntentFilter filter = new IntentFilter();
@@ -336,6 +356,20 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         return (provisionApp.length == 2);
     }
 
+    // Used by the SIM card change observation code.
+    // TODO: De-duplicate above code.
+    private boolean hasMobileHotspotProvisionApp() {
+        try {
+            if (!mContext.getResources().getString(com.android.internal.R.string.
+                    config_mobile_hotspot_provision_app_no_ui).isEmpty()) {
+                Log.d(TAG, "re-evaluate provisioning");
+                return true;
+            }
+        } catch (Resources.NotFoundException e) {}
+        Log.d(TAG, "no prov-check needed for new SIM");
+        return false;
+    }
+
     /**
      * Enables or disables tethering for the given type. This should only be called once
      * provisioning has succeeded or is not necessary. It will also schedule provisioning rechecks
@@ -379,7 +413,8 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
             mWifiTetherRequested = enable;
             final WifiManager wifiManager =
                     (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-            if (wifiManager.setWifiApEnabled(null /* use existing wifi config */, enable)) {
+            if ((enable && wifiManager.startSoftAp(null /* use existing wifi config */)) ||
+                (!enable && wifiManager.stopSoftAp())) {
                 return ConnectivityManager.TETHER_ERROR_NO_ERROR;
             }
             return ConnectivityManager.TETHER_ERROR_MASTER_ERROR;
@@ -510,7 +545,21 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         }
     }
 
+    // Used by the SIM card change observation code.
+    // TODO: De-duplicate with above code, where possible.
+    private void startProvisionIntent(int tetherType) {
+        final Intent startProvIntent = new Intent();
+        startProvIntent.putExtra(ConnectivityManager.EXTRA_ADD_TETHER_TYPE, tetherType);
+        startProvIntent.putExtra(ConnectivityManager.EXTRA_RUN_PROVISION, true);
+        startProvIntent.setComponent(TETHER_SERVICE);
+        mContext.startServiceAsUser(startProvIntent, UserHandle.CURRENT);
+    }
+
     public int tether(String iface) {
+        return tether(iface, IControlsTethering.STATE_TETHERED);
+    }
+
+    private int tether(String iface, int requestedState) {
         if (DBG) Log.d(TAG, "Tethering " + iface);
         synchronized (mPublicSync) {
             TetherState tetherState = mTetherStates.get(iface);
@@ -524,7 +573,13 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                 Log.e(TAG, "Tried to Tether an unavailable iface: " + iface + ", ignoring");
                 return ConnectivityManager.TETHER_ERROR_UNAVAIL_IFACE;
             }
-            tetherState.stateMachine.sendMessage(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED);
+            // NOTE: If a CMD_TETHER_REQUESTED message is already in the TISM's
+            // queue but not yet processed, this will be a no-op and it will not
+            // return an error.
+            //
+            // TODO: reexamine the threading and messaging model.
+            tetherState.stateMachine.sendMessage(
+                    TetherInterfaceStateMachine.CMD_TETHER_REQUESTED, requestedState);
             return ConnectivityManager.TETHER_ERROR_NO_ERROR;
         }
     }
@@ -537,8 +592,8 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                 Log.e(TAG, "Tried to Untether an unknown iface :" + iface + ", ignoring");
                 return ConnectivityManager.TETHER_ERROR_UNKNOWN_IFACE;
             }
-            if (tetherState.lastState != IControlsTethering.STATE_TETHERED) {
-                Log.e(TAG, "Tried to untether an untethered iface :" + iface + ", ignoring");
+            if (!tetherState.isCurrentlyServing()) {
+                Log.e(TAG, "Tried to untether an inactive iface :" + iface + ", ignoring");
                 return ConnectivityManager.TETHER_ERROR_UNAVAIL_IFACE;
             }
             tetherState.stateMachine.sendMessage(
@@ -565,12 +620,14 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         }
     }
 
+    // TODO: Figure out how to update for local hotspot mode interfaces.
     private void sendTetherStateChangedBroadcast() {
         if (!getConnectivityManager().isTetheringSupported()) return;
 
-        ArrayList<String> availableList = new ArrayList<String>();
-        ArrayList<String> activeList = new ArrayList<String>();
-        ArrayList<String> erroredList = new ArrayList<String>();
+        final ArrayList<String> availableList = new ArrayList<>();
+        final ArrayList<String> tetherList = new ArrayList<>();
+        final ArrayList<String> localOnlyList = new ArrayList<>();
+        final ArrayList<String> erroredList = new ArrayList<>();
 
         boolean wifiTethered = false;
         boolean usbTethered = false;
@@ -586,6 +643,8 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                     erroredList.add(iface);
                 } else if (tetherState.lastState == IControlsTethering.STATE_AVAILABLE) {
                     availableList.add(iface);
+                } else if (tetherState.lastState == IControlsTethering.STATE_LOCAL_ONLY) {
+                    localOnlyList.add(iface);
                 } else if (tetherState.lastState == IControlsTethering.STATE_TETHERED) {
                     if (cfg.isUsb(iface)) {
                         usbTethered = true;
@@ -594,25 +653,25 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                     } else if (cfg.isBluetooth(iface)) {
                         bluetoothTethered = true;
                     }
-                    activeList.add(iface);
+                    tetherList.add(iface);
                 }
             }
         }
-        Intent broadcast = new Intent(ConnectivityManager.ACTION_TETHER_STATE_CHANGED);
-        broadcast.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING |
+        final Intent bcast = new Intent(ConnectivityManager.ACTION_TETHER_STATE_CHANGED);
+        bcast.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING |
                 Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
-        broadcast.putStringArrayListExtra(ConnectivityManager.EXTRA_AVAILABLE_TETHER,
-                availableList);
-        broadcast.putStringArrayListExtra(ConnectivityManager.EXTRA_ACTIVE_TETHER, activeList);
-        broadcast.putStringArrayListExtra(ConnectivityManager.EXTRA_ERRORED_TETHER,
-                erroredList);
-        mContext.sendStickyBroadcastAsUser(broadcast, UserHandle.ALL);
+        bcast.putStringArrayListExtra(ConnectivityManager.EXTRA_AVAILABLE_TETHER, availableList);
+        bcast.putStringArrayListExtra(ConnectivityManager.EXTRA_ACTIVE_LOCAL_ONLY, localOnlyList);
+        bcast.putStringArrayListExtra(ConnectivityManager.EXTRA_ACTIVE_TETHER, tetherList);
+        bcast.putStringArrayListExtra(ConnectivityManager.EXTRA_ERRORED_TETHER, erroredList);
+        mContext.sendStickyBroadcastAsUser(bcast, UserHandle.ALL);
         if (DBG) {
             Log.d(TAG, String.format(
-                    "sendTetherStateChangedBroadcast avail=[%s] active=[%s] error=[%s]",
-                    TextUtils.join(",", availableList),
-                    TextUtils.join(",", activeList),
-                    TextUtils.join(",", erroredList)));
+                    "sendTetherStateChangedBroadcast %s=[%s] %s=[%s] %s=[%s] %s=[%s]",
+                    "avail", TextUtils.join(",", availableList),
+                    "local_only", TextUtils.join(",", localOnlyList),
+                    "tether", TextUtils.join(",", tetherList),
+                    "error", TextUtils.join(",", erroredList)));
         }
 
         if (usbTethered) {
@@ -728,7 +787,9 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                 mRndisEnabled = rndisEnabled;
                 // start tethering if we have a request pending
                 if (usbConnected && mRndisEnabled && mUsbTetherRequested) {
-                    tetherMatchingInterfaces(true, ConnectivityManager.TETHERING_USB);
+                    tetherMatchingInterfaces(
+                            IControlsTethering.STATE_TETHERED,
+                            ConnectivityManager.TETHERING_USB);
                 }
                 mUsbTetherRequested = false;
             }
@@ -743,9 +804,11 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                         break;
                     case WifiManager.WIFI_AP_STATE_ENABLED:
                         // When the AP comes up and we've been requested to tether it, do so.
-                        if (mWifiTetherRequested) {
-                            tetherMatchingInterfaces(true, ConnectivityManager.TETHERING_WIFI);
-                        }
+                        // Otherwise, assume it's a local-only hotspot request.
+                        final int state = mWifiTetherRequested
+                                ? IControlsTethering.STATE_TETHERED
+                                : IControlsTethering.STATE_LOCAL_ONLY;
+                        tetherMatchingInterfaces(state, ConnectivityManager.TETHERING_WIFI);
                         break;
                     case WifiManager.WIFI_AP_STATE_DISABLED:
                     case WifiManager.WIFI_AP_STATE_DISABLING:
@@ -775,8 +838,16 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         }
     }
 
-    private void tetherMatchingInterfaces(boolean enable, int interfaceType) {
-        if (VDBG) Log.d(TAG, "tetherMatchingInterfaces(" + enable + ", " + interfaceType + ")");
+    // TODO: Consider renaming to something more accurate in its description.
+    // This method:
+    //     - allows requesting either tethering or local hotspot serving states
+    //     - handles both enabling and disabling serving states
+    //     - only tethers the first matching interface in listInterfaces()
+    //       order of a given type
+    private void tetherMatchingInterfaces(int requestedState, int interfaceType) {
+        if (VDBG) {
+            Log.d(TAG, "tetherMatchingInterfaces(" + requestedState + ", " + interfaceType + ")");
+        }
 
         String[] ifaces = null;
         try {
@@ -799,7 +870,20 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
             return;
         }
 
-        int result = (enable ? tether(chosenIface) : untether(chosenIface));
+        final int result;
+        switch (requestedState) {
+            case IControlsTethering.STATE_UNAVAILABLE:
+            case IControlsTethering.STATE_AVAILABLE:
+                result = untether(chosenIface);
+                break;
+            case IControlsTethering.STATE_TETHERED:
+            case IControlsTethering.STATE_LOCAL_ONLY:
+                result = tether(chosenIface, requestedState);
+                break;
+            default:
+                Log.wtf(TAG, "Unknown interface state: " + requestedState);
+                return;
+        }
         if (result != ConnectivityManager.TETHER_ERROR_NO_ERROR) {
             Log.e(TAG, "unable start or stop tethering on iface " + chosenIface);
             return;
@@ -844,7 +928,8 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                 if (mRndisEnabled) {
                     final long ident = Binder.clearCallingIdentity();
                     try {
-                        tetherMatchingInterfaces(true, ConnectivityManager.TETHERING_USB);
+                        tetherMatchingInterfaces(IControlsTethering.STATE_TETHERED,
+                                ConnectivityManager.TETHERING_USB);
                     } finally {
                         Binder.restoreCallingIdentity(ident);
                     }
@@ -855,7 +940,8 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
             } else {
                 final long ident = Binder.clearCallingIdentity();
                 try {
-                    tetherMatchingInterfaces(false, ConnectivityManager.TETHERING_USB);
+                    tetherMatchingInterfaces(IControlsTethering.STATE_AVAILABLE,
+                            ConnectivityManager.TETHERING_USB);
                 } finally {
                     Binder.restoreCallingIdentity(ident);
                 }
@@ -919,6 +1005,14 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         }
     }
 
+    private boolean upstreamWanted() {
+        if (!mForwardedDownstreams.isEmpty()) return true;
+
+        synchronized (mPublicSync) {
+            return mUsbTetherRequested || mWifiTetherRequested;
+        }
+    }
+
     // Needed because the canonical source of upstream truth is just the
     // upstream interface name, |mCurrentUpstreamIface|.  This is ripe for
     // future simplification, once the upstream Network is canonical.
@@ -933,12 +1027,35 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         return false;
     }
 
+    private void reevaluateSimCardProvisioning() {
+        if (!hasMobileHotspotProvisionApp()) return;
+
+        ArrayList<Integer> tethered = new ArrayList<>();
+        synchronized (mPublicSync) {
+            for (int i = 0; i < mTetherStates.size(); i++) {
+                TetherState tetherState = mTetherStates.valueAt(i);
+                if (tetherState.lastState != IControlsTethering.STATE_TETHERED) {
+                    continue;  // Skip interfaces that aren't tethered.
+                }
+                String iface = mTetherStates.keyAt(i);
+                int interfaceType = ifaceNameToType(iface);
+                if (interfaceType != ConnectivityManager.TETHERING_INVALID) {
+                    tethered.add(interfaceType);
+                }
+            }
+        }
+
+        for (int tetherType : tethered) {
+            startProvisionIntent(tetherType);
+        }
+    }
+
     class TetherMasterSM extends StateMachine {
         private static final int BASE_MASTER                    = Protocol.BASE_TETHERING;
-        // an interface SM has requested Tethering
-        static final int CMD_TETHER_MODE_REQUESTED              = BASE_MASTER + 1;
-        // an interface SM has unrequested Tethering
-        static final int CMD_TETHER_MODE_UNREQUESTED            = BASE_MASTER + 2;
+        // an interface SM has requested Tethering/Local Hotspot
+        static final int EVENT_IFACE_SERVING_STATE_ACTIVE       = BASE_MASTER + 1;
+        // an interface SM has unrequested Tethering/Local Hotspot
+        static final int EVENT_IFACE_SERVING_STATE_INACTIVE     = BASE_MASTER + 2;
         // upstream connection change - do the right thing
         static final int CMD_UPSTREAM_CHANGED                   = BASE_MASTER + 3;
         // we don't have a valid upstream conn, check again after a delay
@@ -1023,7 +1140,9 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                     transitionTo(mSetIpForwardingEnabledErrorState);
                     return false;
                 }
+                // TODO: Randomize DHCPv4 ranges, especially in hotspot mode.
                 try {
+                    // TODO: Find a more accurate method name (startDHCPv4()?).
                     mNMService.startTethering(cfg.dhcpRanges);
                 } catch (Exception e) {
                     try {
@@ -1204,152 +1323,41 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
             }
         }
 
-        private class SimChangeListener {
-            private final Context mContext;
-            private final AtomicInteger mSimBcastGenerationNumber;
-            private BroadcastReceiver mBroadcastReceiver;
-
-            SimChangeListener(Context ctx) {
-                mContext = ctx;
-                mSimBcastGenerationNumber = new AtomicInteger(0);
+        private void handleInterfaceServingStateActive(int mode, TetherInterfaceStateMachine who) {
+            if (mNotifyList.indexOf(who) < 0) {
+                mNotifyList.add(who);
+                mIPv6TetheringCoordinator.addActiveDownstream(who, mode);
             }
 
-            public int generationNumber() {
-                return mSimBcastGenerationNumber.get();
-            }
-
-            public void startListening() {
-                if (DBG) Log.d(TAG, "startListening for SIM changes");
-
-                if (mBroadcastReceiver != null) return;
-
-                mBroadcastReceiver = new SimChangeBroadcastReceiver(
-                        mSimBcastGenerationNumber.incrementAndGet());
-                final IntentFilter filter = new IntentFilter();
-                filter.addAction(TelephonyIntents.ACTION_SIM_STATE_CHANGED);
-
-                mContext.registerReceiver(mBroadcastReceiver, filter, null,
-                        mTetherMasterSM.getHandler());
-            }
-
-            public void stopListening() {
-                if (DBG) Log.d(TAG, "stopListening for SIM changes");
-
-                if (mBroadcastReceiver == null) return;
-
-                mSimBcastGenerationNumber.incrementAndGet();
-                mContext.unregisterReceiver(mBroadcastReceiver);
-                mBroadcastReceiver = null;
-            }
-
-            public boolean hasMobileHotspotProvisionApp() {
-                try {
-                    if (!mContext.getResources().getString(com.android.internal.R.string.
-                            config_mobile_hotspot_provision_app_no_ui).isEmpty()) {
-                        Log.d(TAG, "re-evaluate provisioning");
-                        return true;
-                    }
-                } catch (Resources.NotFoundException e) {}
-                Log.d(TAG, "no prov-check needed for new SIM");
-                return false;
-            }
-
-            private boolean isSimCardAbsent(String state) {
-                return IccCardConstants.INTENT_VALUE_ICC_ABSENT.equals(state);
-            }
-
-            private boolean isSimCardLoaded(String state) {
-                return IccCardConstants.INTENT_VALUE_ICC_LOADED.equals(state);
-            }
-
-            private void startProvisionIntent(int tetherType) {
-                final Intent startProvIntent = new Intent();
-                startProvIntent.putExtra(ConnectivityManager.EXTRA_ADD_TETHER_TYPE, tetherType);
-                startProvIntent.putExtra(ConnectivityManager.EXTRA_RUN_PROVISION, true);
-                startProvIntent.setComponent(TETHER_SERVICE);
-                mContext.startServiceAsUser(startProvIntent, UserHandle.CURRENT);
-            }
-
-            private class SimChangeBroadcastReceiver extends BroadcastReceiver {
-                // used to verify this receiver is still current
-                final private int mGenerationNumber;
-
-                // we're interested in edge-triggered LOADED notifications, so
-                // ignore LOADED unless we saw an ABSENT state first
-                private boolean mSimAbsentSeen = false;
-
-                public SimChangeBroadcastReceiver(int generationNumber) {
-                    mGenerationNumber = generationNumber;
-                }
-
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    final int currentGenerationNumber = mSimBcastGenerationNumber.get();
-
-                    if (DBG) {
-                        Log.d(TAG, "simchange mGenerationNumber=" + mGenerationNumber +
-                                ", current generationNumber=" + currentGenerationNumber);
-                    }
-                    if (mGenerationNumber != currentGenerationNumber) return;
-
-                    final String state = intent.getStringExtra(
-                            IccCardConstants.INTENT_KEY_ICC_STATE);
-                    Log.d(TAG, "got Sim changed to state " + state + ", mSimAbsentSeen=" +
-                            mSimAbsentSeen);
-
-                    if (isSimCardAbsent(state)) {
-                        if (!mSimAbsentSeen) mSimAbsentSeen = true;
-                        return;
-                    }
-
-                    if (isSimCardLoaded(state) && mSimAbsentSeen) {
-                        mSimAbsentSeen = false;
-
-                        if (!hasMobileHotspotProvisionApp()) return;
-
-                        ArrayList<Integer> tethered = new ArrayList<Integer>();
-                        synchronized (mPublicSync) {
-                            for (int i = 0; i < mTetherStates.size(); i++) {
-                                TetherState tetherState = mTetherStates.valueAt(i);
-                                if (tetherState.lastState != IControlsTethering.STATE_TETHERED) {
-                                    continue;  // Skip interfaces that aren't tethered.
-                                }
-                                String iface = mTetherStates.keyAt(i);
-                                int interfaceType = ifaceNameToType(iface);
-                                if (interfaceType != ConnectivityManager.TETHERING_INVALID) {
-                                    tethered.add(new Integer(interfaceType));
-                                }
-                            }
-                        }
-
-                        for (int tetherType : tethered) {
-                            startProvisionIntent(tetherType);
-                        }
-                    }
-                }
+            if (mode == IControlsTethering.STATE_TETHERED) {
+                mForwardedDownstreams.add(who);
+            } else {
+                mForwardedDownstreams.remove(who);
             }
         }
 
-        class InitialState extends TetherMasterUtilState {
+        private void handleInterfaceServingStateInactive(TetherInterfaceStateMachine who) {
+            mNotifyList.remove(who);
+            mIPv6TetheringCoordinator.removeActiveDownstream(who);
+            mForwardedDownstreams.remove(who);
+        }
+
+        class InitialState extends State {
             @Override
             public boolean processMessage(Message message) {
                 maybeLogMessage(this, message.what);
                 boolean retValue = true;
                 switch (message.what) {
-                    case CMD_TETHER_MODE_REQUESTED:
+                    case EVENT_IFACE_SERVING_STATE_ACTIVE:
                         TetherInterfaceStateMachine who = (TetherInterfaceStateMachine)message.obj;
                         if (VDBG) Log.d(TAG, "Tether Mode requested by " + who);
-                        if (mNotifyList.indexOf(who) < 0) {
-                            mNotifyList.add(who);
-                            mIPv6TetheringCoordinator.addActiveDownstream(who);
-                        }
+                        handleInterfaceServingStateActive(message.arg1, who);
                         transitionTo(mTetherModeAliveState);
                         break;
-                    case CMD_TETHER_MODE_UNREQUESTED:
+                    case EVENT_IFACE_SERVING_STATE_INACTIVE:
                         who = (TetherInterfaceStateMachine)message.obj;
                         if (VDBG) Log.d(TAG, "Tether Mode unrequested by " + who);
-                        mNotifyList.remove(who);
-                        mIPv6TetheringCoordinator.removeActiveDownstream(who);
+                        handleInterfaceServingStateInactive(who);
                         break;
                     default:
                         retValue = false;
@@ -1360,20 +1368,22 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         }
 
         class TetherModeAliveState extends TetherMasterUtilState {
-            final SimChangeListener simChange = new SimChangeListener(mContext);
+            boolean mUpstreamWanted = false;
             boolean mTryCell = true;
 
             @Override
             public void enter() {
                 // TODO: examine if we should check the return value.
                 turnOnMasterTetherSettings(); // may transition us out
-                simChange.startListening();
+                mSimChange.startListening();
                 mUpstreamNetworkMonitor.start();
                 mOffloadController.start();
 
-                // Better try something first pass or crazy tests cases will fail.
-                chooseUpstreamType(true);
-                mTryCell = false;
+                if (upstreamWanted()) {
+                    mUpstreamWanted = true;
+                    chooseUpstreamType(true);
+                    mTryCell = false;
+                }
             }
 
             @Override
@@ -1381,9 +1391,15 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                 mOffloadController.stop();
                 unrequestUpstreamMobileConnection();
                 mUpstreamNetworkMonitor.stop();
-                simChange.stopListening();
+                mSimChange.stopListening();
                 notifyTetheredOfNewUpstreamIface(null);
                 handleNewUpstreamNetworkState(null);
+            }
+
+            private boolean updateUpstreamWanted() {
+                final boolean previousUpstreamWanted = mUpstreamWanted;
+                mUpstreamWanted = upstreamWanted();
+                return previousUpstreamWanted;
             }
 
             @Override
@@ -1391,49 +1407,63 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                 maybeLogMessage(this, message.what);
                 boolean retValue = true;
                 switch (message.what) {
-                    case CMD_TETHER_MODE_REQUESTED: {
+                    case EVENT_IFACE_SERVING_STATE_ACTIVE: {
                         TetherInterfaceStateMachine who = (TetherInterfaceStateMachine)message.obj;
                         if (VDBG) Log.d(TAG, "Tether Mode requested by " + who);
-                        if (mNotifyList.indexOf(who) < 0) {
-                            mNotifyList.add(who);
-                            mIPv6TetheringCoordinator.addActiveDownstream(who);
-                        }
+                        handleInterfaceServingStateActive(message.arg1, who);
                         who.sendMessage(TetherInterfaceStateMachine.CMD_TETHER_CONNECTION_CHANGED,
                                 mCurrentUpstreamIface);
+                        // If there has been a change and an upstream is now
+                        // desired, kick off the selection process.
+                        final boolean previousUpstreamWanted = updateUpstreamWanted();
+                        if (!previousUpstreamWanted && mUpstreamWanted) {
+                            chooseUpstreamType(true);
+                        }
                         break;
                     }
-                    case CMD_TETHER_MODE_UNREQUESTED: {
+                    case EVENT_IFACE_SERVING_STATE_INACTIVE: {
                         TetherInterfaceStateMachine who = (TetherInterfaceStateMachine)message.obj;
                         if (VDBG) Log.d(TAG, "Tether Mode unrequested by " + who);
-                        if (mNotifyList.remove(who)) {
-                            if (DBG) Log.d(TAG, "TetherModeAlive removing notifyee " + who);
-                            if (mNotifyList.isEmpty()) {
-                                turnOffMasterTetherSettings(); // transitions appropriately
-                            } else {
-                                if (DBG) {
-                                    Log.d(TAG, "TetherModeAlive still has " + mNotifyList.size() +
-                                            " live requests:");
-                                    for (TetherInterfaceStateMachine o : mNotifyList) {
-                                        Log.d(TAG, "  " + o);
-                                    }
+                        handleInterfaceServingStateInactive(who);
+
+                        if (mNotifyList.isEmpty()) {
+                            turnOffMasterTetherSettings(); // transitions appropriately
+                        } else {
+                            if (DBG) {
+                                Log.d(TAG, "TetherModeAlive still has " + mNotifyList.size() +
+                                        " live requests:");
+                                for (TetherInterfaceStateMachine o : mNotifyList) {
+                                    Log.d(TAG, "  " + o);
                                 }
                             }
-                        } else {
-                           Log.e(TAG, "TetherModeAliveState UNREQUESTED has unknown who: " + who);
                         }
-                        mIPv6TetheringCoordinator.removeActiveDownstream(who);
+                        // If there has been a change and an upstream is no
+                        // longer desired, release any mobile requests.
+                        final boolean previousUpstreamWanted = updateUpstreamWanted();
+                        if (previousUpstreamWanted && !mUpstreamWanted) {
+                            mUpstreamNetworkMonitor.releaseMobileNetworkRequest();
+                        }
                         break;
                     }
                     case CMD_UPSTREAM_CHANGED:
+                        updateUpstreamWanted();
+                        if (!mUpstreamWanted) break;
+
                         // Need to try DUN immediately if Wi-Fi goes down.
                         chooseUpstreamType(true);
                         mTryCell = false;
                         break;
                     case CMD_RETRY_UPSTREAM:
+                        updateUpstreamWanted();
+                        if (!mUpstreamWanted) break;
+
                         chooseUpstreamType(mTryCell);
                         mTryCell = !mTryCell;
                         break;
                     case EVENT_UPSTREAM_CALLBACK: {
+                        updateUpstreamWanted();
+                        if (!mUpstreamWanted) break;
+
                         final NetworkState ns = (NetworkState) message.obj;
 
                         if (ns == null || !pertainsToCurrentUpstream(ns)) {
@@ -1490,12 +1520,13 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         }
 
         class ErrorState extends State {
-            int mErrorNotification;
+            private int mErrorNotification;
+
             @Override
             public boolean processMessage(Message message) {
                 boolean retValue = true;
                 switch (message.what) {
-                    case CMD_TETHER_MODE_REQUESTED:
+                    case EVENT_IFACE_SERVING_STATE_ACTIVE:
                         TetherInterfaceStateMachine who = (TetherInterfaceStateMachine)message.obj;
                         who.sendMessage(mErrorNotification);
                         break;
@@ -1508,6 +1539,7 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                 }
                 return retValue;
             }
+
             void notify(int msgType) {
                 mErrorNotification = msgType;
                 for (TetherInterfaceStateMachine sm : mNotifyList) {
@@ -1516,6 +1548,7 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
             }
 
         }
+
         class SetIpForwardingEnabledErrorState extends ErrorState {
             @Override
             public void enter() {
@@ -1609,12 +1642,16 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
                     case IControlsTethering.STATE_TETHERED:
                         pw.print("TetheredState");
                         break;
+                    case IControlsTethering.STATE_LOCAL_ONLY:
+                        pw.print("LocalHotspotState");
+                        break;
                     default:
                         pw.print("UnknownState");
                         break;
                 }
                 pw.println(" - lastError = " + tetherState.lastError);
             }
+            pw.println("Upstream wanted: " + upstreamWanted());
             pw.decreaseIndent();
         }
         pw.decreaseIndent();
@@ -1653,15 +1690,21 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         if (error == ConnectivityManager.TETHER_ERROR_MASTER_ERROR) {
             mTetherMasterSM.sendMessage(TetherMasterSM.CMD_CLEAR_ERROR, who);
         }
+        int which;
         switch (state) {
             case IControlsTethering.STATE_UNAVAILABLE:
             case IControlsTethering.STATE_AVAILABLE:
-                mTetherMasterSM.sendMessage(TetherMasterSM.CMD_TETHER_MODE_UNREQUESTED, who);
+                which = TetherMasterSM.EVENT_IFACE_SERVING_STATE_INACTIVE;
                 break;
             case IControlsTethering.STATE_TETHERED:
-                mTetherMasterSM.sendMessage(TetherMasterSM.CMD_TETHER_MODE_REQUESTED, who);
+            case IControlsTethering.STATE_LOCAL_ONLY:
+                which = TetherMasterSM.EVENT_IFACE_SERVING_STATE_ACTIVE;
                 break;
+            default:
+                Log.wtf(TAG, "Unknown interface state: " + state);
+                return;
         }
+        mTetherMasterSM.sendMessage(which, state, 0, who);
         sendTetherStateChangedBroadcast();
     }
 

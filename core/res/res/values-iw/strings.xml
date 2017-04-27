@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"‏בעיה בחיבור או קוד MMI לא חוקי."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"הפעולה מוגבלת למספרי חיוג קבועים בלבד."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"לא ניתן לשנות את הגדרות העברת השיחות מהטלפון שלך כשאתה במצב נדידה."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"השירות הופעל."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"השירות הופעל עבור:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"השירות הושבת."</string>
@@ -90,14 +91,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"זיהוי מתקשר עובר כברירת מחדל למצב לא מוגבל. השיחה הבאה: לא מוגבלת"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"השירות לא הוקצה."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"אינך יכול לשנות את הגדרת זיהוי המתקשר."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"שירות הנתונים חסום."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"שירות חירום חסום."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"השירות הקולי חסום."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"כל השירותים הקוליים חסומים."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"‏שירות SMS חסום."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"שירותי הקול/נתונים חסומים."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"‏שירותי קול/SMS חסומים."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"‏כל השירותים של קול/נתונים/SMS חסומים."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"לא ניתן להתחבר לרשת"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"כדי לשפר את הקליטה, נסה לשנות את סוג הרשת באפשרות \'הגדרות\' &gt; \'רשתות סלולריות\' &gt; \'סוג רשת מועדף\'."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"‏העמית ביקש TTY במצב FULL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"‏העמית ביקש TTY במצב HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"‏העמית ביקש TTY במצב VCO"</string>
@@ -183,6 +194,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"פרופיל העבודה נמחק מפני שחסרה אפליקציית ניהול."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"אפליקציית הניהול של פרופיל העבודה חסרה או פגומה. כתוצאה מכך פרופיל העבודה שלך נמחק, כולל כל הנתונים הקשורים אליו. לקבלת סיוע, פנה למנהל המערכת שלך."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"פרופיל העבודה שלך אינו זמין עוד במכשיר הזה."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"התנועה ברשת מנוטרת"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"למידע נוסף, הקש"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"תתבצע מחיקה של המכשיר"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"באפליקציית הניהול חסרים מרכיבים או שהיא פגומה ולא ניתן להשתמש בה. תתבצע כעת מחיקה של המכשיר. לקבלת סיוע, פנה למנהל המערכת שלך."</string>
     <string name="me" msgid="6545696007631404292">"אני"</string>
@@ -324,7 +337,7 @@
     <string name="permdesc_persistentActivity" product="tv" msgid="5086862529499103587">"מאפשרת לאפליקציה ליצור חלקים ממנה השמורים בזיכרון באופן עקבי. הדבר עלול להגביל את הזיכרון הזמין לאפליקציות אחרות וכתוצאה מכך להאט את פעולת הטלוויזיה."</string>
     <string name="permdesc_persistentActivity" product="default" msgid="4384760047508278272">"מאפשר לאפליקציה להפוך חלקים ממנו לקבועים בזיכרון. פעולה זו עשויה להגביל את הזיכרון הזמין לאפליקציות אחרים ולהאט את פעולת הטלפון."</string>
     <string name="permlab_getPackageSize" msgid="7472921768357981986">"מדידת נפח האחסון של אפליקציות"</string>
-    <string name="permdesc_getPackageSize" msgid="3921068154420738296">"מאפשר לאפליקציה לאחזר את הקוד, הנתונים, וגודלי הקבצים השמורים שלו"</string>
+    <string name="permdesc_getPackageSize" msgid="3921068154420738296">"מאפשר לאפליקציה לאחזר את הקוד, הנתונים, וגודלי קובצי המטמון שלו"</string>
     <string name="permlab_writeSettings" msgid="2226195290955224730">"שינוי הגדרות מערכת"</string>
     <string name="permdesc_writeSettings" msgid="7775723441558907181">"מאפשר לאפליקציה לשנות את נתוני הגדרות המערכת. אפליקציות זדוניות עלולות לשבש את תצורת המערכת שלך."</string>
     <string name="permlab_receiveBootCompleted" msgid="5312965565987800025">"הפעלה בעת אתחול"</string>
@@ -383,6 +396,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"‏מאפשר לאפליקציה להשתמש בשירות ה-IMS לביצוע שיחות ללא התערבותך."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"קריאת הסטטוס והזהות של הטלפון"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"מאפשר לאפליקציה לגשת לתכונות הטלפון של המכשיר. אישור זה מתיר לאפליקציה לגלות את מספר הטלפון ואת זיהויי המכשיר, האם שיחה פעילה ואת המספר המרוחק המחובר באמצעות שיחה."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"ניתוב שיחות דרך המערכת"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"מאפשרת לאפליקציה לנתב את השיחות דרך המערכת כדי לשפר את חוויית השיחה."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"מנע מהטאבלט לעבור למצב שינה"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"מניעת מעבר למצב שינה בטלוויזיה"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"מניעת מעבר הטלפון למצב שינה"</string>
@@ -599,7 +614,7 @@
     <string name="phoneTypeMobile" msgid="6501463557754751037">"נייד"</string>
     <string name="phoneTypeWork" msgid="8863939667059911633">"עבודה"</string>
     <string name="phoneTypeFaxWork" msgid="3517792160008890912">"פקס בעבודה"</string>
-    <string name="phoneTypeFaxHome" msgid="2067265972322971467">"מס\' פקס בבית"</string>
+    <string name="phoneTypeFaxHome" msgid="2067265972322971467">"פקס בבית"</string>
     <string name="phoneTypePager" msgid="7582359955394921732">"זימונית"</string>
     <string name="phoneTypeOther" msgid="1544425847868765990">"אחר"</string>
     <string name="phoneTypeCallback" msgid="2712175203065678206">"התקשרות חזרה"</string>
@@ -612,7 +627,7 @@
     <string name="phoneTypeTelex" msgid="3367879952476250512">"טלקס"</string>
     <string name="phoneTypeTtyTdd" msgid="8606514378585000044">"TTY TDD"</string>
     <string name="phoneTypeWorkMobile" msgid="1311426989184065709">"נייד של העבודה"</string>
-    <string name="phoneTypeWorkPager" msgid="649938731231157056">"איתורית של העבודה"</string>
+    <string name="phoneTypeWorkPager" msgid="649938731231157056">"זימונית מהעבודה"</string>
     <string name="phoneTypeAssistant" msgid="5596772636128562884">"מסייע"</string>
     <string name="phoneTypeMms" msgid="7254492275502768992">"MMS"</string>
     <string name="eventTypeCustom" msgid="7837586198458073404">"מותאם אישית"</string>
@@ -1109,18 +1124,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"ללא"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"רינגטונים"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"רינגטון לא ידוע"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="two">‏יש רשתות Wi-Fi זמינות</item>
-      <item quantity="many">‏יש רשתות Wi-Fi זמינות</item>
-      <item quantity="other">‏יש רשתות Wi-Fi זמינות</item>
-      <item quantity="one">‏יש רשת Wi-Fi זמינה</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="two">‏יש רשתות Wi-Fi פתוחות וזמינות</item>
-      <item quantity="many">‏יש רשתות Wi-Fi פתוחות וזמינות</item>
-      <item quantity="other">‏יש רשתות Wi-Fi פתוחות וזמינות</item>
-      <item quantity="one">‏יש רשת Wi-Fi פתוחה וזמינה</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"‏היכנס לרשת Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"היכנס לרשת"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1258,6 +1261,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"מאפשר לאפליקציה לקרוא הפעלות התקנה. הרשאה זו מאפשרת לה לראות פרטים על התקנות פעילות של חבילות."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"בקשה להתקנת חבילות"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"מתיר לאפליקציה לבקש התקנה של חבילות."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"בקשה להתעלם מאופטימיזציות של הסוללה"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"מאפשר לאפליקציה לבקש רשות להתעלם מאופטימיזציות של הסוללה לאפליקציה הזו."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"הקש פעמיים לבקרת מרחק מתצוגה"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"‏לא ניתן להוסיף widget."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"התחל"</string>
@@ -1612,7 +1617,7 @@
     <string name="select_year" msgid="7952052866994196170">"בחר שנה"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> נמחק"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"עבודה <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"כדי לבטל את הצמדת המסך הזה, לחץ לחיצה ממושכת על הלחצן \'הקודם\'."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"כדי לבטל את ההצמדה של מסך זה, גע בלחצן \'הקודם\' והחזק אותו, ואז גע בלחצן \'סקירה\'."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"האפליקציה מוצמדת: ביטול ההצמדה אסור במכשיר הזה."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"המסך מוצמד"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"הצמדת המסך בוטלה"</string>
@@ -1750,4 +1755,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"גע לקבלת מידע נוסף."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> הושבת"</string>
     <string name="conference_call" msgid="3751093130790472426">"שיחת ועידה"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"הישאר רגוע וחפש מחסה בקרבת מקום."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"יש להתפנות מיידית מאזורים הסמוכים לחופים ולנהרות למקום בטוח יותר, כגון שטח גבוה יותר."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"הישאר רגוע וחפש מחסה בקרבת מקום."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"בדיקה של הודעות חירום"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

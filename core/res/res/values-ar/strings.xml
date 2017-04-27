@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"‏حدثت مشكلة في الاتصال أو أن كود MMI غير صحيح."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"تم تقييد التشغيل لأرقام الاتصال الثابت فقط."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"يتعذر تغيير إعدادات إعادة توجيه المكالمات من هاتفك أثناء التجوال."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"تم تمكين الخدمة."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"تم تمكين الخدمة لـ:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"تم تعطيل الخدمة."</string>
@@ -92,14 +93,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"الإعداد الافتراضي لمعرف المتصل هو غير مقيّد. الاتصال التالي: غير مقيّد"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"الخدمة غير متوفرة."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"لا يمكنك تغيير إعداد معرف المتصل."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"خدمة البيانات محظورة."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"خدمة الطوارئ محظورة."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"الخدمة الصوتية محظورة."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"جميع الخدمات الصوتية محظورة."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"‏خدمة الرسائل القصيرة SMS محظورة."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"خدمات الصوت/البيانات محظورة."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"‏خدمات الصوت/الرسائل القصيرة SMS محظورة."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"‏جميع خدمات الصوت/البيانات/الرسائل القصيرة SMS محظورة."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"يتعذر الوصول إلى الشبكة"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"لتحسين الاستقبال، يمكنك تجربة تغيير النوع المحدّد في الإعدادات &gt; شبكات الجوّال &gt; نوع الشبكة المفضَّل."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"‏طلب النظير وضع TTY الكامل"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"‏طلب النظير وضع TTY على HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"‏طلب النظير وضع TTY على VCO"</string>
@@ -187,6 +198,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"تم حذف الملف الشخصي للعمل نتيجة فقد تطبيق المشرف."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"تطبيق المشرف للملف الشخصي للعمل مفقود أو تالف لذا تم حذف الملف والبيانات ذات الصلة. اتصل بالمشرف للحصول على المساعدة."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"لم يعد ملفك الشخصي للعمل متاحًا على هذا الجهاز."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"تتم مراقبة حركة بيانات الشبكة"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"انقر لمعرفة المزيد من المعلومات"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"سيتم محو بيانات جهازك."</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"تطبيق المشرف فاقد لمكونات أو تالف ويتعذر استخدامه. سيتم محو بيانات جهازك الآن. اتصل بالمشرف للحصول على المساعدة."</string>
     <string name="me" msgid="6545696007631404292">"أنا"</string>
@@ -389,6 +402,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"للسماح للتطبيق باستخدام خدمة الرسائل الفورية لإجراء المكالمات دون تدخل منك."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"قراءة حالة الهاتف والهوية"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"للسماح للتطبيق بالدخول إلى ميزات الهاتف في الجهاز. ويتيح هذا الإذن للتطبيق تحديد رقم الهاتف ومعرّفات الجهاز، وما إذا كانت هناك مكالمة نشطة والرقم البعيد الذي تم الاتصال به في المكالمة."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"توجيه المكالمات من خلال النظام"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"يسمح للتطبيق بتوجيه المكالمات من خلال النظام لتحسين تجربة الاتصال."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"منع الجهاز اللوحي من الدخول في وضع السكون"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"منع التلفزيون من الدخول في وضع السكون"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"منع الهاتف من الدخول في وضع السكون"</string>
@@ -524,8 +539,8 @@
     <string name="permdesc_bindCarrierMessagingService" msgid="2762882888502113944">"يسمح لحامله بالالتزام بواجهة المستوى العالي لخدمة المراسلة التابعة لمشغل شبكة الجوَّال. ومن المفترض عدم الحاجة إليه مع التطبيقات العادية."</string>
     <string name="permlab_bindCarrierServices" msgid="3233108656245526783">"الالتزام بخدمات مشغل شبكة الجوال"</string>
     <string name="permdesc_bindCarrierServices" msgid="1391552602551084192">"للسماح للمالك بالالتزام بخدمات مشغل شبكة الجوال. لن تكون هناك حاجة إليه مطلقًا مع التطبيقات العادية."</string>
-    <string name="permlab_access_notification_policy" msgid="4247510821662059671">"الوصول إلى إعداد \"الرجاء عدم الإزعاج\""</string>
-    <string name="permdesc_access_notification_policy" msgid="3296832375218749580">"للسماح للتطبيق بقراءة تهيئة \"الرجاء عدم الإزعاج\" وكتابتها."</string>
+    <string name="permlab_access_notification_policy" msgid="4247510821662059671">"الوصول إلى إعداد \"عدم الإزعاج\""</string>
+    <string name="permdesc_access_notification_policy" msgid="3296832375218749580">"للسماح للتطبيق بقراءة تهيئة \"عدم الإزعاج\" وكتابتها."</string>
     <string name="policylab_limitPassword" msgid="4497420728857585791">"تعيين قواعد كلمة المرور"</string>
     <string name="policydesc_limitPassword" msgid="2502021457917874968">"للتحكم في الطول والأحرف المسموح بها في كلمات المرور وأرقام التعريف الشخصي في قفل الشاشة."</string>
     <string name="policylab_watchLogin" msgid="914130646942199503">"مراقبة محاولات إلغاء قفل الشاشة"</string>
@@ -774,7 +789,7 @@
     <string name="granularity_label_word" msgid="7075570328374918660">"كلمة"</string>
     <string name="granularity_label_link" msgid="5815508880782488267">"رابط"</string>
     <string name="granularity_label_line" msgid="5764267235026120888">"سطر"</string>
-    <string name="factorytest_failed" msgid="5410270329114212041">"أخفق اختبار المصنع"</string>
+    <string name="factorytest_failed" msgid="5410270329114212041">"تعذّر اختبار المصنع"</string>
     <string name="factorytest_not_system" msgid="4435201656767276723">"‏إجراء FACTORY_TEST غير متاح سوى للحزم المثبتة في /system/app."</string>
     <string name="factorytest_no_action" msgid="872991874799998561">"‏لم يتم العثور على أية حزمة توفر إجراء FACTORY_TEST."</string>
     <string name="factorytest_reboot" msgid="6320168203050791643">"إعادة تشغيل"</string>
@@ -783,7 +798,7 @@
     <string name="js_dialog_before_unload_title" msgid="2619376555525116593">"تأكيد الانتقال"</string>
     <string name="js_dialog_before_unload_positive_button" msgid="3112752010600484130">"مغادرة هذه الصفحة"</string>
     <string name="js_dialog_before_unload_negative_button" msgid="5614861293026099715">"البقاء في هذه الصفحة"</string>
-    <string name="js_dialog_before_unload" msgid="3468816357095378590">"<xliff:g id="MESSAGE">%s</xliff:g>\n\nهل تريد بالتأكيد الانتقال بعيدًا عن هذه الصفحة؟"</string>
+    <string name="js_dialog_before_unload" msgid="3468816357095378590">"<xliff:g id="MESSAGE">%s</xliff:g>\n\nهل تريد فعلًا الانتقال بعيدًا عن هذه الصفحة؟"</string>
     <string name="save_password_label" msgid="6860261758665825069">"تأكيد"</string>
     <string name="double_tap_toast" msgid="4595046515400268881">"نصيحة: اضغط مرتين للتكبير والتصغير."</string>
     <string name="autofill_this_form" msgid="4616758841157816676">"ملء تلقائي"</string>
@@ -1155,22 +1170,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"لا شيء"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"نغمات الرنين"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"نغمة رنين غير معروفة"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="zero">‏لا تتوفر أية شبكات Wi-Fi</item>
-      <item quantity="two">‏تتوفر شبكتا Wi-Fi</item>
-      <item quantity="few">‏تتوفر شبكات Wi-Fi</item>
-      <item quantity="many">‏تتوفر شبكات Wi-Fi</item>
-      <item quantity="other">‏تتوفر شبكات Wi-Fi</item>
-      <item quantity="one">‏تتوفر شبكة Wi-Fi واحدة</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="zero">‏لا تتوفر أية شبكات Wi-Fi مفتوحة</item>
-      <item quantity="two">‏تتوفر شبكتا Wi-Fi مفتوحتان</item>
-      <item quantity="few">‏تتوفر شبكات Wi-Fi مفتوحة</item>
-      <item quantity="many">‏تتوفر شبكات Wi-Fi مفتوحة</item>
-      <item quantity="other">‏تتوفر شبكات Wi-Fi مفتوحة</item>
-      <item quantity="one">‏تتوفر شبكة Wi-Fi واحدة مفتوحة</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"‏تسجيل الدخول إلى شبكة Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"تسجيل الدخول إلى الشبكة"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1308,6 +1307,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"للسماح لأحد التطبيقات بقراءة جلسات التثبيت. ويسمح لك هذا بالاطلاع على تفاصيل بشأن عمليات تثبيت الحزم النشطة."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"طلب حزم التثبيت"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"للسماح لتطبيق ما بطلب تثبيت الحزم."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"طلب تجاهل تحسينات البطارية"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"للسماح للتطبيق بطلب الإذن لتجاهل تحسينات البطارية في هذا التطبيق."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"اضغط مرتين للتحكم في التكبير/التصغير"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"تعذرت إضافة أداة."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"تنفيذ"</string>
@@ -1633,7 +1634,7 @@
     <string name="write_fail_reason_cancelled" msgid="7091258378121627624">"ملغاة"</string>
     <string name="write_fail_reason_cannot_write" msgid="8132505417935337724">"حدث خطأ أثناء كتابة المحتوى"</string>
     <string name="reason_unknown" msgid="6048913880184628119">"غير معروف"</string>
-    <string name="reason_service_unavailable" msgid="7824008732243903268">"خدمة الطباعة ليست ممكّنة"</string>
+    <string name="reason_service_unavailable" msgid="7824008732243903268">"خدمة الطباعة ليست مفعّلة"</string>
     <string name="print_service_installed_title" msgid="2246317169444081628">"تم تثبيت خدمة <xliff:g id="NAME">%s</xliff:g>"</string>
     <string name="print_service_installed_message" msgid="5897362931070459152">"انقر للتمكين."</string>
     <string name="restr_pin_enter_admin_pin" msgid="783643731895143970">"‏أدخل رمز PIN للمشرف"</string>
@@ -1666,7 +1667,7 @@
     <string name="select_year" msgid="7952052866994196170">"تحديد العام"</string>
     <string name="deleted_key" msgid="7659477886625566590">"تم حذف <xliff:g id="KEY">%1$s</xliff:g>"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> المخصص للعمل"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"لإزالة تثبيت هذه الشاشة، يمكنك لمس زر الرجوع مع الاستمرار."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"لإزالة تثبيت هذه الشاشة، يمكنك لمس زر \"رجوع\" و\"نظرة عامة\" مع الاستمرار."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"التطبيق مقيد: ولا يسمح بإلغاء التقييد على هذا الجهاز."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"تم تثبيت الشاشة"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"تم إلغاء تثبيت الشاشة"</string>
@@ -1747,10 +1748,10 @@
     <string name="zen_mode_until" msgid="7336308492289875088">"حتى <xliff:g id="FORMATTEDTIME">%1$s</xliff:g>"</string>
     <string name="zen_mode_alarm" msgid="9128205721301330797">"حتى <xliff:g id="FORMATTEDTIME">%1$s</xliff:g> (التنبيه التالي)"</string>
     <string name="zen_mode_forever" msgid="7420011936770086993">"لحين تعطيل هذا الإعداد"</string>
-    <string name="zen_mode_forever_dnd" msgid="3792132696572189081">"حتى يتم تعطيل \"الرجاء عدم الإزعاج\""</string>
+    <string name="zen_mode_forever_dnd" msgid="3792132696572189081">"حتى يتم تعطيل \"عدم الإزعاج\""</string>
     <string name="zen_mode_rule_name_combination" msgid="191109939968076477">"<xliff:g id="FIRST">%1$s</xliff:g> / <xliff:g id="REST">%2$s</xliff:g>"</string>
     <string name="toolbar_collapse_description" msgid="2821479483960330739">"تصغير"</string>
-    <string name="zen_mode_feature_name" msgid="5254089399895895004">"الرجاء عدم الإزعاج"</string>
+    <string name="zen_mode_feature_name" msgid="5254089399895895004">"عدم الإزعاج"</string>
     <string name="zen_mode_downtime_feature_name" msgid="2626974636779860146">"التعطل"</string>
     <string name="zen_mode_default_weeknights_name" msgid="3081318299464998143">"ليلة يوم من أيام الأسبوع"</string>
     <string name="zen_mode_default_weekends_name" msgid="2786495801019345244">"نهاية الأسبوع"</string>
@@ -1822,4 +1823,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"المس للتعرف على مزيد من المعلومات."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"تم تعطيل <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"مكالمة جماعية"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"يُرجى الثبات والبحث عن ملاذ بالجوار."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"يُرجى النزوح في الحال من المناطق الساحلية وضفاف النهر إلى مكان أكثر أمانًا مثل الأراضي المرتفعة."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"يُرجى الثبات والبحث عن ملاذ بالجوار."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"اختبار رسائل الطوارئ"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

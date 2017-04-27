@@ -76,6 +76,7 @@ LOCAL_SRC_FILES:= \
     android_text_AndroidBidi.cpp \
     android_text_StaticLayout.cpp \
     android_os_Debug.cpp \
+    android_os_GraphicsEnvironment.cpp \
     android_os_HwBinder.cpp \
     android_os_HwBlob.cpp \
     android_os_HwParcel.cpp \
@@ -89,6 +90,7 @@ LOCAL_SRC_FILES:= \
     android_os_SystemProperties.cpp \
     android_os_Trace.cpp \
     android_os_UEventObserver.cpp \
+    android_os_VintfObject.cpp \
     android_net_LocalSocketImpl.cpp \
     android_net_NetUtils.cpp \
     android_net_TrafficStats.cpp \

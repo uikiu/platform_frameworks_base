@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Неполадки подключения или неверный код MMI."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Операция возможна только для разрешенных номеров."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Вы не можете изменить настройки переадресации вызовов, поскольку находитесь в роуминге."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Служба включена."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Служба подключена для:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Служба отключена."</string>
@@ -90,14 +91,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Идентификация абонента по умолчанию не запрещена. След. вызов: разрешена"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Услуга не предоставляется."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Невозможно изменить параметр идентификатора вызывающего абонента."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Служба данных заблокирована."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Служба экстренной помощи заблокирована."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Служба передачи голосовых сообщений заблокирована."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Все службы передачи голосовых сообщений заблокированы."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Служба передачи SMS заблокирована."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Службы передачи данных/голосовых сообщений заблокированы."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Службы передачи голосовых сообщений/SMS заблокированы."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Все службы передачи данных/голосовых сообщений/SMS заблокированы."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Сеть недоступна"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Чтобы улучшить сигнал, попробуйте выбрать другой тип сети в настройках (раздел \"Мобильные сети\")."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"На устройстве абонента выбран режим телетайпа \"ВСЕ\""</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"На устройстве абонента выбран режим телетайпа HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"На устройстве абонента выбран режим телетайпа VCO"</string>
@@ -183,6 +194,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Рабочий профиль удален из-за отсутствия приложения Admin."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Приложение Admin в рабочем профиле отсутствует или повреждено. Из-за этого рабочий профиль и связанные с ним данные были удалены. Если у вас возникли вопросы, обратитесь к администратору."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Ваш рабочий профиль больше не доступен на этом устройстве."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Включен мониторинг сетевого трафика"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Подробнее…"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Все данные с устройства будут удалены"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Приложение Admin нельзя использовать, так как оно отсутствует или повреждено. С устройства будут удалены все данные. Если у вас возникли вопросы, обратитесь к администратору."</string>
     <string name="me" msgid="6545696007631404292">"Я"</string>
@@ -383,6 +396,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Позволяет приложению совершать звонки с помощью службы IMS без вашего вмешательства."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"Получение данных о статусе телефона"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Приложение получит доступ к функциям телефона на устройстве. Кроме того, оно сможет определять номера телефонов и серийные номера моделей, состояние активности вызова, а также удаленные номера, с которыми установлено соединение."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"перенаправлять звонки в системе"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Приложение сможет перенаправлять звонки в системе с целью улучшения качества связи."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"Отключение спящего режима"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"запрещать переход в спящий режим"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"Отключение спящего режима"</string>
@@ -1109,18 +1124,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Без звука"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Мелодии"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Неизвестная мелодия"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Есть доступные сети Wi-Fi</item>
-      <item quantity="few">Есть доступные сети Wi-Fi</item>
-      <item quantity="many">Есть доступные сети Wi-Fi</item>
-      <item quantity="other">Есть доступные сети Wi-Fi</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">Есть открытые сети Wi-Fi</item>
-      <item quantity="few">Есть открытые сети Wi-Fi</item>
-      <item quantity="many">Есть открытые сети Wi-Fi</item>
-      <item quantity="other">Есть открытые сети Wi-Fi</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Подключение к Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Регистрация в сети"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1258,6 +1261,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Чтение данных текущих сеансов установки пакетов."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"Запрос пакетов установки"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Приложение сможет запрашивать разрешения на установку пакетов."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"Без ограничения расхода батареи"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Разрешает приложению игнорировать ограничение на расход заряда батареи."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Нажмите дважды для изменения масштаба"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Не удалось добавить виджет."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Выбрать"</string>
@@ -1612,7 +1617,7 @@
     <string name="select_year" msgid="7952052866994196170">"Выберите год"</string>
     <string name="deleted_key" msgid="7659477886625566590">"Цифра <xliff:g id="KEY">%1$s</xliff:g> удалена"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Рабочий <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Чтобы открепить экран, нажмите и удерживайте кнопку \"Назад\"."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Чтобы открепить экран, нажмите и удерживайте кнопки \"Назад\"и \"Обзор\""</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Включена блокировка в приложении. Ее отключение запрещено правилами организации."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Блокировка включена"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Блокировка выключена"</string>
@@ -1750,4 +1755,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Нажмите, чтобы узнать больше."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Виджет <xliff:g id="LABEL">%1$s</xliff:g> отключен"</string>
     <string name="conference_call" msgid="3751093130790472426">"Конференц-связь"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Сохраняйте спокойствие и поищите укрытие поблизости."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Немедленно эвакуируйтесь из прибрежной зоны в более высокое место."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Сохраняйте спокойствие и поищите укрытие поблизости."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Тестовое экстренное сообщение"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

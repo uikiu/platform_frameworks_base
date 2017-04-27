@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Пробл. підключення чи недійсний код MMI."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Операція лише для номерів фіксованого набору."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"У роумінгу на телефоні не можна змінити налаштування переадресації викликів."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Послугу ввімкнено."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Службу ввімкнено для:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Службу вимкнено."</string>
@@ -90,14 +91,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Ідентиф. абонента за умовч. не обмеж. Наст. дзвінок: не обмежений"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Службу не ініціалізовано."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Ви не можете змінювати налаштування ідентифікатора абонента."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Службу даних заблоковано."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Аварійну службу заблоковано."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Голосову службу заблоковано."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Усі голосові служби заблоковано."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS-службу заблоковано."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Голосові служби чи служби даних заблоковано."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Голос.служ. чи служ. даних заблок."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Усі голосові служби, служби даних і SMS заблоковано."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Не вдається під’єднатися до мережі"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Щоб покращити якість сигналу, змініть тип у меню \"Налаштування &gt; Мобільні мережі &gt; Тип мережі\"."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Пристрій змінив режим TTY на FULL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Пристрій змінив режим TTY на HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Пристрій змінив режим TTY на VCO"</string>
@@ -183,6 +194,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Робочий профіль видалено через відсутність додатка адміністратора."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Додаток адміністратора в робочому профілі відсутній або пошкоджений. У результаті ваш робочий профіль і пов’язані з ним дані видалено. Зверніться до свого адміністратора по допомогу."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Робочий профіль більше не доступний на цьому пристрої."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Відстежується мережевий трафік"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Торкніться, щоб дізнатися більше"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"З вашого пристрою буде стерто всі дані"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Неможливо скористатися додатком адміністратора, оскільки в ньому немає певних компонентів або його пошкоджено. З вашого пристрою буде стерто всі дані. Зверніться до свого адміністратора по допомогу."</string>
     <string name="me" msgid="6545696007631404292">"Я"</string>
@@ -383,6 +396,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Додаток зможе телефонувати за допомогою служби IMS без вашого відома."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"читати статус та ідентифікаційну інформацію телефону"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Дозволяє програмі отримувати доступ до телефонних функцій пристрою. Такий дозвіл дає програмі змогу визначати номер телефону й ідентифікатори пристрою, активність виклику, а також віддалений номер, на який здійснюється виклик."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"маршрутизувати виклики через систему"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Дозволяє додатку маршрутизувати виклики через систему, щоб було зручніше телефонувати."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"не доп.перехід пристр.в реж.сну"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"не допускати перехід телевізора в режим сну"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"Вимкнення режиму сну"</string>
@@ -1109,18 +1124,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Немає"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Мелодії"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Невідома мелодія"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Мережі Wi-Fi доступні</item>
-      <item quantity="few">Мережі Wi-Fi доступні</item>
-      <item quantity="many">Мережі Wi-Fi доступні</item>
-      <item quantity="other">Мережі Wi-Fi доступні</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">Відкриті мережі Wi-Fi доступні</item>
-      <item quantity="few">Відкриті мережі Wi-Fi доступні</item>
-      <item quantity="many">Відкриті мережі Wi-Fi доступні</item>
-      <item quantity="other">Відкриті мережі Wi-Fi доступні</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Вхід у мережу Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Вхід у мережу"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1258,6 +1261,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Дозволяє додатку читати дані сеансів встановлення. Додаток може бачити деталі про активні встановлення пакетів."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"запитувати дані про пакети встановлення"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Додаток зможе надсилати запити на встановлення пакетів."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"запитувати дозвіл ігнорувати оптимізацію використання заряду акумулятора"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Додаток зможе запитувати дозвіл ігнорувати оптимізацію використання заряду акумулятора."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Двічі натис. для кер. масшт."</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Не вдалося додати віджет."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Йти"</string>
@@ -1284,7 +1289,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Фоновий мал."</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Змінити фоновий малюнок"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Служба читання сповіщень"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Обробник віртуальної реальності"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"VR-режим"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Постачальник умов"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Служба встановлення пріоритетності сповіщень"</string>
     <string name="vpn_title" msgid="19615213552042827">"Мережу VPN активовано"</string>
@@ -1371,7 +1376,7 @@
     <string name="keyboard_password_character_no_headset" msgid="2859873770886153678">"Крапка."</string>
     <string name="action_bar_home_description" msgid="5293600496601490216">"Перейти на головну"</string>
     <string name="action_bar_up_description" msgid="2237496562952152589">"Перейти вгору"</string>
-    <string name="action_menu_overflow_description" msgid="2295659037509008453">"Інші варіанти"</string>
+    <string name="action_menu_overflow_description" msgid="2295659037509008453">"Більше"</string>
     <string name="action_bar_home_description_format" msgid="7965984360903693903">"%1$s, %2$s"</string>
     <string name="action_bar_home_subtitle_description_format" msgid="6985546530471780727">"%1$s, %2$s, %3$s"</string>
     <string name="storage_internal" msgid="3570990907910199483">"Внутрішнє спільне сховище"</string>
@@ -1612,7 +1617,7 @@
     <string name="select_year" msgid="7952052866994196170">"Виберіть рік"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> видалено"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Робоча <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Щоб відкріпити цей екран, натисніть і утримуйте кнопку \"Назад\"."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Щоб відкріпити цей екран, натисніть і втримуйте кнопки \"Назад\" та \"Огляд\"."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Додаток закріплено. Його не можна відкріпити на цьому пристрої."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Екран закріплено"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Екран відкріплено"</string>
@@ -1750,4 +1755,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Торкніться, щоб дізнатися більше."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> вимкнено"</string>
     <string name="conference_call" msgid="3751093130790472426">"Конференц-виклик"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Не хвилюйтеся та знайдіть прихисток поблизу."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Негайно евакуюйтеся з прибережних районів і територій поблизу річок у безпечніше місце, як-от на територію на підвищенні."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Не хвилюйтеся та знайдіть прихисток поблизу."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Перевірка екстрених повідомлень"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

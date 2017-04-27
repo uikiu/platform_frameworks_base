@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Masalah sambungan atau kod MMI tidak sah"</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Pengendalian dihadkan kepada nombor dailan tetap sahaja."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Tidak dapat mengubah tetapan pemajuan panggilan daripad telefon anda semasa dalam perayauan."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Perkhidmatan telah didayakan."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Perkhidmatan didayakan untuk:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Perkhidmatan telah dilumpuhkan."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"ID pemanggil secara lalainya ditetapkan kepada tidak dihadkan. Panggilan seterusnya: Tidak terhad"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Perkhidmatan yang tidak diuntukkan."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Anda tidak boleh mengubah tetapan ID pemanggil."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Perkhidmatan data disekat."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Perkhidmatan kecemasan disekat."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Perkhidmatan suara disekat."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Semua perkhidmatan suara disekat."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Perkhidmatan SMS disekat."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Perkhidmatan suara/data disekat."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Perkhidmatan suara/SMS disekat."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Semua perkhidmatan suara/data/SMS disekat."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Tidak dapat mencapai rangkaian"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Untuk mempertingkat penerimaan, cuba tukar jenis yang dipilih di Tetapan &gt; Rangkaian selular &gt; Jenis rangkaian yang dipilih."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Rakan meminta Mod TTY PENUH"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Rakan meminta Mod TTY HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Rakan meminta Mod TTY VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Profil kerja dipadam kerana apl pentadbir hilang."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Apl admin profil kerja hilang atau pun rosak. Akibatnya, profil kerja anda dan data yang berkaitan telah dipadam. Hubungi pentadbir anda untuk mendapatkan bantuan."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Profil kerja anda tidak tersedia pada peranti ini lagi."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Trafik rangkaian sedang dipantau"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Ketik untuk mengetahui lebih lanjut"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Peranti anda akan dipadam"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Apl pentadbir kehilangan komponen atau rosak dan tidak boleh digunakan. Sekarang peranti anda akan dipadam. Hubungi pentadbir anda untuk mendapatkan bantuan."</string>
     <string name="me" msgid="6545696007631404292">"Saya"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Membenarkan apl menggunakan perkhidmatan IMS untuk membuat panggilan tanpa campur tangan anda."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"baca status dan identiti telefon"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Membenarkan apl mengakses ciri telefon pada peranti. Kebenaran ini membolehkan apl menentukan nombor telefon dan ID peranti, sama ada panggilan aktif dan nombor jauh yang dihubungkan dengan panggilan."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"halakan panggilan menerusi sistem"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Membenarkan apl menghalakan panggilan menerusi sistem untuk meningkatkan pengalaman panggilan."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"menghalang tablet daripada tidur"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"halang TV daripada tidur"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"halang telefon daripada tidur"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Tiada"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Nada dering"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Nada dering tidak diketahui"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Rangkaian Wi-Fi tersedia</item>
-      <item quantity="one">Rangkaian Wi-Fi tersedia</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Rangkaian Wi-Fi terbuka tersedia</item>
-      <item quantity="one">Rangkaian Wi-Fi terbuka tersedia</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Log masuk ke rangkaian Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Log masuk ke rangkaian"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Membenarkan aplikasi membaca sesi pemasangan Ini membenarkan apl melihat butiran mengenai pemasangan pakej yang aktif."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"minta pakej pemasangan"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Membenarkan aplikasi meminta pemasangan pakej."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"minta kebenaran untuk mengabaikan pengoptimuman bateri"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Membenarkan apl meminta kebenaran untuk mengabaikan pengoptimuman bateri untuk apl itu."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Ketik dua kali untuk mendapatkan kawalan zum"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Tidak dapat menambahkan widget."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Pergi"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Pilih tahun"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> dipadamkan"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Kerja <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Untuk menyahsematkan skrin ni, ketik &amp; tahan Kembali."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Untuk menyahsematkan skrin ini, sentuh &amp; tahan Kembali dan Ikhtisar."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Apl disemat: Nyahsemat tidak dibenarkan pada peranti ini."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Skrin disemat"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Skrin dinyahsemat"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Ketik untuk mengetahui lebih lanjut."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> dilumpuhkan"</string>
     <string name="conference_call" msgid="3751093130790472426">"Panggilan Sidang"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Bertenang dan cari perlindungan di kawasan yang berdekatan."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Segera beredar dari kawasan pinggir laut dan tepi sungai dan berpindah ke tempat yang lebih selamat seperti kawasan tinggi."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Bertenang dan cari perlindungan di kawasan yang berdekatan."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Ujian mesej kecemasan"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

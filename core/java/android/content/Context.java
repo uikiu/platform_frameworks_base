@@ -1671,7 +1671,7 @@ public abstract class Context {
      *
      * @param intents An array of Intents to be started.
      * @param options Additional options for how the Activity should be started.
-     * See {@link android.content.Context#startActivity(Intent, Bundle)
+     * See {@link android.content.Context#startActivity(Intent, Bundle)}
      * Context.startActivity(Intent, Bundle)} for more details.
      *
      * @throws ActivityNotFoundException &nbsp;
@@ -1699,7 +1699,7 @@ public abstract class Context {
      * @param intents An array of Intents to be started.
      * @param options Additional options for how the Activity should be started.
      * @param userHandle The user for whom to launch the activities
-     * See {@link android.content.Context#startActivity(Intent, Bundle)
+     * See {@link android.content.Context#startActivity(Intent, Bundle)}
      * Context.startActivity(Intent, Bundle)} for more details.
      *
      * @throws ActivityNotFoundException &nbsp;
@@ -1748,7 +1748,7 @@ public abstract class Context {
      * <var>flagsMask</var>
      * @param extraFlags Always set to 0.
      * @param options Additional options for how the Activity should be started.
-     * See {@link android.content.Context#startActivity(Intent, Bundle)
+     * See {@link android.content.Context#startActivity(Intent, Bundle)}
      * Context.startActivity(Intent, Bundle)} for more details.  If options
      * have also been supplied by the IntentSender, options given here will
      * override any that conflict with those given by the IntentSender.
@@ -2477,9 +2477,8 @@ public abstract class Context {
      * for high frequency calls.
      * </p>
      *
-     * @param service Identifies the service to be started.  The Intent must be either
-     *      fully explicit (supplying a component name) or specify a specific package
-     *      name it is targetted to.  Additional values
+     * @param service Identifies the service to be started.  The Intent must be
+     *      fully explicit (supplying a component name).  Additional values
      *      may be included in the Intent extras to supply arguments along with
      *      this specific start call.
      *
@@ -2557,10 +2556,8 @@ public abstract class Context {
      * {@link #registerReceiver}, since the lifetime of this BroadcastReceiver
      * is tied to another object (the one that registered it).</p>
      *
-     * @param service Identifies the service to connect to.  The Intent may
-     *      specify either an explicit component name, or a logical
-     *      description (action, category, etc) to match an
-     *      {@link IntentFilter} published by a service.
+     * @param service Identifies the service to connect to.  The Intent must
+     *      specify an explicit component name.
      * @param conn Receives information as the service is started and stopped.
      *      This must be a valid ServiceConnection object; it must not be null.
      * @param flags Operation options for the binding.  May be 0,
@@ -2767,9 +2764,6 @@ public abstract class Context {
      *  <dt> {@link #CONNECTIVITY_SERVICE} ("connection")
      *  <dd> A {@link android.net.ConnectivityManager ConnectivityManager} for
      *  handling management of network connections.
-     *  <dt> {@link #IPSEC_SERVICE} ("ipsec")
-     *  <dd> A {@link android.net.IpSecManager IpSecManager} for managing IPSec on
-     *  sockets and networks.
      *  <dt> {@link #WIFI_SERVICE} ("wifi")
      *  <dd> A {@link android.net.wifi.WifiManager WifiManager} for management of Wi-Fi
      *  connectivity.  On releases before NYC, it should only be obtained from an application
@@ -3104,6 +3098,7 @@ public abstract class Context {
      * {@link android.net.IpSecManager} for encrypting Sockets or Networks with
      * IPSec.
      *
+     * @hide
      * @see #getSystemService
      */
     public static final String IPSEC_SERVICE = "ipsec";

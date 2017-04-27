@@ -152,6 +152,7 @@ import com.android.server.LocalServices;
 import com.android.server.policy.keyguard.KeyguardServiceDelegate;
 import com.android.server.policy.keyguard.KeyguardServiceDelegate.DrawnListener;
 import com.android.server.statusbar.StatusBarManagerInternal;
+import com.android.server.vr.VrManagerInternal;
 
 import java.io.File;
 import java.io.FileReader;
@@ -1042,6 +1043,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     }
 
     private void interceptBackKeyDown() {
+        MetricsLogger.count(mContext, "key_back_down", 1);
         // Reset back key state for long press
         mBackKeyHandled = false;
 
@@ -5410,18 +5412,15 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 }
             } else if (mDismissKeyguard != DISMISS_KEYGUARD_NONE) {
                 mKeyguardHidden = false;
-                boolean willDismiss = false;
+                boolean dismissKeyguard = false;
+                final boolean trusted = mKeyguardDelegate.isTrusted();
                 if (mDismissKeyguard == DISMISS_KEYGUARD_START) {
-                    final boolean trusted = mKeyguardDelegate.isTrusted();
-                    willDismiss = trusted && mKeyguardOccluded && mKeyguardDelegate != null
-                            && mKeyguardDelegate.isShowing();
+                    final boolean willDismiss = trusted && mKeyguardOccluded
+                            && mKeyguardDelegate != null && mKeyguardDelegate.isShowing();
                     if (willDismiss) {
                         mCurrentlyDismissingKeyguard = true;
                     }
-
-                    // Only launch the next keyguard unlock window once per window.
-                    mHandler.post(() -> mKeyguardDelegate.dismiss(
-                            trusted /* allowWhileOccluded */));
+                    dismissKeyguard = true;
                 }
 
                 // If we are currently dismissing Keyguard, there is no need to unocclude it.
@@ -5431,6 +5430,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                                 | FINISH_LAYOUT_REDO_CONFIG
                                 | FINISH_LAYOUT_REDO_WALLPAPER;
                     }
+                }
+
+                if (dismissKeyguard) {
+                    // Only launch the next keyguard unlock window once per window.
+                    mHandler.post(() -> mKeyguardDelegate.dismiss(
+                            trusted /* allowWhileOccluded */));
                 }
             } else {
                 mWinDismissingKeyguard = null;
@@ -6509,6 +6514,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 mKeyguardDelegate.onScreenTurnedOff();
             }
         }
+        reportScreenStateToVrManager(false);
     }
 
     // Called on the DisplayManager's DisplayPowerController thread.
@@ -6544,6 +6550,15 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 mKeyguardDelegate.onScreenTurnedOn();
             }
         }
+        reportScreenStateToVrManager(true);
+    }
+
+    private void reportScreenStateToVrManager(boolean isScreenOn) {
+        VrManagerInternal vrService = LocalServices.getService(VrManagerInternal.class);
+        if (vrService == null) {
+            return;
+        }
+        vrService.onScreenStateChanged(isScreenOn);
     }
 
     private void finishWindowsDrawn() {

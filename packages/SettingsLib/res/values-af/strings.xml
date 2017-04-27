@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"Gestoor"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"Gedeaktiveer"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP-opstelling het misluk"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"Nie gekoppel nie weens laegehalte-netwerk"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"WiFi-verbinding het misluk"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"Stawingsprobleem"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"Nie binne ontvangs nie"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"Laat altyd Wi-Fi-swerfskanderings toe"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"Sellulêre data altyd aktief"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"Deaktiveer absolute volume"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"Bluetooth AVRCP-weergawe"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"Kies Bluetooth AVRCP-weergawe"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"Bluetooth-oudiokodek"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"Kies Bluetooth-oudiokodek"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"Bluetooth-oudiovoorbeeldkoers"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"Kies Bluetooth-oudiokodek:\nVoorbeeldtempo"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"Bluetooth-oudiobisse per voorbeeld"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"Kies Bluetooth-oudiokodek:\nBis per voorbeeld"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"Bluetooth-oudiokanaalmodus"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"Kies Bluetooth-oudiokodek:\nKanaalmodus"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"Bluetooth-oudio-LDAC-kodek: Speelgehalte"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"Kies Bluetooth-oudio-LDAC-kodek:\nSpeelgehalte"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"Stroming: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"Wys opsies vir draadlose skermsertifisering"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"Verhoog Wi-Fi-aantekeningvlak, wys per SSID RSSI in Wi‑Fi-kieser"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"Wanneer dit geaktiveer is, sal Wi-Fi meer aggressief wees om die dataverbinding na selfoon oor te dra wanneer die Wi-Fi-sein swak is"</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"Gepasmaak (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"Hulp en terugvoer"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"Kieslys"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"Voer wagwoord in om fabriekterugstelling in demonstrasiemodus uit te voer"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"Volgende"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"Wagwoord word benodig"</string>
 </resources>

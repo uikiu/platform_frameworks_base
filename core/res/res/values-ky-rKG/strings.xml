@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Туташууда көйгөй чыкты же MMI коду жараксыз."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Иш-аракет туруктуу терүү номерлери менен гана чектелет."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Роуминг учурунда чалууну башка номерге багыттоонун жөндөөлөрүн телефонуңуздан өзгөртүү мүмкүн эмес."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Кызмат иштетилди."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Кызмат төмөнкү үчүн иштетилди:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Кызмат өчүрүлдү."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Номурду аныктоонун демейки абалы \"чектелбейт\" деп коюлган. Кийинки чалуу: Чектелбейт"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Кызмат камсыздалган эмес."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Чалуучунун далдаштырма дайындары жөндөөлөрүн өзгөртө албайсыз."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Мобилдик Интернет бөгөттөлгөн."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Өзгөчө кырдаал кызматы бөгөттөлгөн."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Үн кызматы бөгөттөлгөн."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Бардык үн кызматтары бөгөттөлдү."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS кызматы бөгөттөлгөн."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Үн/берилиштер кызматтары бөгөттөлдү."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Үн/SMS кызматтары бөгөттөлгөн."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Бардык үн/берилиштер/SMS кызматтары бөгөттөлдү."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Тармакка туташпай жатат"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Кабыл алуу мүмкүнчүлүгүн жакшыртуу үчүн Жөндөөлөр &gt; Мобилдик тармактар &gt; Тандалган тармак бөлүмүнөн тармактын түрүн өзгөртүп көрүңүз."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Peer TTY режимин FULL кылууну суранды"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Peer TTY режимин HCO кылууну суранды"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Peer TTY режимин VCO кылууну суранды"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Администратордун колдонмосу жок болгондуктан, жумуш профили жок кылынды."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Жумуш профилинин администратор колдонмосу жок же бузулгандыктан, жумуш профилиңиз жана ага байланыштуу дайындар жок кылынган. Жардам алуу үчүн администраторуңузга кайрылыңыз."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Жумуш профилиңиз бул түзмөктө жеткиликтүү болбой калды."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Тармак трафиги көзөмөлдөнүүдө"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Көбүрөөк маалымат алуу үчүн таптап коюңуз"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Түзмөгүңүз тазаланат"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Администратор колдонмосунун курамдары жок же бузулгандыктан, аны колдонуу мүмкүн эмес. Түзмөгүңүз азыр тазаланат. Жардам алуу үчүн администраторуңузга кайрылыңыз."</string>
     <string name="me" msgid="6545696007631404292">"Мен"</string>
@@ -217,7 +230,7 @@
     <string name="global_action_emergency" msgid="7112311161137421166">"Тез жардам"</string>
     <string name="global_action_bug_report" msgid="7934010578922304799">"Ката тууралуу билдирүү"</string>
     <string name="bugreport_title" msgid="2667494803742548533">"Ката тууралуу билдирүү түзүү"</string>
-    <string name="bugreport_message" msgid="398447048750350456">"Бул сиздин түзмөгүңүздүн учурдагы абалын эмейл билдирүүсү катары жөнөтүш максатында маалымат чогултат. Ката тууралуу билдирүү түзүлүп башталып, жөнөтүлгөнгө чейин бир аз убакыт керек болот; сураныч, бир аз күтө туруңуз."</string>
+    <string name="bugreport_message" msgid="398447048750350456">"Ушуну менен түзмөгүңүздүн учурдагы абалы тууралуу маалымат топтолуп, электрондук почта аркылуу жөнөтүлөт. Отчет даяр болгуча бир аз күтө туруңуз."</string>
     <string name="bugreport_option_interactive_title" msgid="8635056131768862479">"Интерактивдүү кабар"</string>
     <string name="bugreport_option_interactive_summary" msgid="229299488536107968">"Ката жөнүндө кабардын абалын жана көйгөй тууралуу кошумча маалыматты көрсөтүү үчүн ушул функцияны колдонууну сунуштайбыз. Ката жөнүндө кабар жөнөтүлүп жатканда көп убакыт талап кылынбашы үчүн негизги бөлүмдөр гана көрүнөт."</string>
     <string name="bugreport_option_full_title" msgid="6354382025840076439">"Толук кабар берүү"</string>
@@ -330,13 +343,13 @@
     <string name="permdesc_broadcastSticky" product="tv" msgid="6839285697565389467">"Колдонмого жайылтуу аяктагандан кийинки жабышчаак жайылтууларды жөнөтүү мүмкүнчүлүгүн берет. Ашыкча колдонулганда, сыналгы өтө жай же туруксуз иштеп, эстутумда өтө көп орунду ээлеши мүмкүн."</string>
     <string name="permdesc_broadcastSticky" product="default" msgid="2825803764232445091">"Колдонмого берүү токтогондон кийин улантыла берүүчү жабышкак берүүлөрдү жөнөтүү уруксатын берет. Муну ашыкча колдонуу, эстутумду өтө көп пайдаланууга алып келип, телефондун жай же туруксуз иштөөсүнүнө себепкер болушу мүмкүн."</string>
     <string name="permlab_readContacts" msgid="8348481131899886131">"байланыштарыңызды окуу"</string>
-    <string name="permdesc_readContacts" product="tablet" msgid="5294866856941149639">"Колдонмого планшетиңизде сакталган байланыштарыңыздын берилиштерин, көп терилген, көп эмейл алмашкан же башка жолдор менен көп баарлашкан байланыштар тууралуу берилиштерди окуганга уруксат берет. Бул уруксат колдонмолорго сиздин байланыштарыңыздын берилиштерин сактоого жол берет жана зыяндуу колдонмолор сизге билгизбей аларды бөлүшө алат."</string>
+    <string name="permdesc_readContacts" product="tablet" msgid="5294866856941149639">"Колдонмо планшетиңиздеги байланыштар, ошондой эле белгилүү бир адамдар менен канчалык көп чалышып, кат жазышып жана башка жолдор менен байланышып жаткандыгыңыз тууралуу маалыматты көрүп, сактай алат. Мындай уруксатты алган колдонмолор байланыштар тууралуу маалыматты сактай алышат, ал эми зыянкеч программалар байланыштар тууралуу маалыматты алдын ала эскертүүсүз бөлүшүүсү мүмкүн."</string>
     <string name="permdesc_readContacts" product="tv" msgid="1839238344654834087">"Колдонмого сыналгыңызда сакталган байланыштарыңыз тууралуу дайындарды, ошондой эле белгилүү бир адамдарга кандай убакыт аралыгында чалып, электрондук билдирүү жөнөтүп же башка жолдор менен байланышканыңызды окуу мүмкүнчүлүгүн берет. Мындай уруксат менен колдонмолор байланыштар дайындарын сактап, зыянкеч колдонмолор сизге билгизбестен байланыштар дайындарын бөлүшө алышат."</string>
-    <string name="permdesc_readContacts" product="default" msgid="8440654152457300662">"Колдонмого телефонуңузда сакталган байланыштарыңыздын берилиштерин, көп терилген, көп эмейл алмашкан же башка жолдор менен көп баарлашкан байланыштар тууралуу берилиштерди окуганга уруксат берет. Бул уруксат колдонмолорго сиздин байланыштарыңыздын берилиштерин сактоого жол берет жана зыяндуу колдонмолор сизге билгизбей аларды бөлүшө алат."</string>
+    <string name="permdesc_readContacts" product="default" msgid="8440654152457300662">"Колдонмо түзмөктөгү байланыштар, ошондой эле белгилүү бир адамдар менен канчалык көп чалышып, кат жазышып жана башка жолдор менен байланышып жаткандыгыңыз тууралуу маалыматты көрүп, сактай алат. Зыянкеч программалар байланыштар тууралуу маалыматты алдын ала эскертүүсүз бөлүшүүсү мүмкүн."</string>
     <string name="permlab_writeContacts" msgid="5107492086416793544">"байланыштарыңызды өзгөртүү"</string>
-    <string name="permdesc_writeContacts" product="tablet" msgid="897243932521953602">"Колдонмого планшетиңизде сакталган байланыштарыңыздын берилиштерин, анын ичиде, көп терилген, көп эмейл алмашкан же башка жолдор менен көп баарлашкан байланыштар тууралуу берилиштерди өзгөртүүгө уруксат берет. Бул уруксат, колдонмолорго сиздин байланыштарыңыздын берилиштерин өчүрүү уруксатын берет."</string>
+    <string name="permdesc_writeContacts" product="tablet" msgid="897243932521953602">"Колдонмо планшетиңиздеги байланыштар, ошондой эле белгилүү бир адамдар менен канчалык көп чалышып, кат жазышып жана башка жолдор менен байланышып жаткандыгыңыз тууралуу маалыматты өзгөртө алат. Мындай уруксатты алган колдонмолор байланыштар тууралуу маалыматты жок кыла алышат."</string>
     <string name="permdesc_writeContacts" product="tv" msgid="5438230957000018959">"Колдонмого сыналгыңызда сакталган байланыштарыңыз тууралуу дайындарды, ошондой эле белгилүү байланыштарга кандай убакыт аралыгында чалып, электрондук билдирүү жөнөтүп же башка жолдор менен байланышканыңызды өзгөртүү мүмкүнчүлүгүн берет. Мындай уруксат менен колдонмолор байланыш дайындарын жок кыла алат."</string>
-    <string name="permdesc_writeContacts" product="default" msgid="589869224625163558">"Колдонмого телефонуңузда сакталган байланыштарыңыздын берилиштерин, анын ичинде, көп терилген, көп эмейл алмашкан же башка жолдор менен көп баарлашкан байланыштар тууралуу берилиштерди өзгөртүүгө уруксат берет. Бул уруксат, колдонмолорго сиздин байланыштарыңыздын берилиштерин өчүрүү уруксатын берет."</string>
+    <string name="permdesc_writeContacts" product="default" msgid="589869224625163558">"Колдонмо телефонуңуздагы байланыштар, ошондой эле белгилүү бир адамдар менен канчалык көп чалышып, кат жазышып жана башка жолдор менен байланышып жаткандыгыңыз тууралуу маалыматты өзгөртө алат. Мындай уруксатты алган колдонмолор байланыштар тууралуу маалыматты жок кыла алышат."</string>
     <string name="permlab_readCallLog" msgid="3478133184624102739">"чалуулар тизмегин окуу"</string>
     <string name="permdesc_readCallLog" product="tablet" msgid="3700645184870760285">"Колдонмого планшетиңиздин чалуулар тизмесин, кириш жана чыгыш чалууларын  окууганга уруксат берет. Бул уруксат колдонмолорго сиздин чалууларыңыздын тизмелерин сактоого жол берет жана зыяндуу колдонмолор сизди маалымдабай туруп бөлүшүшү мүмкүн."</string>
     <string name="permdesc_readCallLog" product="tv" msgid="5611770887047387926">"Колдонмого сыналгыздын чалуулар таржымалын, ошондой эле келүүчү жана чыгуучу чалуулар жөнүндө дайындарды окуу мүмкүнчүлүгүн берет. Мындай уруксат менен колдонмолор чалуулар таржымалыңыздын дайындарын сактап, зыянкеч колдонмолор сизге билгизбестен чалуулар таржымалындагы дайындарды бөлүшө алышат."</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Колдонмого сизди катыштырбай туруп, IMS кызматынын жардамы менен чалууларды жасоо мүмкүнчүлүгүн берет."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"телефондун абалын жана аныктыгын окуу"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Колдонмого түзмөктүн чалуу мүмкүнчүлүктөрүнө жетки алуу уруксатын берет. Бул уруксат колдонмого, телефондун номурун, түзмөктүн ID-син, чалуунун абалын жана байланышта чыккан номурду аныктоого жол берет."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"чалууларды тутум аркылуу өткөрүү"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Чалуунун сапатын жакшыртуу максатында колдонмого чалууларын тутум аркылуу өткөрүүгө уруксат берет."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"планшетти уктатпай сактоо"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"сыналгыны көшүтпөө"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"телефонду уктатпай сактоо"</string>
@@ -641,18 +656,18 @@
     <string name="orgTypeCustom" msgid="225523415372088322">"Өзгөчө"</string>
     <string name="relationTypeCustom" msgid="3542403679827297300">"Өзгөчө"</string>
     <string name="relationTypeAssistant" msgid="6274334825195379076">"Жардамчы"</string>
-    <string name="relationTypeBrother" msgid="8757913506784067713">"Ага-ини"</string>
-    <string name="relationTypeChild" msgid="1890746277276881626">"Баласы"</string>
-    <string name="relationTypeDomesticPartner" msgid="6904807112121122133">"Жергиликтүү Өнөктөш"</string>
-    <string name="relationTypeFather" msgid="5228034687082050725">"Атасы"</string>
-    <string name="relationTypeFriend" msgid="7313106762483391262">"Досу"</string>
-    <string name="relationTypeManager" msgid="6365677861610137895">"Менежер"</string>
-    <string name="relationTypeMother" msgid="4578571352962758304">"Энеси"</string>
+    <string name="relationTypeBrother" msgid="8757913506784067713">"Ага/Ини"</string>
+    <string name="relationTypeChild" msgid="1890746277276881626">"Бала"</string>
+    <string name="relationTypeDomesticPartner" msgid="6904807112121122133">"Жарандык нике"</string>
+    <string name="relationTypeFather" msgid="5228034687082050725">"Ата"</string>
+    <string name="relationTypeFriend" msgid="7313106762483391262">"Дос"</string>
+    <string name="relationTypeManager" msgid="6365677861610137895">"Башчы"</string>
+    <string name="relationTypeMother" msgid="4578571352962758304">"Эне"</string>
     <string name="relationTypeParent" msgid="4755635567562925226">"Ата/эне"</string>
     <string name="relationTypePartner" msgid="7266490285120262781">"Өнөк"</string>
-    <string name="relationTypeReferredBy" msgid="101573059844135524">"Төмөнкүдөй аталат"</string>
+    <string name="relationTypeReferredBy" msgid="101573059844135524">"Сунушталган"</string>
     <string name="relationTypeRelative" msgid="1799819930085610271">"Тууган"</string>
-    <string name="relationTypeSister" msgid="1735983554479076481">"Эже-сиңди"</string>
+    <string name="relationTypeSister" msgid="1735983554479076481">"Эже/Сиңди"</string>
     <string name="relationTypeSpouse" msgid="394136939428698117">"Жубай"</string>
     <string name="sipAddressTypeCustom" msgid="2473580593111590945">"Өзгөчө"</string>
     <string name="sipAddressTypeHome" msgid="6093598181069359295">"Үй"</string>
@@ -997,7 +1012,7 @@
     <string name="aerr_application_repeated" msgid="3146328699537439573">"<xliff:g id="APPLICATION">%1$s</xliff:g> колдонмосу иштебей калып жатат"</string>
     <string name="aerr_process_repeated" msgid="6235302956890402259">"<xliff:g id="PROCESS">%1$s</xliff:g> колдонмосу иштебей калып жатат"</string>
     <string name="aerr_restart" msgid="7581308074153624475">"Колдонмону кайра ачуу"</string>
-    <string name="aerr_report" msgid="5371800241488400617">"Жооп пикир жөнөтүү"</string>
+    <string name="aerr_report" msgid="5371800241488400617">"Пикир билдирүү"</string>
     <string name="aerr_close" msgid="2991640326563991340">"Жабуу"</string>
     <string name="aerr_mute" msgid="1974781923723235953">"Түзмөк өчүрүлүп-күйгүзүлгүчө үнүн өчүрүү"</string>
     <string name="aerr_wait" msgid="3199956902437040261">"Күтүү"</string>
@@ -1058,19 +1073,11 @@
     <string name="volume_icon_description_incall" msgid="8890073218154543397">"Чалуунун үн деңгээли"</string>
     <string name="volume_icon_description_media" msgid="4217311719665194215">"Медиа үнүнүн деңгээли"</string>
     <string name="volume_icon_description_notification" msgid="7044986546477282274">"Эскертме үнүнүн деңгээли"</string>
-    <string name="ringtone_default" msgid="3789758980357696936">"Демейки рингтон"</string>
-    <string name="ringtone_default_with_actual" msgid="8129563480895990372">"Демейки рингтон (<xliff:g id="ACTUAL_RINGTONE">%1$s</xliff:g>)"</string>
+    <string name="ringtone_default" msgid="3789758980357696936">"Демейки шыңгыр"</string>
+    <string name="ringtone_default_with_actual" msgid="8129563480895990372">"Демейки шыңгыр (<xliff:g id="ACTUAL_RINGTONE">%1$s</xliff:g>)"</string>
     <string name="ringtone_silent" msgid="7937634392408977062">"Эч бир"</string>
-    <string name="ringtone_picker_title" msgid="3515143939175119094">"Ринтондор"</string>
+    <string name="ringtone_picker_title" msgid="3515143939175119094">"Шыңгырлар"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Белгисиз рингтон"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Wi-Fi тармагы жеткиликтүү</item>
-      <item quantity="one">Wi-Fi тармагы жеткиликтүү</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Ачык Wi-Fi тармагы жеткиликтүү</item>
-      <item quantity="one">Ачык Wi-Fi тармагы жеткиликтүү</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Wi-Fi түйүнүнө кирүү"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Тармакка кирүү"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Колдонмого орнотуу сеанстарын окуу мүмкүнчүлүгүн берет. Ушуну менен, ал жигердүү топтом орнотууларынын чоо-жайын көрө алат."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"орнотуу топтомдорун суроо"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Колдонмо топтомдорду орнотууга уруксат сурай алат."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"батареянын кубатын көп керектей берсин"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Колдонмо батареянын кубатын керектегенден мурун уруксат суралсын."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Масштабдын параметрлерин өзгөртүү үчүн бул жерди эки жолу басыңыз."</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Виджетти кошуу мүмкүн болбоду."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Өтүү"</string>
@@ -1411,7 +1420,7 @@
     <string name="kg_invalid_confirm_pin_hint" product="default" msgid="7003469261464593516">"PIN-коддор туура келбеди"</string>
     <string name="kg_login_too_many_attempts" msgid="6486842094005698475">"Өтө көп үлгү киргизүү аракети болду"</string>
     <string name="kg_login_instructions" msgid="1100551261265506448">"Бөгөттөн чыгарыш үчүн, Google эсебиңиз менен кириңиз."</string>
-    <string name="kg_login_username_hint" msgid="5718534272070920364">"Колдонуучунун аты (эмейл)"</string>
+    <string name="kg_login_username_hint" msgid="5718534272070920364">"Колдонуучунун аты (эл.почта)"</string>
     <string name="kg_login_password_hint" msgid="9057289103827298549">"Сырсөз"</string>
     <string name="kg_login_submit_button" msgid="5355904582674054702">"Кирүү"</string>
     <string name="kg_login_invalid_input" msgid="5754664119319872197">"Колдонуучу атыңыз же сырсөзүңүз туура эмес."</string>
@@ -1426,9 +1435,9 @@
     <string name="kg_failed_attempts_now_wiping" product="tablet" msgid="2072996269148483637">"Сиз планшетиңизди <xliff:g id="NUMBER">%d</xliff:g> жолу ийгиликсиз бөгөттөн чыгаруу аракетин кылдыңыз. Планшет баштапкы абалына кайтарылат."</string>
     <string name="kg_failed_attempts_now_wiping" product="tv" msgid="4987878286750741463">"Сыналгыңыздын кулпусун ачууда <xliff:g id="NUMBER">%d</xliff:g>_0 жолу туура эмес аракет кылдыңыз. Сыналгыңыз баштапкы абалга келтирилет."</string>
     <string name="kg_failed_attempts_now_wiping" product="default" msgid="4817627474419471518">"Сиз телефонуңузду <xliff:g id="NUMBER">%d</xliff:g> жолу ийгиликсиз бөгөттөн чыгаруу аракетин кылдыңыз. Телефон баштапкы абалына кайтарылат."</string>
-    <string name="kg_failed_attempts_almost_at_login" product="tablet" msgid="3253575572118914370">"Сиз бөгөттөн чыгаруу үлгүсүн <xliff:g id="NUMBER_0">%1$d</xliff:g> жолу туура эмес көрсөттүңүз. Дагы <xliff:g id="NUMBER_1">%2$d</xliff:g> ийгиликсиз аракеттен кийин, планшетиңизди эмейл эсебиңиз аркылуу бөгөттөн чыгаруу талап кылынат.\n\n <xliff:g id="NUMBER_2">%3$d</xliff:g> секундадан кийин кайра аракеттениңиз."</string>
+    <string name="kg_failed_attempts_almost_at_login" product="tablet" msgid="3253575572118914370">"Графикалык ачкычты <xliff:g id="NUMBER_0">%1$d</xliff:g> жолу туура эмес көрсөттүңүз. <xliff:g id="NUMBER_1">%2$d</xliff:g> жолу туура эмес көрсөтүлгөндөн кийин, планшетиңиздин кулпусун ачуу үчүн Google каттоо эсебиңизге кирүүгө туура келет.\n\n<xliff:g id="NUMBER_2">%3$d</xliff:g> секундадан кийин кайталап көрсөңүз болот."</string>
     <string name="kg_failed_attempts_almost_at_login" product="tv" msgid="4224651132862313471">"Кулпуну ачуу үлгүсүн <xliff:g id="NUMBER_0">%1$d</xliff:g> жолу туура эмес тарттыңыз. Дагы <xliff:g id="NUMBER_1">%2$d</xliff:g> жолу туура эмес тартсаңыз, сыналгыңыздын кулпусун электрондук каттоо эсебиңизге кирип ачууга туура келет.\n\n <xliff:g id="NUMBER_2">%3$d</xliff:g> секундадан кийин дагы аракет кылып көрүңүз."</string>
-    <string name="kg_failed_attempts_almost_at_login" product="default" msgid="1437638152015574839">"Сиз бөгөттөн чыгаруу үлгүсүн <xliff:g id="NUMBER_0">%1$d</xliff:g> жолу туура эмес көрсөттүңүз. Дагы <xliff:g id="NUMBER_1">%2$d</xliff:g> ийгиликсиз аракеттен кийин, телефонуңузду эмейл эсебиңиз аркылуу бөгөттөн чыгаруу талап кылынат.\n\n <xliff:g id="NUMBER_2">%3$d</xliff:g> секундадан кийин кайра аракеттениңиз."</string>
+    <string name="kg_failed_attempts_almost_at_login" product="default" msgid="1437638152015574839">"Графикалык ачкычты <xliff:g id="NUMBER_0">%1$d</xliff:g> жолу туура эмес көрсөттүңүз. <xliff:g id="NUMBER_1">%2$d</xliff:g> жолу туура эмес көрсөтүлгөндөн кийин, телефондун кулпусун ачуу үчүн Google каттоо эсебиңизге кирүүгө туура келет.\n\n<xliff:g id="NUMBER_2">%3$d</xliff:g> секундадан кийин кайталап көрсөңүз болот."</string>
     <string name="kg_text_message_separator" product="default" msgid="4160700433287233771">" — "</string>
     <string name="kg_reordering_delete_drop_target_text" msgid="7899202978204438708">"Алып салуу"</string>
     <string name="safe_media_volume_warning" product="default" msgid="2276318909314492312">"Сунушталган деңгээлден да катуулатып уккуңуз келеби?\n\nМузыканы узакка чейин катуу уксаңыз, угууңуз начарлап кетиши мүмкүн."</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Жылды тандаңыз"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> өчүрүлдү"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Жумуш <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Бул экранды бошотуу үчүн \"Артка\" баскычын басып, кармап туруңуз."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Бул экранды бошотуу үчүн \"Артка\" жана \"Сереп салуу\" баскычтарын басып, кармап туруңуз."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Колдонмо кадалган: Бул түзмөктө бошотууга уруксат жок."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Экран кадалды"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Экран бошотулду"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Көбүрөөк билүү үчүн тийип коюңуз."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> өчүрүлдү"</string>
     <string name="conference_call" msgid="3751093130790472426">"Конференц чалуу"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Эс алып, жакын жерден калканч издеңиз."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Деңиз жана дарыя жээгинде жайгашкан аймактардан бийик тоо сыяктуу коопсуз жерге тезинен чыгып кетиңиз."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Эс алып, жакын жерден калканч издеңиз."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Өзгөчө кырдаалда жөнөтүлүүчү билдирүүлөрдү сыноо"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

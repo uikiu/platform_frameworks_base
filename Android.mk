@@ -130,7 +130,6 @@ LOCAL_SRC_FILES += \
 	core/java/android/bluetooth/IBluetoothGatt.aidl \
 	core/java/android/bluetooth/IBluetoothGattCallback.aidl \
 	core/java/android/bluetooth/IBluetoothGattServerCallback.aidl \
-	core/java/android/bluetooth/le/IAdvertiserCallback.aidl \
 	core/java/android/bluetooth/le/IAdvertisingSetCallback.aidl \
 	core/java/android/bluetooth/le/IPeriodicAdvertisingCallback.aidl \
 	core/java/android/bluetooth/le/IScannerCallback.aidl \
@@ -210,6 +209,7 @@ LOCAL_SRC_FILES += \
 	core/java/android/net/IIpConnectivityMetrics.aidl \
 	core/java/android/net/IEthernetManager.aidl \
 	core/java/android/net/IEthernetServiceListener.aidl \
+	core/java/android/net/INetdEventCallback.aidl \
 	core/java/android/net/IIpSecService.aidl \
 	core/java/android/net/INetworkManagementEventObserver.aidl \
 	core/java/android/net/INetworkPolicyListener.aidl \
@@ -403,6 +403,7 @@ LOCAL_SRC_FILES += \
 	media/java/android/media/projection/IMediaProjectionManager.aidl \
 	media/java/android/media/projection/IMediaProjectionWatcherCallback.aidl \
 	media/java/android/media/session/IActiveSessionsListener.aidl \
+	media/java/android/media/session/ICallback.aidl \
 	media/java/android/media/session/ISessionController.aidl \
 	media/java/android/media/session/ISessionControllerCallback.aidl \
 	media/java/android/media/session/ISession.aidl \
@@ -431,6 +432,12 @@ LOCAL_SRC_FILES += \
 	telecomm/java/com/android/internal/telecom/IInCallService.aidl \
 	telecomm/java/com/android/internal/telecom/ITelecomService.aidl \
 	telecomm/java/com/android/internal/telecom/RemoteServiceCallback.aidl \
+        telephony/java/android/telephony/mbms/IMbmsDownloadManagerListener.aidl \
+	telephony/java/android/telephony/mbms/IMbmsStreamingManagerListener.aidl \
+	telephony/java/android/telephony/mbms/IDownloadListener.aidl \
+        telephony/java/android/telephony/mbms/IStreamingServiceListener.aidl \
+	telephony/java/android/telephony/mbms/vendor/IMbmsDownloadService.aidl \
+	telephony/java/android/telephony/mbms/vendor/IMbmsStreamingService.aidl \
 	telephony/java/com/android/ims/internal/IImsCallSession.aidl \
 	telephony/java/com/android/ims/internal/IImsCallSessionListener.aidl \
 	telephony/java/com/android/ims/internal/IImsConfig.aidl \
@@ -539,6 +546,13 @@ framework_built := $(call java-lib-deps,framework)
 include $(CLEAR_VARS)
 
 aidl_files := \
+        frameworks/base/telephony/java/android/telephony/mbms/DownloadRequest.aidl \
+        frameworks/base/telephony/java/android/telephony/mbms/DownloadStatus.aidl \
+        frameworks/base/telephony/java/android/telephony/mbms/FileInfo.aidl \
+        frameworks/base/telephony/java/android/telephony/mbms/FileServiceInfo.aidl \
+        frameworks/base/telephony/java/android/telephony/mbms/ServiceInfo.aidl \
+	frameworks/base/telephony/java/android/telephony/mbms/StreamingService.aidl \
+        frameworks/base/telephony/java/android/telephony/mbms/StreamingServiceInfo.aidl \
 	frameworks/base/telephony/java/android/telephony/ServiceState.aidl \
 	frameworks/base/telephony/java/android/telephony/SubscriptionInfo.aidl \
 	frameworks/base/telephony/java/android/telephony/CellInfo.aidl \
@@ -585,6 +599,9 @@ aidl_files := \
 	frameworks/base/graphics/java/android/graphics/drawable/Icon.aidl \
 	frameworks/base/core/java/android/accounts/AuthenticatorDescription.aidl \
 	frameworks/base/core/java/android/accounts/Account.aidl \
+	frameworks/base/core/java/android/app/admin/ConnectEvent.aidl \
+	frameworks/base/core/java/android/app/admin/DnsEvent.aidl \
+	frameworks/base/core/java/android/app/admin/NetworkEvent.aidl \
 	frameworks/base/core/java/android/app/admin/SystemUpdatePolicy.aidl \
 	frameworks/base/core/java/android/print/PrintDocumentInfo.aidl \
 	frameworks/base/core/java/android/print/PageRange.aidl \
@@ -868,6 +885,7 @@ framework_docs_LOCAL_DROIDDOC_OPTIONS := \
     -since $(SRC_API_DIR)/22.txt 22 \
     -since $(SRC_API_DIR)/23.txt 23 \
     -since $(SRC_API_DIR)/24.txt 24 \
+    -since $(SRC_API_DIR)/25.txt 25 \
 		-werror -hide 111 -hide 113 \
 		-overview $(LOCAL_PATH)/core/java/overview.html
 

@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Anslutningsproblem eller ogiltig MMI-kod."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Endast fasta nummer kan användas."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Det går inte att ändra inställningarna för vidarebefordran av samtal medan mobilen är i roaming-läge."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Tjänsten har aktiverats."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Tjänsten har aktiverats för:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Tjänsten har inaktiverats."</string>
@@ -82,20 +83,30 @@
     <string name="RuacMmi" msgid="7827887459138308886">"Avvisande av oönskade irriterande samtal"</string>
     <string name="CndMmi" msgid="3116446237081575808">"Leverans av nummer för inkommande samtal"</string>
     <string name="DndMmi" msgid="1265478932418334331">"Stör ej"</string>
-    <string name="CLIRDefaultOnNextCallOn" msgid="429415409145781923">"Nummerpresentatören är begränsad som standard. Nästa samtal: Begränsad"</string>
-    <string name="CLIRDefaultOnNextCallOff" msgid="3092918006077864624">"Nummerpresentatörens standardinställning är begränsad. Nästa samtal: Inte begränsad"</string>
-    <string name="CLIRDefaultOffNextCallOn" msgid="6179425182856418465">"Nummerpresentatörens standardinställning är inte begränsad. Nästa samtal: Begränsad"</string>
-    <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Nummerpresentatörens standardinställning är inte begränsad. Nästa samtal: Inte begränsad"</string>
+    <string name="CLIRDefaultOnNextCallOn" msgid="429415409145781923">"Nummerpresentatören är blockerad som standard. Nästa samtal: Blockerad"</string>
+    <string name="CLIRDefaultOnNextCallOff" msgid="3092918006077864624">"Nummerpresentatörens standardinställning är blockerad. Nästa samtal: Inte blockerad"</string>
+    <string name="CLIRDefaultOffNextCallOn" msgid="6179425182856418465">"Nummerpresentatörens standardinställning är inte blockerad. Nästa samtal: Blockerad"</string>
+    <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Nummerpresentatörens standardinställning är inte blockerad. Nästa samtal: Inte blockerad"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Tjänsten är inte etablerad."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Det går inte att ändra inställningen för nummerpresentatör."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Datatjänsten är blockerad."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Räddningstjänsten är blockerad."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Rösttjänsten är blockerad."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Alla rösttjänster är blockerade."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS-tjänsten är blockerad."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Röst- och datatjänster är blockerade."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Röst- och SMS-tjänster är blockerade."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Alla röst-, data- och SMS-tjänster är blockerade."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Det går inte att nå nätverket"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Testa om du får bättre mottagning genom att ändra till en annan typ under Inställningar &gt; Mobilnät &gt; Önskad nätverkstyp."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Peer-enheten begärde texttelefonläget FULL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Peer-enheten begärde texttelefonläget HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Peer-enheten begärde texttelefonläget VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Jobbprofilen har raderats eftersom det saknas en administratörsapp."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Administratörsappen för jobbprofilen saknas eller är skadad. Det innebär att jobbprofilen och all relaterad data har raderats. Kontakta administratören om du vill ha hjälp."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Din jobbprofil är inte längre tillgänglig på den här enheten."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Nätverkstrafiken övervakas"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Tryck här för att läsa mer"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Enheten kommer att rensas"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Administratörsappen saknar delar eller är skadad och kan inte användas. Enheten kommer nu att rensas. Kontakta administratören om du behöver hjälp."</string>
     <string name="me" msgid="6545696007631404292">"Jag"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Tillåter att appen använder tjänsten för snabbmeddelanden för att ringa samtal utan åtgärd från dig."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"läsa telefonens status och identitet"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Tillåter att appen kommer åt enhetens telefonfunktioner. Med den här behörigheten tillåts appen att identifiera mobilens telefonnummer och enhets-ID, om ett samtal pågår och vilket nummer samtalet är kopplat till."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"dirigera samtal via systemet"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Appen tillåts att dirigera samtal via systemet för att förbättra samtalsupplevelsen."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"förhindra att surfplattan går in i viloläge"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"förhindra att TV:n försätts i viloläge"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"förhindra att telefonen sätts i viloläge"</string>
@@ -650,7 +665,7 @@
     <string name="relationTypeMother" msgid="4578571352962758304">"Mamma"</string>
     <string name="relationTypeParent" msgid="4755635567562925226">"Förälder"</string>
     <string name="relationTypePartner" msgid="7266490285120262781">"Partner"</string>
-    <string name="relationTypeReferredBy" msgid="101573059844135524">"Genom"</string>
+    <string name="relationTypeReferredBy" msgid="101573059844135524">"Känner genom"</string>
     <string name="relationTypeRelative" msgid="1799819930085610271">"Släkting"</string>
     <string name="relationTypeSister" msgid="1735983554479076481">"Syster"</string>
     <string name="relationTypeSpouse" msgid="394136939428698117">"Make/maka"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Ingen"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Ringsignaler"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Okänd ringsignal"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Wi-Fi-nätverk är tillgängliga</item>
-      <item quantity="one">Wi-Fi-nätverk är tillgängligt</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Öppna Wi-Fi-nätverk är tillgängliga</item>
-      <item quantity="one">Öppet Wi-Fi-nätverk är tillgängligt</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Logga in på ett Wi-Fi-nätverk"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Logga in på nätverket"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Tillåt appen att läsa installationssessioner. Det ger den tillgång till uppgifter om aktiva paketinstallationer."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"begära installationspaket"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Tillåter att en app begär paketinstallation."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"får be om tillstånd att ignorera batterioptimering"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Appen får be om tillstånd att ignorera batterioptimering."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Peka två gånger för zoomkontroll"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Det gick inte att lägga till widgeten."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Kör"</string>
@@ -1234,7 +1243,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Bakgrund"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Ändra bakgrund"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Meddelandelyssnare"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Lyssnare för virtuell verklighet"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Lyssnare för VR"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Leverantör"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Rankningstjänst för aviseringar"</string>
     <string name="vpn_title" msgid="19615213552042827">"VPN är aktiverat"</string>
@@ -1315,7 +1324,7 @@
     <string name="shareactionprovider_share_with_application" msgid="5627411384638389738">"Dela med <xliff:g id="APPLICATION_NAME">%s</xliff:g>"</string>
     <string name="content_description_sliding_handle" msgid="415975056159262248">"Skärmlåsfunktion. Tryck och dra."</string>
     <string name="description_target_unlock_tablet" msgid="3833195335629795055">"Lås upp genom att svepa."</string>
-    <string name="keyboard_headset_required_to_hear_password" msgid="7011927352267668657">"Anslut mikrofonlurar om du vill att lösenordet ska läsas upp."</string>
+    <string name="keyboard_headset_required_to_hear_password" msgid="7011927352267668657">"Anslut ett headset för att få lösenordet uppläst."</string>
     <string name="keyboard_password_character_no_headset" msgid="2859873770886153678">"Punkt."</string>
     <string name="action_bar_home_description" msgid="5293600496601490216">"Visa startsidan"</string>
     <string name="action_bar_up_description" msgid="2237496562952152589">"Navigera uppåt"</string>
@@ -1400,7 +1409,7 @@
     <string name="kg_sim_pin_instructions" msgid="2319508550934557331">"Ange PIN-kod för SIM-kortet"</string>
     <string name="kg_pin_instructions" msgid="2377242233495111557">"Ange PIN-kod"</string>
     <string name="kg_password_instructions" msgid="5753646556186936819">"Ange lösenord"</string>
-    <string name="kg_puk_enter_puk_hint" msgid="453227143861735537">"SIM-kortet är nu inaktiverat. Ange PUK-koden om du vill fortsätta. Kontakta operatören om du vill få mer information."</string>
+    <string name="kg_puk_enter_puk_hint" msgid="453227143861735537">"SIM-kortet är nu inaktiverat. Ange PUK-koden för att fortsätta. Kontakta operatören om du vill ha mer information."</string>
     <string name="kg_puk_enter_pin_hint" msgid="7871604527429602024">"Ange önskad PIN-kod"</string>
     <string name="kg_enter_confirm_pin_hint" msgid="325676184762529976">"Bekräfta önskad PIN-kod"</string>
     <string name="kg_sim_unlock_progress_dialog_message" msgid="8950398016976865762">"Låser upp SIM-kort …"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Välj år"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> har tagits bort"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> för arbetet"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Om du vill lossa skärmen trycker du länge på Tillbaka."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Om du vill lossa skärmen trycker du länge på Tillbaka och Översikt."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Appen är fäst. Att lossa den är inte tillåtet på den här enheten."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Skärmen är fäst"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Skärmen är inte längre fäst"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Tryck här om du vill läsa mer."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> har inaktiverats"</string>
     <string name="conference_call" msgid="3751093130790472426">"Konferenssamtal"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Håll dig lugn och sök skydd i närheten."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Utrym kust- och flodområden omedelbart och förflytta er till en säkrare plats, till exempel ett högt beläget område."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Håll dig lugn och sök skydd i närheten."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Test för nödmeddelanden"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

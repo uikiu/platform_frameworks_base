@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Tatizo la muunganisho au msimbo batili MMI."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Uendeshaji umepunguzwa kwa namba za upigaji simu za kudumu pekee."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Haiwezi kubadilisha mipangilio ya kusambaza simu kutoka kwenye simu yako ukiwa unatumia mitandao mingine."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Huduma iliwezeshwa"</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Huduma iliwezesha kwa:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Hitilafu ya huduma!"</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Chaguo-msingi za ID ya mpigaji simu za kutozuia. Simu ifuatayo: Haijazuiliwa"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Huduma haitathminiwi."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Hauwezi kubadilisha mpangilio wa kitambulisho cha anayepiga."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Huduma ya data imezuiwa."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Huduma ya dharura imezuiwa."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Huduma ya sauti imezuiwa."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Huduma zote za sauti zimezuiwa."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Huduma ya ujumbe mfupi imezuiwa."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Huduma za sauti/data zimezuiwa."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Huduma za Sauti/Ujumbe mfupi zimezuiwa."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Huduma zote za Sauti/data/SMS zimezuiwa."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Haiwezi kufikia mtandao"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Ili uboreshe upokeaji, jaribu kubadilisha aina iliyochaguliwa katika Mipangilio &gt; Mitandao ya simu &gt; Aina ya mtandao unaopendelea."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Hali ya TTY iliyoombwa na mtandao mwenza KAMILI"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Hali ya TTY iliyoombwa na mtandao mwenza HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Hali ya TTY iliyoombwa na mtandao mwenza VCO"</string>
@@ -177,6 +188,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Wasifu wa kazini umefutwa kutokana na kupotea kwa programu ya msimamizi."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Programu ya msimamizi wa wasifu wa kazini imepotea au ina hitilafu. Kwa sbabu hiyo, wasifu wako wa kazini na data husika imefutwa. Wasiliana na msimamizi wako kwa usaidizi."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Wasifu wako wa kazini haupatikani tena kwenye kifaa hiki."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Trafiki ya mtandao inachunguzwa"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Gonga ili upate maelezo zaidi"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Data iliyomo kwenye kifaa chako itafutwa"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Programu ya msimamizi inakosa vipengele au ina hitilafu, na haiwezi kutumika. Data iliyomo kwenye kifaa chako sasa itafutwa. Wasiliana na msimamizi wako kwa usaidizi."</string>
     <string name="me" msgid="6545696007631404292">"Mimi"</string>
@@ -375,6 +388,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Huruhusu programu kutumia huduma ya IMS kupiga simu bila udhibiti wako."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"kusoma hali na kitambulisho cha simu"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Huruhusu programu kufikia vipengele vya simu vilivyo kwenye kifaa. Idhini hii inaruhusu programu kutambua nambari ya simu na kifaa, kama kuna simu inayopigwa, na nambari ya mbali iliyounganishwa kwenye simu."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"elekeza simu kupitia mfumo"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Huruhusu programu kuelekeza simu zake kupitia mfumo ili kuboresha hali ya kupiga simu."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"zuia kompyuta ndogo dhidi ya kulala"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"zuia runinga isiingie katika hali tuli"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"kuzuia simu isilale"</string>
@@ -657,14 +672,14 @@
     <string name="sipAddressTypeWork" msgid="6920725730797099047">"Kazi"</string>
     <string name="sipAddressTypeOther" msgid="4408436162950119849">"Nyinginezo"</string>
     <string name="quick_contacts_not_available" msgid="746098007828579688">"Hakuna programu iliyopatikana ili kuona anwani hii."</string>
-    <string name="keyguard_password_enter_pin_code" msgid="3037685796058495017">"Ingiza msimbo wa PIN"</string>
-    <string name="keyguard_password_enter_puk_code" msgid="4800725266925845333">"Ingiza PUK na msimbo mpya wa PIN"</string>
+    <string name="keyguard_password_enter_pin_code" msgid="3037685796058495017">"Weka nambari ya PIN"</string>
+    <string name="keyguard_password_enter_puk_code" msgid="4800725266925845333">"Weka PUK na nambari mpya ya PIN"</string>
     <string name="keyguard_password_enter_puk_prompt" msgid="1341112146710087048">"Msimbo wa PUK"</string>
-    <string name="keyguard_password_enter_pin_prompt" msgid="8027680321614196258">"Msimbo mpya wa PIN"</string>
+    <string name="keyguard_password_enter_pin_prompt" msgid="8027680321614196258">"Nambari mpya ya PIN"</string>
     <string name="keyguard_password_entry_touch_hint" msgid="2644215452200037944"><font size="17">"Gusa ili uandike nenosiri"</font></string>
     <string name="keyguard_password_enter_password_code" msgid="1054721668279049780">"Charaza nenosiri ili kufungua"</string>
     <string name="keyguard_password_enter_pin_password_code" msgid="6391755146112503443">"Ingiza PIN ili kufungua"</string>
-    <string name="keyguard_password_wrong_pin_code" msgid="2422225591006134936">"Msimbo wa PIN usio sahihi."</string>
+    <string name="keyguard_password_wrong_pin_code" msgid="2422225591006134936">"Nambari ya PIN uliyoweka si sahihi."</string>
     <string name="keyguard_label_text" msgid="861796461028298424">"Ili kufungua, bofya Menyu kisha 0."</string>
     <string name="emergency_call_dialog_number_for_display" msgid="696192103195090970">"Nambari ya dharura"</string>
     <string name="lockscreen_carrier_default" msgid="6169005837238288522">"Hakuna huduma"</string>
@@ -924,7 +939,7 @@
       <item quantity="one">baada ya mwaka <xliff:g id="COUNT_0">%d</xliff:g></item>
     </plurals>
     <string name="VideoView_error_title" msgid="3534509135438353077">"Shida ya video"</string>
-    <string name="VideoView_error_text_invalid_progressive_playback" msgid="3186670335938670444">"Video hii si halali kutiririshwa kwa kifaa hiki."</string>
+    <string name="VideoView_error_text_invalid_progressive_playback" msgid="3186670335938670444">"Video hii hairuhusiwi kutiririshwa kwenye kifaa hiki."</string>
     <string name="VideoView_error_text_unknown" msgid="3450439155187810085">"Haiwezi kucheza video hii."</string>
     <string name="VideoView_error_button" msgid="2822238215100679592">"Sawa"</string>
     <string name="relative_time" msgid="1818557177829411417">"<xliff:g id="DATE">%1$s</xliff:g>, <xliff:g id="TIME">%2$s</xliff:g>"</string>
@@ -1061,14 +1076,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Hamna"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Toni za mlio"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Mlio amabo haujulikani"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Mitandao ya Wi-Fi inapatikana</item>
-      <item quantity="one">Mtandao wa Wi-Fi unapatikana</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Fungua mitandao ya Wi-Fi inayopatikana</item>
-      <item quantity="one">Fungua mtandao wa Wi-Fi unaopatikana</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Ingia kwa mtandao wa Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Ingia katika mtandao"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1206,6 +1213,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Huruhusu programu kusoma vipindi vya kusanikisha. Hii huiruhusu kuona maelezo kuhusu usanikishaji wa programu unaoendelea."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"omba ruhusa ya kusakinisha vifurushi"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Huruhusu programu kuomba idhini ya kusakinisha vifurushi."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"omba kupuuza uimarishji wa betri"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Huruhusu programu kuomba ruhusa ya kupuuza uimarishaji wa betri katika programu yako."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Gonga mara mbili kwa udhibiti wa kuza"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Haikuweza kuongeza wijeti."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Nenda"</string>
@@ -1232,7 +1241,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Mandhari"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Badilisha mandhari"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Kisikilizi cha arifa"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Kisikilizaji cha Uhalisia Pepe"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Kisikilizaji cha VR"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Mtoa masharti"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Huduma ya kupanga arifa"</string>
     <string name="vpn_title" msgid="19615213552042827">"VPN imewezeshwa"</string>
@@ -1399,10 +1408,10 @@
     <string name="kg_pin_instructions" msgid="2377242233495111557">"Ingiza PIN"</string>
     <string name="kg_password_instructions" msgid="5753646556186936819">"Weka Nenosiri"</string>
     <string name="kg_puk_enter_puk_hint" msgid="453227143861735537">"SIM sasa imelemazwa. Ingiza msimbo wa PUK ili kuendelea. Wasiliana na mtoa huduma kwa maelezo."</string>
-    <string name="kg_puk_enter_pin_hint" msgid="7871604527429602024">"Ingiza msimbo wa PIN unaopendelewa"</string>
-    <string name="kg_enter_confirm_pin_hint" msgid="325676184762529976">"Thibitisha msimbo wa PIN unaopendelewa"</string>
+    <string name="kg_puk_enter_pin_hint" msgid="7871604527429602024">"Weka nambari yako ya PIN"</string>
+    <string name="kg_enter_confirm_pin_hint" msgid="325676184762529976">"Thibitisha nambari ya PIN uliyoweka"</string>
     <string name="kg_sim_unlock_progress_dialog_message" msgid="8950398016976865762">"Inafungua SIM kadi..."</string>
-    <string name="kg_password_wrong_pin_code" msgid="1139324887413846912">"Msimbo wa PIN usio sahihi."</string>
+    <string name="kg_password_wrong_pin_code" msgid="1139324887413846912">"Nambari ya PIN uliyoweka si sahihi."</string>
     <string name="kg_invalid_sim_pin_hint" msgid="8795159358110620001">"Charaza PIN iliyo na tarakimu kati ya 4 na 8."</string>
     <string name="kg_invalid_sim_puk_hint" msgid="6025069204539532000">"Msimbo wa PUK lazima uwe na tarakimu 8."</string>
     <string name="kg_invalid_puk" msgid="3638289409676051243">"Ingiza upya msimbo sahihi wa PUK. Majaribio yanayorudiwa yatalemaza SIM kabisa."</string>
@@ -1556,7 +1565,7 @@
     <string name="select_year" msgid="7952052866994196170">"Chagua mwaka"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> kimefutwa"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Ya kazini <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Ili kubandua skrini hii, gusa na ushikilie Nyuma."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Ili kubandua skrini hii, gusa na ushikilie kitufe cha Nyuma na Muhtasari."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Programu imebanwa: Kubanuliwa hakuruhusiwi kwenye kifaa hiki."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Skrini imebandikwa"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Skrini imebanduliwa"</string>
@@ -1676,4 +1685,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Gusa ili kupata maelezo zaidi."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> imezimwa"</string>
     <string name="conference_call" msgid="3751093130790472426">"Simu ya Kongamano"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Tulia na utafute hifadhi ya karibu."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Ondoka mara moja kwenye maeneo ya ufuo na mito ili uende kwenye sehemu salama kama vile milimani."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Tulia na utafute hifadhi ya karibu."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Jaribio la ujumbe wa dharura"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"সংরক্ষিত"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"অক্ষম হয়েছে"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP কনফিগারেশনের ব্যর্থতা"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"খারাপ নেটওয়ার্কের কারণে সংযুক্ত নয়"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"WiFi সংযোগের ব্যর্থতা"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"প্রমাণীকরণ সমস্যা"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"পরিসরের মধ্যে নয়"</string>
@@ -53,7 +54,7 @@
     <string name="bluetooth_profile_pbap_summary" msgid="6605229608108852198">"পরিচিতি শেয়ার করার কাজে ব্যবহার করুন"</string>
     <string name="bluetooth_profile_pan_nap" msgid="8429049285027482959">"ইন্টারনেট সংযোগ শেয়ার করা হচ্ছে"</string>
     <string name="bluetooth_profile_map" msgid="5465271250454324383">"বার্তা অ্যাক্সেস"</string>
-    <string name="bluetooth_profile_sap" msgid="5764222021851283125">"SIM -এর অ্যাক্সেস"</string>
+    <string name="bluetooth_profile_sap" msgid="5764222021851283125">"সিম -এর অ্যাক্সেস"</string>
     <string name="bluetooth_a2dp_profile_summary_connected" msgid="963376081347721598">"মিডিয়া অডিওতে সংযুক্ত রয়েছে"</string>
     <string name="bluetooth_headset_profile_summary_connected" msgid="7661070206715520671">"ফোন অডিওতে সংযুক্ত"</string>
     <string name="bluetooth_opp_profile_summary_connected" msgid="2611913495968309066">"ফাইল স্থানান্তর সার্ভারের সঙ্গে সংযুক্ত"</string>
@@ -65,7 +66,7 @@
     <string name="bluetooth_pan_nap_profile_summary_connected" msgid="1561383706411975199">"ডিভাইসের সাথে স্থানীয় ইন্টারনেট সংযোগ ভাগ করছে"</string>
     <string name="bluetooth_pan_profile_summary_use_for" msgid="5664884523822068653">"ইন্টারনেট অ্যাক্সেসের জন্য ব্যবহার করুন"</string>
     <string name="bluetooth_map_profile_summary_use_for" msgid="5154200119919927434">"মানচিত্রের জন্য ব্যবহার করুন"</string>
-    <string name="bluetooth_sap_profile_summary_use_for" msgid="7085362712786907993">"SIM -এর অ্যাক্সেসের জন্য ব্যবহার করুন"</string>
+    <string name="bluetooth_sap_profile_summary_use_for" msgid="7085362712786907993">"সিম -এর অ্যাক্সেসের জন্য ব্যবহার করুন"</string>
     <string name="bluetooth_a2dp_profile_summary_use_for" msgid="4630849022250168427">"মিডিয়া অডিওয়ের জন্য ব্যবহার করুন"</string>
     <string name="bluetooth_headset_profile_summary_use_for" msgid="8705753622443862627">"ফোন অডিওয়ের জন্য ব্যবহার করুন"</string>
     <string name="bluetooth_opp_profile_summary_use_for" msgid="1255674547144769756">"ফাইল স্থানান্তরের জন্য ব্যবহার করুন"</string>
@@ -124,8 +125,8 @@
     <string name="tts_engine_settings_button" msgid="1030512042040722285">"ইঞ্জিন সেটিংস লঞ্চ করুন"</string>
     <string name="tts_engine_preference_section_title" msgid="448294500990971413">"পছন্দের ইঞ্জিন"</string>
     <string name="tts_general_section_title" msgid="4402572014604490502">"সাধারণ"</string>
-    <string name="tts_reset_speech_pitch_title" msgid="5789394019544785915">"ভাষ্য়ের শব্দ মাত্রাকে পুনরায় সেট করুন"</string>
-    <string name="tts_reset_speech_pitch_summary" msgid="8700539616245004418">"ডিফল্ট হিসাবে যে মাত্রায় পাঠ্য উচ্চারিত হয়, সেই শব্দ মাত্রাকে পুনরায় সেট করুন৷"</string>
+    <string name="tts_reset_speech_pitch_title" msgid="5789394019544785915">"ভাষ্য়ের শব্দ মাত্রাকে আবার সেট করুন"</string>
+    <string name="tts_reset_speech_pitch_summary" msgid="8700539616245004418">"ডিফল্ট হিসাবে যে মাত্রায় পাঠ্য উচ্চারিত হয়, সেই শব্দ মাত্রাকে আবার সেট করুন৷"</string>
   <string-array name="tts_rate_entries">
     <item msgid="6695494874362656215">"অত্যন্ত ধীরে"</item>
     <item msgid="4795095314303559268">"ধীর"</item>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"সর্বদা Wifi রোম স্ক্যানকে অনুমতি দিন"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"সেলুলার ডেটা সর্বদাই সক্রিয় থাকে"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"চূড়ান্ত ভলিউম অক্ষম করুন"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"ব্লুটুথ AVRCP সংস্করণ"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"ব্লুটুথ AVRCP সংস্করণ বেছে নিন"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"ব্লুটুথ অডিও কোডেক"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"ব্লুটুথ অডিও কোডেক বেছে নিন"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"ব্লুটুথ অডিওর নমুনা হার"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"ব্লুটুথ অডিও কোডেক বেছে নিন:\nস্যাম্পল রেট"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"নমুনা প্রতি ব্লুটুথ অডিও বিট"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"ব্লুটুথ অডিও কোডেক বেছে নিন:\nবিটস পার স্যাম্পল"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"ব্লুটুথ অডিও চ্যানেল মোড"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"ব্লুটুথ অডিও কোডেক বেছে নিন:\nচ্যানেল মোড"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"ব্লুটুথ অডিও LDAC কোডেক: প্লেব্যাক গুণমান"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"ব্লুটুথ অডিও LDAC কোডেক বেছে নিন:\nপ্লেব্যাক গুণমান"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"স্ট্রিমিং: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"ওয়্যারলেস প্রদর্শন সার্টিফিকেশন জন্য বিকল্পগুলি দেখান"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"ওয়াই-ফাই লগিং স্তর বাড়ান, ওয়াই-ফাই চয়নকারীতে SSID RSSI অনুযায়ী দেখান"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"সক্ষম করা থাকলে, নিম্নমানের ওয়াই-ফাই সিগন্যালের ক্ষেত্রে, সেলুলার-এ ডেটা সংযোগ প্রদান করতে ওয়াই-ফাই আরো বেশি শক্তিশালীভাবে কাজ করবে"</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"কাস্টম (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"সহায়তা ও মতামত"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"মেনু"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"ডেমো মোডে ফ্যাক্টরি রিসেট করতে পাসওয়ার্ড দিন"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"পরবর্তী"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"পাসওয়ার্ড আবশ্যক"</string>
 </resources>

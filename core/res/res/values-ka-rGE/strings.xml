@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"კავშირის პრობლემა ან არასწორი MMI კოდი."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"ოპერაცია შეზღუდულია მხოლოდ დაშვებულ ნომრებზე."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"ზარის გადამისამართების პარამეტრების თქვენი ტელეფონიდან შეცვლა როუმინგისას ვერ მოხერხდება."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"სერვისი ჩართულია."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"სერვისი ჩართულია შემდეგისთვის:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"სერვისი გამორთულია."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"ნაგულისხმებად დაყენებულია ნომრის დაფარვის გამორთვა. შემდეგი ზარი: არ არის დაფარული."</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"სერვისი არ არის მიწოდებული."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"არ შეგიძლიათ აბონენტის ID პარამეტრების შეცვლა."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"ინტერნეტი დაბლოკილია."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"გადაუდებელი სამსახური დაბლოკილია."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"ხმოვანი მომსახურება დაბლოკილია."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"ყველა ხმოვანი სერვისი დაბლოკილია."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS მომსახურება დაბლოკილია."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"ხმის/მონაცემების სერვისები დაბლოკილია."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"ყველა ხმოვანი/SMS-ის სერვისი დაბლოკილია."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"ხმის/მონაცემების/SMS-ის ყველა სერვისი დაბლოკილია."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"ქსელთან დაკავშირება ვერ ხერხდება"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"მიღების გასაუმჯობესებლად ცადეთ არჩეული ტიპის შეცვლა აქ: პარამეტრები &gt; ფიჭური ქსელები &gt; ქსელის სასურველი ტიპი."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"მოთხოვნილია კვანძი TTY რეჟიმი FULL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"მოთხოვნილია კვანძი TTY რეჟიმი HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"მოთხოვნილია კვანძი TTY რეჟიმი VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"სამუშაო პროფილი წაშლილია ადმინისტრატორის აპლიკაციის არ ქონის გამო."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"სამუშაო პროფილის ადმინისტრატორის აპლიკაცია გამოტოვებული ან დაზიანებულია. შედეგად, თქვენი სამუშაო პროფილი და მასთან დაკავშირებული მონაცემები წაიშალა. დახმარებისათვის დაუკავშირდით თქვენს ადმინისტრატორს."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"თქვენი სამუშაო პროფილი აღარ არის ხელმისაწვდომი ამ მოწყობილობაზე."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"ქსელის ტრაფიკი მონიტორინგს გადის"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"შეეხეთ, რათა შეიტყოთ მეტი"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"თქვენი მოწყობილობა წაიშლება"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"ადმინისტრატორის აპლიკაციას კომპონენტები აკლია ან დაზიანებულია, შესაბამისად, მისი გამოყენება ვერ მოხერხდება. თქვენი მოწყობილობა წაიშლება. დახმარებისათვის დაუკავშირდით თქვენს ადმინისტრატორს."</string>
     <string name="me" msgid="6545696007631404292">"მე"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"აპს შეეძლება, გამოიყენოს IMS სერვისი ზარების თქვენი ჩარევის გარეშე განსახორციელებლად."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"ტელეფონის სტატუსისა და იდენტობის წაკითხვა"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"აპს შეეძლება ჰქონდეს წვდომა მოწყობილობის სატელეფონო ფუნქციებზე. აპმა მსგავსი უფლებით შეძლებს დაადგინოს ტელეფონის ნომერი, მისი სერიული გამოცემა, აქტიური ზარი, დაკავშირებული ნომერი და მსგავსი."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"ზარების სისტემის მეშვეობით მარშრუტიზაცია"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"დარეკვის ხარისხის გაუმჯობესების მიზნით, აპს ზარების სისტემის მეშვეობით მარშრუტიზაციის საშუალებას აძლევს."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"დაიცავით ტაბლეტი დაძინებისგან"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"ტელევიზორის დაცვა დაძინებისაგან"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"ტელეფონის ძილის რეჟიმში გადასვლის აღკვეთა"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"არც ერთი"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"ზარები"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"უცნობი ზარი"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">ხელმისაწვდომია Wi-Fi ქსელები</item>
-      <item quantity="one">ხელმისაწვდომია Wi-Fi ქსელი</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">ხელმისაწვდომია ღია Wi-Fi ქსელები</item>
-      <item quantity="one">ხელმისაწვდომია ღია Wi-Fi ქსელი</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Wi-Fi ქსელთან დაკავშირება"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"ქსელში შესვლა"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"საშუალებას აძლევს აპლიკაციას წაიკითხოს ინსტალაციის სესიები. ამით მას საშუალება აქვს იხილოს პაკეტის აქტიური ინსტალაციები."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"პაკეტების ინსტალაციის მოთხოვნა"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"აპლიკაციას შეეძლება მოითხოვოს პაკეტების ინსტალაცია."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"ბატარეის ოპტიმიზაციის იგნორირების მოთხოვნა"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"საშუალებას მისცემს აპს, მოითხოვოს მასთან დაკავშირებული ბატარეის ოპტიმიზაციის იგნორირების ნებართვა."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"მასშტაბის ცვლილებისთვის შეეხეთ ორჯერ"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"ვერ დაემატა ვიჯეტი."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"გადასვლა"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"აირჩიეთ წელი"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> წაიშალა"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"სამსახური <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"ამ ეკრანის ჩამაგრების მოსახსნელად, ხანგრძლივად შეეხეთ ღილაკს „უკან“."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"ამ ეკრანის ჩამაგრების მოსახსნელად, ხანგრძლივად შეეხეთ ღილაკს „უკან და მიმოხილვა“."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"აპი მიმაგრებულია: მიმაგრების მოხსნა არ არის ნებადართული ამ მოწყობილობაზე."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"ეკრანი დაფიქსირდა"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"ეკრანს ფიქსაცია მოეხსნა"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"შეეხეთ მეტის გასაგებად."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"გათიშული <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"საკონფერენციო ზარი"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"შეინარჩუნეთ სიმშვიდე და იპოვეთ ახლომდებარე თავშესაფარი."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"დაუყოვნებლივ გადაინაცვლეთ სანაპირო რეგიონებიდან და მდინარისპირა ტერიტორიებიდან უსაფრთხო ადგილზე (მაგალითად, შემაღლებულ ადგილზე)."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"შეინარჩუნეთ სიმშვიდე და იპოვეთ ახლომდებარე თავშესაფარი."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"სატესტო საგანგებო შეტყობინება"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

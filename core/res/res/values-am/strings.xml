@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"የተያያዥ ችግር ወይም  ትክከል ያልሆነየMMI ኮድ ባህሪ።"</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"ክዋኔ ለቋሚ መደወያ ቁጥሮች ብቻ ተገድቧል።"</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Can not change call forwarding settings from your phone while you are roaming."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"አገልግሎት ነቅቶ ነበር።"</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"ለ፡ አገልግሎት ነቅቶ ነበር"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"አገልግሎቱ ቦዝኗል።"</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"የደዋይ ID ነባሪዎች ወደአልተከለከለም። ቀጥሎ ጥሪ፡አልተከለከለም"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"አገልግሎት አልቀረበም።"</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"የደዋይ መታወቂያ ቅንብሮች  መለወጥ አትችልም፡፡"</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"የውሂብ አገልግሎት የታገደ ነው።"</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"የአደጋ ጊዜአገልግሎት የታገደ ነው።"</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"የድምፅ አገልግሎት ታግዷል።"</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"ሁሉም የድምጽ አገልግሎቶች ታግደዋል።"</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS አገልግሎት ታግዷል"</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"ድምፅ/ውሂብ አገልግሎቶች ታግደዋል።"</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"ድምፅ/SMS አገልግሎቶች ታግደዋል።"</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"ሁሉም ድምጽ/ውሂብ/ኤስ ኤም ኤስ  አገልግሎቶች ታግደዋል።"</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"አውታረ መረብ ላይ መድረስ አይቻልም"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"ቅበላን ለማሻሻል የተመረጠውን ዓይነት በቅንብሮች &gt; ተንቀሳቃሽ አውታረ መረቦች &gt; ተመራጭ የአውታረ መረብ ዓይነት ላይ ለመለወጥ ይሞክሩ።"</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"ቢጤ መልዕክት መጻጻፊያ ስልክ ሁነታ FULL ጠይቋል"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"ቢጤ መልዕክት መጻጻፊያ ስልክ ሁነታ HCO ጠይቋል"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"ቢጤ መልዕክት መጻጻፊያ ስልክ ሁነታ VCO ጠይቋል"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"በጎደለ የአስተዳዳሪ መተግበሪያ ምክንያት የስራ መገለጫ ተሰርዟል።"</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"የስራ መገለጫ አስተዳዳሪ መተግበሪያው ወይም ይጎድላል ወይም ተበላሽቷል። በዚህ ምክንያት የስራ መገለጫዎ እና ተዛማጅ ውሂብ ተሰርዘዋል። እርዳታን ለማግኘት አስተዳዳሪዎን ያነጋግሩ።"</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"የስራ መገለጫዎ ከዚህ በኋላ በዚህ መሳሪያ ላይ አይገኝም።"</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"የአውታረ መረብ ክትትል እየተደረገበት ነው"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"የበለጠ ለመረዳት መታ ያድርጉ"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"የእርስዎ መሣሪያ ይደመሰሳል"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"የአስተዳዳሪ መተግበሪያው ክፍሎች ይጎድሉታል ወይም ተበላሽቷል፣ እና ስራ ላይ መዋል አይችልም። የእርስዎ መሣሪያ አሁን ይደመሰሳል። እርዳታ ለማግኘት አስተዳዳሪዎን ያነጋግሩ።"</string>
     <string name="me" msgid="6545696007631404292">"እኔ"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"መተግበሪያው ያለእርስዎ ጣልቃ ገብነት ጥሪዎችን ለማድረግ የአይኤምኤስ አገልግሎቱን እንዲጠቀም ያስችለዋል።"</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"የስልክ ሁኔታና ማንነት አንብብ"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"መተግበሪያው የመሳሪያውን የስልክ ባህሪያት ላይ እንዲደርስ ይፈቅድለታል። ይህ ፈቃድ መተግበሪያው የስልክ ቁጥሩን እና የመሳሪያውን መታወቂያዎች፣ ጥሪ የነቃ እንደሆነ፣ እና በጥሪ የተገናኘውን የሩቅ ቁጥር እንዲወስን ይፈቅድለታል።"</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"ጥሪዎችን በስርዓቱ በኩል አዙር"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"መተግበሪያው የጥሪ ተሞክሮን እንዲያሻሽል ጥሪዎቹን በስርዓቱ በኩል እንዲያዞር ያስችለዋል።"</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"ጡባዊ ከማንቀላፋት ተከላከል"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"ቴሌቪዥን እንዳይተኛ አግድ"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"ስልክ ከማንቀላፋት ተከላከል"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"ምንም"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"ጥሪ ድምፆች"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"ያልታወቀ የስልክ ጥሪ ድምፅ"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">የWi-Fi አውታረ መረቦች አሉ</item>
-      <item quantity="other">የWi-Fi አውታረ መረቦች አሉ</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">የሚገኙ የWi-Fi አውታረ መረቦችን ክፈት</item>
-      <item quantity="other">የሚገኙ የWi-Fi አውታረ መረቦችን ክፈት</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"ወደ Wi-Fi አውታረ መረብ በመለያ ግባ"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"ወደ አውታረ መረብ በመለያ ይግቡ"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"መተግበሪያው የመጫን ክፍለ ጊዜዎችን እንዲያነብ ይፈቅድለታል። ይህም ስለ ገቢር የጥቅል ጭነቶች ዝርዝር መረጃን እንዲያይ ይፈቅድለታል።"</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"የጭነት ጥቅሎችን መጠየቅ"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"መተግበሪያ የጥቅሎች መጫንን እንዲጠይቅ ይፈቅዳል።"</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"የባትሪ ማትባቶችን ችላ ለማለት መጠየቅ"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"አንድ መተግበሪያ ለዚያ መተግበሪያ የባትሪ ማትባቶችን ችላ ለማለት እንዲጠይቅ ይፈቅድለታል።"</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"ለአጉላ መቆጣጠሪያ ሁለት ጊዜ ነካ አድርግ"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"ምግብር ማከል አልተቻለም።"</string>
     <string name="ime_action_go" msgid="8320845651737369027">"ሂድ"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"ዓመት ይምረጡ"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> ተሰርዟል"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"ስራ <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"ይህን ማያ ገጽ ለመንቀል ተመለስን ይንኩትና ያዙት።"</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"ይህን ማያ ገጽ ለመንቀል ተመለስ እና አጠቃላይ እይታን ተጭነው ይያዙ።"</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"መተግበሪያ ተሰክቷል፦ በዚህ መሣሪያ ላይ ማላቀቅ አይፈቀድም።"</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"ማያ ገጽ ተሰክቷል"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"ማያ ገጽ ተነቅሏል"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"የበለጠ ለመረዳት ይንኩ።"</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> ተሰናክሏል"</string>
     <string name="conference_call" msgid="3751093130790472426">"የስብሰባ ጥሪ"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"ረጋ ይበሉና በአቅራቢያ ያለ መጠለያ ይፈልጉ።"</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"ወዲያውኑ ከባህር ዳርቻ አካባቢዎች እና የወንዝ ዳርቻ አካባቢዎች ይውጡና እንደ ከፍ ያለ መሬት ያሉ ከአደጋ የተሻለ ደህንነት ወዳቸው ቦታዎች ይሂዱ።"</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"ረጋ ይበሉና በአቅራቢያ ያለ መጠለያ ይፈልጉ።"</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"የአስቸኳይ አደጋ መልእክቶች ሙከራ"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

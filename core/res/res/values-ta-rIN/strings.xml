@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"இணைப்பு சிக்கல் அல்லது தவறான MMI குறியீடு."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"நிலையான அழைப்பு எண்களுக்கு மட்டுமே எனச் செயல்பாடு வரையறுக்கப்பட்டுள்ளது."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"ரோமிங்கில் இருக்கும் போது, உங்கள் மொபைலிலிருந்து அழைப்புப் பகிர்வு அமைப்புகளை மாற்ற முடியாது."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"சேவை இயக்கப்பட்டுள்ளது."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"சேவை பின்வருவதற்கு இயக்கப்பட்டுள்ளது:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"சேவை முடக்கப்பட்டுள்ளது."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"அழைப்பாளர் ஐடி ஆனது வரையறுக்கப்படவில்லை என்பதற்கு இயல்பாக அமைக்கப்பட்டது. அடுத்த அழைப்பு: வரையறுக்கப்படவில்லை"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"சேவை ஒதுக்கப்படவில்லை."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"அழைப்பாளர் ஐடி அமைப்பை மாற்ற முடியாது."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"தரவு சேவை தடைசெய்யப்பட்டுள்ளது."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"அவசர சேவை தடைசெய்யப்பட்டுள்ளது."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"குரல் சேவை தடைசெய்யப்பட்டுள்ளது."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"எல்லா குரல் சேவைகளும் தடைசெய்யப்பட்டுள்ளன."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS சேவை தடைசெய்யப்பட்டுள்ளது."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"குரல்/தரவு சேவைகள் தடைசெய்யப்பட்டுள்ளன."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"குரல்/SMS சேவைகள் தடைசெய்யப்பட்டுள்ளன."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"எல்லா குரல்/தரவு/SMS சேவைகள் தடைசெய்யப்பட்டுள்ளன."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"நெட்வொர்க்குடன் இணைக்க முடியவில்லை"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"பெறுதலை மேம்படுத்த, அமைப்புகள் &gt; செல்லுலார் நெட்வொர்க்குகள் &gt; விரும்பும் நெட்வொர்க் வகை என்பதில் தேர்ந்தெடுத்த நெட்வொர்க் வகையை மாற்றவும்."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"TTY Mode FULLஐ இணைச் செயல்பாடு கோரியது"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"TTY Mode HCOஐ இணைச் செயல்பாடு கோரியது"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"TTY Mode VCOஐ இணைச் செயல்பாடு கோரியது"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"நிர்வாகி பயன்பாடு இல்லாததனால், பணி சுயவிவரம் நீக்கப்பட்டது."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"பணி சுயவிவர நிர்வாகி பயன்பாடு இல்லை அல்லது சேதமடைந்துள்ளது. இதன் விளைவாக, உங்கள் பணி சுயவிவரமும், அதனுடன் தொடர்புடைய தரவும் நீக்கப்பட்டன. உதவிக்கு, உங்கள் நிர்வாகியைத் தொடர்புகொள்ளவும்."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"சாதனத்தில் இனி பணி சுயவிவரம் கிடைக்காது."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"நெட்வொர்க் ட்ராஃபிக் கண்காணிக்கப்படுகிறது"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"மேலும் அறிய, தட்டவும்"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"சாதனத் தரவு அழிக்கப்படும்"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"நிர்வாகி பயன்பாடு இல்லை அல்லது சேதமடைந்துள்ளது மற்றும் பயன்படுத்த முடியாது. இப்போது சாதனத் தரவு அழிக்கப்படும். உதவிக்கு, நிர்வாகியைத் தொடர்புகொள்ளவும்."</string>
     <string name="me" msgid="6545696007631404292">"நான்"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"உங்கள் குறுக்கீடின்றி IMS சேவையைப் பயன்படுத்தி அழைப்பதற்கு, பயன்பாட்டை அனுமதிக்கும்."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"மொபைல் நிலை மற்றும் அடையாளத்தைப் படித்தல்"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"சாதனத்தின் மொபைல் அம்சங்களை அணுகப் பயன்பாட்டை அனுமதிக்கிறது. மொபைல் மற்றும் சாதன ஐடிகள், அழைப்பு செயலில் உள்ளதா மற்றும் அழைப்பு மூலம் இணைக்கப்பட்ட தொலைக் கட்டுப்பாட்டு எண் ஆகியவற்றைத் தீர்மானிக்க இந்த அனுமதி பயன்பாட்டை அனுமதிக்கிறது."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"சிஸ்டம் மூலம் அழைப்புகளை ரூட் செய்தல்"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"அழைக்கும் அனுபவத்தை மேம்படுத்தும் பொருட்டு, சிஸ்டம் மூலம் தனது அழைப்புகளை ரூட் செய்ய பயன்பாட்டை அனுமதிக்கும்."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"டேப்லெட் உறக்க நிலைக்குச் செல்வதைத் தடுத்தல்"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"டிவி உறக்கநிலைக்குச் செல்வதைத் தடுத்தல்"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"தொலைபேசி உறக்கநிலைக்குச் செல்வதைத் தடுத்தல்"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"ஏதுமில்லை"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"ரிங்டோன்கள்"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"அறியப்படாத ரிங்டோன்"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">வைஃபை நெட்வொர்க்குகள் உள்ளன</item>
-      <item quantity="one">வைஃபை நெட்வொர்க் உள்ளது</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">பொது வைஃபை நெட்வொர்க்குகள் உள்ளன</item>
-      <item quantity="one">பொது வைஃபை நெட்வொர்க் உள்ளது</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"வைஃபை நெட்வொர்க்கில் உள்நுழையவும்"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"நெட்வொர்க்கில் உள்நுழையவும்"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"நிறுவல் அமர்வுகளைப் படிக்க, பயன்பாட்டை அனுமதிக்கிறது. இது செயல்படும் தொகுப்பு நிறுவல்களைப் பற்றிய விவரங்களைப் பார்க்க அனுமதிக்கிறது."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"நிறுவல் தொகுப்புகளைக் கோருதல்"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"தொகுப்புகளின் நிறுவலைக் கோர, பயன்பாட்டை அனுமதிக்கும்."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"பேட்டரி மேம்படுத்தல்களைப் புறக்கணிப்பதற்கான அனுமதியைக் கோரு"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"பயன்பாட்டிற்கான பேட்டரி மேம்படுத்தல்களைப் புறக்கணிப்பதற்கான அனுமதியைக் கோர, பயன்பாட்டை அனுமதிக்கும்."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"அளவை மாற்றுவதற்கான கட்டுப்பாட்டிற்கு, இருமுறை தட்டவும்"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"விட்ஜெட்டைச் சேர்க்க முடியவில்லை."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"செல்"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"ஆண்டைத் தேர்ந்தெடுக்கவும்"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> நீக்கப்பட்டது"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"பணியிடம் <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"இந்தத் திரையை விலக்க, \"முந்தையது\" பொத்தானைத் தொட்டுப் பிடிக்கவும்."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"இந்தத் திரையை அகற்ற, முந்தையது மற்றும் மேலோட்டப் பார்வை ஆகிய இரண்டையும் தொட்டுப் பிடித்திருக்கவும்."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"பயன்பாடு பொருத்தப்பட்டது: பொருத்தியதை நீக்குவதற்கு இந்தச் சாதனத்தில் அனுமதியில்லை."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"திரை பின் செய்யப்பட்டது"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"திரையின் பின் அகற்றப்பட்டது"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"மேலும் அறிய தொடவும்."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"முடக்கப்பட்டது: <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"குழு அழைப்பு"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"பதட்டப்படாதீர்கள், அருகில் ஏதேனும் பாதுகாப்பான இடம் உள்ளதா எனப் பாருங்கள்."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"கடலோரப் பகுதிகளிலும் ஆற்றங்கரைகளிலும் வசிப்பவர்கள் உடனடியாகப் பாதுகாப்பான இடத்திற்குச் (மேட்டுப்பகுதி) செல்லவும்."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"பதட்டப்படாதீர்கள், அருகில் ஏதேனும் பாதுகாப்பான இடம் உள்ளதா எனப் பாருங்கள்."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"அவசரக் காலச் செய்திகளுக்கான சோதனை"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

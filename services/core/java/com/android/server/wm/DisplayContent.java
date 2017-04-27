@@ -28,15 +28,11 @@ import static com.android.server.wm.WindowManagerDebugConfig.TAG_WM;
 import static com.android.server.wm.WindowState.RESIZE_HANDLE_WIDTH_IN_DP;
 
 import android.app.ActivityManager.StackId;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Region.Op;
-import android.os.Build;
-import android.os.UserHandle;
 import android.util.DisplayMetrics;
 import android.util.Slog;
 import android.view.Display;
@@ -723,17 +719,21 @@ class DisplayContent {
 
     boolean canAddToastWindowForUid(int uid) {
         // We allow one toast window per UID being shown at a time.
-        WindowList windows = getWindowList();
-        final int windowCount = windows.size();
+        // Also if the app is focused adding more than one toast at
+        // a time for better backwards compatibility.
+        boolean alreadyHasToastWindow = false;
+        final int windowCount = mWindows.size();
         for (int i = 0; i < windowCount; i++) {
-            WindowState window = windows.get(i);
-            if (window.mAttrs.type == TYPE_TOAST && window.mOwnerUid == uid
-                    && !window.mPermanentlyHidden && !window.mAnimatingExit
-                    && !window.mRemoveOnExit) {
-                return false;
+            final WindowState window = mWindows.get(i);
+            if (window.isFocused() && window.getOwningUid() == uid) {
+                return true;
+            }
+            if (window.mAttrs.type == TYPE_TOAST && window.getOwningUid() == uid
+                    && !window.isRemovedOrHidden()) {
+                alreadyHasToastWindow = true;
             }
         }
-        return true;
+        return !alreadyHasToastWindow;
     }
 
     void scheduleToastWindowsTimeoutIfNeededLocked(WindowState oldFocus,

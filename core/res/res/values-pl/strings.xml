@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Problem z połączeniem lub błędny kod MMI."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Operacja jest ograniczona wyłącznie do numerów ustalonych."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Podczas roamingu nie można zmienić ustawień przekazywania połączeń z telefonu."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Usługa została włączona."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Usługa została włączona dla:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Usługa została wyłączona."</string>
@@ -90,14 +91,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"ID rozmówcy ustawiony jest domyślnie na „nie zastrzeżony”. Następne połączenie: nie zastrzeżony"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Usługa nie jest świadczona."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Nie możesz zmienić ustawienia ID rozmówcy."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Usługa transmisji danych jest zablokowana."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Usługa połączeń alarmowych jest zablokowana."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Usługa głosowa jest zablokowana."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Wszystkie usługi głosowe są zablokowane."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Usługa SMS jest zablokowana."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Usługi głosowe/danych są zablokowane."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Usługi głosowe/SMS są zablokowane."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Wszystkie usługi głosowe/danych/SMS są zablokowane."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Brak zasięgu sieci"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Aby poprawić odbiór, zmień typ sieci – wybierz Ustawienia &gt; Sieci komórkowe &gt; Preferowany typ sieci."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Drugie urządzenie zażądało trybu „TTY pełny”"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Drugie urządzenie zażądało trybu „TTY HCO”"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Drugie urządzenie zażądało trybu „TTY VCO”"</string>
@@ -183,6 +194,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Profil do pracy został usunięty z powodu braku aplikacji administracyjnej."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Brakuje aplikacji administracyjnej profilu do pracy lub jest ona uszkodzona. Z tego powodu Twój profil do pracy i związane z nim dane zostały usunięte. Skontaktuj się ze swoim administratorem, by uzyskać pomoc."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Twój profil do pracy nie jest już dostępny na tym urządzeniu."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Ruch w sieci jest monitorowany"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Kliknij, by dowiedzieć się więcej"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Twoje urządzenie zostanie wyczyszczone"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Aplikacja administracyjna nie ma wszystkich składników lub jest uszkodzona i nie można jej użyć. Twoje urządzenie zostanie teraz wyczyszczone. Skontaktuj się ze swoim administratorem, aby uzyskać pomoc."</string>
     <string name="me" msgid="6545696007631404292">"Ja"</string>
@@ -257,7 +270,7 @@
     <string name="permgroupdesc_calendar" msgid="3889615280211184106">"dostęp do kalendarza"</string>
     <string name="permgrouplab_sms" msgid="228308803364967808">"SMS"</string>
     <string name="permgroupdesc_sms" msgid="4656988620100940350">"wysyłanie i wyświetlanie SMS-ów"</string>
-    <string name="permgrouplab_storage" msgid="1971118770546336966">"Pamięć"</string>
+    <string name="permgrouplab_storage" msgid="1971118770546336966">"Pamięć wewnętrzna"</string>
     <string name="permgroupdesc_storage" msgid="637758554581589203">"dostęp do zdjęć, multimediów i plików na Twoim urządzeniu"</string>
     <string name="permgrouplab_microphone" msgid="171539900250043464">"Mikrofon"</string>
     <string name="permgroupdesc_microphone" msgid="4988812113943554584">"nagrywanie dźwięku"</string>
@@ -383,6 +396,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Zezwala aplikacji na korzystanie z usługi komunikatora, by nawiązywać połączenia bez Twojego udziału."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"odczytywanie stanu i informacji o telefonie"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Pozwala aplikacji na dostęp do funkcji telefonicznych urządzenia. Aplikacja z tym uprawnieniem może odczytać numer telefonu i identyfikator urządzenia, sprawdzić, czy połączenie jest aktywne, oraz poznać numer, z którym jest nawiązane połączenie."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"przekazywanie połączeń przez system"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Zezwala aplikacji na przekazywanie połączeń przez system, by poprawić ich jakość."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"zapobieganie przechodzeniu tabletu do trybu uśpienia"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"powstrzymywanie usypiania telewizora"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"zapobieganie przejściu telefonu w stan uśpienia"</string>
@@ -1008,9 +1023,9 @@
     <string name="yes" msgid="5362982303337969312">"OK"</string>
     <string name="no" msgid="5141531044935541497">"Anuluj"</string>
     <string name="dialog_alert_title" msgid="2049658708609043103">"Uwaga"</string>
-    <string name="loading" msgid="7933681260296021180">"Wczytywanie…"</string>
-    <string name="capital_on" msgid="1544682755514494298">"Wł"</string>
-    <string name="capital_off" msgid="6815870386972805832">"Wył"</string>
+    <string name="loading" msgid="7933681260296021180">"Wczytuję…"</string>
+    <string name="capital_on" msgid="1544682755514494298">"Wł."</string>
+    <string name="capital_off" msgid="6815870386972805832">"Wył."</string>
     <string name="whichApplication" msgid="4533185947064773386">"Wykonaj czynność przez..."</string>
     <string name="whichApplicationNamed" msgid="8260158865936942783">"Wykonaj czynność w aplikacji %1$s"</string>
     <string name="whichApplicationLabel" msgid="7425855495383818784">"Wykonaj działanie"</string>
@@ -1109,18 +1124,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Brak"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Dzwonki"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Nieznany dzwonek"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="few">Dostępne są sieci Wi-Fi</item>
-      <item quantity="many">Dostępne są sieci Wi-Fi</item>
-      <item quantity="other">Dostępne są sieci Wi-Fi</item>
-      <item quantity="one">Dostępna jest sieć Wi-Fi</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="few">Dostępne są otwarte sieci Wi-Fi</item>
-      <item quantity="many">Dostępne są otwarte sieci Wi-Fi</item>
-      <item quantity="other">Dostępne są otwarte sieci Wi-Fi</item>
-      <item quantity="one">Dostępna jest otwarta sieć Wi-Fi</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Zaloguj się w sieci Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Zaloguj się do sieci"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1258,6 +1261,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Pozwala aplikacji odczytywać sesje instalacji. Umożliwia to jej na poznanie szczegółów aktywnych instalacji pakietów."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"żądanie instalacji pakietów"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Zezwala aplikacji żądanie instalacji pakietów."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"Prośba o ignorowanie optymalizacji wykorzystania baterii"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Zezwala aplikacji na proszenie o uprawnienia do ignorowania optymalizacji wykorzystania baterii w przypadku danej aplikacji."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Dotknij dwukrotnie, aby sterować powiększeniem"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Nie można dodać widżetu."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"OK"</string>
@@ -1284,7 +1289,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Tapeta"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Zmień tapetę"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Odbiornik powiadomień"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Odbiornik rzeczywistości wirtualnej"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Odbiornik VR"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Dostawca warunków"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Usługa rankingu powiadomień"</string>
     <string name="vpn_title" msgid="19615213552042827">"VPN aktywny"</string>
@@ -1612,7 +1617,7 @@
     <string name="select_year" msgid="7952052866994196170">"Wybierz rok"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> usunięte"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> (praca)"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Aby odpiąć ten ekran, naciśnij i przytrzymaj Wstecz."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Aby odpiąć ten ekran, naciśnij i przytrzymaj Wstecz oraz Przegląd."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Aplikacja jest przypięta. Nie możesz jej odpiąć na tym urządzeniu."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Ekran przypięty"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Ekran odpięty"</string>
@@ -1750,4 +1755,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Kliknij, by dowiedzieć się więcej."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Wyłączono: <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"Połączenie konferencyjne"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Zachowaj spokój i poszukaj schronienia w pobliżu."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Niezwłocznie ewakuuj się z regionów nabrzeżnych i położonych przy rzekach w bezpieczniejsze miejsce, np. na wzniesienie."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Zachowaj spokój i poszukaj schronienia w pobliżu."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Test komunikatów alarmowych"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

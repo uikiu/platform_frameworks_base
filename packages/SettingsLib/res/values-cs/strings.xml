@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"Uloženo"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"Vypnuto"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"Selhání konfigurace protokolu IP"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"Nejste připojeni, protože síť je příliš slabá"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"Selhání připojení Wi-Fi"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"Problém s ověřením"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"Mimo dosah"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"Vždy povolit Wi-Fi roaming"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"Mobilní data jsou vždy aktivní"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"Zakázat absolutní hlasitost"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"Verze profilu Bluetooth AVRCP"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"Vyberte verzi profilu Bluetooth AVRCP"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"Bluetooth Audio – kodek"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"Vyberte zvukový kodek Bluetooth"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"Bluetooth Audio – vzorkovací frekvence"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"Vyberte zvukový kodek Bluetooth:\nVzorkovací frekvence"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"Bluetooth Audio – počet bitů na vzorek"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"Vyberte zvukový kodek Bluetooth:\nPočet bitů na vzorek"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"Bluetooth Audio – režim kanálu"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"Vyberte zvukový kodek Bluetooth:\nRežim kanálu"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"Kodek Bluetooth Audio LDAC: Kvalita přehrávání"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"Vyberte kodek Bluetooth Audio LDAC:\nKvalita přehrávání"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"Streamování: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"Zobrazit možnosti certifikace bezdrátového displeje"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"Zvýšit úroveň protokolování Wi‑Fi zobrazenou v SSID a RSSI při výběru sítě Wi‑Fi."</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"Pokud je tato možnost zapnuta, bude síť Wi-Fi agresivnější při předávání datového připojení mobilní síti při slabém signálu Wi-Fi."</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"Vlastní (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"Nápověda a zpětná vazba"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"Nabídka"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"Chcete-li v ukázkovém režimu obnovit zařízení do továrního nastavení, zadejte heslo"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"Další"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"Je třeba zadat heslo"</string>
 </resources>

@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Холболтын асуудал эсвэл буруу MMI код."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Ажиллагаа зөвөх тогтсон дугаараар хязгаарлагдсан."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Таныг роуминг үйлчилгээг идэвхжүүлсэн үед таны утаснаас дуудлага дамжуулах тохиргоог өөрчлөх боломжгүй."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Үйлчилгээ идэвхжсэн."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Дараах үйлчилгээ идэвхтэй болсон:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Үйлчилгээ идэвхгүй болсон."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Дуудлага хийгчийн ID хязгаарлагдсан. Дараагийн дуудлага: Хязгаарлагдсан"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Үйлчилгээ провишн хийгдээгүй ."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Та дуудлага хийгчийн ID тохиргоог солиж чадахгүй."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Дата үйлчилгээ хаагдсан."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Яаралтай үйлчилгээ хаагдсан."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Дуут үйлчилгээ хориглогдсон."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Бүх дуут үйлчилгээнүүд хориглогдсон."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS үйлчилгээ хаагдсан."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Дуут/дата үйлчилгээ хаагдсан."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Дуут/SMS үйлчилгээнүүд хориглогдсон."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Бүх дуут/дата/SMS үйлчилгээнүүд хориглогдсон."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Сүлжээнд холбогдох боломжгүй байна"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Хүлээн авалтыг сайжруулахын тулд Тохиргоо &gt; Үүрэн сүлжээ &gt; Сүлжээний төрөл хэсгийг сонгон төрлөө өөрчилнө үү."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Хандлагын цэгт хүсэлт тавьсан TTY Mode FULL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Хандлагын цэгт хүсэлт тавьсан TTY Mode HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Хандлагын цэгт хүсэлт тавьсан TTY Mode VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Зохицуулагч аппликейшн алга болсон учраас ажлын профайл устсан байна."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Ажлын профайлын зохицуулагч аппликейшн алга болсон эсвэл эвдэрсэн байна. Үүний улмаас таны ажлын профайл болон холбогдох мэдээллүүд устсан байна. Тусламж хэрэгтэй байгаа бол админтай холбоо барина уу."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Таны ажлын профайл энэ төхөөрөмж дээр ажиллахгүй болсон байна."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Сүлжээний ачааллыг хянаж байна"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Дэлгэрэнгүй үзэхийн тулд товшино уу"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Таны төхөөрөмж устах болно."</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Зохицуулагч аппликейшны зарим нэг хэсэг дутуу эсвэл эвдэрсэн байгаа тул ашиглах боломжгүй байна. Таны төхөөрөмжийг одоо устгах болно. Танд тусламж хэрэгтэй байгаа бол админтайгаа холбоо барина уу."</string>
     <string name="me" msgid="6545696007631404292">"Би"</string>
@@ -215,7 +228,7 @@
     <string name="global_action_lock" msgid="2844945191792119712">"Дэлгэцний түгжээ"</string>
     <string name="global_action_power_off" msgid="4471879440839879722">"Унтраах"</string>
     <string name="global_action_emergency" msgid="7112311161137421166">"Яаралтай тусламж"</string>
-    <string name="global_action_bug_report" msgid="7934010578922304799">"Алдаа мэдээллэх"</string>
+    <string name="global_action_bug_report" msgid="7934010578922304799">"Алдаа мэдээлэх"</string>
     <string name="bugreport_title" msgid="2667494803742548533">"Согог репорт авах"</string>
     <string name="bugreport_message" msgid="398447048750350456">"Энэ таны төхөөрөмжийн одоогийн статусын талаарх мэдээллийг цуглуулах ба имэйл мессеж болгон илгээнэ. Алдааны мэдэгдлээс эхэлж илгээхэд бэлэн болоход хэсэг хугацаа зарцуулагдана тэвчээртэй байна уу."</string>
     <string name="bugreport_option_interactive_title" msgid="8635056131768862479">"Интерактив тайлан"</string>
@@ -265,7 +278,7 @@
     <string name="capability_desc_canRetrieveWindowContent" msgid="3772225008605310672">"Таны харилцан үйлчлэх цонхны контентоос шалгах."</string>
     <string name="capability_title_canRequestTouchExploration" msgid="3108723364676667320">"Хүрч танихыг асаах"</string>
     <string name="capability_desc_canRequestTouchExploration" msgid="7543249041581408313">"Товшсон зүйлсийг чангаар хэлэх ба дэлгэцийг дохио ашиглан таних боломжтой."</string>
-    <string name="capability_title_canRequestEnhancedWebAccessibility" msgid="1739881766522594073">"Сайжруулсан веб хандалтыг асаах"</string>
+    <string name="capability_title_canRequestEnhancedWebAccessibility" msgid="1739881766522594073">"Сайжруулсан вэб хандалтыг асаах"</string>
     <string name="capability_desc_canRequestEnhancedWebAccessibility" msgid="7881063961507511765">"Апп контентод илүү хялбар хандуулахын тулд скриптыг суулгана."</string>
     <string name="capability_title_canRequestFilterKeyEvents" msgid="2103440391902412174">"Бичсэн текстээ ажиглах"</string>
     <string name="capability_desc_canRequestFilterKeyEvents" msgid="7463135292204152818">"Кредит картын дугаар болон нууц үг зэрэг хувийн датаг агуулж байна."</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Апп нь дуудлага хийхдээ таны оролцоогүйгээр IMS үйлчилгээг ашиглах боломжтой."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"утасны статус ба таниулбарыг унших"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Апп нь төхөөрөмжийн утасны функцд хандах боломжтой. Энэ зөвшөөрөл нь апп-д утасны дугаар болон төхөөрөмжийн ID-г, дуудлага идэвхтэй эсэх, холын дугаар дуудлагаар холбогдсон байгаа эсэхийг тогтоох боломжийг олгоно,"</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"системээр дамжуулах дуудлага"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Дуудлагыг сайжруулахын тулд дуудлагаа системээр дамжуулах зөвшөөрлийг апп-д олгодог."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"таблетыг унтуулахгүй байлгах"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"Телевиз-ийн гэрэл унтрахаас сэргийл"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"утсыг унтуулахгүй байлгах"</string>
@@ -436,7 +451,7 @@
     <string name="permlab_manageFingerprint" msgid="5640858826254575638">"хурууны хээний програм хангамжийг удирдах"</string>
     <string name="permdesc_manageFingerprint" msgid="178208705828055464">"Хурууны хээний загварыг нэмэх эсвэл усгтах үйлдлийг хийх зөвшөөрлийг програмд олгодог."</string>
     <string name="permlab_useFingerprint" msgid="3150478619915124905">"хурууны хээний програм хангамжийг ашиглах"</string>
-    <string name="permdesc_useFingerprint" msgid="9165097460730684114">"Баталгаажуулалт хийх зорилгоор хурууны хээний програм хамгамжийг ашиглах зөвшөөрлийг програмд олгодог"</string>
+    <string name="permdesc_useFingerprint" msgid="9165097460730684114">"Баталгаажуулалт хийх зорилгоор хурууны хээний апп хамгамжийг ашиглах зөвшөөрлийг аппд олгодог"</string>
     <string name="fingerprint_acquired_partial" msgid="735082772341716043">"Хурууны хээг дутуу уншуулсан байна. Дахин оролдоно уу."</string>
     <string name="fingerprint_acquired_insufficient" msgid="4596546021310923214">"Хурууны хээ боловсруулж чадахгүй байна. Дахин оролдоно уу."</string>
     <string name="fingerprint_acquired_imager_dirty" msgid="1087209702421076105">"Хурууны хээ мэдрэгч бохирдсон байна. Та цэвэрлэсний дараагаар дахин оролдоно уу."</string>
@@ -792,9 +807,9 @@
     <string name="autofill_parish" msgid="8202206105468820057">"Мөргөлч"</string>
     <string name="autofill_area" msgid="3547409050889952423">"Хэсэг"</string>
     <string name="autofill_emirate" msgid="2893880978835698818">"Эмират"</string>
-    <string name="permlab_readHistoryBookmarks" msgid="3775265775405106983">"өөрийн Веб хавчуурга болон түүхийг унших"</string>
+    <string name="permlab_readHistoryBookmarks" msgid="3775265775405106983">"өөрийн Вэб хавчуурга болон түүхийг унших"</string>
     <string name="permdesc_readHistoryBookmarks" msgid="8462378226600439658">"Апп нь Хөтчийн зочилж байсан бүх URL-н түүх болон Хөтчийн бүх хавчуургыг унших боломжтой. Анхаар: Энэ зөвшөөрөл нь гуравдагч талын хөтөч эсвэл вебээр хөтөчлөх чадавхтай аппликешнүүдэд ашиглагдахгүй байх боломжтой."</string>
-    <string name="permlab_writeHistoryBookmarks" msgid="3714785165273314490">"веб хавчуурга болон түүхийг бичих"</string>
+    <string name="permlab_writeHistoryBookmarks" msgid="3714785165273314490">"вэб хавчуурга болон түүхийг бичих"</string>
     <string name="permdesc_writeHistoryBookmarks" product="tablet" msgid="6825527469145760922">"Апп нь таны таблет дээр хадгалагдсан Хөтчийн түүх эсвэл хавчуургыг өөрчлөх боломжтой. Энэ нь апп-д Хөтчийн датаг арилгах эсвэл өөрчлөх боломжийг олгоно. Анхаар: Энэ зөвшөөрөл нь гуравдагч талын хөтөч эсвэл вебээр хөтөчлөх чадвартай аппликешнд ажиллахгүй байх боломжтой."</string>
     <string name="permdesc_writeHistoryBookmarks" product="tv" msgid="7007393823197766548">"Апп-д телевиз-д хадгалагдсан Вэб хөтчийн түүх, хавчуургыг өөрчлөхийг зөвшөөрдөг. Энэ нь апп-д Вэб хөтчийн датаг устгах эсвэо өөрчлөхийг зөвшөөрч болох юм. Жич: энэ зөвшөөрөл нь гуравдагч вэб хөтөч эсвэл вэб хайлт хийх чадвартай апп-ны хувьд үйлчлэхгүй."</string>
     <string name="permdesc_writeHistoryBookmarks" product="default" msgid="8497389531014185509">"Апп нь таны утсан дээр хадгалагдсан Хөтчийн түүх эсвэл хавчуургыг өөрчлөх боломжтой. Энэ нь апп-д Хөтчийн датаг арилгах эсвэл өөрчлөх боломжийг олгоно. Анхаар: Энэ зөвшөөрөл нь гуравдагч талын хөтөч эсвэл вебээр хөтөчлөх чадвартай аппликешнд ажиллахгүй байх боломжтой."</string>
@@ -803,7 +818,7 @@
     <string name="permlab_addVoicemail" msgid="5525660026090959044">"дуут шуудан нэмэх"</string>
     <string name="permdesc_addVoicemail" msgid="6604508651428252437">"Таны дуут шуудангийн ирсэн мэйлд зурвас нэмэхийг апп-д зөвшөөрөх."</string>
     <string name="permlab_writeGeolocationPermissions" msgid="5962224158955273932">"Хөтчийн геобайршлын зөвшөөрлийг өөрчлөх"</string>
-    <string name="permdesc_writeGeolocationPermissions" msgid="1083743234522638747">"Апп нь Хөтчийн гео байршлын зөвшөөрлийг өөрчлөх боломжтой. Хортой апп нь энийг ашиглан дурын веб хуудасруу байршлын мэдээллийг илгээх боломжтой."</string>
+    <string name="permdesc_writeGeolocationPermissions" msgid="1083743234522638747">"Апп нь Хөтчийн гео байршлын зөвшөөрлийг өөрчлөх боломжтой. Хортой апп нь энийг ашиглан дурын вэб хуудасруу байршлын мэдээллийг илгээх боломжтой."</string>
     <string name="save_password_message" msgid="767344687139195790">"Та хөтчид энэ нууц үгийг сануулах уу?"</string>
     <string name="save_password_notnow" msgid="6389675316706699758">"Одоо биш"</string>
     <string name="save_password_remember" msgid="6491879678996749466">"Санах"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Алийг нь ч биш"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Хонхны ая"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Үл мэдэгдэх хонхны ая"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Wi-Fi сүлжээ ашиглах боломжтой</item>
-      <item quantity="one">Wi-Fi сүлжээ ашиглах боломжтой</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Нээлттэй Wi-Fi сүлжээ ашиглах боломжтой</item>
-      <item quantity="one">Нээлттэй Wi-Fi сүлжээ ашиглах боломжтой</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Wi-Fi сүлжээнд нэвтэрнэ үү"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Сүлжээнд нэвтэрнэ үү"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1202,12 +1209,14 @@
     <string name="ext_media_status_formatting" msgid="1085079556538644861">"Хэлбэршүүлж байна..."</string>
     <string name="ext_media_status_missing" msgid="5638633895221670766">"Оруулаагүй байна"</string>
     <string name="activity_list_empty" msgid="1675388330786841066">"Таарах активити олдсонгүй."</string>
-    <string name="permlab_route_media_output" msgid="6243022988998972085">"медиа гаралтын маршрут"</string>
+    <string name="permlab_route_media_output" msgid="6243022988998972085">"медиа гаралтын чиглэл"</string>
     <string name="permdesc_route_media_output" msgid="4932818749547244346">"Аппликешн нь медиа гаралтыг бусад гадаад төхөөрөмжрүү чиглүүлэх боломжтой."</string>
     <string name="permlab_readInstallSessions" msgid="3713753067455750349">"Суулгах харилцан үйлдлийг унших"</string>
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Аппликешн-д суулгах сешн уншихыг зөвшөөрнө. Энэ нь идэвхтэй багцуудыг суулгалтын талаар дэлгэрэнгүй мэдээллийг үзэх боломж олгоно."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"багц суулгахыг хүсэх"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Аппликейшн нь багц суулгахыг хүсэх боломжтой."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"батерейны оновчлол алгасахыг асуух"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Тухайн аппaaс батерейны оновчлол алгасах зөвшөөрөл асуухыг зөвшөөрдөг."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Өсгөх контрол дээр хоёр удаа товшино уу"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Виджет нэмж чадсангүй."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Очих"</string>
@@ -1268,7 +1277,7 @@
     <string name="progress_erasing" product="default" msgid="6596988875507043042">"SD картыг цэвэрлэж байна…"</string>
     <string name="share" msgid="1778686618230011964">"Хуваалцах"</string>
     <string name="find" msgid="4808270900322985960">"Олох"</string>
-    <string name="websearch" msgid="4337157977400211589">"Веб хайлт"</string>
+    <string name="websearch" msgid="4337157977400211589">"Вэб хайлт"</string>
     <string name="find_next" msgid="5742124618942193978">"Дараагийнхыг хайх"</string>
     <string name="find_previous" msgid="2196723669388360506">"Өмнөхөөс олох"</string>
     <string name="gpsNotifTicker" msgid="5622683912616496172">"<xliff:g id="NAME">%s</xliff:g>-н байршлын хүсэлт"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Жилийг сонгоно уу"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> устсан"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Ажлын <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Энэ дэлгэцийг эхэнд нээхийг болиулахын тулд Буцах товчлуурыг дараад, хүлээнэ үү."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Энэ дэлгэцийг тогтоосныг болиулахын тулд Буцах, Тойм гэснийг товшоод, хүлээнэ үү."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"App-ыг тусгайлан тэмдэглэсэн байна: Энэ төхөөрөмж дээр тусгайлан тэмдэглэсэн сонголтыг устгах боломжгүй."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Дэлгэцийг тогтоосон"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Дэлгэцийг сулласан"</string>
@@ -1676,4 +1685,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Дэлгэрэнгүй үзэх бол дарна уу."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g>-г цуцалсан"</string>
     <string name="conference_call" msgid="3751093130790472426">"Хурлын дуудлага"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Тайван байж, ойролцоох нуугдах газар хайна уу."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Эргийн бүс, голын эргийн бүсээс өндөрлөг газар зэрэг аюулгүй газар руу нэн даруй шилжинэ үү."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Тайван байж, ойролцоох нуугдах газар хайна уу."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Онцгой байдлын зурвасын тест"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"சேமிக்கப்பட்டது"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"முடக்கப்பட்டது"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP உள்ளமைவில் தோல்வி"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"தரம் குறைவான நெட்வொர்க்கின் காரணமாக, இணைக்கப்படவில்லை"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"வைஃபை இணைப்பில் தோல்வி"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"அங்கீகரிப்புச் சிக்கல்"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"தொடர்பு எல்லையில் இல்லை"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"எப்போதும் வைஃபை ரோமிங் ஸ்கேன்களை அனுமதி"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"செல்லுலார் தரவு எப்போதும் இயக்கத்தில்"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"அப்சல்யூட் ஒலியளவு அம்சத்தை முடக்கு"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"புளூடூத் AVRCP பதிப்பு"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"புளூடூத் AVRCP பதிப்பைத் தேர்ந்தெடு"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"புளூடூத் ஆடியோ கோடெக்"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"புளூடூத் ஆடியோ கோடெக்கைத் தேர்ந்தெடுக்கவும்"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"புளூடூத் ஆடியோ சாம்பிள் ரேட்"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"புளூடூத் ஆடியோ கோடெக்கைத் தேர்ந்தெடுக்கவும்:\nசாம்பிள் ரேட்"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"புளூடூத் ஆடியோ பிட்கள்/சாம்பிள்"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"புளூடூத் ஆடியோ கோடெக்கைத் தேர்ந்தெடுக்கவும்:\nபிட்கள்/சாம்பிள்"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"புளூடூத் ஆடியோ சேனல் பயன்முறை"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"புளூடூத் ஆடியோ கோடெக்கைத் தேர்ந்தெடுக்கவும்:\nசேனல் பயன்முறை"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"புளூடூத் ஆடியோ LDAC கோடெக்: வீடியோவின் தரம்"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"புளூடூத் ஆடியோ LDAC கோடெக்கைத் தேர்ந்தெடுக்கவும்:\nவீடியோவின் தரம்"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"ஸ்ட்ரீமிங்: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"வயர்லெஸ் காட்சி சான்றுக்கான விருப்பங்களைக் காட்டு"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"Wifi நுழைவு அளவை அதிகரித்து, வைஃபை தேர்வியில் ஒவ்வொன்றிற்கும் SSID RSSI ஐ காட்டுக"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"இயக்கப்பட்டதும், வைஃபை சிக்னல் குறையும் போது, வைஃபை முழுமையாக ஒத்துழைக்காமல் இருப்பதால் செல்லுலாரின் தரவு இணைப்புக்கு மாறும்"</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"தனிப்பயன் (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"உதவி &amp; கருத்து"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"மெனு"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"டெமோ பயன்முறையில் ஆரம்பநிலை மீட்டமைவைச் செயல்படுத்த, கடவுச்சொல்லை உள்ளிடவும்"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"அடுத்து"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"கடவுச்சொல் தேவை"</string>
 </resources>

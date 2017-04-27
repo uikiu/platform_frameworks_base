@@ -59,6 +59,7 @@ final class EphemeralResolverConnection {
     /** Intent used to bind to the service */
     private final Intent mIntent;
 
+    private volatile boolean mBindRequested;
     private IEphemeralResolver mRemoteInstance;
 
     public EphemeralResolverConnection(Context context, ComponentName componentName) {
@@ -112,8 +113,11 @@ final class EphemeralResolverConnection {
             return;
         }
 
-        mContext.bindServiceAsUser(mIntent, mServiceConnection,
-                Context.BIND_AUTO_CREATE | Context.BIND_FOREGROUND_SERVICE, UserHandle.SYSTEM);
+        if (!mBindRequested) {
+            mBindRequested = true;
+            mContext.bindServiceAsUser(mIntent, mServiceConnection,
+                    Context.BIND_AUTO_CREATE | Context.BIND_FOREGROUND_SERVICE, UserHandle.SYSTEM);
+        }
 
         final long startMillis = SystemClock.uptimeMillis();
         while (true) {

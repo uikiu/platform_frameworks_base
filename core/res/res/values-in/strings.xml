@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Masalah sambungan atau kode MMI tidak valid."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Operasi dibatasi untuk nomor panggilan tetap saja."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Tidak dapat mengubah setelan penerusan panggilan dari ponsel saat roaming"</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Layanan telah diaktifkan."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Layanan diaktifkan untuk:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Layanan telah dinonaktifkan."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Nomor penelepon default tidak dibatasi. Panggilan selanjutnya: Tidak dibatasi"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Layanan tidak diperlengkapi."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Anda tidak dapat mengubah setelan nomor penelepon."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Layanan data dicekal."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Layanan darurat dicekal."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Layanan suara dicekal."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Semua layanan suara dicekal."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Layanan SMS dicekal."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Layanan suara/data dicekal."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Layanan suara/SMS dicekal."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Semua layanan suara/data/SMS dicekal."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Tidak dapat menjangkau jaringan"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Untuk meningkatkan penerimaan sinyal, coba ubah jenis yang dipilih di Setelan &gt; Data seluler &gt; Jenis jaringan pilihan."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Rekan meminta Mode TTY PENUH"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Rekan meminta Mode TTY HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Rekan meminta Mode TTY VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Profil kerja dihapus karena tidak ada aplikasi admin."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Aplikasi admin profil kerja tidak ada atau rusak. Akibatnya, profil kerja dan data terkait telah dihapus. Hubungi administrator untuk meminta bantuan."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Profil kerja tidak tersedia lagi di perangkat ini."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Traffic jaringan sedang dipantau"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Tap untuk mempelajari lebih lanjut"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Perangkat akan dihapus"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Aplikasi admin kehilangan komponen atau rusak, dan tidak dapat digunakan. Perangkat sekarang akan dihapus. Hubungi administrator untuk meminta bantuan."</string>
     <string name="me" msgid="6545696007631404292">"Saya"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Memungkinkan aplikasi menggunakan layanan IMS untuk melakukan panggilan tanpa campur tangan Anda."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"baca identitas dan status ponsel"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Memungkinkan aplikasi mengakses fitur telepon perangkat. Izin ini memungkinkan aplikasi menentukan nomor telepon dan ID perangkat, apakah suatu panggilan aktif atau tidak, dan nomor jarak jauh yang tersambung oleh sebuah panggilan."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"sambungkan panggilan telepon melalui sistem"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Mengizinkan aplikasi menyambungkan panggilan telepon melalui sistem untuk menyempurnakan pengalaman menelepon."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"cegah tablet dari tidur"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"cegah agar TV tidak tidur"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"mencegah ponsel menjadi tidak aktif"</string>
@@ -988,7 +1003,7 @@
     <string name="whichImageCaptureApplicationLabel" msgid="6390303445371527066">"Jepret gambar"</string>
     <string name="alwaysUse" msgid="4583018368000610438">"Gunakan secara default untuk tindakan ini."</string>
     <string name="use_a_different_app" msgid="8134926230585710243">"Gunakan aplikasi yang berbeda"</string>
-    <string name="clearDefaultHintMsg" msgid="3252584689512077257">"Menghapus default di Setelan sistem &gt; Apl &gt; Terunduh."</string>
+    <string name="clearDefaultHintMsg" msgid="3252584689512077257">"Menghapus default di Setelan sistem &gt; Apl &gt; Terdownload."</string>
     <string name="chooseActivity" msgid="7486876147751803333">"Pilih tindakan"</string>
     <string name="chooseUsbActivity" msgid="6894748416073583509">"Pilih apl untuk perangkat USB"</string>
     <string name="noApplications" msgid="2991814273936504689">"Tidak ada apl yang dapat melakukan tindakan ini."</string>
@@ -1016,7 +1031,7 @@
     <string name="launch_warning_original" msgid="188102023021668683">"<xliff:g id="APP_NAME">%1$s</xliff:g> telah diluncurkan aslinya."</string>
     <string name="screen_compat_mode_scale" msgid="3202955667675944499">"Skala"</string>
     <string name="screen_compat_mode_show" msgid="4013878876486655892">"Selalu tampilkan"</string>
-    <string name="screen_compat_mode_hint" msgid="1064524084543304459">"Aktifkan kembali dialog ini di Setelan sistem &gt; Apl &gt; Terunduh."</string>
+    <string name="screen_compat_mode_hint" msgid="1064524084543304459">"Aktifkan kembali dialog ini di Setelan sistem &gt; Apl &gt; Terdownload."</string>
     <string name="unsupported_display_size_message" msgid="6545327290756295232">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak mendukung setelan Ukuran layar saat ini dan dapat menunjukkan perilaku yang tak diharapkan."</string>
     <string name="unsupported_display_size_show" msgid="7969129195360353041">"Selalu tampilkan"</string>
     <string name="smv_application" msgid="3307209192155442829">"Apl <xliff:g id="APPLICATION">%1$s</xliff:g> (proses <xliff:g id="PROCESS">%2$s</xliff:g>) telah melanggar kebijakan StrictMode yang diberlakukannya sendiri."</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Tidak Ada"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Nada dering"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Nada dering tidak dikenal"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Jaringan Wi-Fi tersedia</item>
-      <item quantity="one">Jaringan Wi-Fi tersedia</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Jaringan Wi-Fi terbuka tersedia</item>
-      <item quantity="one">Jaringan Wi-Fi terbuka tersedia</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Masuk ke jaringan Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Masuk ke jaringan"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Memungkinkan aplikasi membaca sesi pemasangan. Tindakan ini memungkinkannya melihat detail tentang pemasangan paket aktif."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"minta pasang paket"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Mengizinkan aplikasi meminta pemasangan paket."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"meminta mengabaikan pengoptimalan baterai"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Mengizinkan aplikasi meminta izin untuk mengabaikan pengoptimalan baterai bagi aplikasi tersebut."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Ketuk dua kali untuk kontrol perbesar/perkecil"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Tidak dapat menambahkan widget."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Buka"</string>
@@ -1234,7 +1243,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Wallpaper"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Ubah wallpaper"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Pendengar pemberitahuan"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Pemroses Realitas Maya"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Pemroses VR"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Penyedia ketentuan"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Layanan penentu peringkat notifikasi"</string>
     <string name="vpn_title" msgid="19615213552042827">"VPN diaktifkan"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Pilih tahun"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> dihapus"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Kantor <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Untuk melepas pin layar ini, sentuh &amp; tahan tombol Kembali."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Untuk melepas pin layar ini, sentuh &amp; tahan Kembali dan Ringkasan."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Pin dipasang ke aplikasi. Melepas pin tidak diizinkan di perangkat ini."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Layar disematkan"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Layar dicopot sematannya"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Sentuh untuk mempelajari lebih lanjut."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> dinonaktifkan"</string>
     <string name="conference_call" msgid="3751093130790472426">"Konferensi Telepon"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Tetap tenang dan cari tempat berlindung terdekat."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Evakuasi segera dari daerah pesisir dan area tepi sungai ke tempat yang lebih aman seperti dataran tinggi."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Tetap tenang dan cari tempat berlindung terdekat."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Tes pesan darurat"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

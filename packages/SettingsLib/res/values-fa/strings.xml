@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"ذخیره‌شده"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"غیرفعال شد"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"‏پیکربندی IP انجام نشد"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"اتصال ناموفق به دلیل شبکه با کیفیت پایین"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"‏اتصال Wi-Fi برقرار نشد"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"مشکل احراز هویت"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"در محدوده نیست"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"‏اسکن‌های رومینگ Wi‑Fi همیشه مجاز است"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"داده سلولی همیشه فعال"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"غیرفعال کردن میزان صدای مطلق"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"‏نسخه AVRCP بلوتوث"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"‏انتخاب نسخه AVRCP بلوتوث"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"کدک بلوتوث صوتی"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"انتخاب کدک صوتی بلوتوث"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"سرعت نمونه بلوتوث صوتی"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"انتخاب کدک صوتی بلوتوث:\nنرخ نمونه"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"بیت‌های بلوتوث صوتی در هر نمونه"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"انتخاب کدک صوتی بلوتوث:\nبیت در نمونه"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"حالت کانال بلوتوث‌ صوتی"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"انتخاب کدک صوتی بلوتوث:\nحالت کانال"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"‏کدک LDAC صوتی بلوتوث: کیفیت پخش"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"‏انتخاب کدک LDAC صوتی بلوتوث:\nکیفیت پخش"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"پخش جریانی: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"نمایش گزینه‌ها برای گواهینامه نمایش بی‌سیم"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"‏افزایش سطح گزارش‌گیری Wi‑Fi، نمایش به ازای SSID RSSI در انتخاب‌کننده Wi‑Fi"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"‏وقتی فعال است، در شرایط پایین بودن سیگنال، Wi‑Fi برای واگذار کردن اتصال داده به شبکه سلولی فعال‌تر خواهد بود."</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"سفارشی (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"راهنما و بازخورد"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"منو"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"برای انجام بازنشانی کارخانه‌ای در حالت نمایشی، گذرواژه را وارد کنید"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"بعدی"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"وارد کردن گذرواژه الزامی است"</string>
 </resources>

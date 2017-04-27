@@ -22,6 +22,8 @@ import android.annotation.SdkConstant;
 import android.annotation.SdkConstant.SdkConstantType;
 import android.annotation.SystemApi;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.ParcelUuid;
@@ -593,24 +595,40 @@ public final class BluetoothDevice implements Parcelable {
     public static final int TRANSPORT_LE = 2;
 
     /**
-     * 1M initiating PHY.
+     * Bluetooth LE 1M PHY. Used to refer to LE 1M Physical Channel for advertising, scanning or
+     * connection.
      */
     public static final int PHY_LE_1M = 1;
 
     /**
-     * 2M initiating PHY.
+     * Bluetooth LE 2M PHY. Used to refer to LE 2M Physical Channel for advertising, scanning or
+     * connection.
      */
     public static final int PHY_LE_2M = 2;
 
     /**
-     * LE Coded initiating PHY.
+     * Bluetooth LE Coded PHY. Used to refer to LE Coded Physical Channel for advertising, scanning
+     * or connection.
      */
-    public static final int PHY_LE_CODED = 4;
+    public static final int PHY_LE_CODED = 3;
 
     /**
-     * Any LE PHY.
+     * Bluetooth LE 1M PHY mask. Used to specify LE 1M Physical Channel as one of many available
+     * options in a bitmask.
      */
-    public static final int PHY_LE_ANY = PHY_LE_1M | PHY_LE_2M | PHY_LE_CODED;
+    public static final int PHY_LE_1M_MASK = 1;
+
+    /**
+     * Bluetooth LE 2M PHY mask. Used to specify LE 2M Physical Channel as one of many available
+     * options in a bitmask.
+     */
+    public static final int PHY_LE_2M_MASK = 2;
+
+    /**
+     * Bluetooth LE Coded PHY mask. Used to specify LE Coded Physical Channel as one of many
+     * available options in a bitmask.
+     */
+    public static final int PHY_LE_CODED_MASK = 4;
 
     /**
      * No preferred coding when transmitting on the LE Coded PHY.
@@ -1651,7 +1669,7 @@ public final class BluetoothDevice implements Parcelable {
      */
     public BluetoothGatt connectGatt(Context context, boolean autoConnect,
                                      BluetoothGattCallback callback, int transport) {
-        return (connectGatt(context, autoConnect,callback, TRANSPORT_AUTO, PHY_LE_1M));
+        return (connectGatt(context, autoConnect,callback, TRANSPORT_AUTO, PHY_LE_1M_MASK));
     }
 
     /**
@@ -1668,13 +1686,46 @@ public final class BluetoothDevice implements Parcelable {
      *             {@link BluetoothDevice#TRANSPORT_AUTO} or
      *             {@link BluetoothDevice#TRANSPORT_BREDR} or {@link BluetoothDevice#TRANSPORT_LE}
      * @param phy preferred PHY for connections to remote LE device. Bitwise OR of any of
-     *             {@link BluetoothDevice#PHY_LE_1M}, {@link BluetoothDevice#PHY_LE_2M},
-     *             and {@link BluetoothDevice#PHY_LE_CODED}. This option does not take effect if
-     *             {@code autoConnect} is set to true.
-     * @throws IllegalArgumentException if callback is null
+     *             {@link BluetoothDevice#PHY_LE_1M_MASK}, {@link BluetoothDevice#PHY_LE_2M_MASK},
+     *             and {@link BluetoothDevice#PHY_LE_CODED_MASK}. This option does not take effect
+     *             if {@code autoConnect} is set to true.
+     * @throws NullPointerException if callback is null
      */
     public BluetoothGatt connectGatt(Context context, boolean autoConnect,
                                      BluetoothGattCallback callback, int transport, int phy) {
+        return connectGatt(context, autoConnect,callback, TRANSPORT_AUTO, PHY_LE_1M_MASK, null);
+    }
+
+    /**
+     * Connect to GATT Server hosted by this device. Caller acts as GATT client.
+     * The callback is used to deliver results to Caller, such as connection status as well
+     * as any further GATT client operations.
+     * The method returns a BluetoothGatt instance. You can use BluetoothGatt to conduct
+     * GATT client operations.
+     * @param callback GATT callback handler that will receive asynchronous callbacks.
+     * @param autoConnect Whether to directly connect to the remote device (false)
+     *                    or to automatically connect as soon as the remote
+     *                    device becomes available (true).
+     * @param transport preferred transport for GATT connections to remote dual-mode devices
+     *             {@link BluetoothDevice#TRANSPORT_AUTO} or
+     *             {@link BluetoothDevice#TRANSPORT_BREDR} or {@link BluetoothDevice#TRANSPORT_LE}
+     * @param phy preferred PHY for connections to remote LE device. Bitwise OR of any of
+     *             {@link BluetoothDevice#PHY_LE_1M_MASK}, {@link BluetoothDevice#PHY_LE_2M_MASK},
+     *             an d{@link BluetoothDevice#PHY_LE_CODED_MASK}. This option does not take effect
+     *             if {@code autoConnect} is set to true.
+     * @param handler The handler to use for the callback. If {@code null}, callbacks will happen
+     *             on the service's main thread.
+     * @throws NullPointerException if callback is null
+     */
+    public BluetoothGatt connectGatt(Context context, boolean autoConnect,
+                                     BluetoothGattCallback callback, int transport, int phy,
+                                     Handler handler) {
+        if (callback == null)
+            throw new NullPointerException("callback is null");
+
+        if (handler == null)
+            handler = new Handler(Looper.getMainLooper());
+
         // TODO(Bluetooth) check whether platform support BLE
         //     Do the check here or in GattServer?
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -1686,7 +1737,7 @@ public final class BluetoothDevice implements Parcelable {
                 return null;
             }
             BluetoothGatt gatt = new BluetoothGatt(iGatt, this, transport, phy);
-            gatt.connect(autoConnect, callback);
+            gatt.connect(autoConnect, callback, handler);
             return gatt;
         } catch (RemoteException e) {Log.e(TAG, "", e);}
         return null;

@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Problema de conexión o código incorrecto de MMI."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"La operación está limitada a números de marcación fija."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"No se puede cambiar la configuración de reenvío de llamadas de tu teléfono mientras usas el servicio de roaming."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Se ha activado el servicio."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Se activó el servicio para:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Se ha desactivado el servicio."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"El Identificador de llamadas está predeterminado en no restringido. Llamada siguiente: no restringido"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Servicio no suministrado."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"No puedes cambiar la configuración del identificador de llamadas."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"El servicio de datos está bloqueado."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"El servicio de emergencias está bloqueado."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"El servicio de voz está bloqueado."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Todos los servicios de voz están bloqueados."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"El servicio de SMS está bloqueado."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Los servicios de voz o datos están bloqueados."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Los servicios de voz/SMS están bloqueados."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Todos los servicios de voz, datos o SMS están bloqueados."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"No se puede establecer conexión con la red"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Para mejorar la recepción, intenta cambiar el tipo de red seleccionado en Configuración &gt; Redes móviles &gt; Tipo de red preferido."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"El dispositivo del mismo nivel solicitó el modo TTY FULL."</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"El dispositivo del mismo nivel solicitó el modo TTY HCO."</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"El dispositivo del mismo nivel solicitó el modo TTY VCO."</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Se eliminó el perfil de trabajo debido a la falta de una aplicación de administración."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"La aplicación de administración de perfil de trabajo no se encuentra o está dañada. Por lo tanto, se eliminaron tu perfil de trabajo y los datos relacionados. Para obtener asistencia, comunícate con el administrador."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Tu perfil de trabajo ya no está disponible en este dispositivo."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Se está controlando el tráfico de red"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Presiona para obtener más información"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Se borrarán los datos del dispositivo"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"La aplicación de administración no cuenta con algunos componentes o está dañada, de modo que no puede usarse. Se borrarán los datos del dispositivo. Para obtener asistencia, comunícate con el administrador."</string>
     <string name="me" msgid="6545696007631404292">"Yo"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Permite que la aplicación utilice el servicio IMS para hacer llamadas sin tu intervención."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"leer la identidad y el estado del dispositivo"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Permite que la aplicación acceda a las funciones de teléfono del dispositivo. La aplicación puede utilizar este permiso para descubrir identificadores de dispositivos y números de teléfono, para saber si una llamada está activa y para conocer el número remoto con el que se ha establecido conexión mediante una llamada."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"Transmite llamadas a través del sistema"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Permite que la app transmita las llamadas a través del sistema para mejorar la experiencia de llamadas."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"evitar que el tablet entre en estado de inactividad"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"evitar que la TV entre en suspensión"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"evitar que el dispositivo entre en estado de inactividad"</string>
@@ -792,12 +807,12 @@
     <string name="autofill_parish" msgid="8202206105468820057">"Circunscripción"</string>
     <string name="autofill_area" msgid="3547409050889952423">"Área"</string>
     <string name="autofill_emirate" msgid="2893880978835698818">"Emirato"</string>
-    <string name="permlab_readHistoryBookmarks" msgid="3775265775405106983">"leer tus marcadores web y el historial"</string>
-    <string name="permdesc_readHistoryBookmarks" msgid="8462378226600439658">"Permite que la aplicación consulte el historial de todas las URL visitadas por el navegador, y todos sus marcadores. Nota: Este permiso no puede ser utilizado por navegadores externos ni otras aplicaciones que tengan funciones de navegación por Internet."</string>
-    <string name="permlab_writeHistoryBookmarks" msgid="3714785165273314490">"escribir marcadores web e historial"</string>
-    <string name="permdesc_writeHistoryBookmarks" product="tablet" msgid="6825527469145760922">"Permite que la aplicación modifique el historial o los marcadores del navegador almacenados en la tablet. La aplicación puede utilizar este permiso para borrar o modificar datos del navegador. Nota: Este permiso no puede ser utilizado por navegadores externos ni otras aplicaciones que tengan funciones de navegación por Internet."</string>
-    <string name="permdesc_writeHistoryBookmarks" product="tv" msgid="7007393823197766548">"Permite que la aplicación modifique el historial o los marcadores del navegador almacenados en la TV. Esta opción puede permitir que la aplicación borre o modifique los datos del navegador. Ten en cuenta que este permiso no puede ser usado por navegadores de terceros ni otras aplicaciones con capacidades de navegación web."</string>
-    <string name="permdesc_writeHistoryBookmarks" product="default" msgid="8497389531014185509">"Permite que la aplicación modifique el historial o los marcadores del navegador almacenados en el dispositivo. La aplicación puede utilizar este permiso para borrar o modificar los datos del navegador. Nota: Este permiso no puede ser utilizado por navegadores externos ni otras aplicaciones que tengan funciones de navegación por Internet."</string>
+    <string name="permlab_readHistoryBookmarks" msgid="3775265775405106983">"leer tus favoritos web y el historial"</string>
+    <string name="permdesc_readHistoryBookmarks" msgid="8462378226600439658">"Permite que la aplicación consulte el historial de todas las URL visitadas por el navegador, y todos sus favoritos. Nota: Este permiso no puede ser utilizado por navegadores externos ni otras aplicaciones que tengan funciones de navegación por Internet."</string>
+    <string name="permlab_writeHistoryBookmarks" msgid="3714785165273314490">"escribir favoritos web e historial"</string>
+    <string name="permdesc_writeHistoryBookmarks" product="tablet" msgid="6825527469145760922">"Permite que la aplicación modifique el historial o los favoritos del navegador almacenados en la tablet. La aplicación puede utilizar este permiso para borrar o modificar datos del navegador. Nota: Este permiso no puede ser utilizado por navegadores externos ni otras aplicaciones que tengan funciones de navegación por Internet."</string>
+    <string name="permdesc_writeHistoryBookmarks" product="tv" msgid="7007393823197766548">"Permite que la aplicación modifique el historial o los favoritos del navegador almacenados en la TV. Esta opción puede permitir que la aplicación borre o modifique los datos del navegador. Ten en cuenta que este permiso no puede ser usado por navegadores de terceros ni otras aplicaciones con capacidades de navegación web."</string>
+    <string name="permdesc_writeHistoryBookmarks" product="default" msgid="8497389531014185509">"Permite que la aplicación modifique el historial o los favoritos del navegador almacenados en el dispositivo. La aplicación puede utilizar este permiso para borrar o modificar los datos del navegador. Nota: Este permiso no puede ser utilizado por navegadores externos ni otras aplicaciones que tengan funciones de navegación por Internet."</string>
     <string name="permlab_setAlarm" msgid="1379294556362091814">"programar una alarma"</string>
     <string name="permdesc_setAlarm" msgid="316392039157473848">"Permite que la aplicación establezca una alarma en una aplicación de alarma instalada. Es posible que algunas aplicaciones de alarma no incluyan esta función."</string>
     <string name="permlab_addVoicemail" msgid="5525660026090959044">"agregar correo de voz"</string>
@@ -818,7 +833,7 @@
     <string name="search_go" msgid="8298016669822141719">"Buscar"</string>
     <string name="search_hint" msgid="1733947260773056054">"Buscar…"</string>
     <string name="searchview_description_search" msgid="6749826639098512120">"Buscar"</string>
-    <string name="searchview_description_query" msgid="5911778593125355124">"Consulta de búsqueda"</string>
+    <string name="searchview_description_query" msgid="5911778593125355124">"Búsqueda"</string>
     <string name="searchview_description_clear" msgid="1330281990951833033">"Eliminar la consulta"</string>
     <string name="searchview_description_submit" msgid="2688450133297983542">"Enviar consulta"</string>
     <string name="searchview_description_voice" msgid="2453203695674994440">"Búsqueda por voz"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Ninguno"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Tonos de llamada"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Tono de llamada desconocido"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">redes de Wi-Fi disponibles</item>
-      <item quantity="one">red de Wi-Fi disponible</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Abrir redes de Wi-Fi disponibles</item>
-      <item quantity="one">Abrir red de Wi-Fi disponible</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Accede a una red Wi-Fi."</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Acceder a la red"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Permite que una aplicación lea sesiones de instalación. Esto le permite ver detalles acerca de instalaciones de paquetes activas."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"solicitar la instalación de paquetes"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Permite que una aplicación solicite la instalación de paquetes."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"solicitar permiso para ignorar las optimizaciones de la batería"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Permite que una app solicite permiso para ignorar las optimizaciones de la batería."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Presiona dos veces para obtener el control del zoom"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"No se pudo agregar el widget."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Ir"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Seleccionar año"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> borrado"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> de trabajo"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Para dejar de fijar esta pantalla, mantén presionado Atrás."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Para dejar de fijar esta pantalla, mantén presionados Atrás y Recientes."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"La aplicación está fijada, no se puede anular la fijación en este dispositivo."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Pantalla fija"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Pantalla no fija"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Toca para obtener más información."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Se inhabilitó <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"Conferencia"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Mantén la calma y busca un refugio cercano."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Evacúa inmediatamente las regiones costeras y ribereñas en busca de un lugar seguro, como un terreno elevado."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Mantén la calma y busca un refugio cercano."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Prueba de mensajes de emergencia"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

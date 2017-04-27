@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Πρόβλημα σύνδεσης ή μη έγκυρος κώδικας MMI."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Η λειτουργία περιορίζεται μόνο σε προκαθορισμένους αριθμούς κλήσης."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Δεν είναι δυνατή η αλλαγή των ρυθμίσεων προώθησης κλήσεων από το τηλέφωνό σας κατά τη διάρκεια της περιαγωγής."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Η υπηρεσία ενεργοποιήθηκε."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Η υπηρεσία ενεργοποιήθηκε για:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Η υπηρεσία έχει απενεργοποιηθεί."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Η αναγνώριση κλήσης βρίσκεται από προεπιλογή στην \"μη περιορισμένη\". Επόμενη κλήση: Μη περιορισμένη"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Η υπηρεσία δεν προβλέπεται."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Δεν μπορείτε να αλλάξετε τη ρύθμιση του αναγνωριστικού καλούντος."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Η υπηρεσία δεδομένων είναι αποκλεισμένη."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Η υπηρεσία έκτακτης ανάγκης είναι αποκλεισμένη."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Η υπηρεσία φωνής έχει αποκλειστεί."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Όλες οι υπηρεσίες φωνής έχουν αποκλειστεί."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Η υπηρεσία SMS έχει αποκλειστεί."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Οι υπηρεσίες φωνής/δεδομένων έχουν αποκλειστεί."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Όλες οι υπηρεσίες φωνής/SMS έχουν αποκλειστεί."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Όλες οι υπηρεσίες φωνής/δεδομένων/SMS έχουν αποκλειστεί."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Δεν είναι δυνατή η σύνδεση στο δίκτυο"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Για να βελτιώσετε τη λήψη, δοκιμάστε να αλλάξετε τον επιλεγμένο τύπο από τις Ρυθμίσεις &gt; Δίκτυα κινητής τηλεφωνίας &gt; Προτιμώμενος τύπος δικτύου."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Αίτημα peer για TTY ΠΛΗΡΗΣ Λειτουργία"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Αίτημα peer για TTY Λειτουργία HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Αίτημα peer για TTY Λειτουργία VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Το προφίλ εργασίας διαγράφηκε επειδή λείπει η εφαρμογή διαχείρισης."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Η εφαρμογή διαχείρισης προφίλ εργασίας είτε λείπει είτε είναι κατεστραμμένη. Ως αποτέλεσμα, το προφίλ εργασίας και σχετικά δεδομένα διαγράφηκαν. Επικοινωνήστε με το διαχειριστή για βοήθεια."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Το προφίλ σας εργασίας δεν είναι πια διαθέσιμο σε αυτήν τη συσκευή."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Η επισκεψιμότητα δικτύου παρακολουθείται"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Πατήστε για να μάθετε περισσότερα"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Η συσκευή σας θα διαγραφεί"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Λείπουν στοιχεία από την εφαρμογή διαχείρισης ή είναι κατεστραμμένη, και δεν μπορεί να χρησιμοποιηθεί. Η συσκευή σας θα διαγραφεί. Επικοινωνήστε με το διαχειριστή για βοήθεια."</string>
     <string name="me" msgid="6545696007631404292">"Για εμένα"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Επιτρέπει στην εφαρμογή τη χρήση της υπηρεσίας IMS για την πραγματοποίηση κλήσεων χωρίς τη δική σας παρέμβαση."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"διαβάζει την κατάσταση και ταυτότητα τηλεφώνου"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Επιτρέπει στην εφαρμογή την πρόσβαση στις λειτουργίες τηλεφώνου της συσκευής. Αυτή η άδεια δίνει τη δυνατότητα στην εφαρμογή να καθορίζει τον αριθμό τηλεφώνου και τα αναγνωριστικά συσκευών, εάν μια κλήση είναι ενεργή, καθώς και τον απομακρυσμένο αριθμό που συνδέεται από μια κλήση."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"δρομολόγηση κλήσεων μέσω του συστήματος"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Επιτρέπει στην εφαρμογή να δρομολογεί τις κλήσεις της μέσω του συστήματος για να βελτιώσει την εμπειρία κλήσης."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"αποτρέπει την μετάβαση του tablet σε κατάσταση αδράνειας"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"αποτρέπει την μετάβαση της τηλεόρασης σε κατάσταση αδράνειας"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"αποτρέπει το τηλεφώνο να μεταβεί σε κατάσταση αδράνειας"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Κανένας"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Ήχοι κλήσης"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Άγνωστος ήχος κλήσης"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Υπάρχουν διαθέσιμα δίκτυα Wi-Fi</item>
-      <item quantity="one">Υπάρχει διαθέσιμο δίκτυο Wi-Fi</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Υπάρχουν διαθέσιμα ανοικτά δίκτυα Wi-Fi</item>
-      <item quantity="one">Υπάρχει διαθέσιμο ανοικτό δίκτυο Wi-Fi</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Συνδεθείτε στο δίκτυο Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Σύνδεση στο δίκτυο"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Επιτρέπει σε μια εφαρμογή την ανάγνωση των περιόδων σύνδεσης εγκατάστασης. Αυτό της επιτρέπει να βλέπει λεπτομέρειες σχετικά με τις εγκαταστάσεις του ενεργού πακέτου."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"ζητά πακέτα εγκατάστασης"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Επιτρέπει σε μια εφαρμογή να ζητά εγκατάσταση πακέτων."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"αίτημα αγνόησης βελτιστοποιήσεων μπαταρίας"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Επιτρέπει σε μια εφαρμογή να ζητήσει άδεια για την αγνόηση βελτιστοποιήσεων της μπαταρίας για τη συγκεκριμένη εφαρμογή."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Πατήστε δύο φορές για έλεγχο εστίασης"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Δεν ήταν δυνατή η προσθήκη του γραφικού στοιχείου."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Μετάβαση"</string>
@@ -1234,7 +1243,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Ταπετσαρία"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Αλλαγή ταπετσαρίας"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Υπηρεσία ακρόασης ειδοποίησης"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Λειτουργία ακρόασης Εικονικής Πραγματικότητας"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Λειτουργία ακρόασης VR"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Πάροχος συνθηκών"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Υπηρεσία κατάταξης ειδοποιήσεων"</string>
     <string name="vpn_title" msgid="19615213552042827">"Το VPN ενεργοποιήθηκε"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Επιλογή έτους"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> διαγράφηκε"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Εργασία <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Για να ξεκαρφιτσώσετε αυτήν την οθόνη, αγγίξτε παρατεταμένα \"Επιστροφή\"."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Για να ξεκαρφιτσώσετε αυτήν την οθόνη, αγγίξτε παρατεταμένα τις επιλογές \"Πίσω\" και \"Επισκόπηση\"."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Η εφαρμογή καρφιτσώθηκε: Το ξεκαρφίτσωμα δεν επιτρέπεται σε αυτήν τη συσκευή."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Η οθόνη καρφιτσώθηκε"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Η οθόνη ξεκαρφιτσώθηκε"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Αγγίξτε για να μάθετε περισσότερα."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Απενεργοποιημένο <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"Κλήση συνδιάσκεψης"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Μείνετε ψύχραιμοι και αναζητήστε κάποιο κοντινό καταφύγιο."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Εκκενώστε αμέσως τις παράκτιες περιοχές και τις περιοχές δίπλα σε ποτάμια και μετακινηθείτε σε ένα ασφαλέστερο μέρος, όπως περιοχές με υψόμετρο."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Μείνετε ψύχραιμοι και αναζητήστε κάποιο κοντινό καταφύγιο."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Δοκιμαστικό μήνυμα έκτακτης ανάγκης"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

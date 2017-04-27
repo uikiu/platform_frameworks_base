@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"Saglabāts"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"Atspējots"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP konfigurācijas kļūme"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"Savienojums nav izveidots zemas kvalitātes tīkla dēļ"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"Wi-Fi savienojuma kļūme"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"Autentificēšanas problēma"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"Nav diapazona ietvaros"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"Vienmēr atļaut Wi‑Fi meklēšanu"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"Vienmēr aktīvs mobilo datu savienojums"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"Atspējot absolūto skaļumu"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"Bluetooth AVRCP versija"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"Atlasiet Bluetooth AVRCP versiju"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"Bluetooth audio kodeks"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"Atlasīt Bluetooth audio kodeku"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"Bluetooth audio iztveršanas ātrums"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"Atlasīt Bluetooth audio kodeku:\niztveršanas ātrums"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"Bluetooth audio bitu skaits iztvērumā"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"Atlasīt Bluetooth audio kodeku:\nbitu skaits iztvērumā"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"Bluetooth audio kanāla režīms"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"Atlasīt Bluetooth audio kodeku:\nkanāla režīms"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"Bluetooth audio LDAC kodeks: atskaņošanas kvalitāte"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"Atlasīt Bluetooth audio LDAC kodeku:\natskaņošanas kvalitāte"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"Straumēšana: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"Rādīt bezvadu attēlošanas sertifikācijas iespējas"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"Palieliniet Wi‑Fi reģistrēšanas līmeni; rādīt katram SSID RSSI Wi‑Fi atlasītājā."</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"Ja opcija ir iespējota un Wi‑Fi signāls ir vājš, datu savienojuma pāreja no Wi-Fi uz mobilo tīklu tiks veikta agresīvāk."</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"Pielāgots (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"Palīdzība un atsauksmes"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"Izvēlne"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"Iev. paroli, lai atiest. rūpnīcas iest. dem. režīmā"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"Tālāk"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"Nepieciešama parole"</string>
 </resources>

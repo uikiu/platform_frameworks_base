@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"ਰੱਖਿਅਤ ਕੀਤਾ"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"ਅਯੋਗ ਬਣਾਇਆ"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP ਕੌਂਫਿਗਰੇਸ਼ਨ ਅਸਫਲਤਾ"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"ਘੱਟ ਗੁਣਵੱਤਾ ਵਾਲੇ ਨੈੱਟਵਰਕ ਕਾਰਨ ਕਨੈਕਟ ਨਹੀਂ ਕੀਤਾ ਗਿਆ"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"WiFi ਕਨੈਕਸ਼ਨ ਅਸਫਲਤਾ"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"ਪ੍ਰਮਾਣੀਕਰਨ ਸਮੱਸਿਆ"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"ਰੇਂਜ ਵਿੱਚ ਨਹੀਂ ਹੈ"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"ਹਮੇਸ਼ਾਂ Wi‑Fi Roam Scans ਦੀ ਆਗਿਆ ਦਿਓ"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"ਸੈਲਿਊਲਰ ਡੇਟਾ ਹਮੇਸ਼ਾ ਕਿਰਿਆਸ਼ੀਲ"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"ਪੂਰਨ ਵੌਲਿਊਮ ਨੂੰ ਅਯੋਗ ਬਣਾਓ"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"ਬਲੂਟੁੱਥ AVRCP ਰੂਪ"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"ਬਲੂਟੁੱਥ AVRCP ਰੂਪ ਚੁਣੋ"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"ਬਲੂਟੁੱਥ ਔਡੀਓ ਕੋਡੇਕ"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"ਬਲੂਟੁੱਥ ਔਡੀਓ ਕੋਡੇਕ ਚੁਣੋ"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"ਬਲੂਟੁੱਥ ਔਡੀਓ ਨਮੂਨਾ ਦਰ"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"ਬਲੂਟੁੱਥ ਔਡੀਓ ਕੋਡੇਕ ਚੁਣੋ:\nਸੈਂਪਲ ਰੇਟ"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"ਪ੍ਰਤੀ ਨਮੂਨਾ ਬਲੂਟੁੱਥ ਔਡੀਓ ਬਿਟਾਂ"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"ਬਲੂਟੁੱਥ ਔਡੀਓ ਕੋਡੇਕ ਚੁਣੋ:\nਬਿਟਾਂ ਪ੍ਰਤੀ ਨਮੂਨਾ"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"ਬਲੂਟੁੱਥ ਔਡੀਓ ਚੈਨਲ ਮੋਡ"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"ਬਲੂਟੁੱਥ ਔਡੀਓ ਕੋਡੇਕ ਚੁਣੋ:\nਚੈਨਲ ਮੋਡ"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"ਬਲੂਟੁੱਥ ਔਡੀਓ LDAC ਕੋਡੇਕ: ਪਲੇਬੈਕ ਗੁਣਵੱਤਾ"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"ਬਲੂਟੁੱਥ ਔਡੀਓ LDAC ਕੋਡੇਕ ਚੁਣੋ:\nਪਲੇਬੈਕ ਗੁਣਵੱਤਾ"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"ਸਟ੍ਰੀਮਿੰਗ: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"ਵਾਇਰਲੈਸ ਡਿਸਪਲੇ ਪ੍ਰਮਾਣੀਕਰਨ ਲਈ ਚੋਣਾਂ ਦਿਖਾਓ"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"Wi‑Fi ਲੌਗਿੰਗ ਪੱਧਰ ਵਧਾਓ, Wi‑Fi Picker ਵਿੱਚ ਪ੍ਰਤੀ SSID RSSI ਦਿਖਾਓ"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"ਜਦੋਂ ਸਮਰਥਿਤ ਹੋਵੇ, ਤਾਂ Wi‑Fi ਸੈਲਿਊਲਰ ਨੂੰ ਡੈਟਾ ਕਨੈਕਸ਼ਨ ਹੈਂਡ ਓਵਰ ਕਰਨ ਵਿੱਚ ਵੱਧ ਅਗ੍ਰੈਸਿਵ ਹੋ ਜਾਏਗਾ, ਜਦੋਂ Wi‑Fi ਸਿਗਨਲ ਘੱਟ ਹੋਵੇ"</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"ਵਿਸ਼ੇਸ਼-ਵਿਉਂਤਬੱਧ (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"ਮਦਦ ਅਤੇ ਪ੍ਰਤੀਕਰਮ"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"ਮੀਨੂ"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"ਡੈਮੋ ਮੋਡ \'ਚ ਫੈਕਟਰੀ ਰੀਸੈੱਟ ਲਈ ਪਾਸਵਰਡ ਦਿਓ"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"ਅੱਗੇ"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ"</string>
 </resources>

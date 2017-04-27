@@ -281,6 +281,11 @@
          Settings.Global.NETWORK_AVOID_BAD_WIFI. This is the default value of that setting. -->
     <integer translatable="false" name="config_networkAvoidBadWifi">1</integer>
 
+    <!-- Default value for ConnectivityManager.getMultipathPreference() on metered networks. Actual
+         device behaviour is controlled by Settings.Global.NETWORK_METERED_MULTIPATH_PREFERENCE.
+         This is the default value of that setting. -->
+    <integer translatable="false" name="config_networkMeteredMultipathPreference">3</integer>
+
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
          USB interfaces.  If the device doesn't want to support tethering over USB this should
          be empty.  An example would be "usb.*" -->
@@ -1046,6 +1051,16 @@
          Must be in the range specified by minimum and maximum. -->
     <integer name="config_screenBrightnessSettingDefault">102</integer>
 
+    <!-- Default screen brightness for VR setting. -->
+    <integer name="config_screenBrightnessForVrSettingDefault">86</integer>
+
+    <!-- Minimum screen brightness setting allowed for VR. Device panels start increasing pulse
+         width as brightness decreases below this theshold. -->
+    <integer name="config_screenBrightnessForVrSettingMinimum">79</integer>
+
+    <!-- Maximum screen brightness setting allowed for VR. -->
+    <integer name="config_screenBrightnessForVrSettingMaximum">255</integer>
+
     <!-- Screen brightness used to dim the screen while dozing in a very low power state.
          May be less than the minimum allowed brightness setting
          that can be set by the user. -->
@@ -1061,6 +1076,12 @@
          hysteresis threshold. -->
     <integer name="config_autoBrightnessBrighteningLightDebounce">4000</integer>
     <integer name="config_autoBrightnessDarkeningLightDebounce">8000</integer>
+
+    <!-- Initial light sensor event rate in milliseconds for automatic brightness control. This is
+         used for obtaining the first light sample when the device stops dozing.
+
+         Set this to 0 to disable this feature. -->
+    <integer name="config_autoBrightnessInitialLightSensorRate">0</integer>
 
     <!-- Light sensor event rate in milliseconds for automatic brightness control. -->
     <integer name="config_autoBrightnessLightSensorRate">250</integer>
@@ -1088,6 +1109,26 @@
 
     <!-- Period of time in which to consider light samples in milliseconds. -->
     <integer name="config_autoBrightnessAmbientLightHorizon">10000</integer>
+
+    <!-- This flag enables light sensor sampling while dozing. A single sample is taken upon
+         entering doze mode, and another sample is taken every time the display enters STATE_DOZE
+         or STATE_DOZE_SUSPEND. It is recommended that config_dozeSensorLuxLevels and
+         config_dozeBrightnessBacklightValues have entries so that the doze mode brightness can be
+         determined dynamically.
+     -->
+    <bool name="config_allowAutoBrightnessActiveDozeLightSensor">false</bool>
+
+    <!-- This flag should be used with config_allowAutoBrightnessActiveDozeLightSensor set to true.
+
+         The screen brightness of a device is based off of a ring buffer of the last n seconds of
+         ambient light sensor sample readings.
+
+         If this flag is true, then this buffer is cleared every time a new sample is taken in doze
+         mode and the screen brightness is based off the new reading. This mode may be better suited
+         for watches.
+
+         If this flag is false, then this buffer is untouched. -->
+    <bool name="config_useNewSensorSamplesForDoze">false</bool>
 
     <!-- Screen brightness used to dim the screen when the user activity
          timeout expires.  May be less than the minimum allowed brightness setting
@@ -1183,17 +1224,6 @@
          lux[MAX] <= value              MAX+1 -->
     <integer-array name="config_dynamicHysteresisLuxLevels">
     </integer-array>
-
-    <!-- This flag requires config_dozeSensorLuxLevels to have one or more entries and only affects
-         the screen brightness while dozing. The screen brightness of a device is based off of a
-         ring buffer of the last n seconds of ambient light sensor sample readings.
-
-         If this flag is true, then this buffer is cleared and the screen brightness is based off of
-         ambient light sensor readings that are obtained while the device is dozing.  This mode may
-         be better suited for watches.
-
-         If this flag is false, then this buffer is untouched. -->
-    <bool name="config_useNewSensorSamplesForDoze">false</bool>
 
     <!-- Array of ambient light sensor lux threshold values for determining screen brightness for
          devices that have both an ambient light sensor and the screen on while dozing. This is
@@ -1764,6 +1794,12 @@
          turned off and the screen off animation has been performed. -->
     <bool name="config_dozeAfterScreenOff">false</bool>
 
+    <!-- Doze: should the TYPE_PICK_UP_GESTURE sensor be used as a pulse signal. -->
+    <bool name="config_dozePulsePickup">false</bool>
+
+    <!-- Type of the double tap sensor. Empty if double tap is not supported. -->
+    <string name="config_dozeDoubleTapSensorType" translatable="false"></string>
+
     <!-- Power Management: Specifies whether to decouple the auto-suspend state of the
          device from the display on/off state.
 
@@ -1947,6 +1983,12 @@
     <!-- When true, local displays that do not contain any of their own content will automatically
          mirror the content of the default display. -->
     <bool name="config_localDisplaysMirrorContent">true</bool>
+
+    <!-- The default mode for the default display. One of the following values (See Display.java):
+             0 - COLOR_MODE_DEFAULT
+             7 - COLOR_MODE_SRGB
+    -->
+    <integer name="config_defaultDisplayDefaultColorMode">0</integer>
 
     <!-- When true use the linux /dev/input/event subsystem to detect the switch changes
          on the headphone/microphone jack. When false use the older uevent framework. -->
@@ -2622,6 +2664,15 @@
 
     <!-- Component that is the default launcher when demo mode is enabled. -->
     <string name="config_demoModeLauncherComponent">com.android.retaildemo/.DemoPlayer</string>
+
+    <!-- Hashed password (SHA-256) used to restrict carrier demo mode operation. -->
+    <string name="config_carrierDemoModePassword" translatable="false"></string>
+
+    <!-- Secure setting used to activate carrier demo mode. -->
+    <string name="config_carrierDemoModeSetting" translatable="false"></string>
+
+    <!-- List of packages to enable in carrier demo mode (comma separated). -->
+    <string name="config_carrierDemoModePackages" translatable="false"></string>
 
     <!-- Flag indicating whether round icons should be parsed from the application manifest. -->
     <bool name="config_useRoundIcon">false</bool>

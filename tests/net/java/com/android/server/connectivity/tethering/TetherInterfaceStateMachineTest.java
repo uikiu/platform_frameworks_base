@@ -80,7 +80,7 @@ public class TetherInterfaceStateMachineTest {
 
     private void initTetheredStateMachine(int interfaceType, String upstreamIface) throws Exception {
         initStateMachine(interfaceType);
-        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED);
+        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED, STATE_TETHERED);
         if (upstreamIface != null) {
             dispatchTetherConnectionChanged(upstreamIface);
         }
@@ -138,7 +138,7 @@ public class TetherInterfaceStateMachineTest {
     public void canBeTethered() throws Exception {
         initStateMachine(TETHERING_BLUETOOTH);
 
-        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED);
+        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED, STATE_TETHERED);
         InOrder inOrder = inOrder(mTetherHelper, mNMService);
         inOrder.verify(mNMService).tetherInterface(IFACE_NAME);
         inOrder.verify(mTetherHelper).notifyInterfaceStateChange(
@@ -162,7 +162,7 @@ public class TetherInterfaceStateMachineTest {
     public void canBeTetheredAsUsb() throws Exception {
         initStateMachine(TETHERING_USB);
 
-        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED);
+        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED, STATE_TETHERED);
         InOrder inOrder = inOrder(mTetherHelper, mNMService);
         inOrder.verify(mNMService).getInterfaceConfig(IFACE_NAME);
         inOrder.verify(mNMService).setInterfaceConfig(IFACE_NAME, mInterfaceConfiguration);
@@ -272,7 +272,7 @@ public class TetherInterfaceStateMachineTest {
         initStateMachine(TETHERING_USB);
 
         doThrow(RemoteException.class).when(mNMService).tetherInterface(IFACE_NAME);
-        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED);
+        dispatchCommand(TetherInterfaceStateMachine.CMD_TETHER_REQUESTED, STATE_TETHERED);
         InOrder usbTeardownOrder = inOrder(mNMService, mInterfaceConfiguration, mTetherHelper);
         usbTeardownOrder.verify(mInterfaceConfiguration).setInterfaceDown();
         usbTeardownOrder.verify(mNMService).setInterfaceConfig(
@@ -304,6 +304,17 @@ public class TetherInterfaceStateMachineTest {
             dispatchTetherConnectionChanged(UPSTREAM_IFACE);
             verifyNoMoreInteractions(mNMService, mStatsService, mTetherHelper);
         }
+    }
+
+    /**
+     * Send a command to the state machine under test, and run the event loop to idle.
+     *
+     * @param command One of the TetherInterfaceStateMachine.CMD_* constants.
+     * @param obj An additional argument to pass.
+     */
+    private void dispatchCommand(int command, int arg1) {
+        mTestedSm.sendMessage(command, arg1);
+        mLooper.dispatchAll();
     }
 
     /**

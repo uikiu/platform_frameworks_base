@@ -16,12 +16,17 @@
 
 package com.android.server;
 
+import static android.content.Intent.ACTION_UID_REMOVED;
+import static android.content.Intent.EXTRA_UID;
 import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
 import static android.net.ConnectivityManager.TYPE_WIFI;
+import static android.net.NetworkPolicy.CYCLE_NONE;
 import static android.net.NetworkPolicy.LIMIT_DISABLED;
 import static android.net.NetworkPolicy.WARNING_DISABLED;
 import static android.net.NetworkPolicyManager.POLICY_NONE;
 import static android.net.NetworkPolicyManager.POLICY_REJECT_METERED_BACKGROUND;
+import static android.net.NetworkPolicyManager.RULE_ALLOW_ALL;
+import static android.net.NetworkPolicyManager.RULE_REJECT_METERED;
 import static android.net.NetworkPolicyManager.computeLastCycleBoundary;
 import static android.net.NetworkPolicyManager.computeNextCycleBoundary;
 import static android.net.TrafficStats.KB_IN_BYTES;
@@ -29,42 +34,28 @@ import static android.net.TrafficStats.MB_IN_BYTES;
 import static android.text.format.DateUtils.DAY_IN_MILLIS;
 import static android.text.format.DateUtils.MINUTE_IN_MILLIS;
 import static android.text.format.Time.TIMEZONE_UTC;
-
 import static com.android.server.net.NetworkPolicyManagerService.TYPE_LIMIT;
 import static com.android.server.net.NetworkPolicyManagerService.TYPE_LIMIT_SNOOZED;
 import static com.android.server.net.NetworkPolicyManagerService.TYPE_WARNING;
+import static org.easymock.EasyMock.anyInt;
+import static org.easymock.EasyMock.anyLong;
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import android.app.ActivityManager;
 import android.app.IActivityManager;
 import android.app.INotificationManager;
-import android.app.IUidObserver;
+import android.app.IProcessObserver;
 import android.app.Notification;
-import android.app.usage.UsageStatsManagerInternal;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.ConnectivityManager;
 import android.net.IConnectivityManager;
 import android.net.INetworkManagementEventObserver;
 import android.net.INetworkPolicyListener;
@@ -78,48 +69,40 @@ import android.net.NetworkStats;
 import android.net.NetworkTemplate;
 import android.os.Binder;
 import android.os.INetworkManagementService;
-import android.os.PowerManagerInternal;
+import android.os.MessageQueue.IdleHandler;
 import android.os.UserHandle;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import android.test.AndroidTestCase;
+import android.test.mock.MockPackageManager;
+import android.test.suitebuilder.annotation.LargeTest;
+import android.test.suitebuilder.annotation.Suppress;
 import android.text.format.Time;
-import android.util.Log;
 import android.util.TrustedTime;
 
 import com.android.internal.util.test.BroadcastInterceptingContext;
-import com.android.server.net.NetworkPolicyManagerInternal;
 import com.android.server.net.NetworkPolicyManagerService;
-
-import libcore.io.IoUtils;
-
 import com.google.common.util.concurrent.AbstractFuture;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.easymock.IAnswer;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Handler;
+
+import libcore.io.IoUtils;
 
 /**
  * Tests for {@link NetworkPolicyManagerService}.
  */
-@RunWith(AndroidJUnit4.class)
-public class NetworkPolicyManagerServiceTest {
+@LargeTest
+public class NetworkPolicyManagerServiceTest extends AndroidTestCase {
     private static final String TAG = "NetworkPolicyManagerServiceTest";
 
     private static final long TEST_START = 1194220800000L;
@@ -131,19 +114,19 @@ public class NetworkPolicyManagerServiceTest {
     private BroadcastInterceptingContext mServiceContext;
     private File mPolicyDir;
 
-    private @Mock IActivityManager mActivityManager;
-    private @Mock INetworkStatsService mStatsService;
-    private @Mock INetworkManagementService mNetworkManager;
-    private @Mock TrustedTime mTime;
-    private @Mock IConnectivityManager mConnManager;
-    private @Mock INotificationManager mNotifManager;
-    private @Mock PackageManager mPackageManager;
+    private IActivityManager mActivityManager;
+    private INetworkStatsService mStatsService;
+    private INetworkManagementService mNetworkManager;
+    private INetworkPolicyListener mPolicyListener;
+    private TrustedTime mTime;
+    private IConnectivityManager mConnManager;
+    private INotificationManager mNotifManager;
 
-    private IUidObserver mUidObserver;
+    private NetworkPolicyManagerService mService;
+    private IProcessObserver mProcessObserver;
     private INetworkManagementEventObserver mNetworkObserver;
 
-    private NetworkPolicyListenerAnswer mPolicyListener;
-    private NetworkPolicyManagerService mService;
+    private Binder mStubBinder = new Binder();
 
     private long mStartTime;
     private long mElapsedRealtime;
@@ -156,30 +139,39 @@ public class NetworkPolicyManagerServiceTest {
     private static final int UID_A = UserHandle.getUid(USER_ID, APP_ID_A);
     private static final int UID_B = UserHandle.getUid(USER_ID, APP_ID_B);
 
-    private static final String PKG_NAME_A = "name.is.A,pkg.A";
+    private static final int PID_1 = 400;
+    private static final int PID_2 = 401;
+    private static final int PID_3 = 402;
 
-    @BeforeClass
-    public static void registerLocalServices() {
-        addLocalServiceMock(PowerManagerInternal.class);
-        addLocalServiceMock(DeviceIdleController.LocalService.class);
-        final UsageStatsManagerInternal usageStats =
-                addLocalServiceMock(UsageStatsManagerInternal.class);
-        when(usageStats.getIdleUidsForUser(anyInt())).thenReturn(new int[]{});
-    }
-
-    @Before
-    public void callSystemReady() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        final Context context = InstrumentationRegistry.getContext();
+    public void _setUp() throws Exception {
+        super.setUp();
 
         setCurrentTimeMillis(TEST_START);
 
         // intercept various broadcasts, and pretend that uids have packages
-        mServiceContext = new BroadcastInterceptingContext(context) {
+        mServiceContext = new BroadcastInterceptingContext(getContext()) {
             @Override
             public PackageManager getPackageManager() {
-                return mPackageManager;
+                return new MockPackageManager() {
+                    @Override
+                    public String[] getPackagesForUid(int uid) {
+                        return new String[] { "com.example" };
+                    }
+
+                    @Override
+                    public PackageInfo getPackageInfo(String packageName, int flags) {
+                        final PackageInfo info = new PackageInfo();
+                        final Signature signature;
+                        if ("android".equals(packageName)) {
+                            signature = new Signature("F00D");
+                        } else {
+                            signature = new Signature("DEAD");
+                        }
+                        info.signatures = new Signature[] { signature };
+                        return info;
+                    }
+
+                };
             }
 
             @Override
@@ -188,112 +180,229 @@ public class NetworkPolicyManagerServiceTest {
             }
         };
 
-        mPolicyDir = context.getFilesDir();
+        mPolicyDir = getContext().getFilesDir();
         if (mPolicyDir.exists()) {
             IoUtils.deleteContents(mPolicyDir);
         }
 
-        doAnswer(new Answer<Void>() {
+        mActivityManager = createMock(IActivityManager.class);
+        mStatsService = createMock(INetworkStatsService.class);
+        mNetworkManager = createMock(INetworkManagementService.class);
+        mPolicyListener = createMock(INetworkPolicyListener.class);
+        mTime = createMock(TrustedTime.class);
+        mConnManager = createMock(IConnectivityManager.class);
+        mNotifManager = createMock(INotificationManager.class);
 
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                mUidObserver = (IUidObserver) invocation.getArguments()[0];
-                Log.d(TAG, "set mUidObserver to " + mUidObserver);
-                return null;
-            }
-        }).when(mActivityManager).registerUidObserver(any(), anyInt());
-
-        mService = new NetworkPolicyManagerService(mServiceContext, mActivityManager, mStatsService,
-                mNetworkManager, mTime, mPolicyDir, true);
+        mService = new NetworkPolicyManagerService(mServiceContext, mActivityManager,
+                mStatsService, mNetworkManager, mTime, mPolicyDir, true);
         mService.bindConnectivityManager(mConnManager);
         mService.bindNotificationManager(mNotifManager);
-        mPolicyListener = new NetworkPolicyListenerAnswer(mService);
 
-        // Sets some common expectations.
-        when(mPackageManager.getPackageInfo(anyString(), anyInt())).thenAnswer(
-                new Answer<PackageInfo>() {
+        // RemoteCallbackList needs a binder to use as key
+        expect(mPolicyListener.asBinder()).andReturn(mStubBinder).atLeastOnce();
+        replay();
+        mService.registerListener(mPolicyListener);
+        verifyAndReset();
 
-                    @Override
-                    public PackageInfo answer(InvocationOnMock invocation) throws Throwable {
-                        final String packageName = (String) invocation.getArguments()[0];
-                        final PackageInfo info = new PackageInfo();
-                        final Signature signature;
-                        if ("android".equals(packageName)) {
-                            signature = new Signature("F00D");
-                        } else {
-                            signature = new Signature("DEAD");
-                        }
-                        info.signatures = new Signature[] {
-                            signature
-                        };
-                        return info;
-                    }
-                });
-        when(mPackageManager.getApplicationInfoAsUser(anyString(), anyInt(), anyInt()))
-                .thenReturn(new ApplicationInfo());
-        when(mPackageManager.getPackagesForUid(UID_A)).thenReturn(new String[] {PKG_NAME_A});
-        when(mNetworkManager.isBandwidthControlEnabled()).thenReturn(true);
-        expectCurrentTime();
-
-        // Prepare NPMS.
-        mService.systemReady();
+        // catch IProcessObserver during systemReady()
+        final Capture<IProcessObserver> processObserver = new Capture<IProcessObserver>();
+        mActivityManager.registerProcessObserver(capture(processObserver));
+        expectLastCall().atLeastOnce();
 
         // catch INetworkManagementEventObserver during systemReady()
-        ArgumentCaptor<INetworkManagementEventObserver> networkObserver =
-              ArgumentCaptor.forClass(INetworkManagementEventObserver.class);
-        verify(mNetworkManager).registerObserver(networkObserver.capture());
+        final Capture<INetworkManagementEventObserver> networkObserver = new Capture<
+                INetworkManagementEventObserver>();
+        mNetworkManager.registerObserver(capture(networkObserver));
+        expectLastCall().atLeastOnce();
+
+        expect(mNetworkManager.isBandwidthControlEnabled()).andReturn(true).atLeastOnce();
+        expectCurrentTime();
+
+        replay();
+        mService.systemReady();
+        verifyAndReset();
+
+        mProcessObserver = processObserver.getValue();
         mNetworkObserver = networkObserver.getValue();
+
     }
 
-    @After
-    public void removeFiles() throws Exception {
+    public void _tearDown() throws Exception {
         for (File file : mPolicyDir.listFiles()) {
             file.delete();
         }
+
+        mServiceContext = null;
+        mPolicyDir = null;
+
+        mActivityManager = null;
+        mStatsService = null;
+        mPolicyListener = null;
+        mTime = null;
+
+        mService = null;
+        mProcessObserver = null;
+
+        super.tearDown();
     }
 
-    @After
-    public void unregisterLocalServices() throws Exception {
-        // Registered by NetworkPolicyManagerService's constructor.
-        LocalServices.removeServiceForTest(NetworkPolicyManagerInternal.class);
-    }
-
-    // NOTE: testPolicyChangeTriggersListener() and testUidForeground() are too superficial, they
-    // don't check for side-effects (like calls to NetworkManagementService) neither cover all
-    // different modes (Data Saver, Battery Saver, Doze, App idle, etc...).
-    // These scenarios are extensively tested on CTS' HostsideRestrictBackgroundNetworkTests.
-
-    @Test
-    public void testPolicyChangeTriggersListener() throws Exception {
-        mPolicyListener.expect().onRestrictBackgroundBlacklistChanged(anyInt(), anyBoolean());
-
+    @Suppress
+    public void testPolicyChangeTriggersBroadcast() throws Exception {
         mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+
+        // change background policy and expect broadcast
+        final Future<Intent> backgroundChanged = mServiceContext.nextBroadcastIntent(
+                ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED);
+
         mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
 
-        mPolicyListener.waitAndVerify().onRestrictBackgroundBlacklistChanged(APP_ID_A, true);
+        backgroundChanged.get();
     }
 
-    @Test
-    public void testUidForeground() throws Exception {
-        // push all uids into background
-        mUidObserver.onUidStateChanged(UID_A, ActivityManager.PROCESS_STATE_SERVICE);
-        mUidObserver.onUidStateChanged(UID_B, ActivityManager.PROCESS_STATE_SERVICE);
+    @Suppress
+    public void testPidForegroundCombined() throws Exception {
+        IdleFuture idle;
+
+        // push all uid into background
+        idle = expectIdle();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, false);
+        mProcessObserver.onForegroundActivitiesChanged(PID_2, UID_A, false);
+        mProcessObserver.onForegroundActivitiesChanged(PID_3, UID_B, false);
+        idle.get();
         assertFalse(mService.isUidForeground(UID_A));
         assertFalse(mService.isUidForeground(UID_B));
 
-        // push one of the uids into foreground
-        mUidObserver.onUidStateChanged(UID_A, ActivityManager.PROCESS_STATE_TOP);
+        // push one of the shared pids into foreground
+        idle = expectIdle();
+        mProcessObserver.onForegroundActivitiesChanged(PID_2, UID_A, true);
+        idle.get();
         assertTrue(mService.isUidForeground(UID_A));
         assertFalse(mService.isUidForeground(UID_B));
 
         // and swap another uid into foreground
-        mUidObserver.onUidStateChanged(UID_A, ActivityManager.PROCESS_STATE_SERVICE);
-        mUidObserver.onUidStateChanged(UID_B, ActivityManager.PROCESS_STATE_TOP);
+        idle = expectIdle();
+        mProcessObserver.onForegroundActivitiesChanged(PID_2, UID_A, false);
+        mProcessObserver.onForegroundActivitiesChanged(PID_3, UID_B, true);
+        idle.get();
         assertFalse(mService.isUidForeground(UID_A));
         assertTrue(mService.isUidForeground(UID_B));
+
+        // push both pid into foreground
+        idle = expectIdle();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, true);
+        mProcessObserver.onForegroundActivitiesChanged(PID_2, UID_A, true);
+        idle.get();
+        assertTrue(mService.isUidForeground(UID_A));
+
+        // pull one out, should still be foreground
+        idle = expectIdle();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, false);
+        idle.get();
+        assertTrue(mService.isUidForeground(UID_A));
+
+        // pull final pid out, should now be background
+        idle = expectIdle();
+        mProcessObserver.onForegroundActivitiesChanged(PID_2, UID_A, false);
+        idle.get();
+        assertFalse(mService.isUidForeground(UID_A));
     }
 
-    @Test
+    @Suppress
+    public void testPolicyNone() throws Exception {
+        Future<Void> future;
+
+        expectSetUidMeteredNetworkBlacklist(UID_A, false);
+        expectSetUidForeground(UID_A, true);
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, true);
+        future.get();
+        verifyAndReset();
+
+        // POLICY_NONE should RULE_ALLOW in foreground
+        expectSetUidMeteredNetworkBlacklist(UID_A, false);
+        expectSetUidForeground(UID_A, true);
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+        future.get();
+        verifyAndReset();
+
+        // POLICY_NONE should RULE_ALLOW in background
+        expectSetUidMeteredNetworkBlacklist(UID_A, false);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, false);
+        future.get();
+        verifyAndReset();
+    }
+
+    @Suppress
+    public void testPolicyReject() throws Exception {
+        Future<Void> future;
+
+        // POLICY_REJECT should RULE_ALLOW in background
+        expectSetUidMeteredNetworkBlacklist(UID_A, true);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+        future.get();
+        verifyAndReset();
+
+        // POLICY_REJECT should RULE_ALLOW in foreground
+        expectSetUidMeteredNetworkBlacklist(UID_A, false);
+        expectSetUidForeground(UID_A, true);
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, true);
+        future.get();
+        verifyAndReset();
+
+        // POLICY_REJECT should RULE_REJECT in background
+        expectSetUidMeteredNetworkBlacklist(UID_A, true);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
+        replay();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, false);
+        future.get();
+        verifyAndReset();
+    }
+
+    @Suppress
+    public void testPolicyRejectAddRemove() throws Exception {
+        Future<Void> future;
+
+        // POLICY_NONE should have RULE_ALLOW in background
+        expectSetUidMeteredNetworkBlacklist(UID_A, false);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mProcessObserver.onForegroundActivitiesChanged(PID_1, UID_A, false);
+        mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+        future.get();
+        verifyAndReset();
+
+        // adding POLICY_REJECT should cause RULE_REJECT
+        expectSetUidMeteredNetworkBlacklist(UID_A, true);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+        future.get();
+        verifyAndReset();
+
+        // removing POLICY_REJECT should return us to RULE_ALLOW
+        expectSetUidMeteredNetworkBlacklist(UID_A, false);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_NONE);
+        future.get();
+        verifyAndReset();
+    }
+
     public void testLastCycleBoundaryThisMonth() throws Exception {
         // assume cycle day of "5th", which should be in same month
         final long currentTime = parseTime("2007-11-14T00:00:00.000Z");
@@ -305,7 +414,6 @@ public class NetworkPolicyManagerServiceTest {
         assertTimeEquals(expectedCycle, actualCycle);
     }
 
-    @Test
     public void testLastCycleBoundaryLastMonth() throws Exception {
         // assume cycle day of "20th", which should be in last month
         final long currentTime = parseTime("2007-11-14T00:00:00.000Z");
@@ -317,7 +425,6 @@ public class NetworkPolicyManagerServiceTest {
         assertTimeEquals(expectedCycle, actualCycle);
     }
 
-    @Test
     public void testLastCycleBoundaryThisMonthFebruary() throws Exception {
         // assume cycle day of "30th" in february; should go to january
         final long currentTime = parseTime("2007-02-14T00:00:00.000Z");
@@ -329,7 +436,6 @@ public class NetworkPolicyManagerServiceTest {
         assertTimeEquals(expectedCycle, actualCycle);
     }
 
-    @Test
     public void testLastCycleBoundaryLastMonthFebruary() throws Exception {
         // assume cycle day of "30th" in february, which should clamp
         final long currentTime = parseTime("2007-03-14T00:00:00.000Z");
@@ -341,7 +447,6 @@ public class NetworkPolicyManagerServiceTest {
         assertTimeEquals(expectedCycle, actualCycle);
     }
 
-    @Test
     public void testCycleBoundaryLeapYear() throws Exception {
         final NetworkPolicy policy = new NetworkPolicy(
                 sTemplateWifi, 29, TIMEZONE_UTC, 1024L, 1024L, false);
@@ -365,7 +470,6 @@ public class NetworkPolicyManagerServiceTest {
                 computeNextCycleBoundary(parseTime("2007-03-14T00:00:00.000Z"), policy));
     }
 
-    @Test
     public void testNextCycleTimezoneAfterUtc() throws Exception {
         // US/Central is UTC-6
         final NetworkPolicy policy = new NetworkPolicy(
@@ -374,7 +478,6 @@ public class NetworkPolicyManagerServiceTest {
                 computeNextCycleBoundary(parseTime("2012-01-05T00:00:00.000Z"), policy));
     }
 
-    @Test
     public void testNextCycleTimezoneBeforeUtc() throws Exception {
         // Israel is UTC+2
         final NetworkPolicy policy = new NetworkPolicy(
@@ -383,7 +486,6 @@ public class NetworkPolicyManagerServiceTest {
                 computeNextCycleBoundary(parseTime("2012-01-05T00:00:00.000Z"), policy));
     }
 
-    @Test
     public void testNextCycleSane() throws Exception {
         final NetworkPolicy policy = new NetworkPolicy(
                 sTemplateWifi, 31, TIMEZONE_UTC, WARNING_DISABLED, LIMIT_DISABLED, false);
@@ -399,7 +501,6 @@ public class NetworkPolicyManagerServiceTest {
         }
     }
 
-    @Test
     public void testLastCycleSane() throws Exception {
         final NetworkPolicy policy = new NetworkPolicy(
                 sTemplateWifi, 31, TIMEZONE_UTC, WARNING_DISABLED, LIMIT_DISABLED, false);
@@ -415,7 +516,6 @@ public class NetworkPolicyManagerServiceTest {
         }
     }
 
-    @Test
     public void testCycleTodayJanuary() throws Exception {
         final NetworkPolicy policy = new NetworkPolicy(
                 sTemplateWifi, 14, "US/Pacific", 1024L, 1024L, false);
@@ -435,7 +535,6 @@ public class NetworkPolicyManagerServiceTest {
                 computeLastCycleBoundary(parseTime("2013-01-14T15:11:00.000-08:00"), policy));
     }
 
-    @Test
     public void testLastCycleBoundaryDST() throws Exception {
         final long currentTime = parseTime("1989-01-02T07:30:00.000");
         final long expectedCycle = parseTime("1988-12-03T02:00:00.000Z");
@@ -446,7 +545,6 @@ public class NetworkPolicyManagerServiceTest {
         assertTimeEquals(expectedCycle, actualCycle);
     }
 
-    @Test
     public void testLastCycleBoundaryJanuaryDST() throws Exception {
         final long currentTime = parseTime("1989-01-26T21:00:00.000Z");
         final long expectedCycle = parseTime("1989-01-01T01:59:59.000Z");
@@ -457,10 +555,11 @@ public class NetworkPolicyManagerServiceTest {
         assertTimeEquals(expectedCycle, actualCycle);
     }
 
-    @Test
+    @Suppress
     public void testNetworkPolicyAppliedCycleLastMonth() throws Exception {
         NetworkState[] state = null;
         NetworkStats stats = null;
+        Future<Void> future;
 
         final long TIME_FEB_15 = 1171497600000L;
         final long TIME_MAR_10 = 1173484800000L;
@@ -471,40 +570,75 @@ public class NetworkPolicyManagerServiceTest {
         // first, pretend that wifi network comes online. no policy active,
         // which means we shouldn't push limit to interface.
         state = new NetworkState[] { buildWifi() };
-        when(mConnManager.getAllNetworkState()).thenReturn(state);
+        expect(mConnManager.getAllNetworkState()).andReturn(state).atLeastOnce();
         expectCurrentTime();
+        expectClearNotifications();
+        expectAdvisePersistThreshold();
+        future = expectMeteredIfacesChanged();
 
-        mPolicyListener.expect().onMeteredIfacesChanged(any());
+        replay();
         mServiceContext.sendBroadcast(new Intent(CONNECTIVITY_ACTION));
-        mPolicyListener.waitAndVerify().onMeteredIfacesChanged(any());
+        future.get();
+        verifyAndReset();
 
         // now change cycle to be on 15th, and test in early march, to verify we
         // pick cycle day in previous month.
-        when(mConnManager.getAllNetworkState()).thenReturn(state);
+        expect(mConnManager.getAllNetworkState()).andReturn(state).atLeastOnce();
         expectCurrentTime();
 
         // pretend that 512 bytes total have happened
         stats = new NetworkStats(getElapsedRealtime(), 1)
                 .addIfaceValues(TEST_IFACE, 256L, 2L, 256L, 2L);
-        when(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, TIME_MAR_10))
-                .thenReturn(stats.getTotalBytes());
-
-        mPolicyListener.expect().onMeteredIfacesChanged(any());
-        setNetworkPolicies(new NetworkPolicy(
-                sTemplateWifi, CYCLE_DAY, TIMEZONE_UTC, 1 * MB_IN_BYTES, 2 * MB_IN_BYTES, false));
-        mPolicyListener.waitAndVerify().onMeteredIfacesChanged(eq(new String[]{TEST_IFACE}));
+        expect(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, TIME_MAR_10))
+                .andReturn(stats.getTotalBytes()).atLeastOnce();
+        expectPolicyDataEnable(TYPE_WIFI, true);
 
         // TODO: consider making strongly ordered mock
-        verifyPolicyDataEnable(TYPE_WIFI, true);
-        verifyRemoveInterfaceQuota(TEST_IFACE);
-        verifySetInterfaceQuota(TEST_IFACE, (2 * MB_IN_BYTES) - 512);
+        expectRemoveInterfaceQuota(TEST_IFACE);
+        expectSetInterfaceQuota(TEST_IFACE, (2 * MB_IN_BYTES) - 512);
+
+        expectClearNotifications();
+        expectAdvisePersistThreshold();
+        future = expectMeteredIfacesChanged(TEST_IFACE);
+
+        replay();
+        setNetworkPolicies(new NetworkPolicy(
+                sTemplateWifi, CYCLE_DAY, TIMEZONE_UTC, 1 * MB_IN_BYTES, 2 * MB_IN_BYTES, false));
+        future.get();
+        verifyAndReset();
     }
 
-    @Test
+    @Suppress
+    public void testUidRemovedPolicyCleared() throws Exception {
+        Future<Void> future;
+
+        // POLICY_REJECT should RULE_REJECT in background
+        expectSetUidMeteredNetworkBlacklist(UID_A, true);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_REJECT_METERED);
+        replay();
+        mService.setUidPolicy(APP_ID_A, POLICY_REJECT_METERED_BACKGROUND);
+        future.get();
+        verifyAndReset();
+
+        // uninstall should clear RULE_REJECT
+        expectSetUidMeteredNetworkBlacklist(UID_A, false);
+        expectSetUidForeground(UID_A, false);
+        future = expectRulesChanged(UID_A, RULE_ALLOW_ALL);
+        replay();
+        final Intent intent = new Intent(ACTION_UID_REMOVED);
+        intent.putExtra(EXTRA_UID, UID_A);
+        mServiceContext.sendBroadcast(intent);
+        future.get();
+        verifyAndReset();
+    }
+
+    @Suppress
     public void testOverWarningLimitNotification() throws Exception {
         NetworkState[] state = null;
         NetworkStats stats = null;
-        Future<String> tagFuture = null;
+        Future<Void> future;
+        Future<String> tagFuture;
 
         final long TIME_FEB_15 = 1171497600000L;
         final long TIME_MAR_10 = 1173484800000L;
@@ -519,15 +653,20 @@ public class NetworkPolicyManagerServiceTest {
 
         {
             expectCurrentTime();
-            when(mConnManager.getAllNetworkState()).thenReturn(state);
-            when(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15,
-                    currentTimeMillis())).thenReturn(stats.getTotalBytes());
+            expect(mConnManager.getAllNetworkState()).andReturn(state).atLeastOnce();
+            expect(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, currentTimeMillis()))
+                    .andReturn(stats.getTotalBytes()).atLeastOnce();
+            expectPolicyDataEnable(TYPE_WIFI, true);
 
-            mPolicyListener.expect().onMeteredIfacesChanged(any());
+            expectClearNotifications();
+            expectAdvisePersistThreshold();
+            future = expectMeteredIfacesChanged();
+
+            replay();
             setNetworkPolicies(new NetworkPolicy(sTemplateWifi, CYCLE_DAY, TIMEZONE_UTC, 1
                     * MB_IN_BYTES, 2 * MB_IN_BYTES, false));
-            mPolicyListener.waitAndVerify().onMeteredIfacesChanged(any());
-            verifyPolicyDataEnable(TYPE_WIFI, true);
+            future.get();
+            verifyAndReset();
         }
 
         // bring up wifi network
@@ -538,17 +677,22 @@ public class NetworkPolicyManagerServiceTest {
 
         {
             expectCurrentTime();
-            when(mConnManager.getAllNetworkState()).thenReturn(state);
-            when(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15,
-                    currentTimeMillis())).thenReturn(stats.getTotalBytes());
+            expect(mConnManager.getAllNetworkState()).andReturn(state).atLeastOnce();
+            expect(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, currentTimeMillis()))
+                    .andReturn(stats.getTotalBytes()).atLeastOnce();
+            expectPolicyDataEnable(TYPE_WIFI, true);
 
-            mPolicyListener.expect().onMeteredIfacesChanged(any());
+            expectRemoveInterfaceQuota(TEST_IFACE);
+            expectSetInterfaceQuota(TEST_IFACE, 2 * MB_IN_BYTES);
+
+            expectClearNotifications();
+            expectAdvisePersistThreshold();
+            future = expectMeteredIfacesChanged(TEST_IFACE);
+
+            replay();
             mServiceContext.sendBroadcast(new Intent(CONNECTIVITY_ACTION));
-            mPolicyListener.waitAndVerify().onMeteredIfacesChanged(eq(new String[]{TEST_IFACE}));
-
-            verifyPolicyDataEnable(TYPE_WIFI, true);
-            verifyRemoveInterfaceQuota(TEST_IFACE);
-            verifySetInterfaceQuota(TEST_IFACE, 2 * MB_IN_BYTES);
+            future.get();
+            verifyAndReset();
         }
 
         // go over warning, which should kick notification
@@ -558,15 +702,18 @@ public class NetworkPolicyManagerServiceTest {
 
         {
             expectCurrentTime();
-            when(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15,
-                    currentTimeMillis())).thenReturn(stats.getTotalBytes());
+            expect(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, currentTimeMillis()))
+                    .andReturn(stats.getTotalBytes()).atLeastOnce();
+            expectPolicyDataEnable(TYPE_WIFI, true);
+
+            expectForceUpdate();
+            expectClearNotifications();
             tagFuture = expectEnqueueNotification();
 
+            replay();
             mNetworkObserver.limitReached(null, TEST_IFACE);
-
             assertNotificationType(TYPE_WARNING, tagFuture.get());
-            verifyPolicyDataEnable(TYPE_WIFI, true);
-
+            verifyAndReset();
         }
 
         // go over limit, which should kick notification and dialog
@@ -576,14 +723,18 @@ public class NetworkPolicyManagerServiceTest {
 
         {
             expectCurrentTime();
-            when(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15,
-                    currentTimeMillis())).thenReturn(stats.getTotalBytes());
+            expect(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, currentTimeMillis()))
+                    .andReturn(stats.getTotalBytes()).atLeastOnce();
+            expectPolicyDataEnable(TYPE_WIFI, false);
+
+            expectForceUpdate();
+            expectClearNotifications();
             tagFuture = expectEnqueueNotification();
 
+            replay();
             mNetworkObserver.limitReached(null, TEST_IFACE);
-
             assertNotificationType(TYPE_LIMIT, tagFuture.get());
-            verifyPolicyDataEnable(TYPE_WIFI, false);
+            verifyAndReset();
         }
 
         // now snooze policy, which should remove quota
@@ -591,28 +742,35 @@ public class NetworkPolicyManagerServiceTest {
 
         {
             expectCurrentTime();
-            when(mConnManager.getAllNetworkState()).thenReturn(state);
-            when(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15,
-                    currentTimeMillis())).thenReturn(stats.getTotalBytes());
-            tagFuture = expectEnqueueNotification();
+            expect(mConnManager.getAllNetworkState()).andReturn(state).atLeastOnce();
+            expect(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, currentTimeMillis()))
+                    .andReturn(stats.getTotalBytes()).atLeastOnce();
+            expectPolicyDataEnable(TYPE_WIFI, true);
 
-            mPolicyListener.expect().onMeteredIfacesChanged(any());
-            mService.snoozeLimit(sTemplateWifi);
-            mPolicyListener.waitAndVerify().onMeteredIfacesChanged(eq(new String[]{TEST_IFACE}));
-
-            assertNotificationType(TYPE_LIMIT_SNOOZED, tagFuture.get());
             // snoozed interface still has high quota so background data is
             // still restricted.
-            verifyRemoveInterfaceQuota(TEST_IFACE);
-            verifySetInterfaceQuota(TEST_IFACE, Long.MAX_VALUE);
-            verifyPolicyDataEnable(TYPE_WIFI, true);
+            expectRemoveInterfaceQuota(TEST_IFACE);
+            expectSetInterfaceQuota(TEST_IFACE, Long.MAX_VALUE);
+            expectAdvisePersistThreshold();
+            expectMeteredIfacesChanged(TEST_IFACE);
+
+            future = expectClearNotifications();
+            tagFuture = expectEnqueueNotification();
+
+            replay();
+            mService.snoozeLimit(sTemplateWifi);
+            assertNotificationType(TYPE_LIMIT_SNOOZED, tagFuture.get());
+            future.get();
+            verifyAndReset();
         }
     }
 
-    @Test
+    @Suppress
     public void testMeteredNetworkWithoutLimit() throws Exception {
         NetworkState[] state = null;
         NetworkStats stats = null;
+        Future<Void> future;
+        Future<String> tagFuture;
 
         final long TIME_FEB_15 = 1171497600000L;
         final long TIME_MAR_10 = 1173484800000L;
@@ -627,19 +785,24 @@ public class NetworkPolicyManagerServiceTest {
 
         {
             expectCurrentTime();
-            when(mConnManager.getAllNetworkState()).thenReturn(state);
-            when(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15,
-                    currentTimeMillis())).thenReturn(stats.getTotalBytes());
+            expect(mConnManager.getAllNetworkState()).andReturn(state).atLeastOnce();
+            expect(mStatsService.getNetworkTotalBytes(sTemplateWifi, TIME_FEB_15, currentTimeMillis()))
+                    .andReturn(stats.getTotalBytes()).atLeastOnce();
+            expectPolicyDataEnable(TYPE_WIFI, true);
 
-            mPolicyListener.expect().onMeteredIfacesChanged(any());
+            expectRemoveInterfaceQuota(TEST_IFACE);
+            expectSetInterfaceQuota(TEST_IFACE, Long.MAX_VALUE);
+
+            expectClearNotifications();
+            expectAdvisePersistThreshold();
+            future = expectMeteredIfacesChanged(TEST_IFACE);
+
+            replay();
             setNetworkPolicies(new NetworkPolicy(
                     sTemplateWifi, CYCLE_DAY, TIMEZONE_UTC, WARNING_DISABLED, LIMIT_DISABLED,
                     true));
-            mPolicyListener.waitAndVerify().onMeteredIfacesChanged(eq(new String[]{TEST_IFACE}));
-
-            verifyPolicyDataEnable(TYPE_WIFI, true);
-            verifyRemoveInterfaceQuota(TEST_IFACE);
-            verifySetInterfaceQuota(TEST_IFACE, Long.MAX_VALUE);
+            future.get();
+            verifyAndReset();
         }
     }
 
@@ -662,36 +825,87 @@ public class NetworkPolicyManagerServiceTest {
     }
 
     private void expectCurrentTime() throws Exception {
-        when(mTime.forceRefresh()).thenReturn(false);
-        when(mTime.hasCache()).thenReturn(true);
-        when(mTime.currentTimeMillis()).thenReturn(currentTimeMillis());
-        when(mTime.getCacheAge()).thenReturn(0L);
-        when(mTime.getCacheCertainty()).thenReturn(0L);
+        expect(mTime.forceRefresh()).andReturn(false).anyTimes();
+        expect(mTime.hasCache()).andReturn(true).anyTimes();
+        expect(mTime.currentTimeMillis()).andReturn(currentTimeMillis()).anyTimes();
+        expect(mTime.getCacheAge()).andReturn(0L).anyTimes();
+        expect(mTime.getCacheCertainty()).andReturn(0L).anyTimes();
+    }
+
+    private void expectForceUpdate() throws Exception {
+        mStatsService.forceUpdate();
+        expectLastCall().atLeastOnce();
+    }
+
+    private Future<Void> expectClearNotifications() throws Exception {
+        final FutureAnswer future = new FutureAnswer();
+        mNotifManager.cancelNotificationWithTag(
+                isA(String.class), isA(String.class), anyInt(), anyInt());
+        expectLastCall().andAnswer(future).anyTimes();
+        return future;
     }
 
     private Future<String> expectEnqueueNotification() throws Exception {
-        final FutureAnswer<String> futureAnswer = new FutureAnswer<String>(2);
-        doAnswer(futureAnswer).when(mNotifManager).enqueueNotificationWithTag(
-                anyString(), anyString(), anyString() /* capture here (index 2)*/,
-                anyInt(), isA(Notification.class), isA(int[].class), anyInt());
-        return futureAnswer;
+        final FutureCapture<String> tag = new FutureCapture<String>();
+        mNotifManager.enqueueNotificationWithTag(isA(String.class), isA(String.class),
+                capture(tag.capture), anyInt(),
+                isA(Notification.class), isA(int[].class), UserHandle.myUserId());
+        return tag;
     }
 
-    private void verifySetInterfaceQuota(String iface, long quotaBytes) throws Exception {
-        verify(mNetworkManager, atLeastOnce()).setInterfaceQuota(iface, quotaBytes);
+    private void expectSetInterfaceQuota(String iface, long quotaBytes) throws Exception {
+        mNetworkManager.setInterfaceQuota(iface, quotaBytes);
+        expectLastCall().atLeastOnce();
     }
 
-    private void verifyRemoveInterfaceQuota(String iface) throws Exception {
-        verify(mNetworkManager, atLeastOnce()).removeInterfaceQuota(iface);
+    private void expectRemoveInterfaceQuota(String iface) throws Exception {
+        mNetworkManager.removeInterfaceQuota(iface);
+        expectLastCall().atLeastOnce();
     }
 
-    private Future<Void> verifyPolicyDataEnable(int type, boolean enabled) throws Exception {
+    private void expectSetInterfaceAlert(String iface, long alertBytes) throws Exception {
+        mNetworkManager.setInterfaceAlert(iface, alertBytes);
+        expectLastCall().atLeastOnce();
+    }
+
+    private void expectRemoveInterfaceAlert(String iface) throws Exception {
+        mNetworkManager.removeInterfaceAlert(iface);
+        expectLastCall().atLeastOnce();
+    }
+
+    private void expectSetUidMeteredNetworkBlacklist(int uid, boolean rejectOnQuotaInterfaces)
+            throws Exception {
+        mNetworkManager.setUidMeteredNetworkBlacklist(uid, rejectOnQuotaInterfaces);
+        expectLastCall().atLeastOnce();
+    }
+
+    private void expectSetUidForeground(int uid, boolean uidForeground) throws Exception {
+        mStatsService.setUidForeground(uid, uidForeground);
+        expectLastCall().atLeastOnce();
+    }
+
+    private Future<Void> expectRulesChanged(int uid, int policy) throws Exception {
+        final FutureAnswer future = new FutureAnswer();
+        mPolicyListener.onUidRulesChanged(eq(uid), eq(policy));
+        expectLastCall().andAnswer(future);
+        return future;
+    }
+
+    private Future<Void> expectMeteredIfacesChanged(String... ifaces) throws Exception {
+        final FutureAnswer future = new FutureAnswer();
+        mPolicyListener.onMeteredIfacesChanged(aryEq(ifaces));
+        expectLastCall().andAnswer(future);
+        return future;
+    }
+
+    private Future<Void> expectPolicyDataEnable(int type, boolean enabled) throws Exception {
         // TODO: bring back this test
         return null;
     }
 
-    private void verifyAdvisePersistThreshold() throws Exception {
-        verify(mStatsService).advisePersistThreshold(anyLong());
+    private void expectAdvisePersistThreshold() throws Exception {
+        mStatsService.advisePersistThreshold(anyLong());
+        expectLastCall().anyTimes();
     }
 
     private static class TestAbstractFuture<T> extends AbstractFuture<T> {
@@ -705,19 +919,48 @@ public class NetworkPolicyManagerServiceTest {
         }
     }
 
-    private static class FutureAnswer<T> extends TestAbstractFuture<T> implements Answer<Void> {
-        private final int index;
-
-        FutureAnswer(int index) {
-            this.index = index;
-        }
+    private static class FutureAnswer extends TestAbstractFuture<Void> implements IAnswer<Void> {
         @Override
-        public Void answer(InvocationOnMock invocation) throws Throwable {
-            @SuppressWarnings("unchecked")
-            T captured = (T) invocation.getArguments()[index];
-            set(captured);
+        public Void answer() {
+            set(null);
             return null;
         }
+    }
+
+    private static class FutureCapture<T> extends TestAbstractFuture<T> {
+        public Capture<T> capture = new Capture<T>() {
+            @Override
+            public void setValue(T value) {
+                super.setValue(value);
+                set(value);
+            }
+        };
+    }
+
+    private static class IdleFuture extends AbstractFuture<Void> implements IdleHandler {
+        @Override
+        public Void get() throws InterruptedException, ExecutionException {
+            try {
+                return get(5, TimeUnit.SECONDS);
+            } catch (TimeoutException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public boolean queueIdle() {
+            set(null);
+            return false;
+        }
+    }
+
+    /**
+     * Wait until {@link #mService} internal {@link Handler} is idle.
+     */
+    private IdleFuture expectIdle() {
+        final IdleFuture future = new IdleFuture();
+        mService.addIdleHandler(future);
+        return future;
     }
 
     private static void assertTimeEquals(long expected, long actual) {
@@ -747,7 +990,7 @@ public class NetworkPolicyManagerServiceTest {
     }
 
     private static void assertNotificationType(int expected, String actualTag) {
-        assertEquals("notification type mismatch for '" + actualTag +"'",
+        assertEquals(
                 Integer.toString(expected), actualTag.substring(actualTag.lastIndexOf(':') + 1));
     }
 
@@ -768,59 +1011,15 @@ public class NetworkPolicyManagerServiceTest {
         mElapsedRealtime += duration;
     }
 
-    /**
-     * Creates a mock and registers it to {@link LocalServices}.
-     */
-    private static <T> T addLocalServiceMock(Class<T> clazz) {
-        final T mock = mock(clazz);
-        LocalServices.addService(clazz, mock);
-        return mock;
+    private void replay() {
+        EasyMock.replay(mActivityManager, mStatsService, mPolicyListener, mNetworkManager, mTime,
+                mConnManager, mNotifManager);
     }
 
-    /**
-     * Custom Mockito answer used to verify async {@link INetworkPolicyListener} calls.
-     *
-     * <p>Typical usage:
-     * <pre><code>
-     *    mPolicyListener.expect().someCallback(any());
-     *    // do something on objects under test
-     *    mPolicyListener.waitAndVerify().someCallback(eq(expectedValue));
-     * </code></pre>
-     */
-    final class NetworkPolicyListenerAnswer implements Answer<Void> {
-        private CountDownLatch latch;
-        private final INetworkPolicyListener listener;
-
-        NetworkPolicyListenerAnswer(NetworkPolicyManagerService service) {
-            this.listener = mock(INetworkPolicyListener.class);
-            // RemoteCallbackList needs a binder to use as key
-            when(listener.asBinder()).thenReturn(new Binder());
-            service.registerListener(listener);
-        }
-
-        @Override
-        public Void answer(InvocationOnMock invocation) throws Throwable {
-            Log.d(TAG,"counting down on answer: " + invocation);
-            latch.countDown();
-            return null;
-        }
-
-        INetworkPolicyListener expect() {
-            assertNull("expect() called before waitAndVerify()", latch);
-            latch = new CountDownLatch(1);
-            return doAnswer(this).when(listener);
-        }
-
-        INetworkPolicyListener waitAndVerify() {
-            assertNotNull("waitAndVerify() called before expect()", latch);
-            try {
-                assertTrue("callback not called in 5 seconds", latch.await(5, TimeUnit.SECONDS));
-            } catch (InterruptedException e) {
-                fail("Thread interrupted before callback called");
-            } finally {
-                latch = null;
-            }
-            return verify(listener, atLeastOnce());
-        }
+    private void verifyAndReset() {
+        EasyMock.verify(mActivityManager, mStatsService, mPolicyListener, mNetworkManager, mTime,
+                mConnManager, mNotifManager);
+        EasyMock.reset(mActivityManager, mStatsService, mPolicyListener, mNetworkManager, mTime,
+                mConnManager, mNotifManager);
     }
 }

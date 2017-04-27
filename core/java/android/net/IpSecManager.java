@@ -17,8 +17,11 @@ package android.net;
 
 import static com.android.internal.util.Preconditions.checkNotNull;
 
-import android.annotation.SystemApi;
+import android.annotation.NonNull;
+import android.os.Binder;
+import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.os.RemoteException;
 import android.util.AndroidException;
 import dalvik.system.CloseGuard;
 import java.io.FileDescriptor;
@@ -34,9 +37,34 @@ import java.net.Socket;
  * <p>An IpSecManager may be obtained by calling {@link
  * android.content.Context#getSystemService(String) Context#getSystemService(String)} with {@link
  * android.content.Context#IPSEC_SERVICE Context#IPSEC_SERVICE}
+ *
+ * @hide
  */
 public final class IpSecManager {
     private static final String TAG = "IpSecManager";
+
+    /**
+     * The Security Parameter Index, SPI, 0 indicates an unknown or invalid index.
+     *
+     * <p>No IPsec packet may contain an SPI of 0.
+     */
+    public static final int INVALID_SECURITY_PARAMETER_INDEX = 0;
+
+    /** @hide */
+    public interface Status {
+        public static final int OK = 0;
+        public static final int RESOURCE_UNAVAILABLE = 1;
+        public static final int SPI_UNAVAILABLE = 2;
+    }
+
+    /** @hide */
+    public static final String KEY_STATUS = "status";
+    /** @hide */
+    public static final String KEY_RESOURCE_ID = "resourceId";
+    /** @hide */
+    public static final String KEY_SPI = "spi";
+    /** @hide */
+    public static final int INVALID_RESOURCE_ID = 0;
 
     /**
      * Indicates that the combination of remote InetAddress and SPI was non-unique for a given
@@ -83,20 +111,12 @@ public final class IpSecManager {
         private final IIpSecService mService;
         private final InetAddress mRemoteAddress;
         private final CloseGuard mCloseGuard = CloseGuard.get();
-        private int mSpi;
+        private int mSpi = INVALID_SECURITY_PARAMETER_INDEX;
+        private int mResourceId;
 
         /** Return the underlying SPI held by this object */
         public int getSpi() {
             return mSpi;
-        }
-
-        private SecurityParameterIndex(
-                IIpSecService service, int direction, InetAddress remoteAddress, int spi)
-                throws ResourceUnavailableException, SpiUnavailableException {
-            mService = service;
-            mRemoteAddress = remoteAddress;
-            mSpi = spi;
-            mCloseGuard.open("open");
         }
 
         /**
@@ -108,7 +128,7 @@ public final class IpSecManager {
          */
         @Override
         public void close() {
-            mSpi = INVALID_SECURITY_PARAMETER_INDEX; // TODO: Invalid SPI
+            mSpi = INVALID_SECURITY_PARAMETER_INDEX;
             mCloseGuard.close();
         }
 
@@ -120,14 +140,79 @@ public final class IpSecManager {
 
             close();
         }
+
+        private SecurityParameterIndex(
+                @NonNull IIpSecService service, int direction, InetAddress remoteAddress, int spi)
+                throws ResourceUnavailableException, SpiUnavailableException {
+            mService = service;
+            mRemoteAddress = remoteAddress;
+            try {
+                Bundle result =
+                        mService.reserveSecurityParameterIndex(
+                                direction, remoteAddress.getHostAddress(), spi, new Binder());
+
+                if (result == null) {
+                    throw new NullPointerException("Received null response from IpSecService");
+                }
+
+                int status = result.getInt(KEY_STATUS);
+                switch (status) {
+                    case Status.OK:
+                        break;
+                    case Status.RESOURCE_UNAVAILABLE:
+                        throw new ResourceUnavailableException(
+                                "No more SPIs may be allocated by this requester.");
+                    case Status.SPI_UNAVAILABLE:
+                        throw new SpiUnavailableException("Requested SPI is unavailable", spi);
+                    default:
+                        throw new RuntimeException(
+                                "Unknown status returned by IpSecService: " + status);
+                }
+                mSpi = result.getInt(KEY_SPI);
+                mResourceId = result.getInt(KEY_RESOURCE_ID);
+
+                if (mSpi == INVALID_SECURITY_PARAMETER_INDEX) {
+                    throw new RuntimeException("Invalid SPI returned by IpSecService: " + status);
+                }
+
+                if (mResourceId == INVALID_RESOURCE_ID) {
+                    throw new RuntimeException(
+                            "Invalid Resource ID returned by IpSecService: " + status);
+                }
+
+            } catch (RemoteException e) {
+                throw e.rethrowFromSystemServer();
+            }
+            mCloseGuard.open("open");
+        }
     }
 
     /**
-     * The Security Parameter Index, SPI, 0 indicates an unknown or invalid index.
+     * Reserve an SPI for traffic bound towards the specified remote address.
      *
-     * <p>No IPsec packet may contain an SPI of 0.
+     * <p>If successful, this SPI is guaranteed available until released by a call to {@link
+     * SecurityParameterIndex#close()}.
+     *
+     * @param direction {@link IpSecTransform#DIRECTION_IN} or {@link IpSecTransform#DIRECTION_OUT}
+     * @param remoteAddress address of the remote. SPIs must be unique for each remoteAddress.
+     * @return the reserved SecurityParameterIndex
+     * @throws ResourceUnavailableException indicating that too many SPIs are currently allocated
+     *     for this user
+     * @throws SpiUnavailableException indicating that a particular SPI cannot be reserved
      */
-    public static final int INVALID_SECURITY_PARAMETER_INDEX = 0;
+    public SecurityParameterIndex reserveSecurityParameterIndex(
+            int direction, InetAddress remoteAddress)
+            throws ResourceUnavailableException {
+        try {
+            return new SecurityParameterIndex(
+                    mService,
+                    direction,
+                    remoteAddress,
+                    IpSecManager.INVALID_SECURITY_PARAMETER_INDEX);
+        } catch (SpiUnavailableException unlikely) {
+            throw new ResourceUnavailableException("No SPIs available");
+        }
+    }
 
     /**
      * Reserve an SPI for traffic bound towards the specified remote address.
@@ -141,11 +226,13 @@ public final class IpSecManager {
      * @return the reserved SecurityParameterIndex
      * @throws ResourceUnavailableException indicating that too many SPIs are currently allocated
      *     for this user
-     * @throws SpiUnavailableException indicating that a particular SPI cannot be reserved
      */
     public SecurityParameterIndex reserveSecurityParameterIndex(
             int direction, InetAddress remoteAddress, int requestedSpi)
             throws SpiUnavailableException, ResourceUnavailableException {
+        if (requestedSpi == IpSecManager.INVALID_SECURITY_PARAMETER_INDEX) {
+            throw new IllegalArgumentException("Requested SPI must be a valid (non-zero) SPI");
+        }
         return new SecurityParameterIndex(mService, direction, remoteAddress, requestedSpi);
     }
 
@@ -160,6 +247,7 @@ public final class IpSecManager {
      *
      * @param socket a stream socket
      * @param transform an {@link IpSecTransform}, which must be an active Transport Mode transform.
+     * @hide
      */
     public void applyTransportModeTransform(Socket socket, IpSecTransform transform)
             throws IOException {
@@ -177,6 +265,7 @@ public final class IpSecManager {
      *
      * @param socket a datagram socket
      * @param transform an {@link IpSecTransform}, which must be an active Transport Mode transform.
+     * @hide
      */
     public void applyTransportModeTransform(DatagramSocket socket, IpSecTransform transform)
             throws IOException {
@@ -184,7 +273,30 @@ public final class IpSecManager {
     }
 
     /* Call down to activate a transform */
-    private void applyTransportModeTransform(ParcelFileDescriptor pfd, IpSecTransform transform) {}
+    private void applyTransportModeTransform(ParcelFileDescriptor pfd, IpSecTransform transform) {
+        try {
+            mService.applyTransportModeTransform(pfd, transform.getResourceId());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Apply an active Transport Mode IPsec Transform to a stream socket to perform IPsec
+     * encapsulation of the traffic flowing between the socket and the remote InetAddress of that
+     * transform. For security reasons, attempts to send traffic to any IP address other than the
+     * address associated with that transform will throw an IOException. In addition, if the
+     * IpSecTransform is later deactivated, the socket will throw an IOException on any calls to
+     * send() or receive() until the transform is removed from the socket by calling {@link
+     * #removeTransportModeTransform(FileDescriptor, IpSecTransform)};
+     *
+     * @param socket a socket file descriptor
+     * @param transform an {@link IpSecTransform}, which must be an active Transport Mode transform.
+     */
+    public void applyTransportModeTransform(FileDescriptor socket, IpSecTransform transform)
+            throws IOException {
+        applyTransportModeTransform(new ParcelFileDescriptor(socket), transform);
+    }
 
     /**
      * Apply an active Tunnel Mode IPsec Transform to a network, which will tunnel all traffic to
@@ -197,7 +309,6 @@ public final class IpSecManager {
      * @param transform an {@link IpSecTransform}, which must be an active Tunnel Mode transform.
      * @hide
      */
-    @SystemApi
     public void applyTunnelModeTransform(Network net, IpSecTransform transform) {}
 
     /**
@@ -209,8 +320,10 @@ public final class IpSecManager {
      *
      * @param socket a socket that previously had a transform applied to it.
      * @param transform the IPsec Transform that was previously applied to the given socket
+     * @hide
      */
-    public void removeTransportModeTransform(Socket socket, IpSecTransform transform) {
+    public void removeTransportModeTransform(Socket socket, IpSecTransform transform)
+            throws IOException {
         removeTransportModeTransform(ParcelFileDescriptor.fromSocket(socket), transform);
     }
 
@@ -223,13 +336,36 @@ public final class IpSecManager {
      *
      * @param socket a socket that previously had a transform applied to it.
      * @param transform the IPsec Transform that was previously applied to the given socket
+     * @hide
      */
-    public void removeTransportModeTransform(DatagramSocket socket, IpSecTransform transform) {
+    public void removeTransportModeTransform(DatagramSocket socket, IpSecTransform transform)
+            throws IOException {
         removeTransportModeTransform(ParcelFileDescriptor.fromDatagramSocket(socket), transform);
     }
 
+    /**
+     * Remove a transform from a given stream socket. Once removed, traffic on the socket will not
+     * be encypted. This allows sockets that have been used for IPsec to be reclaimed for
+     * communication in the clear in the event socket reuse is desired. This operation will succeed
+     * regardless of the underlying state of a transform. If a transform is removed, communication
+     * on all sockets to which that transform was applied will fail until this method is called.
+     *
+     * @param socket a socket file descriptor that previously had a transform applied to it.
+     * @param transform the IPsec Transform that was previously applied to the given socket
+     */
+    public void removeTransportModeTransform(FileDescriptor socket, IpSecTransform transform)
+            throws IOException {
+        removeTransportModeTransform(new ParcelFileDescriptor(socket), transform);
+    }
+
     /* Call down to activate a transform */
-    private void removeTransportModeTransform(ParcelFileDescriptor pfd, IpSecTransform transform) {}
+    private void removeTransportModeTransform(ParcelFileDescriptor pfd, IpSecTransform transform) {
+        try {
+            mService.removeTransportModeTransform(pfd, transform.getResourceId());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
 
     /**
      * Remove a Tunnel Mode IPsec Transform from a {@link Network}. This must be used as part of
@@ -242,7 +378,6 @@ public final class IpSecManager {
      *     network
      * @hide
      */
-    @SystemApi
     public void removeTunnelModeTransform(Network net, IpSecTransform transform) {}
 
     /**
@@ -257,7 +392,7 @@ public final class IpSecManager {
         private final IIpSecService mService;
         private final CloseGuard mCloseGuard = CloseGuard.get();
 
-        private UdpEncapsulationSocket(IIpSecService service, int port)
+        private UdpEncapsulationSocket(@NonNull IIpSecService service, int port)
                 throws ResourceUnavailableException {
             mService = service;
             mCloseGuard.open("constructor");
@@ -293,7 +428,7 @@ public final class IpSecManager {
          *
          * @param fd a file descriptor previously returned as a UDP Encapsulation socket.
          */
-        public void close() {
+        public void close() throws IOException {
             // TODO: Go close the socket
             mCloseGuard.close();
         }

@@ -21,7 +21,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="byteShort" msgid="8340973892742019101">"B"</string>
-    <string name="kilobyteShort" msgid="5973789783504771878">"kB"</string>
+    <string name="kilobyteShort" msgid="5973789783504771878">" KB"</string>
     <string name="megabyteShort" msgid="6355851576770428922">"MB"</string>
     <string name="gigabyteShort" msgid="3259882455212193214">"GB"</string>
     <string name="terabyteShort" msgid="231613018159186962">"TB"</string>
@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Verbindingsprobleem of ongeldige MMI-code."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Bewerking is beperkt tot vaste nummers."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Kan instellingen voor doorschakelen van oproepen niet wijzigen vanaf je telefoon tijdens roaming."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Service is ingeschakeld."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Service is ingeschakeld voor:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Service is uitgeschakeld."</string>
@@ -54,11 +55,11 @@
     <string name="passwordIncorrect" msgid="7612208839450128715">"Onjuist wachtwoord."</string>
     <string name="mmiComplete" msgid="8232527495411698359">"MMI voltooid."</string>
     <string name="badPin" msgid="9015277645546710014">"De oude pincode die je hebt ingevoerd, is onjuist."</string>
-    <string name="badPuk" msgid="5487257647081132201">"De PUK-code die je hebt ingevoerd, is onjuist."</string>
+    <string name="badPuk" msgid="5487257647081132201">"De pukcode die je hebt ingevoerd, is onjuist."</string>
     <string name="mismatchPin" msgid="609379054496863419">"De pincodes die je hebt ingevoerd, komen niet overeen."</string>
     <string name="invalidPin" msgid="3850018445187475377">"Voer een pincode van 4 tot 8 cijfers in."</string>
-    <string name="invalidPuk" msgid="8761456210898036513">"Typ een PUK-code die 8 cijfers of langer is."</string>
-    <string name="needPuk" msgid="919668385956251611">"Je SIM-kaart is vergrendeld met de PUK-code. Typ de PUK-code om te ontgrendelen."</string>
+    <string name="invalidPuk" msgid="8761456210898036513">"Typ een pukcode die 8 cijfers of langer is."</string>
+    <string name="needPuk" msgid="919668385956251611">"Je SIM-kaart is vergrendeld met de pukcode. Typ de pukcode om te ontgrendelen."</string>
     <string name="needPuk2" msgid="4526033371987193070">"Voer de PUK2-code in om de SIM-kaart te ontgrendelen."</string>
     <string name="enablePin" msgid="209412020907207950">"Mislukt. Schakel SIM/RUIM-vergrendeling in."</string>
     <plurals name="pinpuk_attempts" formatted="false" msgid="1251012001539225582">
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Beller-ID standaard ingesteld op \'onbeperkt\'. Volgende oproep: onbeperkt."</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Service niet voorzien."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"U kunt de instelling voor de beller-ID niet wijzigen."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Gegevensservice is geblokkeerd."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Alarmservice is geblokkeerd."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Spraakservice is geblokkeerd."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Alle spraakservices zijn geblokkeerd."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS-service is geblokkeerd."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Spraak-/gegevensservices zijn geblokkeerd."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Spraak-/SMS-services zijn geblokkeerd."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Alle spraak-/gegevens-/SMS-services zijn geblokkeerd."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Kan netwerk niet bereiken"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Als je de ontvangst wilt verbeteren, kun je het netwerktype wijzigen dat is geselecteerd bij Instellingen &gt; Mobiele netwerken &gt; Voorkeursnetwerktype."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Door peer aangevraagde TTY-modus VOL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Door peer aangevraagde TTY-modus HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Door peer aangevraagde TTY-modus VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Werkprofiel verwijderd wegens ontbrekende beheerapp."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"De beheerapp van het werkprofiel ontbreekt of is beschadigd. Als gevolg hiervan zijn je werkprofiel en alle gerelateerde gegevens verwijderd. Neem voor hulp contact op met je beheerder."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Je werkprofiel is niet meer beschikbaar op dit apparaat."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Netwerkverkeer wordt bijgehouden"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Tik voor meer informatie"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Je apparaat wordt gewist"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Er ontbreken onderdelen van de beheerapp of de app is beschadigd, waardoor de app niet kan worden gebruikt. Je apparaat wordt nu gewist. Neem voor hulp contact op met je beheerder."</string>
     <string name="me" msgid="6545696007631404292">"Ik"</string>
@@ -258,7 +271,7 @@
     <string name="permgrouplab_camera" msgid="4820372495894586615">"Camera"</string>
     <string name="permgroupdesc_camera" msgid="3250611594678347720">"foto\'s maken en video opnemen"</string>
     <string name="permgrouplab_phone" msgid="5229115638567440675">"Telefoon"</string>
-    <string name="permgroupdesc_phone" msgid="6234224354060641055">"bellen en telefoontjes beheren"</string>
+    <string name="permgroupdesc_phone" msgid="6234224354060641055">"telefoneren en oproepen beheren"</string>
     <string name="permgrouplab_sensors" msgid="416037179223226722">"Lichaamssensoren"</string>
     <string name="permgroupdesc_sensors" msgid="7147968539346634043">"toegang krijgen tot sensorgegevens over je vitale functies"</string>
     <string name="capability_title_canRetrieveWindowContent" msgid="3901717936930170320">"Content van vensters ophalen"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Hiermee kan de app de IMS-service gebruiken om te bellen zonder je tussenkomst."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"telefoonstatus en -identiteit lezen"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Hiermee kan de app toegang krijgen tot de telefoonfuncties van het apparaat, Met deze toestemming kan de app het telefoonnummer en de apparaat-ID\'s bepalen, of een oproep actief is, en het andere telefoonnummer waarmee wordt gebeld."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"oproepen doorschakelen via het systeem"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Hiermee kan de app de bijbehorende oproepen doorschakelen via het systeem om de belfunctionaliteit te verbeteren."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"voorkomen dat tablet overschakelt naar slaapmodus"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"voorkomen dat tv overschakelt naar slaapmodus"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"voorkomen dat telefoon overschakelt naar slaapmodus"</string>
@@ -655,13 +670,13 @@
     <string name="relationTypeSister" msgid="1735983554479076481">"Zus"</string>
     <string name="relationTypeSpouse" msgid="394136939428698117">"Huwelijkspartner"</string>
     <string name="sipAddressTypeCustom" msgid="2473580593111590945">"Aangepast"</string>
-    <string name="sipAddressTypeHome" msgid="6093598181069359295">"Startpagina"</string>
+    <string name="sipAddressTypeHome" msgid="6093598181069359295">"Thuis"</string>
     <string name="sipAddressTypeWork" msgid="6920725730797099047">"Werk"</string>
     <string name="sipAddressTypeOther" msgid="4408436162950119849">"Overig"</string>
     <string name="quick_contacts_not_available" msgid="746098007828579688">"Er is geen app gevonden om dit contact te bekijken."</string>
     <string name="keyguard_password_enter_pin_code" msgid="3037685796058495017">"Pincode typen"</string>
-    <string name="keyguard_password_enter_puk_code" msgid="4800725266925845333">"Geef de PUK-code en de nieuwe pincode op"</string>
-    <string name="keyguard_password_enter_puk_prompt" msgid="1341112146710087048">"PUK-code"</string>
+    <string name="keyguard_password_enter_puk_code" msgid="4800725266925845333">"Geef de pukcode en de nieuwe pincode op"</string>
+    <string name="keyguard_password_enter_puk_prompt" msgid="1341112146710087048">"pukcode"</string>
     <string name="keyguard_password_enter_pin_prompt" msgid="8027680321614196258">"Nieuwe pincode"</string>
     <string name="keyguard_password_entry_touch_hint" msgid="2644215452200037944"><font size="17">"Tik om het wachtwoord te typen"</font></string>
     <string name="keyguard_password_enter_password_code" msgid="1054721668279049780">"Typ het wachtwoord om te ontgrendelen"</string>
@@ -698,7 +713,7 @@
     <string name="lockscreen_transport_ffw_description" msgid="42987149870928985">"Vooruitspoelen"</string>
     <string name="emergency_calls_only" msgid="6733978304386365407">"Alleen noodoproepen"</string>
     <string name="lockscreen_network_locked_message" msgid="143389224986028501">"Netwerk vergrendeld"</string>
-    <string name="lockscreen_sim_puk_locked_message" msgid="7441797339976230">"SIM-kaart is vergrendeld met PUK-code."</string>
+    <string name="lockscreen_sim_puk_locked_message" msgid="7441797339976230">"SIM-kaart is vergrendeld met pukcode."</string>
     <string name="lockscreen_sim_puk_locked_instructions" msgid="8127916255245181063">"Raadpleeg de gebruikershandleiding of neem contact op met de klantenservice."</string>
     <string name="lockscreen_sim_locked_message" msgid="8066660129206001039">"SIM-kaart is vergrendeld."</string>
     <string name="lockscreen_sim_unlock_progress_dialog_message" msgid="595323214052881264">"SIM-kaart ontgrendelen..."</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Geen"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Beltonen"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Onbekende beltoon"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Wifi-netwerken beschikbaar</item>
-      <item quantity="one">Wifi-netwerk beschikbaar</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Open wifi-netwerken beschikbaar</item>
-      <item quantity="one">Open wifi-netwerk beschikbaar</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Inloggen bij wifi-netwerk"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Inloggen bij netwerk"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Hiermee wordt een app toegestaan installatiesessies te lezen. Zo kan de app informatie bekijken over actieve pakketinstallaties."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"installatiepakketten aanvragen"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Hiermee kan een app installatie van pakketten aanvragen."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"vragen om batterijoptimalisatie te negeren"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Hiermee kan een app toestemming vragen om batterijoptimalisatie voor die app te negeren."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Tik twee keer voor zoomregeling"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Kan widget niet toevoegen."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Ga"</string>
@@ -1400,14 +1409,14 @@
     <string name="kg_sim_pin_instructions" msgid="2319508550934557331">"Geef de pincode van de simkaart op"</string>
     <string name="kg_pin_instructions" msgid="2377242233495111557">"Pincode opgeven"</string>
     <string name="kg_password_instructions" msgid="5753646556186936819">"Wachtwoord invoeren"</string>
-    <string name="kg_puk_enter_puk_hint" msgid="453227143861735537">"De simkaart is nu uitgeschakeld. Geef de PUK-code op om door te gaan. Neem contact op met de provider voor informatie."</string>
+    <string name="kg_puk_enter_puk_hint" msgid="453227143861735537">"De simkaart is nu uitgeschakeld. Geef de pukcode op om door te gaan. Neem contact op met de provider voor informatie."</string>
     <string name="kg_puk_enter_pin_hint" msgid="7871604527429602024">"Gewenste pincode opgeven"</string>
     <string name="kg_enter_confirm_pin_hint" msgid="325676184762529976">"Gewenste pincode bevestigen"</string>
     <string name="kg_sim_unlock_progress_dialog_message" msgid="8950398016976865762">"Simkaart ontgrendelen..."</string>
     <string name="kg_password_wrong_pin_code" msgid="1139324887413846912">"Onjuiste pincode."</string>
     <string name="kg_invalid_sim_pin_hint" msgid="8795159358110620001">"Voer een pincode van 4 tot 8 cijfers in."</string>
-    <string name="kg_invalid_sim_puk_hint" msgid="6025069204539532000">"De PUK-code is acht cijfers lang."</string>
-    <string name="kg_invalid_puk" msgid="3638289409676051243">"Geef de juiste PUK-code opnieuw op. Bij herhaalde pogingen wordt de simkaart permanent uitgeschakeld."</string>
+    <string name="kg_invalid_sim_puk_hint" msgid="6025069204539532000">"De pukcode is acht cijfers lang."</string>
+    <string name="kg_invalid_puk" msgid="3638289409676051243">"Geef de juiste pukcode opnieuw op. Bij herhaalde pogingen wordt de simkaart permanent uitgeschakeld."</string>
     <string name="kg_invalid_confirm_pin_hint" product="default" msgid="7003469261464593516">"Pincodes komen niet overeen"</string>
     <string name="kg_login_too_many_attempts" msgid="6486842094005698475">"Te veel patroonpogingen"</string>
     <string name="kg_login_instructions" msgid="1100551261265506448">"Als u wilt ontgrendelen, moet u inloggen op je Google-account."</string>
@@ -1524,8 +1533,8 @@
     <string name="mediasize_japanese_kahu" msgid="6872696027560065173">"Kahu"</string>
     <string name="mediasize_japanese_kaku2" msgid="2359077233775455405">"Kaku2"</string>
     <string name="mediasize_japanese_you4" msgid="2091777168747058008">"You4"</string>
-    <string name="mediasize_unknown_portrait" msgid="3088043641616409762">"Onbekend portret"</string>
-    <string name="mediasize_unknown_landscape" msgid="4876995327029361552">"Onbekend landschap"</string>
+    <string name="mediasize_unknown_portrait" msgid="3088043641616409762">"Onbekend staand"</string>
+    <string name="mediasize_unknown_landscape" msgid="4876995327029361552">"Onbekend liggend"</string>
     <string name="write_fail_reason_cancelled" msgid="7091258378121627624">"Geannuleerd"</string>
     <string name="write_fail_reason_cannot_write" msgid="8132505417935337724">"Fout bij schrijven van content"</string>
     <string name="reason_unknown" msgid="6048913880184628119">"onbekend"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Jaar selecteren"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> verwijderd"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Werk <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Tik op Terug en houd vast om dit scherm los te maken."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Tik op Terug en Overzicht en houd vast om dit scherm los te maken."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"App is vastgezet: losmaken is niet toegestaan op dit apparaat."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Scherm vastgezet"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Scherm losgemaakt"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Tik voor meer informatie."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> uitgeschakeld"</string>
     <string name="conference_call" msgid="3751093130790472426">"Telefonische vergadering"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Blijf kalm en zoek onderdak in de buurt."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Verlaat kustgebieden en rivieroevers onmiddellijk en zoek een hoger gelegen gebied op."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Blijf kalm en zoek onderdak in de buurt."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Test voor noodberichten"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

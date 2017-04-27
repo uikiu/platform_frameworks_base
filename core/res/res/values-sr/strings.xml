@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Проблеми са везом или неважећи MMI кôд."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Рад је ограничен само на бројеве фиксног бирања."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Не можете да промените подешавања преусмеравања позива са телефона док сте у ромингу."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Услуга је омогућена."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Услуга је омогућена за:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Услуга је онемогућена."</string>
@@ -89,14 +90,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"ИД позиваоца подразумевано није ограничен. Следећи позив: Није ограничен."</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Услуга није добављена."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Не можете да промените подешавање ИД-а корисника."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Услуга за податке је блокирана."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Услуга за хитне случајеве је блокирана."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Гласовна услуга је блокирана."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Све гласовне услуге су блокиране."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS услуга је блокирана."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Гласовна услуга/услуга преноса података су блокиране."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Гласовна услуга и SMS услуга су блокиране."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Све гласовне и SMS услуге, као и услуге преноса података су блокиране."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Повезивање са мрежом није успело"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Да бисте побољшали пријем, пробајте да промените изабрани тип у одељку Подешавања &gt; Мобилне мреже &gt; Жељени тип мреже."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Корисник захтева ПОТПУН режим TTY"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Корисник захтева ПРЕНОС ЗВУКА за режим TTY"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Корисник захтева ПРЕНОС ГЛАСА за режим TTY"</string>
@@ -181,6 +192,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Пословни профил је избрисан јер недостаје администраторска апликација."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Администраторска апликација пословног профила недостаје или је оштећена. Због тога су ваш пословни профил и повезани подаци избрисани. Обратите се администратору за помоћ."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Профил за Work више није доступан на овом уређају."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Мрежни саобраћај се прати"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Додирните да бисте сазнали више"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Уређај ће бити обрисан"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Администраторској апликацији недостају неке компоненте или је оштећена и не може да се користи. Уређај ће сада бити обрисан. Обратите се администратору за помоћ."</string>
     <string name="me" msgid="6545696007631404292">"Ја"</string>
@@ -371,7 +384,7 @@
     <string name="permlab_sim_communication" msgid="2935852302216852065">"слање команди на SIM"</string>
     <string name="permdesc_sim_communication" msgid="5725159654279639498">"Омогућава апликацији да шаље команде SIM картици. То је веома опасно."</string>
     <string name="permlab_camera" msgid="3616391919559751192">"снимање фотографија и видео снимака"</string>
-    <string name="permdesc_camera" msgid="8497216524735535009">"Дозвољава апликацији да снима слике и видео снимке камером. Ова дозвола омогућава апликацији да у било ком тренутку користи камеру без ваше потврде."</string>
+    <string name="permdesc_camera" msgid="8497216524735535009">"Дозвољава апликацији да снима слике и видео камером. Ова дозвола омогућава апликацији да у било ком тренутку користи камеру без ваше потврде."</string>
     <string name="permlab_vibrate" msgid="7696427026057705834">"контрола вибрације"</string>
     <string name="permdesc_vibrate" msgid="6284989245902300945">"Дозвољава апликацији да контролише вибрацију."</string>
     <string name="permlab_callPhone" msgid="3925836347681847954">"директно позивање бројева телефона"</string>
@@ -380,6 +393,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Дозвољава апликацији да користи услугу размене тренутних порука да би упућивала позиве без ваше интервенције."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"читање статуса и идентитета телефона"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Дозвољава апликацији да приступа функцијама телефона на уређају. Ова дозвола омогућава апликацији да утврди број телефона и ИД-ове уређаја, затим да ли је позив активан, као и број даљинског уређаја са којим је успостављен позив."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"преусмеравање позива преко система"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Дозвољава апликацији да преусмерава позиве преко система да би побољшала доживљај позивања."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"спречавање преласка таблета у стање спавања"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"спречавање ТВ-а да пређе у стање спавања"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"спречавање преласка телефона у стање спавања"</string>
@@ -1086,16 +1101,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Без звука"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Звукови звона"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Непознати звук звона"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Wi-Fi мреже су доступне</item>
-      <item quantity="few">Wi-Fi мреже су доступне</item>
-      <item quantity="other">Wi-Fi мреже су доступне</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">Отворене Wi-Fi мреже су доступне</item>
-      <item quantity="few">Отворене Wi-Fi мреже су доступне</item>
-      <item quantity="other">Отворене Wi-Fi мреже су доступне</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Пријављивање на Wi-Fi мрежу"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Пријавите се на мрежу"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1233,6 +1238,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Дозвољава апликацији да чита сесије инсталирања. То јој дозвољава да види детаље о активним инсталацијама пакета."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"захтевање пакета за инсталирање"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Омогућава да апликација захтева инсталацију пакета."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"тражење дозволе за игнорисање оптимизација батерије"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Дозвољава апликацији да тражи дозволу за игнорисање оптимизација батерије за ту апликацију."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Додирните двапут за контролу зумирања"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Није могуће додати виџет."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Иди"</string>
@@ -1585,7 +1592,7 @@
     <string name="select_year" msgid="7952052866994196170">"Изаберите годину"</string>
     <string name="deleted_key" msgid="7659477886625566590">"Избрисали сте <xliff:g id="KEY">%1$s</xliff:g>"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> на послу"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Да бисте откачили овај екран, додирните и задржите Назад."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Да бисте откачили овај екран, додирните и задржите Назад и Преглед."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Апликација је закачена: откачињање није дозвољено на овом уређају."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Екран је закачен"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Екран је откачен"</string>
@@ -1714,4 +1721,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Додирните да бисте сазнали више."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Виџет <xliff:g id="LABEL">%1$s</xliff:g> је онемогућен"</string>
     <string name="conference_call" msgid="3751093130790472426">"Конференцијски позив"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Останите мирни и потражите склониште у околини."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Одмах се склоните из приобалних региона и области поред река на неко безбедније место, на пример, на неко узвишење."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Останите мирни и потражите склониште у околини."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Тестирање порука у хитним случајевима"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

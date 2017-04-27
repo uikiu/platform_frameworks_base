@@ -16,24 +16,30 @@
 
 package android.telephony;
 
+import static com.android.internal.util.Preconditions.checkNotNull;
+
 import android.annotation.IntDef;
 import android.annotation.Nullable;
+import android.annotation.RequiresPermission;
 import android.annotation.SystemApi;
 import android.annotation.SdkConstant;
 import android.annotation.SdkConstant.SdkConstantType;
 import android.app.ActivityThread;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.BatteryStats;
-import android.os.ResultReceiver;
+import android.os.Binder;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.os.RemoteException;
+import android.os.ResultReceiver;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.service.carrier.CarrierIdentifier;
@@ -61,6 +67,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -388,13 +395,13 @@ public class TelephonyManager {
      * The lookup key used with the {@link #ACTION_PHONE_STATE_CHANGED} broadcast
      * for a String containing the new call state.
      *
-     * @see #EXTRA_STATE_IDLE
-     * @see #EXTRA_STATE_RINGING
-     * @see #EXTRA_STATE_OFFHOOK
-     *
      * <p class="note">
      * Retrieve with
      * {@link android.content.Intent#getStringExtra(String)}.
+     *
+     * @see #EXTRA_STATE_IDLE
+     * @see #EXTRA_STATE_RINGING
+     * @see #EXTRA_STATE_OFFHOOK
      */
     public static final String EXTRA_STATE = PhoneConstants.STATE_KEY;
 
@@ -838,6 +845,29 @@ public class TelephonyManager {
      */
     public static final String VVM_TYPE_CVVM = "vvm_type_cvvm";
 
+    /**
+     * @hide
+     */
+    public static final String USSD_RESPONSE = "USSD_RESPONSE";
+
+    /**
+     * USSD return code success.
+     * @hide
+     */
+    public static final int USSD_RETURN_SUCCESS = 100;
+
+    /**
+     * USSD return code for failure case.
+     * @hide
+     */
+    public static final int USSD_RETURN_FAILURE = -1;
+
+    /**
+     * USSD return code for failure case.
+     * @hide
+     */
+    public static final int USSD_ERROR_SERVICE_UNAVAIL = -2;
+
     //
     //
     // Device Info
@@ -1055,14 +1085,15 @@ public class TelephonyManager {
      * this method will return null. The implementation must not to try add LTE
      * identifiers into the existing cdma/gsm classes.
      *<p>
-     * In the future this call will be deprecated.
-     *<p>
      * @return Current location of the device or null if not available.
      *
      * <p>Requires Permission:
      * {@link android.Manifest.permission#ACCESS_COARSE_LOCATION ACCESS_COARSE_LOCATION} or
      * {@link android.Manifest.permission#ACCESS_COARSE_LOCATION ACCESS_FINE_LOCATION}.
+     *
+     * @deprecated use {@link #getAllCellInfo} instead, which returns a superset of this API.
      */
+    @Deprecated
     public CellLocation getCellLocation() {
         try {
             ITelephony telephony = getITelephony();
@@ -1151,12 +1182,12 @@ public class TelephonyManager {
     /**
      * Returns the neighboring cell information of the device.
      *
+     * <p>Requires Permission:
+     * {@link android.Manifest.permission#ACCESS_COARSE_LOCATION}
+     *
      * @return List of NeighboringCellInfo or null if info unavailable.
      *
-     * <p>Requires Permission:
-     * (@link android.Manifest.permission#ACCESS_COARSE_UPDATES}
-     *
-     * @deprecated Use (@link getAllCellInfo} which returns a superset of the information
+     * @deprecated Use {@link #getAllCellInfo} which returns a superset of the information
      *             from NeighboringCellInfo.
      */
     @Deprecated
@@ -1702,6 +1733,11 @@ public class TelephonyManager {
     /**
      * Returns a constant indicating the radio technology (network type)
      * currently in use on the device for data transmission.
+     *
+     * <p>
+     * Requires Permission:
+     *   {@link android.Manifest.permission#READ_PHONE_STATE READ_PHONE_STATE}
+     *
      * @return the network type
      *
      * @see #NETWORK_TYPE_UNKNOWN
@@ -1720,10 +1756,6 @@ public class TelephonyManager {
      * @see #NETWORK_TYPE_LTE
      * @see #NETWORK_TYPE_EHRPD
      * @see #NETWORK_TYPE_HSPAP
-     *
-     * <p>
-     * Requires Permission:
-     *   {@link android.Manifest.permission#READ_PHONE_STATE READ_PHONE_STATE}
      */
     public int getDataNetworkType() {
         return getDataNetworkType(getSubId());
@@ -2776,24 +2808,52 @@ public class TelephonyManager {
 
     /**
      * @returns the settings of the visual voicemail SMS filter for a phone account set by the
-     * package, or {@code null} if the filter is disabled.
+     * current active visual voicemail client, or {@code null} if the filter is disabled.
      *
      * <p>Requires the calling app to have READ_PRIVILEGED_PHONE_STATE permission.
      */
     /** @hide */
     @Nullable
-    public VisualVoicemailSmsFilterSettings getVisualVoicemailSmsFilterSettings(String packageName,
-            int subId) {
+    public VisualVoicemailSmsFilterSettings getActiveVisualVoicemailSmsFilterSettings(int subId) {
         try {
             ITelephony telephony = getITelephony();
             if (telephony != null) {
-                return telephony.getSystemVisualVoicemailSmsFilterSettings(packageName, subId);
+                return telephony.getActiveVisualVoicemailSmsFilterSettings(subId);
             }
         } catch (RemoteException ex) {
         } catch (NullPointerException ex) {
         }
 
         return null;
+    }
+
+    /**
+     * Send a visual voicemail SMS. The IPC caller must be the current default dialer.
+     *
+     * <p>Requires Permission:
+     *   {@link android.Manifest.permission#SEND_SMS SEND_SMS}
+     *
+     * @param phoneAccountHandle The account to send the SMS with.
+     * @param number The destination number.
+     * @param port The destination port for data SMS, or 0 for text SMS.
+     * @param text The message content. For data sms, it will be encoded as a UTF-8 byte stream.
+     * @param sentIntent The sent intent passed to the {@link SmsManager}
+     *
+     * @see SmsManager#sendDataMessage(String, String, short, byte[], PendingIntent, PendingIntent)
+     * @see SmsManager#sendTextMessage(String, String, String, PendingIntent, PendingIntent)
+     *
+     * @hide
+     */
+    public void sendVisualVoicemailSmsForSubscriber(int subId, String number, int port,
+            String text, PendingIntent sentIntent) {
+        try {
+            ITelephony telephony = getITelephony();
+            if (telephony != null) {
+                telephony.sendVisualVoicemailSmsForSubscriber(
+                        mContext.getOpPackageName(), subId, number, port, text, sentIntent);
+            }
+        } catch (RemoteException ex) {
+        }
     }
 
     /**
@@ -3520,9 +3580,28 @@ public class TelephonyManager {
      *
      * @param AID Application id. See ETSI 102.221 and 101.220.
      * @return an IccOpenLogicalChannelResponse object.
+     * @deprecated Replaced by {@link #iccOpenLogicalChannel(String, int)}
      */
+    @Deprecated
     public IccOpenLogicalChannelResponse iccOpenLogicalChannel(String AID) {
-        return iccOpenLogicalChannel(getSubId(), AID);
+        return iccOpenLogicalChannel(getSubId(), AID, -1);
+    }
+
+    /**
+     * Opens a logical channel to the ICC card.
+     *
+     * Input parameters equivalent to TS 27.007 AT+CCHO command.
+     *
+     * <p>Requires Permission:
+     *   {@link android.Manifest.permission#MODIFY_PHONE_STATE MODIFY_PHONE_STATE}
+     * Or the calling app has carrier privileges. @see #hasCarrierPrivileges
+     *
+     * @param AID Application id. See ETSI 102.221 and 101.220.
+     * @param p2 P2 parameter (described in ISO 7816-4).
+     * @return an IccOpenLogicalChannelResponse object.
+     */
+    public IccOpenLogicalChannelResponse iccOpenLogicalChannel(String AID, int p2) {
+        return iccOpenLogicalChannel(getSubId(), AID, p2);
     }
 
     /**
@@ -3536,14 +3615,15 @@ public class TelephonyManager {
      *
      * @param subId The subscription to use.
      * @param AID Application id. See ETSI 102.221 and 101.220.
+     * @param p2 P2 parameter (described in ISO 7816-4).
      * @return an IccOpenLogicalChannelResponse object.
      * @hide
      */
-    public IccOpenLogicalChannelResponse iccOpenLogicalChannel(int subId, String AID) {
+    public IccOpenLogicalChannelResponse iccOpenLogicalChannel(int subId, String AID, int p2) {
         try {
             ITelephony telephony = getITelephony();
             if (telephony != null)
-                return telephony.iccOpenLogicalChannel(subId, AID);
+                return telephony.iccOpenLogicalChannel(subId, AID, p2);
         } catch (RemoteException ex) {
         } catch (NullPointerException ex) {
         }
@@ -4258,7 +4338,7 @@ public class TelephonyManager {
      * Returns null if the query fails.
      *
      *
-     * <p>Requires that the caller has READ_PRIVILEGED_PHONE_STATE
+     * <p>Requires that the caller has READ_PHONE_STATE
      *
      * @return an array of forbidden PLMNs or null if not available
      */
@@ -4271,7 +4351,7 @@ public class TelephonyManager {
      * Returns null if the query fails.
      *
      *
-     * <p>Requires that the calling app has READ_PRIVILEGED_PHONE_STATE
+     * <p>Requires that the calling app has READ_PHONE_STATE
      *
      * @param subId subscription ID used for authentication
      * @param appType the icc application type, like {@link #APPTYPE_USIM}
@@ -4961,6 +5041,84 @@ public class TelephonyManager {
             Log.e(TAG, "Error calling ITelephony#]", e);
         }
         return new int[0];
+    }
+
+    public static abstract class OnReceiveUssdResponseCallback {
+       /**
+        ** Called when USSD has succeeded.
+        **/
+       public void onReceiveUssdResponse(String request, CharSequence response) {};
+
+       /**
+        ** Called when USSD has failed.
+        **/
+       public void onReceiveUssdResponseFailed(String request, int failureCode) {};
+    }
+
+    /* <p>Requires permission:
+     * @link android.Manifest.permission#CALL_PHONE}
+     * @param ussdRequest the USSD command to be executed.
+     * @param wrappedCallback receives a callback result.
+     */
+    @RequiresPermission(android.Manifest.permission.CALL_PHONE)
+    public void sendUssdRequest(String ussdRequest,
+                                final OnReceiveUssdResponseCallback callback, Handler handler) {
+        sendUssdRequest(ussdRequest, getSubId(), callback, handler);
+    }
+
+   /* <p>Requires permission:
+    * @link android.Manifest.permission#CALL_PHONE}
+    * @param subId The subscription to use.
+    * @param ussdRequest the USSD command to be executed.
+    * @param wrappedCallback receives a callback result.
+    */
+    @RequiresPermission(android.Manifest.permission.CALL_PHONE)
+    public void sendUssdRequest(String ussdRequest, int subId,
+                                final OnReceiveUssdResponseCallback callback, Handler handler) {
+        checkNotNull(callback, "OnReceiveUssdResponseCallback cannot be null.");
+
+        ResultReceiver wrappedCallback = new ResultReceiver(handler) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle ussdResponse) {
+                Rlog.d(TAG, "USSD:" + resultCode);
+                checkNotNull(ussdResponse, "ussdResponse cannot be null.");
+                UssdResponse response = ussdResponse.getParcelable(USSD_RESPONSE);
+
+                if (resultCode == USSD_RETURN_SUCCESS) {
+                    callback.onReceiveUssdResponse(response.getUssdRequest(),
+                            response.getReturnMessage());
+                } else {
+                    callback.onReceiveUssdResponseFailed(response.getUssdRequest(), resultCode);
+                }
+            }
+        };
+
+        try {
+            ITelephony telephony = getITelephony();
+            if (telephony != null) {
+                telephony.handleUssdRequest(subId, ussdRequest, wrappedCallback);
+            }
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error calling ITelephony#sendUSSDCode", e);
+            UssdResponse response = new UssdResponse(ussdRequest, "");
+            Bundle returnData = new Bundle();
+            returnData.putParcelable(USSD_RESPONSE, response);
+            wrappedCallback.send(USSD_ERROR_SERVICE_UNAVAIL, returnData);
+        }
+    }
+
+   /*
+    * @return true, if the device is currently on a technology (e.g. UMTS or LTE) which can support
+    * voice and data simultaneously. This can change based on location or network condition.
+    */
+    public boolean isConcurrentVoiceAndDataAllowed() {
+        try {
+            ITelephony telephony = getITelephony();
+            return (telephony == null ? false : telephony.isConcurrentVoiceAndDataAllowed(mSubId));
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error calling ITelephony#isConcurrentVoiceAndDataAllowed", e);
+        }
+        return false;
     }
 
     /** @hide */
@@ -6070,7 +6228,7 @@ public class TelephonyManager {
         } catch (RemoteException e) {
             Log.e(TAG, "Error calling ITelephony#getAllowedCarriers", e);
         } catch (NullPointerException e) {
-            Log.e(TAG, "Error calling ITelephony#setAllowedCarriers", e);
+            Log.e(TAG, "Error calling ITelephony#getAllowedCarriers", e);
         }
         return new ArrayList<CarrierIdentifier>(0);
     }
@@ -6167,6 +6325,34 @@ public class TelephonyManager {
         }
 
         return null;
+    }
+
+    /**
+     * Check if phone is in emergency callback mode
+     * @return true if phone is in emergency callback mode
+     * @hide
+     */
+    public boolean getEmergencyCallbackMode() {
+        return getEmergencyCallbackMode(getSubId());
+    }
+
+    /**
+     * Check if phone is in emergency callback mode
+     * @return true if phone is in emergency callback mode
+     * @param subId the subscription ID that this action applies to.
+     * @hide
+     */
+    public boolean getEmergencyCallbackMode(int subId) {
+        try {
+            ITelephony telephony = getITelephony();
+            if (telephony == null) {
+                return false;
+            }
+            return telephony.getEmergencyCallbackMode(subId);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error calling ITelephony#getEmergencyCallbackMode", e);
+        }
+        return false;
     }
 }
 

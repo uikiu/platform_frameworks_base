@@ -19,10 +19,13 @@ package com.android.server.connectivity;
 import android.content.Context;
 import android.net.ConnectivityMetricsEvent;
 import android.net.IIpConnectivityMetrics;
+import android.net.INetdEventCallback;
 import android.net.metrics.ApfProgramEvent;
 import android.net.metrics.IpConnectivityLog;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.Parcelable;
+import android.os.Process;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -33,13 +36,13 @@ import com.android.internal.annotations.GuardedBy;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.util.TokenBucket;
 import com.android.server.SystemService;
+import com.android.server.connectivity.metrics.IpConnectivityLogClass.IpConnectivityEvent;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.ToIntFunction;
-
-import static com.android.server.connectivity.metrics.IpConnectivityLogClass.IpConnectivityEvent;
 
 /** {@hide} */
 final public class IpConnectivityMetrics extends SystemService {
@@ -59,6 +62,8 @@ final public class IpConnectivityMetrics extends SystemService {
     private static final int DEFAULT_BUFFER_SIZE = 2000;
     // Maximum size of the event buffer.
     private static final int MAXIMUM_BUFFER_SIZE = DEFAULT_BUFFER_SIZE * 10;
+
+    private static final int MAXIMUM_CONNECT_LATENCY_RECORDS = 20000;
 
     private static final int ERROR_RATE_LIMITED = -1;
 
@@ -157,9 +162,15 @@ final public class IpConnectivityMetrics extends SystemService {
             initBuffer();
         }
 
+        final List<IpConnectivityEvent> protoEvents = IpConnectivityEventBuilder.toProto(events);
+
+        if (mNetdListener != null) {
+            mNetdListener.flushStatistics(protoEvents);
+        }
+
         final byte[] data;
         try {
-            data = IpConnectivityEventBuilder.serialize(dropped, events);
+            data = IpConnectivityEventBuilder.serialize(dropped, protoEvents);
         } catch (IOException e) {
             Log.e(TAG, "could not serialize events", e);
             return "";
@@ -262,6 +273,33 @@ final public class IpConnectivityMetrics extends SystemService {
 
         private void enforcePermission(String what) {
             getContext().enforceCallingOrSelfPermission(what, "IpConnectivityMetrics");
+        }
+
+        private void enforceNetdEventListeningPermission() {
+            final int uid = Binder.getCallingUid();
+            if (uid != Process.SYSTEM_UID) {
+                throw new SecurityException(String.format("Uid %d has no permission to listen for"
+                        + " netd events.", uid));
+            }
+        }
+
+        @Override
+        public boolean registerNetdEventCallback(INetdEventCallback callback) {
+            enforceNetdEventListeningPermission();
+            if (mNetdListener == null) {
+                return false;
+            }
+            return mNetdListener.registerNetdEventCallback(callback);
+        }
+
+        @Override
+        public boolean unregisterNetdEventCallback() {
+            enforceNetdEventListeningPermission();
+            if (mNetdListener == null) {
+                // if the service is null, we aren't registered anyway
+                return true;
+            }
+            return mNetdListener.unregisterNetdEventCallback();
         }
     };
 

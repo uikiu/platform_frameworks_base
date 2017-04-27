@@ -16,6 +16,7 @@
 
 package com.android.internal.telephony;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -273,6 +274,16 @@ interface ITelephony {
      */
     boolean handlePinMmi(String dialString);
 
+
+    /**
+     * Handles USSD commands.
+     *
+     * @param subId The subscription to use.
+     * @param ussdRequest the USSD command to be executed.
+     * @param wrappedCallback receives a callback result.
+     */
+    void handleUssdRequest(int subId, String ussdRequest, in ResultReceiver wrappedCallback);
+
     /**
      * Handles PIN MMI commands (PIN/PIN2/PUK/PUK2), which are initiated
      * without SEND (so <code>dial</code> is not appropriate) for
@@ -481,6 +492,12 @@ interface ITelephony {
      */
     int getVoiceMessageCountForSubscriber(int subId);
 
+    /**
+      * Returns true if current state supports both voice and data
+      * simultaneously. This can change based on location or network condition.
+      */
+    boolean isConcurrentVoiceAndDataAllowed(int subId);
+
     oneway void setVisualVoicemailEnabled(String callingPackage,
             in PhoneAccountHandle accountHandle, boolean enabled);
 
@@ -497,9 +514,18 @@ interface ITelephony {
     VisualVoicemailSmsFilterSettings getVisualVoicemailSmsFilterSettings(String callingPackage,
             int subId);
 
-    // Get settings set by the package, requires READ_PRIVILEGED_PHONE_STATE permission
-    VisualVoicemailSmsFilterSettings getSystemVisualVoicemailSmsFilterSettings(String packageName,
-            int subId);
+    /**
+     *  Get settings set by the current default dialer, Internal use only.
+     *  Requires READ_PRIVILEGED_PHONE_STATE permission.
+     */
+    VisualVoicemailSmsFilterSettings getActiveVisualVoicemailSmsFilterSettings(int subId);
+
+    /**
+     * Send a visual voicemail SMS. Internal use only.
+     * Requires caller to be the default dialer and have SEND_SMS permission
+     */
+    oneway void sendVisualVoicemailSmsForSubscriber(in String callingPackage, in int subId,
+            in String number, in int port, in String text, in PendingIntent sentIntent);
 
     /**
      * Returns the network type for data transmission
@@ -592,9 +618,10 @@ interface ITelephony {
      *
      * @param subId The subscription to use.
      * @param AID Application id. See ETSI 102.221 and 101.220.
+     * @param p2 P2 parameter (described in ISO 7816-4).
      * @return an IccOpenLogicalChannelResponse object.
      */
-    IccOpenLogicalChannelResponse iccOpenLogicalChannel(int subId, String AID);
+    IccOpenLogicalChannelResponse iccOpenLogicalChannel(int subId, String AID, int p2);
 
     /**
      * Closes a previously opened logical channel to the ICC card.
@@ -1256,4 +1283,12 @@ interface ITelephony {
      * @param appType the icc application type, like {@link #APPTYPE_USIM}
      */
     String[] getForbiddenPlmns(int subId, int appType);
+
+    /**
+     * Check if phone is in emergency callback mode
+     * @return true if phone is in emergency callback mode
+     * @param subId the subscription ID that this action applies to.
+     * @hide
+     */
+    boolean getEmergencyCallbackMode(int subId);
 }

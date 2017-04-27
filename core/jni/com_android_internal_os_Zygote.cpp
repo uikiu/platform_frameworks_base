@@ -346,6 +346,11 @@ static bool MountEmulatedStorage(uid_t uid, jint mount_mode,
         return false;
     }
 
+    // Handle force_mount_namespace with MOUNT_EXTERNAL_NONE.
+    if (mount_mode == MOUNT_EXTERNAL_NONE) {
+        return true;
+    }
+
     if (TEMP_FAILURE_RETRY(mount(storageSource.string(), "/storage",
             NULL, MS_BIND | MS_REC | MS_SLAVE, NULL)) == -1) {
         ALOGW("Failed to mount %s to /storage: %s", storageSource.string(), strerror(errno));
@@ -476,6 +481,20 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
                                      jstring instructionSet, jstring dataDir) {
   SetSigChldHandler();
 
+  sigset_t sigchld;
+  sigemptyset(&sigchld);
+  sigaddset(&sigchld, SIGCHLD);
+
+  // Temporarily block SIGCHLD during forks. The SIGCHLD handler might
+  // log, which would result in the logging FDs we close being reopened.
+  // This would cause failures because the FDs are not whitelisted.
+  //
+  // Note that the zygote process is single threaded at this point.
+  if (sigprocmask(SIG_BLOCK, &sigchld, nullptr) == -1) {
+    ALOGE("sigprocmask(SIG_SETMASK, { SIGCHLD }) failed: %s", strerror(errno));
+    RuntimeAbort(env, __LINE__, "Call to sigprocmask(SIG_BLOCK, { SIGCHLD }) failed.");
+  }
+
   // Close any logging related FDs before we start evaluating the list of
   // file descriptors.
   __android_log_close();
@@ -507,6 +526,11 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
     // with the zygote across a fork.
     if (!gOpenFdTable->ReopenOrDetach()) {
       RuntimeAbort(env, __LINE__, "Unable to reopen whitelisted descriptors.");
+    }
+
+    if (sigprocmask(SIG_UNBLOCK, &sigchld, nullptr) == -1) {
+      ALOGE("sigprocmask(SIG_SETMASK, { SIGCHLD }) failed: %s", strerror(errno));
+      RuntimeAbort(env, __LINE__, "Call to sigprocmask(SIG_UNBLOCK, { SIGCHLD }) failed.");
     }
 
     // Keep capabilities across UID change, unless we're staying root.
@@ -637,6 +661,12 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
     }
   } else if (pid > 0) {
     // the parent process
+
+    // We blocked SIGCHLD prior to a fork, we unblock it here.
+    if (sigprocmask(SIG_UNBLOCK, &sigchld, nullptr) == -1) {
+      ALOGE("sigprocmask(SIG_SETMASK, { SIGCHLD }) failed: %s", strerror(errno));
+      RuntimeAbort(env, __LINE__, "Call to sigprocmask(SIG_UNBLOCK, { SIGCHLD }) failed.");
+    }
   }
   return pid;
 }
@@ -655,11 +685,14 @@ static jint com_android_internal_os_Zygote_nativeForkAndSpecialize(
 
     // Grant CAP_WAKE_ALARM to the Bluetooth process.
     // Additionally, allow bluetooth to open packet sockets so it can start the DHCP client.
+    // Grant CAP_SYS_NICE to allow Bluetooth to set RT priority for
+    // audio-related threads.
     // TODO: consider making such functionality an RPC to netd.
     if (multiuser_get_app_id(uid) == AID_BLUETOOTH) {
       capabilities |= (1LL << CAP_WAKE_ALARM);
       capabilities |= (1LL << CAP_NET_RAW);
       capabilities |= (1LL << CAP_NET_BIND_SERVICE);
+      capabilities |= (1LL << CAP_SYS_NICE);
     }
 
     // Grant CAP_BLOCK_SUSPEND to processes that belong to GID "wakelock"

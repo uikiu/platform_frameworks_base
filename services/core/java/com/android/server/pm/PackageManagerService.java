@@ -469,11 +469,11 @@ public class PackageManagerService extends IPackageManager.Stub {
 
     private static final String VENDOR_OVERLAY_DIR = "/vendor/overlay";
     /**
-     * If VENDOR_OVERLAY_SKU_PROPERTY is set, search for runtime resource overlay APKs in
-     * VENDOR_OVERLAY_DIR/<value of VENDOR_OVERLAY_SKU_PROPERTY> rather than in
+     * If VENDOR_OVERLAY_THEME_PROPERTY is set, search for runtime resource overlay APKs also in
+     * VENDOR_OVERLAY_DIR/<value of VENDOR_OVERLAY_THEME_PROPERTY> in addition to
      * VENDOR_OVERLAY_DIR.
      */
-    private static final String VENDOR_OVERLAY_SKU_PROPERTY = "ro.boot.vendor.overlay.sku";
+    private static final String VENDOR_OVERLAY_THEME_PROPERTY = "ro.boot.vendor.overlay.theme";
 
     private static int DEFAULT_EPHEMERAL_HASH_PREFIX_MASK = 0xFFFFF000;
     private static int DEFAULT_EPHEMERAL_HASH_PREFIX_COUNT = 5;
@@ -2191,6 +2191,18 @@ public class PackageManagerService extends IPackageManager.Stub {
 
             mFirstBoot = !mSettings.readLPw(sUserManager.getUsers(false));
 
+            // Clean up orphaned packages for which the code path doesn't exist
+            // and they are an update to a system app - caused by bug/32321269
+            final int packageSettingCount = mSettings.mPackages.size();
+            for (int i = packageSettingCount - 1; i >= 0; i--) {
+                PackageSetting ps = mSettings.mPackages.valueAt(i);
+                if (!isExternal(ps) && (ps.codePath == null || !ps.codePath.exists())
+                        && mSettings.getDisabledSystemPkgLPr(ps.name) != null) {
+                    mSettings.mPackages.removeAt(i);
+                    mSettings.enableSystemPackageLPw(ps.name);
+                }
+            }
+
             if (mFirstBoot) {
                 requestCopyPreoptedFiles();
             }
@@ -2296,18 +2308,17 @@ public class PackageManagerService extends IPackageManager.Stub {
                 }
             }
 
-            // Collect vendor overlay packages.
-            // (Do this before scanning any apps.)
+            // Collect vendor overlay packages. (Do this before scanning any apps.)
             // For security and version matching reason, only consider
             // overlay packages if they reside in the right directory.
-            File vendorOverlayDir;
-            String overlaySkuDir = SystemProperties.get(VENDOR_OVERLAY_SKU_PROPERTY);
-            if (!overlaySkuDir.isEmpty()) {
-                vendorOverlayDir = new File(VENDOR_OVERLAY_DIR, overlaySkuDir);
-            } else {
-                vendorOverlayDir = new File(VENDOR_OVERLAY_DIR);
+            String overlayThemeDir = SystemProperties.get(VENDOR_OVERLAY_THEME_PROPERTY);
+            if (!overlayThemeDir.isEmpty()) {
+                scanDirTracedLI(new File(VENDOR_OVERLAY_DIR, overlayThemeDir), mDefParseFlags
+                        | PackageParser.PARSE_IS_SYSTEM
+                        | PackageParser.PARSE_IS_SYSTEM_DIR
+                        | PackageParser.PARSE_TRUSTED_OVERLAY, scanFlags | SCAN_TRUSTED_OVERLAY, 0);
             }
-            scanDirTracedLI(vendorOverlayDir, mDefParseFlags
+            scanDirTracedLI(new File(VENDOR_OVERLAY_DIR), mDefParseFlags
                     | PackageParser.PARSE_IS_SYSTEM
                     | PackageParser.PARSE_IS_SYSTEM_DIR
                     | PackageParser.PARSE_TRUSTED_OVERLAY, scanFlags | SCAN_TRUSTED_OVERLAY, 0);
@@ -3167,8 +3178,12 @@ public class PackageManagerService extends IPackageManager.Stub {
         flags = updateFlagsForPackage(flags, userId, packageName);
         enforceCrossUserPermission(Binder.getCallingUid(), userId,
                 false /* requireFullPermission */, false /* checkShell */, "get package info");
+
         // reader
         synchronized (mPackages) {
+            // Normalize package name to hanlde renamed packages
+            packageName = normalizePackageNameLPr(packageName);
+
             final boolean matchFactoryOnly = (flags & MATCH_FACTORY_ONLY) != 0;
             PackageParser.Package p = null;
             if (matchFactoryOnly) {
@@ -3369,8 +3384,12 @@ public class PackageManagerService extends IPackageManager.Stub {
         flags = updateFlagsForApplication(flags, userId, packageName);
         enforceCrossUserPermission(Binder.getCallingUid(), userId,
                 false /* requireFullPermission */, false /* checkShell */, "get application info");
+
         // writer
         synchronized (mPackages) {
+            // Normalize package name to hanlde renamed packages
+            packageName = normalizePackageNameLPr(packageName);
+
             PackageParser.Package p = mPackages.get(packageName);
             if (DEBUG_PACKAGE_INFO) Log.v(
                     TAG, "getApplicationInfo " + packageName
@@ -3390,6 +3409,11 @@ public class PackageManagerService extends IPackageManager.Stub {
             }
         }
         return null;
+    }
+
+    private String normalizePackageNameLPr(String packageName) {
+        String normalizedPackageName = mSettings.mRenamedPackages.get(packageName);
+        return normalizedPackageName != null ? normalizedPackageName : packageName;
     }
 
     @Override
@@ -5416,15 +5440,23 @@ public class PackageManagerService extends IPackageManager.Stub {
                             result.remove(xpResolveInfo);
                         }
                         if (result.size() == 0 && !addEphemeral) {
+                            // No result in current profile, but found candidate in parent user.
+                            // And we are not going to add emphemeral app, so we can return the
+                            // result straight away.
                             result.add(xpDomainInfo.resolveInfo);
                             return result;
                         }
+                    } else if (result.size() <= 1 && !addEphemeral) {
+                        // No result in parent user and <= 1 result in current profile, and we
+                        // are not going to add emphemeral app, so we can return the result without
+                        // further processing.
+                        return result;
                     }
-                    if (result.size() > 1 || addEphemeral) {
-                        result = filterCandidatesWithDomainPreferredActivitiesLPr(
-                                intent, flags, result, xpDomainInfo, userId);
-                        sortResult = true;
-                    }
+                    // We have more than one candidate (combining results from current and parent
+                    // profile), so we need filtering and sorting.
+                    result = filterCandidatesWithDomainPreferredActivitiesLPr(
+                            intent, flags, result, xpDomainInfo, userId);
+                    sortResult = true;
                 }
             } else {
                 final PackageParser.Package pkg = mPackages.get(pkgName);
@@ -10060,12 +10092,30 @@ public class PackageManagerService extends IPackageManager.Stub {
                             int flags = permissionState != null
                                     ? permissionState.getFlags() : 0;
                             if (origPermissions.hasRuntimePermission(bp.name, userId)) {
-                                if (permissionsState.grantRuntimePermission(bp, userId) ==
-                                        PermissionsState.PERMISSION_OPERATION_FAILURE) {
-                                    // If we cannot put the permission as it was, we have to write.
+                                // Don't propagate the permission in a permission review mode if
+                                // the former was revoked, i.e. marked to not propagate on upgrade.
+                                // Note that in a permission review mode install permissions are
+                                // represented as constantly granted runtime ones since we need to
+                                // keep a per user state associated with the permission. Also the
+                                // revoke on upgrade flag is no longer applicable and is reset.
+                                final boolean revokeOnUpgrade = (flags & PackageManager
+                                        .FLAG_PERMISSION_REVOKE_ON_UPGRADE) != 0;
+                                if (revokeOnUpgrade) {
+                                    flags &= ~PackageManager.FLAG_PERMISSION_REVOKE_ON_UPGRADE;
+                                    // Since we changed the flags, we have to write.
                                     changedRuntimePermissionUserIds = ArrayUtils.appendInt(
                                             changedRuntimePermissionUserIds, userId);
                                 }
+                                if (!mPermissionReviewRequired || !revokeOnUpgrade) {
+                                    if (permissionsState.grantRuntimePermission(bp, userId) ==
+                                            PermissionsState.PERMISSION_OPERATION_FAILURE) {
+                                        // If we cannot put the permission as it was,
+                                        // we have to write.
+                                        changedRuntimePermissionUserIds = ArrayUtils.appendInt(
+                                                changedRuntimePermissionUserIds, userId);
+                                    }
+                                }
+
                                 // If the app supports runtime permissions no need for a review.
                                 if ((mPermissionReviewRequired || Build.PERMISSIONS_REVIEW_REQUIRED)
                                         && appSupportsRuntimePermissions
@@ -19699,6 +19749,9 @@ Slog.v(TAG, ":: stepped forward, applying functor at tag " + parser.getName());
     private void assertPackageKnown(String volumeUuid, String packageName)
             throws PackageManagerException {
         synchronized (mPackages) {
+            // Normalize package name to handle renamed packages
+            packageName = normalizePackageNameLPr(packageName);
+
             final PackageSetting ps = mSettings.mPackages.get(packageName);
             if (ps == null) {
                 throw new PackageManagerException("Package " + packageName + " is unknown");
@@ -19713,6 +19766,9 @@ Slog.v(TAG, ":: stepped forward, applying functor at tag " + parser.getName());
     private void assertPackageKnownAndInstalled(String volumeUuid, String packageName, int userId)
             throws PackageManagerException {
         synchronized (mPackages) {
+            // Normalize package name to handle renamed packages
+            packageName = normalizePackageNameLPr(packageName);
+
             final PackageSetting ps = mSettings.mPackages.get(packageName);
             if (ps == null) {
                 throw new PackageManagerException("Package " + packageName + " is unknown");
@@ -21049,6 +21105,11 @@ Slog.v(TAG, ":: stepped forward, applying functor at tag " + parser.getName());
             synchronized (mPackages) {
                 return mSettings.wasPackageEverLaunchedLPr(packageName, userId);
             }
+        }
+
+        @Override
+        public String getNameForUid(int uid) {
+            return PackageManagerService.this.getNameForUid(uid);
         }
     }
 

@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Problema de conexão ou código MMI inválido."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"A operação é limitada somente a números de chamadas fixas."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Não é possível alterar as configurações de encaminhamento de chamada do seu smartphone em roaming."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"O serviço foi ativado."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"O serviço foi ativado para:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"O serviço foi desativado."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"O ID do chamador assume o padrão de não restrito. Próxima chamada: Não restrita"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"O serviço não foi habilitado."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Não é possível alterar a configuração de identificação de chamadas."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"O serviço de dados está bloqueado."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"O serviço de emergência está bloqueado."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"O serviço de voz está bloqueado."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Todos os serviços de voz estão bloqueados."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"O serviço de SMS está bloqueado."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Os serviços de voz/dados estão bloqueados."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Os serviços de voz/SMS estão bloqueados."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Todos os serviços de voz/dados/SMS estão bloqueados."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Não foi possível acessar a rede"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Para melhorar a recepção, tente alterar o tipo selecionado em Configurações &gt; Redes celulares &gt; Tipo de rede preferencial."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"TTD modo COMPLETO solicitado"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"TTD modo HCO solicitado"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"TTD modo VCO solicitado"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Perfil de trabalho excluído devido à ausência de um app para administrador."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"O app para administrador do perfil de trabalho não foi encontrado ou está corrompido. Consequentemente, seu perfil de trabalho e os dados relacionados foram excluídos. Entre em contato com seu administrador para receber assistência."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Seu perfil de trabalho não está mais disponível neste dispositivo."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"O tráfego de rede está sendo monitorado"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Toque para saber mais"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Seu dispositivo será limpo"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"O app para administrador está sem alguns componentes ou foi corrompido e não pode ser usado. Seu dispositivo será limpo agora. Entre em contato com seu administrador para receber assistência."</string>
     <string name="me" msgid="6545696007631404292">"Eu"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Permite que o app use o serviço de mensagens instantâneas para fazer chamadas sem sua intervenção."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"ler status e identidade do telefone"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Permite que o app acesse os recursos de telefonia do dispositivo. Esta permissão autoriza o app a determinar o número de telefone e IDs de dispositivo, quando uma chamada está ativa, e o número remoto conectado a uma chamada."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"encaminhar chamadas pelo sistema"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Permite que o app encaminhe suas chamadas por meio do sistema para melhorar a experiência com chamadas."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"impedir modo de inatividade do tablet"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"impedir a suspensão da TV"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"impedir modo de inatividade do telefone"</string>
@@ -430,7 +445,7 @@
     <string name="permdesc_bluetooth" product="tv" msgid="3974124940101104206">"Permite que o app veja a configuração do Bluetooth na TV, faça e aceite conexões com dispositivos pareados."</string>
     <string name="permdesc_bluetooth" product="default" msgid="3207106324452312739">"Permite que o app acesse a configuração do Bluetooth no telefone, além de fazer e aceitar conexões com dispositivos pareados."</string>
     <string name="permlab_nfc" msgid="4423351274757876953">"controlar a comunicação a curta distância"</string>
-    <string name="permdesc_nfc" msgid="7120611819401789907">"Permite que o app se comunique com leitores, cartões e etiqueta NFC (Comunicação a curta distância)."</string>
+    <string name="permdesc_nfc" msgid="7120611819401789907">"Permite que o app se comunique com leitores, cartões e etiqueta NFC (comunicação a curta distância)."</string>
     <string name="permlab_disableKeyguard" msgid="3598496301486439258">"desativar o bloqueio de tela"</string>
     <string name="permdesc_disableKeyguard" msgid="6034203065077122992">"Permite que o app desative o bloqueio de teclas e qualquer segurança por senha associada. Por exemplo, o telefone desativa o bloqueio de telas ao receber uma chamada e o reativa quando a chamada é finalizada."</string>
     <string name="permlab_manageFingerprint" msgid="5640858826254575638">"gerenciar hardware de impressão digital"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Nenhum"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Toques"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Toque desconhecido"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Redes Wi-Fi disponíveis</item>
-      <item quantity="other">Redes Wi-Fi disponíveis</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">Abrir redes Wi-Fi disponíveis</item>
-      <item quantity="other">Abrir redes Wi-Fi disponíveis</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Fazer login na rede Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Fazer login na rede"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Permite que um app leia sessões de instalação. Isso permite que ele veja detalhes sobre as instalações de pacote ativas."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"solicitar pacotes de instalação"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Permite que um app solicite a instalação de pacotes."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"solicitar que as otimizações de bateria sejam ignoradas"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Permite que um app peça permissão para ignorar as otimizações de bateria para esse app."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Toque duas vezes para ter controle do zoom"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Não foi possível adicionar widget."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Ir"</string>
@@ -1268,7 +1277,7 @@
     <string name="progress_erasing" product="default" msgid="6596988875507043042">"Apagando cartão SD..."</string>
     <string name="share" msgid="1778686618230011964">"Compartilhar"</string>
     <string name="find" msgid="4808270900322985960">"Localizar"</string>
-    <string name="websearch" msgid="4337157977400211589">"Pesquisa na web do Google"</string>
+    <string name="websearch" msgid="4337157977400211589">"Pesquisa Google na Web"</string>
     <string name="find_next" msgid="5742124618942193978">"Localizar próximo"</string>
     <string name="find_previous" msgid="2196723669388360506">"Localizar anterior"</string>
     <string name="gpsNotifTicker" msgid="5622683912616496172">"Solicitação de local de <xliff:g id="NAME">%s</xliff:g>"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Selecione o ano"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> excluído"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Trabalho: <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Para liberar esta tela, toque no botão \"Voltar\" e mantenha-o pressionado."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Para liberar essa tela, toque nos botões Voltar e Visão geral e mantenha-os pressionados."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"O app está fixado. A liberação não é permitida neste dispositivo."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Tela fixada"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Tela liberada"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Toque para saber mais."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Widget <xliff:g id="LABEL">%1$s</xliff:g> desativado"</string>
     <string name="conference_call" msgid="3751093130790472426">"Teleconferência"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Fique calmo e procure um abrigo por perto."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Saia imediatamente de regiões costeiras e áreas ribeirinhas e vá para um lugar mais seguro, como terrenos elevados."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Fique calmo e procure um abrigo por perto."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Teste de mensagens de emergência"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Problém s připojením nebo neplatný kód MMI."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Operace je omezena pouze na povolená telefonní čísla."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Když je aktivní roaming, nastavení přesměrování hovorů z telefonu nelze změnit."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Služba byla zapnuta."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Služba byla zapnuta pro:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Služba byla vypnuta."</string>
@@ -90,14 +91,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Ve výchozím nastavení není identifikace volajícího omezena. Příští hovor: Neomezeno"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Služba není zřízena."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Nastavení identifikace volajícího nesmíte měnit."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Datová služba je zablokována."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Tísňová linka je zablokována."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Hlasová služba je zablokována."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Veškeré hlasové služby jsou zablokovány."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Služby SMS jsou zablokovány."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Hlasové a datové služby jsou zablokovány."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Hlasové služby a služby SMS jsou zablokovány."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Veškeré hlasové a datové služby a služby SMS jsou zablokovány."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"K síti se nelze připojit"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Chcete-li zlepšit příjem, zkuste v Nastavení &gt; Mobilní sítě &gt; Preferovaný typ sítě změnit vybraný typ."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Partner požádal o přechod na režim TTY FULL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Partner požádal o přechod na režim TTY HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Partner požádal o přechod na režim TTY VCO"</string>
@@ -183,6 +194,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Pracovní profil byl smazán, protože není k dispozici aplikace pro správu."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Aplikace pro správu pracovního profilu chybí nebo je poškozena. Váš pracovní profil a související data proto byla smazána. Kontaktujte svého administrátora a požádejte jej o pomoc."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Váš pracovní profil v tomto zařízení již není k dispozici."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Síťový provoz je monitorován"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Klepnutím zobrazíte další informace"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Zařízení bude vymazáno"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"V aplikaci pro správu chybí některé součásti nebo je poškozená, a proto ji nelze použít. Zařízení nyní bude vymazáno. Kontaktujte svého administrátora a požádejte jej o pomoc."</string>
     <string name="me" msgid="6545696007631404292">"Já"</string>
@@ -256,9 +269,9 @@
     <string name="permgrouplab_calendar" msgid="5863508437783683902">"Kalendář"</string>
     <string name="permgroupdesc_calendar" msgid="3889615280211184106">"přístup ke kalendáři"</string>
     <string name="permgrouplab_sms" msgid="228308803364967808">"SMS"</string>
-    <string name="permgroupdesc_sms" msgid="4656988620100940350">"odesílání a zobrazení zpráv SMS"</string>
+    <string name="permgroupdesc_sms" msgid="4656988620100940350">"odesílání a zobrazování zpráv SMS"</string>
     <string name="permgrouplab_storage" msgid="1971118770546336966">"Úložiště"</string>
-    <string name="permgroupdesc_storage" msgid="637758554581589203">"přístup k fotkám, médiím a souborům na zařízení"</string>
+    <string name="permgroupdesc_storage" msgid="637758554581589203">"přístup k fotkám, médiím a souborům v zařízení"</string>
     <string name="permgrouplab_microphone" msgid="171539900250043464">"Mikrofon"</string>
     <string name="permgroupdesc_microphone" msgid="4988812113943554584">"nahrávání zvuku"</string>
     <string name="permgrouplab_camera" msgid="4820372495894586615">"Fotoaparát"</string>
@@ -299,7 +312,7 @@
     <string name="permdesc_readCellBroadcasts" msgid="6361972776080458979">"Umožňuje aplikaci číst zprávy informačních služeb přijaté ve vašem zařízení. Výstražná upozornění informačních služeb jsou v některých oblastech odesílána za účelem varování před výjimečnými událostmi. Škodlivé aplikace mohou narušit výkon či provoz vašeho zařízení během přijímání zpráv informačních služeb."</string>
     <string name="permlab_subscribedFeedsRead" msgid="4756609637053353318">"čtení zdrojů přihlášených k odběru"</string>
     <string name="permdesc_subscribedFeedsRead" msgid="5557058907906144505">"Umožňuje aplikaci získat podrobnosti o aktuálně synchronizovaných zdrojích."</string>
-    <string name="permlab_sendSms" msgid="7544599214260982981">"odesílání a zobrazení zpráv SMS"</string>
+    <string name="permlab_sendSms" msgid="7544599214260982981">"odesílání a zobrazování zpráv SMS"</string>
     <string name="permdesc_sendSms" msgid="7094729298204937667">"Umožňuje aplikaci odesílat zprávy SMS. Může to mít za následek účtování neočekávaných poplatků. Škodlivé aplikace vás mohou připravit o peníze odesíláním zpráv bez vašeho svolení."</string>
     <string name="permlab_readSms" msgid="8745086572213270480">"čtení textových zpráv (SMS nebo MMS)"</string>
     <string name="permdesc_readSms" product="tablet" msgid="2467981548684735522">"Umožňuje aplikaci číst zprávy SMS uložené v tabletu nebo na SIM kartě.Toto oprávnění umožňuje aplikaci číst zprávy SMS bez ohledu na jejich obsah nebo důvěrnost."</string>
@@ -383,6 +396,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Umožňuje aplikaci používat službu zasílání rychlých zpráv k uskutečňování hovorů bez vašeho zásahu."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"čtení stavu a identity telefonu"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Umožňuje aplikaci získat přístup k telefonním funkcím zařízení. Toto oprávnění umožňuje aplikaci zjistit telefonní číslo telefonu, identifikační čísla zařízení, zda zrovna probíhá hovor, a vzdálené číslo, ke kterému je hovor připojen."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"směrování volání prostřednictvím systému"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Umožňuje aplikaci směrovat volání prostřednictvím systému za účelem vylepšení funkcí volání."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"bránění přechodu tabletu do režimu spánku"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"zabránění přechodu televize do režimu spánku"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"bránění přechodu telefonu do režimu spánku"</string>
@@ -1109,18 +1124,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Žádný"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Vyzváněcí tóny"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Neznámý vyzváněcí tón"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="few">K dispozici jsou sítě Wi-Fi</item>
-      <item quantity="many">K dispozici jsou sítě Wi-Fi</item>
-      <item quantity="other">K dispozici jsou sítě Wi-Fi</item>
-      <item quantity="one">K dispozici je síť Wi-Fi</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="few">K dispozici jsou veřejné sítě Wi-Fi</item>
-      <item quantity="many">K dispozici jsou veřejné sítě Wi-Fi</item>
-      <item quantity="other">K dispozici jsou veřejné sítě Wi-Fi</item>
-      <item quantity="one">K dispozici je veřejná síť Wi-Fi</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Přihlásit se k síti Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Přihlásit se k síti"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1258,6 +1261,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Povoluje aplikaci číst instalační relace. Díky tomu můžete zobrazit podrobnosti o aktivních instalacích balíčku."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"odesílání žádostí o přístup k instalačním balíčkům"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Umožňuje aplikaci požádat o instalaci balíčků."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"požádat o ignorování optimalizace využití baterie"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Povoluje aplikaci požádat o oprávnění ignorovat optimalizaci využití baterie, která pro ni je nastavena."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Poklepáním můžete ovládat přiblížení"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Widget nelze přidat."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Přejít"</string>
@@ -1284,7 +1289,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Tapeta"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Změnit tapetu"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Aplikace poslouchající oznámení"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Přijímač virtuální reality"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"VR přijímač"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Poskytovatel podmínky"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Služba na hodnocení důležitosti oznámení"</string>
     <string name="vpn_title" msgid="19615213552042827">"Síť VPN je aktivována"</string>
@@ -1612,7 +1617,7 @@
     <string name="select_year" msgid="7952052866994196170">"Vyberte rok"</string>
     <string name="deleted_key" msgid="7659477886625566590">"Číslice <xliff:g id="KEY">%1$s</xliff:g> byla smazána"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Pracovní <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Chcete-li tuto obrazovku uvolnit, klepněte na tlačítko Zpět a podržte jej."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Chcete-li tuto obrazovku uvolnit, klepněte na tlačítko Zpět a poté na tlačítko Přehled a podržte jej."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Aplikace je připnutá: Odepnutí v tomto zařízení není povoleno."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Obrazovka připnuta"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Obrazovka uvolněna"</string>
@@ -1750,4 +1755,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Klepnutím zobrazíte další informace."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> – zakázáno"</string>
     <string name="conference_call" msgid="3751093130790472426">"Konferenční hovor"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Zachovejte klid a přesuňte se na bezpečné místo v okolí."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Z pobřežních oblastí a okolí řek se co nejrychleji přesuňte do většího bezpečí (například na výše položené místo)."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Zachovejte klid a přesuňte se na bezpečné místo v okolí."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Test nouzových zpráv"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

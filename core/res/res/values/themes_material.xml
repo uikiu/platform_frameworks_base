@@ -175,6 +175,7 @@ please see themes_device_defaults.xml.
         <item name="windowSharedElementExitTransition">@transition/move</item>
         <item name="windowContentTransitions">false</item>
         <item name="windowActivityTransitions">true</item>
+        <item name="windowSwipeToDismiss">@bool/config_windowSwipeToDismiss</item>
 
         <!-- Dialog attributes -->
         <item name="dialogTheme">@style/ThemeOverlay.Material.Dialog</item>
@@ -212,9 +213,9 @@ please see themes_device_defaults.xml.
         <item name="scrollbarDefaultDelayBeforeFade">400</item>
         <item name="scrollbarSize">10dp</item>
         <item name="scrollbarThumbHorizontal">@drawable/scrollbar_handle_material</item>
-        <item name="scrollbarThumbVertical">@drawable/scrollbar_handle_material</item>
+        <item name="scrollbarThumbVertical">@drawable/config_scrollbarThumbVertical</item>
         <item name="scrollbarTrackHorizontal">@null</item>
-        <item name="scrollbarTrackVertical">@null</item>
+        <item name="scrollbarTrackVertical">@drawable/config_scrollbarTrackVertical</item>
 
         <!-- Text selection handle attributes -->
         <item name="textSelectHandleLeft">@drawable/text_select_handle_left_material</item>
@@ -536,6 +537,7 @@ please see themes_device_defaults.xml.
         <item name="windowSharedElementExitTransition">@transition/move</item>
         <item name="windowContentTransitions">false</item>
         <item name="windowActivityTransitions">true</item>
+        <item name="windowSwipeToDismiss">@bool/config_windowSwipeToDismiss</item>
 
         <!-- Dialog attributes -->
         <item name="dialogTheme">@style/ThemeOverlay.Material.Dialog</item>
@@ -573,9 +575,9 @@ please see themes_device_defaults.xml.
         <item name="scrollbarDefaultDelayBeforeFade">400</item>
         <item name="scrollbarSize">10dp</item>
         <item name="scrollbarThumbHorizontal">@drawable/scrollbar_handle_material</item>
-        <item name="scrollbarThumbVertical">@drawable/scrollbar_handle_material</item>
+        <item name="scrollbarThumbVertical">@drawable/config_scrollbarThumbVertical</item>
         <item name="scrollbarTrackHorizontal">@null</item>
-        <item name="scrollbarTrackVertical">@null</item>
+        <item name="scrollbarTrackVertical">@drawable/config_scrollbarTrackVertical</item>
 
         <!-- Text selection handle attributes -->
         <item name="textSelectHandleLeft">@drawable/text_select_handle_left_material</item>

@@ -50,9 +50,9 @@ import java.net.NetworkInterface;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -163,7 +163,8 @@ public class IpReachabilityMonitor {
     private Map<InetAddress, Short> mIpWatchList = new HashMap<>();
     @GuardedBy("mLock")
     private int mIpWatchListVersion;
-    private volatile boolean mRunning;
+    @GuardedBy("mLock")
+    private boolean mRunning;
     // Time in milliseconds of the last forced probe request.
     private volatile long mLastProbeTimeMs;
 
@@ -245,7 +246,7 @@ public class IpReachabilityMonitor {
     }
 
     public void stop() {
-        mRunning = false;
+        synchronized (mLock) { mRunning = false; }
         clearLinkProperties();
         mNetlinkSocketObserver.clearNetlinkSocket();
     }
@@ -277,6 +278,12 @@ public class IpReachabilityMonitor {
     private boolean isWatching(InetAddress ip) {
         synchronized (mLock) {
             return mRunning && mIpWatchList.containsKey(ip);
+        }
+    }
+
+    private boolean stillRunning() {
+        synchronized (mLock) {
+            return mRunning;
         }
     }
 
@@ -383,12 +390,12 @@ public class IpReachabilityMonitor {
     }
 
     public void probeAll() {
-        final List<InetAddress> ipProbeList;
+        Set<InetAddress> ipProbeList = new HashSet<InetAddress>();
         synchronized (mLock) {
-            ipProbeList = new ArrayList<>(mIpWatchList.keySet());
+            ipProbeList.addAll(mIpWatchList.keySet());
         }
 
-        if (!ipProbeList.isEmpty() && mRunning) {
+        if (!ipProbeList.isEmpty() && stillRunning()) {
             // Keep the CPU awake long enough to allow all ARP/ND
             // probes a reasonable chance at success. See b/23197666.
             //
@@ -399,7 +406,7 @@ public class IpReachabilityMonitor {
         }
 
         for (InetAddress target : ipProbeList) {
-            if (!mRunning) {
+            if (!stillRunning()) {
                 break;
             }
             final int returnValue = probeNeighbor(mInterfaceIndex, target);
@@ -444,21 +451,21 @@ public class IpReachabilityMonitor {
         @Override
         public void run() {
             if (VDBG) { Log.d(TAG, "Starting observing thread."); }
-            mRunning = true;
+            synchronized (mLock) { mRunning = true; }
 
             try {
                 setupNetlinkSocket();
             } catch (ErrnoException | SocketException e) {
                 Log.e(TAG, "Failed to suitably initialize a netlink socket", e);
-                mRunning = false;
+                synchronized (mLock) { mRunning = false; }
             }
 
-            while (mRunning) {
-                final ByteBuffer byteBuffer;
+            ByteBuffer byteBuffer;
+            while (stillRunning()) {
                 try {
                     byteBuffer = recvKernelReply();
                 } catch (ErrnoException e) {
-                    if (mRunning) { Log.w(TAG, "ErrnoException: ", e); }
+                    if (stillRunning()) { Log.w(TAG, "ErrnoException: ", e); }
                     break;
                 }
                 final long whenMs = SystemClock.elapsedRealtime();
@@ -470,7 +477,7 @@ public class IpReachabilityMonitor {
 
             clearNetlinkSocket();
 
-            mRunning = false; // Not a no-op when ErrnoException happened.
+            synchronized (mLock) { mRunning = false; }
             if (VDBG) { Log.d(TAG, "Finishing observing thread."); }
         }
 

@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Savienojuma problēma vai nederīgs MMI kods."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Darbība ir atļauta tikai fiksēto numuru sastādīšanai."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Nevar mainīt zvanu pāradresēšanas iestatījumus tālrunī, kamēr izmantojat viesabonēšanu."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Pakalpojums tika iespējots."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Pakalpojums tika iespējots šādai pakalpojumu klasei:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Pakalpojums ir atspējots."</string>
@@ -89,14 +90,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Zvanītāja ID noklusējumi ir iestatīti uz Nav ierobežots. Nākamais zvans: nav ierobežots"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Pakalpojums netiek nodrošināts."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Zvanītāja ID iestatījumu nevar mainīt."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Datu pakalpojums ir bloķēts."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Ārkārtas pakalpojums ir bloķēts."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Balss pakalpojums ir bloķēts."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Visi balss pakalpojumi ir bloķēti."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Īsziņu pakalpojums ir bloķēts."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Balss/datu pakalpojumi ir bloķēti."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Balss/īsziņu pakalpojumi ir bloķēti."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Visi balss/datu/īsziņu pakalpojumi ir bloķēti."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Nevar sasniegt tīklu"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Lai uzlabotu uztveršanu, mainiet atlasīto veidu sadaļā Iestatījumi &gt; Mobilie tīkli gt; Ieteicamais tīkla veids."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Vienādranga ierīce pieprasīja teksta tālruņa režīmu FULL"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Vienādranga ierīce pieprasīja teksta tālruņa režīmu HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Vienādranga ierīce pieprasīja teksta tālruņa režīmu VCO"</string>
@@ -181,6 +192,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Darba profils tika dzēsts, jo trūkst administratora lietotnes."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Trūkst darba profila administratora lietotnes, vai šī lietotne ir bojāta. Šī iemesla dēļ jūsu darba profils un saistītie dati tika dzēsti. Lai saņemtu palīdzību, sazinieties ar administratoru."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Jūsu darba profils šai ierīcē vairs nav pieejams."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Tīkla datplūsma tiek pārraudzīta"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Pieskarieties, lai uzzinātu vairāk"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Jūsu ierīces dati tiks dzēsti"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Administratora lietotnē trūkst komponentu, vai šī lietotne ir bojāta. Lietotni nevar izmantot. Ierīces dati tūlīt tiks dzēsti. Lai saņemtu palīdzību, sazinieties ar administratoru."</string>
     <string name="me" msgid="6545696007631404292">"Man"</string>
@@ -380,6 +393,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Ļauj lietotnei izmantot tūlītējās ziņojumapmaiņas pakalpojumu, lai veiktu zvanus bez jūsu ziņas."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"lasīt tālruņa statusu un identitāti"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Ļauj lietotnei piekļūt ierīces tālruņa funkcijām. Ar šo atļauju lietotne var noteikt tālruņa numuru un ierīču ID, zvana statusu un attālo numuru, ar ko ir izveidots savienojums, veicot zvanu."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"maršrutēt zvanus sistēmā"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Ļauj lietotnei maršrutēt tās zvanus sistēmā, lai uzlabotu zvanīšanas pieredzi."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"novērst planšetdatora pāriešanu miega režīmā"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"novērst televizora pāreju miega režīmā"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"novērst tālruņa pāriešanu miega režīmā"</string>
@@ -1086,16 +1101,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Nav"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Zvana signāli"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Nezināms zvana signāls"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="zero">Pieejami Wi-Fi tīkli</item>
-      <item quantity="one">Pieejami Wi-Fi tīkli</item>
-      <item quantity="other">Pieejami Wi-Fi tīkli</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="zero">Ir pieejami atvērti Wi-Fi tīkli</item>
-      <item quantity="one">Ir pieejami atvērti Wi-Fi tīkli</item>
-      <item quantity="other">Ir pieejami atvērti Wi-Fi tīkli</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Pierakstieties Wi-Fi tīklā"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Pierakstīšanās tīklā"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1233,6 +1238,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Ļauj lietojumprogrammai lasīt instalēšanas sesijas. Tādējādi lietojumprogrammai ir pieejama informācija par aktīvajām pakotņu instalācijām."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"Pieprasīt pakotņu instalēšanu"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Ļauj lietojumprogrammai pieprasīt pakotņu instalēšanu."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"Lūgt akumulatora optimizācijas ignorēšanu"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Ļauj lietotnei lūgt atļauju ignorēt akumulatora optimizāciju šai lietotnei."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Pieskarieties divreiz, lai kontrolētu tālummaiņu."</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Nevarēja pievienot logrīku."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Doties uz"</string>
@@ -1585,7 +1592,7 @@
     <string name="select_year" msgid="7952052866994196170">"Atlasiet gadu."</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> tika dzēsts."</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Darbā: <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Lai atspraustu šo ekrānu, pieskarieties pogai “Atpakaļ” un turiet to."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Lai atspraustu šo ekrānu, pieskarieties pogām “Atpakaļ” un “Pārskats” un turiet tās."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Lietotne ir piesprausta. Atspraušana šajā ierīcē nav atļauta."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Ekrāns ir piesprausts"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Ekrāns ir atsprausts"</string>
@@ -1714,4 +1721,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Pieskarieties, lai uzzinātu vairāk."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> atspējots"</string>
     <string name="conference_call" msgid="3751093130790472426">"Konferences zvans"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Saglabājiet mieru un meklējiet tuvumā patvērumu."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Nekavējoties pametiet piekrastes un upju zonas un dodieties uz drošākām (piemēram, augstākām) vietām."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Saglabājiet mieru un meklējiet tuvumā patvērumu."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Ārkārtas ziņojuma pārbaude"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

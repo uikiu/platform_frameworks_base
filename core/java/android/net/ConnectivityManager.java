@@ -15,8 +15,6 @@
  */
 package android.net;
 
-import static com.android.internal.util.Preconditions.checkNotNull;
-
 import android.annotation.IntDef;
 import android.annotation.Nullable;
 import android.annotation.SdkConstant;
@@ -50,16 +48,18 @@ import android.util.SparseIntArray;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.internal.telephony.PhoneConstants;
+import com.android.internal.util.Preconditions;
 import com.android.internal.util.Protocol;
-import com.android.internal.util.MessageUtils;
 
 import libcore.net.event.NetworkEventDispatcher;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class that answers queries about the state of network connectivity. It also
@@ -87,6 +87,13 @@ public class ConnectivityManager {
      * been established or lost. The NetworkInfo for the affected network is
      * sent as an extra; it should be consulted to see what kind of
      * connectivity event occurred.
+     * <p/>
+     * Apps targeting Android 7.0 (API level 24) and higher do not receive this
+     * broadcast if they declare the broadcast receiver in their manifest. Apps
+     * will still receive broadcasts if they register their
+     * {@link android.content.BroadcastReceiver} with
+     * {@link android.content.Context#registerReceiver Context.registerReceiver()}
+     * and that context is still valid.
      * <p/>
      * If this is a connection that was the result of failing over from a
      * disconnected network, then the FAILOVER_CONNECTION boolean extra is
@@ -294,7 +301,8 @@ public class ConnectivityManager {
     /**
      * Broadcast Action: A tetherable connection has come or gone.
      * Uses {@code ConnectivityManager.EXTRA_AVAILABLE_TETHER},
-     * {@code ConnectivityManager.EXTRA_ACTIVE_TETHER} and
+     * {@code ConnectivityManager.EXTRA_ACTIVE_LOCAL_ONLY},
+     * {@code ConnectivityManager.EXTRA_ACTIVE_TETHER}, and
      * {@code ConnectivityManager.EXTRA_ERRORED_TETHER} to indicate
      * the current state of tethering.  Each include a list of
      * interface names in that state (may be empty).
@@ -313,10 +321,17 @@ public class ConnectivityManager {
 
     /**
      * @hide
-     * gives a String[] listing all the interfaces currently tethered
-     * (ie, has dhcp support and packets potentially forwarded/NATed)
+     * gives a String[] listing all the interfaces currently in local-only
+     * mode (ie, has DHCPv4+IPv6-ULA support and no packet forwarding)
      */
-    public static final String EXTRA_ACTIVE_TETHER = "activeArray";
+    public static final String EXTRA_ACTIVE_LOCAL_ONLY = "localOnlyArray";
+
+    /**
+     * @hide
+     * gives a String[] listing all the interfaces currently tethered
+     * (ie, has DHCPv4 support and packets potentially forwarded/NATed)
+     */
+    public static final String EXTRA_ACTIVE_TETHER = "tetherArray";
 
     /**
      * @hide
@@ -1540,8 +1555,8 @@ public class ConnectivityManager {
         }
 
         private PacketKeepalive(Network network, PacketKeepaliveCallback callback) {
-            checkNotNull(network, "network cannot be null");
-            checkNotNull(callback, "callback cannot be null");
+            Preconditions.checkNotNull(network, "network cannot be null");
+            Preconditions.checkNotNull(callback, "callback cannot be null");
             mNetwork = network;
             mCallback = callback;
             HandlerThread thread = new HandlerThread(TAG);
@@ -1828,8 +1843,8 @@ public class ConnectivityManager {
      * {@hide}
      */
     public ConnectivityManager(Context context, IConnectivityManager service) {
-        mContext = checkNotNull(context, "missing context");
-        mService = checkNotNull(service, "missing IConnectivityManager");
+        mContext = Preconditions.checkNotNull(context, "missing context");
+        mService = Preconditions.checkNotNull(service, "missing IConnectivityManager");
         sInstance = this;
     }
 
@@ -1855,8 +1870,12 @@ public class ConnectivityManager {
                 .getPackageNameForUid(context, uid), true /* throwException */);
     }
 
-    /** {@hide */
-    public static final void enforceTetherChangePermission(Context context) {
+    /** {@hide} */
+    public static final void enforceTetherChangePermission(Context context, String callingPkg) {
+        if (null == context || null == callingPkg) {
+            throw new IllegalArgumentException("arguments should not be null");
+        }
+
         if (context.getResources().getStringArray(
                 com.android.internal.R.array.config_mobile_hotspot_provision_app).length == 2) {
             // Have a provisioning app - must only let system apps (which check this app)
@@ -1865,8 +1884,10 @@ public class ConnectivityManager {
                     android.Manifest.permission.TETHER_PRIVILEGED, "ConnectivityService");
         } else {
             int uid = Binder.getCallingUid();
-            Settings.checkAndNoteWriteSettingsOperation(context, uid, Settings
-                    .getPackageNameForUid(context, uid), true /* throwException */);
+            // If callingPkg's uid is not same as Binder.getCallingUid(),
+            // AppOpsService throws SecurityException.
+            Settings.checkAndNoteWriteSettingsOperation(context, uid, callingPkg,
+                    true /* throwException */);
         }
     }
 
@@ -1989,7 +2010,9 @@ public class ConnectivityManager {
      */
     public int tether(String iface) {
         try {
-            return mService.tether(iface);
+            String pkgName = mContext.getOpPackageName();
+            Log.i(TAG, "tether caller:" + pkgName);
+            return mService.tether(iface, pkgName);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -2015,7 +2038,9 @@ public class ConnectivityManager {
      */
     public int untether(String iface) {
         try {
-            return mService.untether(iface);
+            String pkgName = mContext.getOpPackageName();
+            Log.i(TAG, "untether caller:" + pkgName);
+            return mService.untether(iface, pkgName);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -2092,7 +2117,7 @@ public class ConnectivityManager {
     @SystemApi
     public void startTethering(int type, boolean showProvisioningUi,
             final OnStartTetheringCallback callback, Handler handler) {
-        checkNotNull(callback, "OnStartTetheringCallback cannot be null.");
+        Preconditions.checkNotNull(callback, "OnStartTetheringCallback cannot be null.");
 
         ResultReceiver wrappedCallback = new ResultReceiver(handler) {
             @Override
@@ -2106,7 +2131,9 @@ public class ConnectivityManager {
         };
 
         try {
-            mService.startTethering(type, wrappedCallback, showProvisioningUi);
+            String pkgName = mContext.getOpPackageName();
+            Log.i(TAG, "startTethering caller:" + pkgName);
+            mService.startTethering(type, wrappedCallback, showProvisioningUi, pkgName);
         } catch (RemoteException e) {
             Log.e(TAG, "Exception trying to start tethering.", e);
             wrappedCallback.send(TETHER_ERROR_SERVICE_UNAVAIL, null);
@@ -2126,7 +2153,9 @@ public class ConnectivityManager {
     @SystemApi
     public void stopTethering(int type) {
         try {
-            mService.stopTethering(type);
+            String pkgName = mContext.getOpPackageName();
+            Log.i(TAG, "stopTethering caller:" + pkgName);
+            mService.stopTethering(type, pkgName);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -2211,7 +2240,9 @@ public class ConnectivityManager {
      */
     public int setUsbTethering(boolean enable) {
         try {
-            return mService.setUsbTethering(enable);
+            String pkgName = mContext.getOpPackageName();
+            Log.i(TAG, "setUsbTethering caller:" + pkgName);
+            return mService.setUsbTethering(enable, pkgName);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -2552,8 +2583,16 @@ public class ConnectivityManager {
     }
 
     /**
-     * Base class for NetworkRequest callbacks.  Used for notifications about network
-     * changes.  Should be extended by applications wanting notifications.
+     * Base class for {@code NetworkRequest} callbacks. Used for notifications about network
+     * changes. Should be extended by applications wanting notifications.
+     *
+     * A {@code NetworkCallback} is registered by calling
+     * {@link #requestNetwork(NetworkRequest, NetworkCallback)},
+     * {@link #registerNetworkCallback(NetworkRequest, NetworkCallback)},
+     * or {@link #registerDefaultNetworkCallback(NetworkCallback). A {@code NetworkCallback} is
+     * unregistered by calling {@link #unregisterNetworkCallback(NetworkCallback)}.
+     * A {@code NetworkCallback} should be registered at most once at any time.
+     * A {@code NetworkCallback} that has been unregistered can be registered again.
      */
     public static class NetworkCallback {
         /**
@@ -2656,6 +2695,10 @@ public class ConnectivityManager {
         public void onNetworkResumed(Network network) {}
 
         private NetworkRequest networkRequest;
+
+        private boolean isRegistered() {
+            return (networkRequest != null) && (networkRequest.requestId != REQUEST_ID_UNSET);
+        }
     }
 
     private static final int BASE = Protocol.BASE_CONNECTIVITY_MANAGER;
@@ -2673,17 +2716,12 @@ public class ConnectivityManager {
     public static final int CALLBACK_CAP_CHANGED         = BASE + 6;
     /** @hide */
     public static final int CALLBACK_IP_CHANGED          = BASE + 7;
-    /** @hide */
-    public static final int CALLBACK_RELEASED            = BASE + 8;
-    // TODO: consider deleting CALLBACK_EXIT and shifting following enum codes down by 1.
-    /** @hide */
-    public static final int CALLBACK_EXIT                = BASE + 9;
     /** @hide obj = NetworkCapabilities, arg1 = seq number */
-    private static final int EXPIRE_LEGACY_REQUEST       = BASE + 10;
+    private static final int EXPIRE_LEGACY_REQUEST       = BASE + 8;
     /** @hide */
-    public static final int CALLBACK_SUSPENDED           = BASE + 11;
+    public static final int CALLBACK_SUSPENDED           = BASE + 9;
     /** @hide */
-    public static final int CALLBACK_RESUMED             = BASE + 12;
+    public static final int CALLBACK_RESUMED             = BASE + 10;
 
     /** @hide */
     public static String getCallbackName(int whichCallback) {
@@ -2695,8 +2733,6 @@ public class ConnectivityManager {
             case CALLBACK_UNAVAIL:      return "CALLBACK_UNAVAIL";
             case CALLBACK_CAP_CHANGED:  return "CALLBACK_CAP_CHANGED";
             case CALLBACK_IP_CHANGED:   return "CALLBACK_IP_CHANGED";
-            case CALLBACK_RELEASED:     return "CALLBACK_RELEASED";
-            case CALLBACK_EXIT:         return "CALLBACK_EXIT";
             case EXPIRE_LEGACY_REQUEST: return "EXPIRE_LEGACY_REQUEST";
             case CALLBACK_SUSPENDED:    return "CALLBACK_SUSPENDED";
             case CALLBACK_RESUMED:      return "CALLBACK_RESUMED";
@@ -2722,46 +2758,46 @@ public class ConnectivityManager {
             NetworkRequest request = getObject(message, NetworkRequest.class);
             Network network = getObject(message, Network.class);
             if (DBG) {
-                Log.d(TAG, whatToString(message.what) + " for network " + network);
+                Log.d(TAG, getCallbackName(message.what) + " for network " + network);
             }
             switch (message.what) {
                 case CALLBACK_PRECHECK: {
-                    NetworkCallback callback = getCallback(request, "PRECHECK");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         callback.onPreCheck(network);
                     }
                     break;
                 }
                 case CALLBACK_AVAILABLE: {
-                    NetworkCallback callback = getCallback(request, "AVAILABLE");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         callback.onAvailable(network);
                     }
                     break;
                 }
                 case CALLBACK_LOSING: {
-                    NetworkCallback callback = getCallback(request, "LOSING");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         callback.onLosing(network, message.arg1);
                     }
                     break;
                 }
                 case CALLBACK_LOST: {
-                    NetworkCallback callback = getCallback(request, "LOST");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         callback.onLost(network);
                     }
                     break;
                 }
                 case CALLBACK_UNAVAIL: {
-                    NetworkCallback callback = getCallback(request, "UNAVAIL");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         callback.onUnavailable();
                     }
                     break;
                 }
                 case CALLBACK_CAP_CHANGED: {
-                    NetworkCallback callback = getCallback(request, "CAP_CHANGED");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         NetworkCapabilities cap = getObject(message, NetworkCapabilities.class);
                         callback.onCapabilitiesChanged(network, cap);
@@ -2769,7 +2805,7 @@ public class ConnectivityManager {
                     break;
                 }
                 case CALLBACK_IP_CHANGED: {
-                    NetworkCallback callback = getCallback(request, "IP_CHANGED");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         LinkProperties lp = getObject(message, LinkProperties.class);
                         callback.onLinkPropertiesChanged(network, lp);
@@ -2777,30 +2813,17 @@ public class ConnectivityManager {
                     break;
                 }
                 case CALLBACK_SUSPENDED: {
-                    NetworkCallback callback = getCallback(request, "SUSPENDED");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         callback.onNetworkSuspended(network);
                     }
                     break;
                 }
                 case CALLBACK_RESUMED: {
-                    NetworkCallback callback = getCallback(request, "RESUMED");
+                    NetworkCallback callback = getCallback(message);
                     if (callback != null) {
                         callback.onNetworkResumed(network);
                     }
-                    break;
-                }
-                case CALLBACK_RELEASED: {
-                    final NetworkCallback callback;
-                    synchronized(sCallbacks) {
-                        callback = sCallbacks.remove(request);
-                    }
-                    if (callback == null) {
-                        Log.e(TAG, "callback not found for RELEASED message");
-                    }
-                    break;
-                }
-                case CALLBACK_EXIT: {
                     break;
                 }
                 case EXPIRE_LEGACY_REQUEST: {
@@ -2814,13 +2837,14 @@ public class ConnectivityManager {
             return (T) msg.getData().getParcelable(c.getSimpleName());
         }
 
-        private NetworkCallback getCallback(NetworkRequest req, String name) {
-            NetworkCallback callback;
+        private NetworkCallback getCallback(Message msg) {
+            final NetworkRequest req = getObject(msg, NetworkRequest.class);
+            final NetworkCallback callback;
             synchronized(sCallbacks) {
                 callback = sCallbacks.get(req);
             }
             if (callback == null) {
-                Log.e(TAG, "callback not found for " + name + " message");
+                Log.w(TAG, "callback not found for " + getCallbackName(msg.what) + " message");
             }
             return callback;
         }
@@ -2843,17 +2867,16 @@ public class ConnectivityManager {
 
     private NetworkRequest sendRequestForNetwork(NetworkCapabilities need, NetworkCallback callback,
             int timeoutMs, int action, int legacyType, CallbackHandler handler) {
-        if (callback == null) {
-            throw new IllegalArgumentException("null NetworkCallback");
-        }
-        if (need == null && action != REQUEST) {
-            throw new IllegalArgumentException("null NetworkCapabilities");
-        }
-        // TODO: throw an exception if callback.networkRequest is not null.
-        // http://b/20701525
+        Preconditions.checkArgument(callback != null, "null NetworkCallback");
+        Preconditions.checkArgument(action == REQUEST || need != null, "null NetworkCapabilities");
         final NetworkRequest request;
         try {
             synchronized(sCallbacks) {
+                if (callback.isRegistered()) {
+                    // TODO: throw exception instead and enforce 1:1 mapping of callbacks
+                    // and requests (http://b/20701525).
+                    Log.e(TAG, "NetworkCallback was already registered");
+                }
                 Messenger messenger = new Messenger(handler);
                 Binder binder = new Binder();
                 if (action == LISTEN) {
@@ -3318,25 +3341,42 @@ public class ConnectivityManager {
     }
 
     /**
-     * Unregisters callbacks about and possibly releases networks originating from
+     * Unregisters a {@code NetworkCallback} and possibly releases networks originating from
      * {@link #requestNetwork(NetworkRequest, NetworkCallback)} and
      * {@link #registerNetworkCallback(NetworkRequest, NetworkCallback)} calls.
      * If the given {@code NetworkCallback} had previously been used with
      * {@code #requestNetwork}, any networks that had been connected to only to satisfy that request
      * will be disconnected.
      *
+     * Notifications that would have triggered that {@code NetworkCallback} will immediately stop
+     * triggering it as soon as this call returns.
+     *
      * @param networkCallback The {@link NetworkCallback} used when making the request.
      */
     public void unregisterNetworkCallback(NetworkCallback networkCallback) {
-        if (networkCallback == null || networkCallback.networkRequest == null ||
-                networkCallback.networkRequest.requestId == REQUEST_ID_UNSET) {
-            throw new IllegalArgumentException("Invalid NetworkCallback");
-        }
-        try {
-            // CallbackHandler will release callback when receiving CALLBACK_RELEASED.
-            mService.releaseNetworkRequest(networkCallback.networkRequest);
-        } catch (RemoteException e) {
-            throw e.rethrowFromSystemServer();
+        Preconditions.checkArgument(networkCallback != null, "null NetworkCallback");
+        final List<NetworkRequest> reqs = new ArrayList<>();
+        // Find all requests associated to this callback and stop callback triggers immediately.
+        // Callback is reusable immediately. http://b/20701525, http://b/35921499.
+        synchronized (sCallbacks) {
+            Preconditions.checkArgument(
+                    networkCallback.isRegistered(), "NetworkCallback was not registered");
+            for (Map.Entry<NetworkRequest, NetworkCallback> e : sCallbacks.entrySet()) {
+                if (e.getValue() == networkCallback) {
+                    reqs.add(e.getKey());
+                }
+            }
+            // TODO: throw exception if callback was registered more than once (http://b/20701525).
+            for (NetworkRequest r : reqs) {
+                try {
+                    mService.releaseNetworkRequest(r);
+                } catch (RemoteException e) {
+                    throw e.rethrowFromSystemServer();
+                }
+                // Only remove mapping if rpc was successful.
+                sCallbacks.remove(r);
+            }
+            networkCallback.networkRequest = null;
         }
     }
 
@@ -3394,6 +3434,75 @@ public class ConnectivityManager {
     public void setAvoidUnvalidated(Network network) {
         try {
             mService.setAvoidUnvalidated(network);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * It is acceptable to briefly use multipath data to provide seamless connectivity for
+     * time-sensitive user-facing operations when the system default network is temporarily
+     * unresponsive. The amount of data should be limited (less than one megabyte), and the
+     * operation should be infrequent to ensure that data usage is limited.
+     *
+     * An example of such an operation might be a time-sensitive foreground activity, such as a
+     * voice command, that the user is performing while walking out of range of a Wi-Fi network.
+     */
+    public static final int MULTIPATH_PREFERENCE_HANDOVER = 1 << 0;
+
+    /**
+     * It is acceptable to use small amounts of multipath data on an ongoing basis to provide
+     * a backup channel for traffic that is primarily going over another network.
+     *
+     * An example might be maintaining backup connections to peers or servers for the purpose of
+     * fast fallback if the default network is temporarily unresponsive or disconnects. The traffic
+     * on backup paths should be negligible compared to the traffic on the main path.
+     */
+    public static final int MULTIPATH_PREFERENCE_RELIABILITY = 1 << 1;
+
+    /**
+     * It is acceptable to use metered data to improve network latency and performance.
+     */
+    public static final int MULTIPATH_PREFERENCE_PERFORMANCE = 1 << 2;
+
+    /**
+     * Return value to use for unmetered networks. On such networks we currently set all the flags
+     * to true.
+     * @hide
+     */
+    public static final int MULTIPATH_PREFERENCE_UNMETERED =
+            MULTIPATH_PREFERENCE_HANDOVER |
+            MULTIPATH_PREFERENCE_RELIABILITY |
+            MULTIPATH_PREFERENCE_PERFORMANCE;
+
+    /** @hide */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef(flag = true, value = {
+            MULTIPATH_PREFERENCE_HANDOVER,
+            MULTIPATH_PREFERENCE_RELIABILITY,
+            MULTIPATH_PREFERENCE_PERFORMANCE,
+    })
+    public @interface MultipathPreference {
+    }
+
+    /**
+     * Provides a hint to the calling application on whether it is desirable to use the
+     * multinetwork APIs (e.g., {@link Network#openConnection}, {@link Network#bindSocket}, etc.)
+     * for multipath data transfer on this network when it is not the system default network.
+     * Applications desiring to use multipath network protocols should call this method before
+     * each such operation.
+     * <p>
+     * This method requires the caller to hold the permission
+     * {@link android.Manifest.permission#ACCESS_NETWORK_STATE}.
+     *
+     * @param network The network on which the application desires to use multipath data.
+     *                If {@code null}, this method will return the a preference that will generally
+     *                apply to metered networks.
+     * @return a bitwise OR of zero or more of the  {@code MULTIPATH_PREFERENCE_*} constants.
+     */
+    public @MultipathPreference int getMultipathPreference(Network network) {
+        try {
+            return mService.getMultipathPreference(network);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3621,33 +3730,5 @@ public class ConnectivityManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
-    }
-
-    /**
-     * A holder class for debug info (mapping CALLBACK values to field names). This is stored
-     * in a holder for two reasons:
-     * 1) The reflection necessary to establish the map can't be run at compile-time. Thus, this
-     *    code will make the enclosing class not compile-time initializeable, deferring its
-     *    initialization to zygote startup. This leads to dirty (but shared) memory.
-     *    As this is debug info, use a holder that isn't initialized by default. This way the map
-     *    will be created on demand, while ConnectivityManager can be compile-time initialized.
-     * 2) Static initialization is still preferred for its strong thread safety guarantees without
-     *    requiring a lock.
-     */
-    private static class NoPreloadHolder {
-        public static final SparseArray<String> sMagicDecoderRing = MessageUtils.findMessageNames(
-                new Class[]{ConnectivityManager.class}, new String[]{"CALLBACK_"});
-    }
-
-    static {
-        // When debug is enabled, aggressively initialize the holder by touching the field (which
-        // will guarantee static initialization).
-        if (CallbackHandler.DBG) {
-            Object dummy = NoPreloadHolder.sMagicDecoderRing;
-        }
-    }
-
-    private static final String whatToString(int what) {
-        return NoPreloadHolder.sMagicDecoderRing.get(what, Integer.toString(what));
     }
 }

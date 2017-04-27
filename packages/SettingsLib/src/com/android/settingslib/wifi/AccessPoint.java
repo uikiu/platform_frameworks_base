@@ -373,7 +373,11 @@ public class AccessPoint implements Comparable<AccessPoint> {
     }
 
     public DetailedState getDetailedState() {
-        return mNetworkInfo != null ? mNetworkInfo.getDetailedState() : null;
+        if (mNetworkInfo != null) {
+            return mNetworkInfo.getDetailedState();
+        }
+        Log.w(TAG, "NetworkInfo is null, cannot return detailed state");
+        return null;
     }
 
     public String getSavedNetworkSummary() {
@@ -800,19 +804,25 @@ public class AccessPoint implements Comparable<AccessPoint> {
         if (state == DetailedState.CONNECTED) {
             IWifiManager wifiManager = IWifiManager.Stub.asInterface(
                     ServiceManager.getService(Context.WIFI_SERVICE));
-            Network nw;
+            NetworkCapabilities nc = null;
 
             try {
-                nw = wifiManager.getCurrentNetwork();
-            } catch (RemoteException e) {
-                nw = null;
-            }
-            NetworkCapabilities nc = cm.getNetworkCapabilities(nw);
-            if (nc != null && !nc.hasCapability(nc.NET_CAPABILITY_VALIDATED)) {
-                return context.getString(R.string.wifi_connected_no_internet);
+                nc = cm.getNetworkCapabilities(wifiManager.getCurrentNetwork());
+            } catch (RemoteException e) {}
+
+            if (nc != null) {
+                if (nc.hasCapability(nc.NET_CAPABILITY_CAPTIVE_PORTAL)) {
+                    return context.getString(
+                        com.android.internal.R.string.network_available_sign_in);
+                } else if (!nc.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+                    return context.getString(R.string.wifi_connected_no_internet);
+                }
             }
         }
-
+        if (state == null) {
+            Log.w(TAG, "state is null, returning empty summary");
+            return "";
+        }
         String[] formats = context.getResources().getStringArray((ssid == null)
                 ? R.array.wifi_status : R.array.wifi_status_with_ssid);
         int index = state.ordinal();

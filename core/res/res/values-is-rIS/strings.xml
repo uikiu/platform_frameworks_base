@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Vandamál með tengingu eða ógild MMI-kóðaskipun."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Aðgerð takmarkast við fast númeraval."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Ekki er hægt að breyta stillingum fyrir framsendingu símtala úr símanum á meðan þú ert í reiki."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Þjónustan var virkjuð."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Þjónustan var virkjuð fyrir:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Þjónustan hefur verið gerð óvirk."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Númerabirting er sjálfgefið án takmarkana. Næsta símtal: Án takmarkana"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Þjónustu ekki útdeilt."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Þú getur ekki breytt stillingu númerabirtingar."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Lokað er fyrir gagnaþjónustu."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Lokað er fyrir neyðarþjónustu."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Lokað er fyrir raddþjónustu."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Lokað er á alla raddþjónustu."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Lokað er fyrir SMS-þjónustu."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Lokað er á radd-/gagnaþjónustu."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Lokað er fyrir raddþjónustu/SMS-þjónustu."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Lokað á alla radd-, gagna- og SMS-þjónustu."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Ekki næst samband við símkerfi"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Reyndu að breyta valinni gerð í Stillingar &gt; Farsímakerfi &gt; Valin símkerfistegund til að bæta móttökuskilyrðin."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Jafningi bað um FULLA stillingu fjarrita"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Jafningi bað um HCO-stillingu fjarrita"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Jafningi bað um VCO-stillingu fjarrita"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Vinnusniði eytt vegna þess að stjórnunarforrit vantar."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Stjórnunarforrit vinnusniðsins vantar eða er skemmt. Vinnusniðinu og gögnum því tengdu hefur því verið eytt. Hafðu samband við kerfisstjórann til að fá frekari aðstoð."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Vinnusniðið þitt er ekki lengur í boði á þessu tæki."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Verið er að fylgjast með netumferð"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Ýttu til að fá frekari upplýsingar"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Tækið verður hreinsað"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Stjórnunarforritið vantar íhluti eða er skemmt og ekki er hægt að nota það. Þurrkað verður út af tækinu. Hafðu samband við kerfisstjórann til að fá aðstoð."</string>
     <string name="me" msgid="6545696007631404292">"Ég"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Leyfir forriti að nota IMS-þjónustu til að hringja án inngrips frá þér."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"lesa stöðu símans og auðkenni"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Leyfir forriti að fá aðgang að símaeiginleikum tækisins. Þessi heimild gerir forritinu kleift að komast að símanúmeri og auðkennum tækisins, hvort símtal er í gangi og símanúmeri viðmælanda í símtali."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"senda símtöl gegnum kerfið"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Heimilar forritinu að senda símtöl sín gegnum kerfið til að bæta gæði símtalsins."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"koma í veg fyrir að spjaldtölvan fari í biðstöðu"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"koma í veg fyrir að sjónvarpið fari í biðstöðu"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"koma í veg fyrir að síminn fari í biðstöðu"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Ekkert"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Hringitónar"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Óþekktur hringitónn"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Wi-Fi net í boði</item>
-      <item quantity="other">Wi-Fi net í boði</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">Opin Wi-Fi net í boði</item>
-      <item quantity="other">Opin Wi-Fi net í boði</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Skrá inn á Wi-Fi net"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Skrá inn á net"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Leyfir forriti að lesa uppsetningarlotur. Þetta gerir því kleift að sjá upplýsingar um virkar pakkauppsetningar."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"fara fram á uppsetningu pakka"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Leyfir forriti að fara fram á uppsetningu pakka."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"biðja um að hunsa rafhlöðusparnað"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Gerir forriti kleift að biðja um heimild til að hunsa rafhlöðusparnað fyrir forritið."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Ýttu tvisvar til að opna aðdráttarstýringar"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Ekki tókst að bæta græju við."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Áfram"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Veldu ár"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> eytt"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> í vinnu"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Til að taka lásinn af þessari skjámynd skaltu halda inni bakkhnappinum."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Til að losa þessa skjámynd skaltu halda „Til baka“ og „Yfirlit“ inni."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Forritið er fest: Ekki er hægt að losa forrit í þessu tæki."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Skjár festur"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Skjár opnaður"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Snertu til að fá frekari upplýsingar."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Slökkt <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"Símafundur"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Sýndu stillingu og leitaðu skjóls."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Fólk sem statt er á strandsvæðum eða við ár á tafarlaust að leita öryggis á svæðum sem eru í meiri hæð yfir sjávarmáli."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Sýndu stillingu og leitaðu skjóls."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Prófun neyðarskilaboða"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

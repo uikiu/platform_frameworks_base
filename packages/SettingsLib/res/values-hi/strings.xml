@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"सहेजा गया"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"अक्षम"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP कॉन्‍फ़िगरेशन की विफलता"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"खराब नेटवर्क होने के कारण कनेक्ट नहीं हुआ"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"वाईफ़ाई कनेक्‍शन विफलता"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"प्रमाणीकरण समस्या"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"रेंज में नहीं"</string>
@@ -79,7 +80,7 @@
     <string name="bluetooth_pairing_device_down_error_message" msgid="7870998403045801381">"<xliff:g id="DEVICE_NAME">%1$s</xliff:g> से संचार नहीं कर सकता."</string>
     <string name="bluetooth_pairing_rejected_error_message" msgid="1648157108520832454">"<xliff:g id="DEVICE_NAME">%1$s</xliff:g> द्वारा युग्‍मन अस्‍वीकृत किया गया."</string>
     <string name="accessibility_wifi_off" msgid="1166761729660614716">"वाई-फ़ाई बंद है."</string>
-    <string name="accessibility_no_wifi" msgid="8834610636137374508">"वाई-फ़ाई डिस्कनेक्ट है."</string>
+    <string name="accessibility_no_wifi" msgid="8834610636137374508">"वाई-फ़ाई डिसकनेक्ट है."</string>
     <string name="accessibility_wifi_one_bar" msgid="4869376278894301820">"वाई-फ़ाई का एक बार है."</string>
     <string name="accessibility_wifi_two_bars" msgid="3569851234710034416">"वाई-फ़ाई की दो पट्टी मिल रही हैं."</string>
     <string name="accessibility_wifi_three_bars" msgid="8134185644861380311">"वाई-फ़ाई की एक पट्टी मिल रही है."</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"हमेशा वाई-फ़ाई रोम स्कैन करने दें"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"सेल्युलर डेटा हमेशा सक्रिय"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"पूर्ण वॉल्यूम अक्षम करें"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"ब्लूटूथ AVRCP वर्शन"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"ब्लूटूथ AVRCP वर्शन चुनें"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"ब्लूटूथ ऑडियो कोडेक"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"ब्लूटूथ ऑडियो कोडेक चुनें"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"ब्लूटूथ ऑडियो नमूना दर"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"ब्लूटूथ ऑडियो कोडेक चुनें:\nनमूना दर"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"ब्लूटूथ ऑडियो बिट प्रति नमूना"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"ब्लूटूथ ऑडियो कोडेक चुनें:\nबिट प्रति नमूना"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"ब्लूटूथ ऑडियो चैनल मोड"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"ब्लूटूथ ऑडियो कोडेक चुनें:\nचैनल मोड"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"ब्लूटूथ ऑडियो LDAC कोडेक: प्लेबैक क्वालिटी"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"ब्लूटूथ ऑडियो LDAC कोडेक चुनें:\nप्लेबैक क्वालिटी"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"स्ट्रीम हो रहा है: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"वायरलेस दिखाई देने के लिए प्रमाणन विकल्प दिखाएं"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"वाई-फ़ाई प्रवेश स्तर बढ़ाएं, वाई-फ़ाई पिकर में प्रति SSID RSSI दिखाएं"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"इसके सक्षम होने पर, जब वाई-फ़ाई संकेत कमज़ोर हों तो वाई-फ़ाई, डेटा कनेक्शन को सेल्यूलर पर अधिक बलपूर्वक भेजेगा"</string>
@@ -178,8 +192,8 @@
     <string name="select_logd_size_dialog_title" msgid="1206769310236476760">"प्रति लॉग बफ़र लॉगर आकार चुनें"</string>
     <string name="dev_logpersist_clear_warning_title" msgid="684806692440237967">"लॉगर सतत मेमोरी साफ़ करें?"</string>
     <string name="dev_logpersist_clear_warning_message" msgid="2256582531342994562">"जब हम सतत लॉगर के साथ निगरानी करना बंद कर देते हैं, तो हमें आपके डिवाइस पर मौजूद लॉगर डेटा को मिटाने की आवश्यकता होती है."</string>
-    <string name="select_logpersist_title" msgid="7530031344550073166">"डिवाइस पर लॉगर डेटा सतत संग्रहीत करें"</string>
-    <string name="select_logpersist_dialog_title" msgid="4003400579973269060">"डिवाइस पर सतत रूप से संग्रहीत करने के लिए लॉग बफ़र चुनें"</string>
+    <string name="select_logpersist_title" msgid="7530031344550073166">"डिवाइस पर लॉगर डेटा सतत संग्रहित करें"</string>
+    <string name="select_logpersist_dialog_title" msgid="4003400579973269060">"डिवाइस पर सतत रूप से संग्रहित करने के लिए लॉग बफ़र चुनें"</string>
     <string name="select_usb_configuration_title" msgid="2649938511506971843">"USB कॉन्फ़िगरेशन चुनें"</string>
     <string name="select_usb_configuration_dialog_title" msgid="6385564442851599963">"USB कॉन्फ़िगरेशन चुनें"</string>
     <string name="allow_mock_location" msgid="2787962564578664888">"कृत्रिम स्‍थानों को अनुमति दें"</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"कस्टम (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"सहायता और फ़ीडबैक"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"मेनू"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"डेमो मोड में फ़ैक्टरी रीसेट के लिए पासवर्ड डालें"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"आगे"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"पासवर्ड आवश्यक"</string>
 </resources>

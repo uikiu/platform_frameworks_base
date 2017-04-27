@@ -17,18 +17,6 @@ public class NetworkControllerDataTest extends NetworkControllerBaseTest {
                 TelephonyIcons.QS_DATA_3G);
     }
 
-    public void testRoamingDataIcon() {
-        setupDefaultSignal();
-        setGsmRoaming(true);
-
-        verifyLastMobileDataIndicators(true,
-                TelephonyIcons.TELEPHONY_SIGNAL_STRENGTH_ROAMING[1][DEFAULT_LEVEL],
-                TelephonyIcons.ROAMING_ICON);
-        verifyLastQsMobileDataIndicators(true,
-                TelephonyIcons.QS_TELEPHONY_SIGNAL_STRENGTH[1][DEFAULT_LEVEL],
-                TelephonyIcons.QS_DATA_R, false, false);
-    }
-
     public void test2gDataIcon() {
         setupDefaultSignal();
         updateDataConnectionState(TelephonyManager.DATA_CONNECTED,
@@ -120,6 +108,21 @@ public class NetworkControllerDataTest extends NetworkControllerBaseTest {
 
         // Don't show the X until the device is setup.
         verifyDataIndicators(0, 0);
+    }
+
+    public void testAlwaysShowDataRatIcon() {
+        setupDefaultSignal();
+        Mockito.when(mMockTm.getDataEnabled(mSubId)).thenReturn(false);
+        updateDataConnectionState(TelephonyManager.DATA_DISCONNECTED,
+                TelephonyManager.NETWORK_TYPE_GSM);
+
+        // Switch to showing data RAT icon when data is diconnected
+        // and re-initialize the NetworkController.
+        mConfig.alwaysShowDataRatIcon = true;
+        mNetworkController.handleConfigurationChanged();
+
+        verifyDataIndicators(TelephonyIcons.DATA_G[1][0 /* No direction */],
+                TelephonyIcons.QS_DATA_G);
     }
 
     public void test4gDataIconConfigChange() {

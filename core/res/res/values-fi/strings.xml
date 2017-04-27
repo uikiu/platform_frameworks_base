@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Yhteysongelma tai virheellinen MMI-koodi."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Voit suorittaa toiminnon vain sallitut puhelut -numeroihin."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Soitonsiirtoasetuksia ei voi muuttaa puhelimella roaming-tilassa."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Palvelu otettiin käyttöön."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Palvelu käytössä luokalle:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Palvelu on poistettu käytöstä."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Soittajan tunnukseksi muutetaan rajoittamaton. Seuraava puhelu: ei rajoitettu"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Palvelua ei tarjota."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Et voi muuttaa soittajan tunnuksen asetusta."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Tiedonsiirtopalvelu on estetty."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Hätäpalvelu on estetty."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Äänipalvelu on estetty."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Kaikki äänipalvelut on estetty."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Tekstiviestipalvelu on estetty."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Ääni/tiedonsiirtopalvelut on estetty."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Ääni/tekstiviestipalvelut on estetty."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Kaikki ääni-/tiedonsiirto-/tekstiviestipalvelut on estetty."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Ei yhteyttä verkkoon"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Voit yrittää parantaa kuuluvuutta vaihtamalla tyypin asetusta. Valitse Asetukset &gt; Matkapuhelinverkot &gt; Ensisijainen verkko."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Toinen käyttäjä vaihtoi TTY-tilaksi TÄYSI"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Toinen käyttäjä vaihtoi TTY-tilaksi HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Toinen käyttäjä vaihtoi TTY-tilaksi VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Työprofiili poistettiin, koska laitteelta puuttuu järjestelmänvalvojasovellus."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Työprofiilin järjestelmänvalvojasovellus puuttuu tai se on vioittunut. Tästä syystä työprofiilisi ja siihen liittyvät tiedot on poistettu. Pyydä ohjeita järjestelmänvalvojaltasi."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Työprofiilisi ei ole enää käytettävissä tällä laitteella."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Verkkoliikennettä seurataan"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Lue lisää napauttamalla."</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Laitteen tiedot poistetaan"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Järjestelmänvalvojasovelluksesta puuttuu osia tai se on vioittunut, eikä sitä voi käyttää. Laitteen tiedot poistetaan. Pyydä ohjeita järjestelmänvalvojaltasi."</string>
     <string name="me" msgid="6545696007631404292">"Minä"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Antaa sovelluksen soittaa puheluita pikaviestipalvelun avulla ilman käyttäjän toimia."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"lue puhelimen tila ja identiteetti"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Antaa sovelluksen käyttää laitteen puhelinominaisuuksia. Sovellus voi määrittää puhelinnumeron ja laitteen tunnuksen, puhelun tilan sekä soitetun numeron."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"ohjata puhelut järjestelmän kautta"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Tämä sallii sovelluksen ohjata puhelut järjestelmän kautta, mikä auttaa parantamaan puhelujen laatua."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"estä tablet-laitetta menemästä virransäästötilaan"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"Estä television siirtyminen virransäästötilaan"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"estä puhelinta menemästä virransäästötilaan"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Ei mitään"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Soittoäänet"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Tuntematon soittoääni"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Wi-Fi-verkkoja käytettävissä</item>
-      <item quantity="one">Wi-Fi-verkko käytettävissä</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Avoimia Wi-Fi-verkkoja käytettävissä</item>
-      <item quantity="one">Avoin Wi-Fi-verkko käytettävissä</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Kirjaudu Wi-Fi-verkkoon"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Kirjaudu verkkoon"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Sallii sovelluksen lukea asennusistuntoja. Toiminto sallii sovelluksen lukea aktiivisten asennuspakettien tietoja."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"pyytää asennuspaketteja"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Antaa sovelluksen pyytää pakettien asennusta."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"Lupa ohittaa akun optimoinnit"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Sallii sovelluksen pyytää lupaa ohittaa tietyn sovelluksen akun optimoinnit."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Hallitse zoomausta napauttamalla kahdesti"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Widgetin lisääminen epäonnistui."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Siirry"</string>
@@ -1234,7 +1243,7 @@
     <string name="wallpaper_binding_label" msgid="1240087844304687662">"Taustakuva"</string>
     <string name="chooser_wallpaper" msgid="7873476199295190279">"Vaihda taustakuvaa"</string>
     <string name="notification_listener_binding_label" msgid="2014162835481906429">"Ilmoituskuuntelija"</string>
-    <string name="vr_listener_binding_label" msgid="4316591939343607306">"Virtuaalitodellisuuden kuuntelija"</string>
+    <string name="vr_listener_binding_label" msgid="4316591939343607306">"VR-kuuntelija"</string>
     <string name="condition_provider_service_binding_label" msgid="1321343352906524564">"Ehtojen toimituspalvelu"</string>
     <string name="notification_ranker_binding_label" msgid="774540592299064747">"Ilmoitusten sijoituspalvelu"</string>
     <string name="vpn_title" msgid="19615213552042827">"VPN on aktivoitu"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Valitse vuosi"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> poistettiin"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> (työ)"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Irrota näyttö koskettamalla Takaisin-painiketta pitkään."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Irrota näyttö koskettamalla pitkään Takaisin- ja Viimeisimmät-painikkeita."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Sovellus on kiinnitetty. Irrottaminen ei ole sallittua tällä laitteella."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Näyttö kiinnitetty"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Näyttö irrotettu"</string>
@@ -1606,7 +1615,7 @@
     </plurals>
     <string name="zen_mode_until" msgid="7336308492289875088">"Kunnes kello on <xliff:g id="FORMATTEDTIME">%1$s</xliff:g>"</string>
     <string name="zen_mode_alarm" msgid="9128205721301330797">"<xliff:g id="FORMATTEDTIME">%1$s</xliff:g> asti (seuraava hälytys)"</string>
-    <string name="zen_mode_forever" msgid="7420011936770086993">"Kunnes poistat tämän käytöstä"</string>
+    <string name="zen_mode_forever" msgid="7420011936770086993">"Kunnes otat tämän pois päältä"</string>
     <string name="zen_mode_forever_dnd" msgid="3792132696572189081">"Kunnes poistat Varattu-tilan käytöstä."</string>
     <string name="zen_mode_rule_name_combination" msgid="191109939968076477">"<xliff:g id="FIRST">%1$s</xliff:g>/<xliff:g id="REST">%2$s</xliff:g>"</string>
     <string name="toolbar_collapse_description" msgid="2821479483960330739">"Kutista"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Lue lisätietoja koskettamalla."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> ei ole käytössä."</string>
     <string name="conference_call" msgid="3751093130790472426">"Puhelinneuvottelu"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Pysy rauhallisena ja hakeudu lähimpään suojapaikkaan."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Siirry heti rannikkoalueilta ja jokien varsilta korkeampiin tai muuten turvallisempiin paikkoihin."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Pysy rauhallisena ja hakeudu lähimpään suojapaikkaan."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Hätäilmoitustesti"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

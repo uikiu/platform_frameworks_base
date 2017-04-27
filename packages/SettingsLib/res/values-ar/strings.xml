@@ -25,7 +25,8 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"تم الحفظ"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"معطلة"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"‏أخفقت تهيئة عنوان IP"</string>
-    <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"‏أخفق اتصال WiFi"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"الجهاز غير متصل بسبب انخفاض جودة الشبكة"</string>
+    <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"‏تعذّر اتصال WiFi"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"حدثت مشكلة في المصادقة"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"ليست في النطاق"</string>
     <string name="wifi_no_internet_no_reconnect" msgid="2211781637653149657">"لم يتم اكتشاف اتصال بالإنترنت، ولن تتم إعادة الاتصال تلقائيًا."</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"‏السماح دائمًا بعمليات فحص Wi-Fi للتجوال"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"بيانات الجوّال نشطة دائمًا"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"تعطيل مستوى الصوت المطلق"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"‏إصدار Bluetooth AVRCP"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"‏اختيار إصدار Bluetooth AVRCP"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"ترميز صوت بلوتوث"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"اختيار برنامج الترميز لصوت البلوتوث"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"معدّل عيّنة صوت بلوتوث"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"اختيار برنامج ترميز صوت البلوتوث:\nمعدل العينة"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"وحدات البت لكل عيّنة في صوت بلوتوث"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"اختيار برنامج ترميز صوت البلوتوث:\nوحدات بت لكل عينة"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"وضع قناة صوت بلوتوث"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"اختيار برنامج ترميز صوت البلوتوث:\nوضع القناة"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"‏برنامج ترميز LDAC لصوت البلوتوث: جودة التشغيل"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"‏اختيار برنامج ترميز LDAC لصوت البلوتوث:\nجودة التشغيل"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"البث: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"عرض خيارات شهادة عرض شاشة لاسلكي"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"‏زيادة مستوى تسجيل Wi-Fi، وعرض لكل SSID RSSI في منتقي Wi-Fi"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"‏عند تمكينه، سيكون Wi-Fi أكثر حدة في تسليم اتصال البيانات إلى الشبكة الخلوية، وذلك عندما تكون إشارة WiFi منخفضة"</string>
@@ -261,7 +275,7 @@
     <string name="local_backup_password_summary_change" msgid="5376206246809190364">"انقر لتغيير كلمة مرور النسخ الاحتياطية الكاملة لسطح المكتب أو إزالتها."</string>
     <string name="local_backup_password_toast_success" msgid="582016086228434290">"تم تعيين كلمة مرور احتياطية جديدة"</string>
     <string name="local_backup_password_toast_confirmation_mismatch" msgid="7805892532752708288">"كلمة المرور الجديدة وتأكيدها لا يتطابقان"</string>
-    <string name="local_backup_password_toast_validation_failure" msgid="5646377234895626531">"أخفق تعيين كلمة مرور احتياطية"</string>
+    <string name="local_backup_password_toast_validation_failure" msgid="5646377234895626531">"تعذّر تعيين كلمة مرور احتياطية"</string>
   <string-array name="color_mode_names">
     <item msgid="2425514299220523812">"نابض بالحياة (افتراضي)"</item>
     <item msgid="8446070607501413455">"طبيعي"</item>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"مخصص (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"المساعدة والتعليقات"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"القائمة"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"إدخال كلمة المرور لإعادة الضبط بحسب بيانات المصنع في الوضع التجريبي"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"التالي"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"يلزم توفر كلمة مرور"</string>
 </resources>

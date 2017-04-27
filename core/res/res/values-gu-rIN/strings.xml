@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"કનેક્શન સમસ્યા અથવા અમાન્ય MMI કોડ."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"ઑપરેશન ફક્ત સ્થિર ડાયલિંગ નંબર્સ પર પ્રતિબંધિત છે."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"તમે રોમિંગમાં હોવ તે વખતે તમારા ફોન પરથી કૉલ ફોરવર્ડિગ સેટિંગ્સ બદલી શકતાં નથી."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"સેવા સક્ષમ હતી."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"સેવા આ માટે સક્ષમ હતી:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"સેવા અક્ષમ કરવામાં આવી છે."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"કૉલર ID પ્રતિબંધિત નહીં પર ડિફોલ્ટ છે. આગલો કૉલ: પ્રતિબંધિત નહીં"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"સેવાની જોગવાઈ કરી નથી."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"તમે કૉલર ID સેટિંગ બદલી શકતાં નથી."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"ડેટા સેવા અવરોધિત છે."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"કટોકટીની સેવા અવરોધિત છે."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"વૉઇસ સેવા અવરોધિત છે."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"તમામ વૉઇસ સેવાઓ અવરોધિત છે."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"SMS સેવા અવરોધિત છે."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"વૉઇસ/ડેટા સેવાઓ અવરોધિત છે."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"તમામ વૉઇસ/SMS સેવાઓ અવરોધિત છે."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"તમામ વૉઇસ/ડેટા/SMS સેવાઓ અવરોધિત છે."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"નેટવર્ક પર પહોંચી શકાતું નથી"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"પ્રાપ્તિને બહેતર બનાવવા માટે, સેટિંગ્સ &gt; સેલ્યુલર નેટવર્ક્સ &gt; પસંદગીનો નેટવર્ક પ્રકાર પર પસંદ કરેલ પ્રકારને બદલી જુઓ."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"પીઅરે TTY મોડ પૂર્ણની વિનંતી કરી"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"પીઅરે TTY મોડ HCO ની વિનંતી કરી"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"પીઅરે TTY મોડ VCO ની વિનંતી કરી"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"ખૂટતી એડમિન એપ્લિકેશનને કારણે કાર્ય પ્રોફાઇલ કાઢી નાખી."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"કાર્ય પ્રોફાઇલ વ્યવસ્થાપક ઍપ્લિકેશન કાં તો ખૂટે છે અથવા દૂષિત છે. પરિણામે, તમારી કાર્ય પ્રોફાઇલ અને સંબંધિત ડેટા કાઢી નાખવામાં આવ્યો છે. સહાયતા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"આ ઉપકરણ પર તમારી કાર્ય પ્રોફાઇલ હવે ઉપલબ્ધ નથી."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"નેટવર્ક ટ્રાફિક મૉનિટર કરવામાં આવી રહ્યું છે"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"વધુ જાણવા માટે ટૅપ કરો"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"તમારું ઉપકરણ કાઢી નાખવામાં આવશે"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"એડમિન એપ્લિકેશનમાં ઘટકો ખૂટે છે અથવા દૂષિત છે અને વાપરી શકાશે નહીં. તમારું ઉપકરણ હવે કાઢી નાખવામાં આવશે. સહાયતા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો."</string>
     <string name="me" msgid="6545696007631404292">"હું"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"તમારા હસ્તક્ષેપ વગર કૉલ્સ કરવા માટે IMS સેવાનો ઉપયોગ કરવાની એપ્લિકેશનને મંજૂરી આપે છે."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"ફોન સ્થિતિ અને ઓળખ વાંચો"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"એપ્લિકેશનને ફોન સુવિધાઓને ઍક્સેસ કરવાની મંજૂરી આપે છે. આ પરવાનગી એપ્લિકેશનને ફોન નંબર અને ઉપકરણ ID, કૉલ સક્રિય છે અને કોઈ કૉલ દ્વારા કનેક્ટ થયેલ રિમોટ નંબર નિર્ધારિત કરવાની મંજૂરી આપે છે."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"સિસ્ટમ મારફતે કૉલ બીજે વાળો"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"કૉલિંગ અનુભવ સુધારવા માટે ઍપ્લિકેશનને સિસ્ટમ મારફતે કૉલ બીજે વાળવાની મંજૂરી આપે છે."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"ટેબ્લેટને નિષ્ક્રિય થતું અટકાવો"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"ટીવીને નિષ્ક્રિય થતો અટકાવો"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"ફોનને નિષ્ક્રિય થતો અટકાવો"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"કોઈ નહીં"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"રિંગટોન્સ"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"અજાણ રિંગટોન"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Wi-Fi નેટવર્ક્સ ઉપલબ્ધ</item>
-      <item quantity="other">Wi-Fi નેટવર્ક્સ ઉપલબ્ધ</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">ખુલ્લા Wi-Fi નેટવર્ક્સ ઉપલબ્ધ છે</item>
-      <item quantity="other">ખુલ્લા Wi-Fi નેટવર્ક્સ ઉપલબ્ધ છે</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Wi-Fi નેટવર્ક પર સાઇન ઇન કરો"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"નેટવર્ક પર સાઇન ઇન કરો"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"એપ્લિકેશનને ઇન્સ્ટોલ સત્રોને વાંચવાની મંજૂરી આપે છે. આ તેને સક્રિય પૅકેજ ઇન્સ્ટોલેશન્સ વિશે વિગતો જોવાની મંજૂરી આપે છે."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"પૅકેજેસ ઇન્સ્ટૉલ કરવાની વિનંતી કરો"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"એપ્લિકેશનને પૅકેજેસના ઇન્સ્ટોલેશનની વિનંતી કરવાની મંજૂરી આપો."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"બૅટરી ઓપ્ટિમાઇઝેશન્સને અવગણવા માટે પૂછો"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"ઍપ્લિકેશનને તે ઍપ્લિકેશન માટે બૅટરી ઓપ્ટિમાઇઝેશન્સને અવગણવાની પરવાનગી આપવા માટે પૂછવાની મંજૂરી આપે છે."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"ઝૂમ નિયંત્રણ માટે બેવાર ટૅપ કરો"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"વિજેટ ઉમેરી શકાયું નથી."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"જાઓ"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"વર્ષ પસંદ કરો"</string>
     <string name="deleted_key" msgid="7659477886625566590">"<xliff:g id="KEY">%1$s</xliff:g> કાઢી નાખી"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"કાર્યાલય <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"આ સ્ક્રીનને અનપિન કરવા માટે, પાછળને ટચ કરીને પકડી રાખો."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"આ સ્ક્રીનને અનપિન કરવા માટે, પાછળ અને વિહંગાવલોકનને ટચ કરો અને પકડો."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"ઍપ્લિકેશન પિન કરેલ છે. આ ઉપકરણ પર અનપિન કરવાની મંજૂરી નથી."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"સ્ક્રીન પિન કરી"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"સ્ક્રીન અનપિન કરી"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"વધુ જાણવા માટે ટચ કરો."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"<xliff:g id="LABEL">%1$s</xliff:g> અક્ષમ કર્યું"</string>
     <string name="conference_call" msgid="3751093130790472426">"કોન્ફરન્સ કૉલ"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"શાંત રહો અને નજીકમાં આશ્રય લો."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"દરિયાકિનારાના પ્રદેશો તથા નદીકાંઠાના વિસ્તારો ખાલી કરીને તાત્કાલિક સુરક્ષિત ઊંચા સ્થાન પર જાઓ."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"શાંત રહો અને નજીકમાં આશ્રય લો."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"કટોકટી સંદેશાઓનું પરીક્ષણ"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

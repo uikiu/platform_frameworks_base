@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Inkinga yoxhumano noma ikhadi ye-MMI engalungile."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Umsebenzi uvinjelwe ekudayeleni izinombolo ezingaguquki kuphela."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Ayikwazi ukushintsha izilungiselelo zokudluliselwa kwekholi kusuka efonini yakho ngenkathi uzula."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Isevisi ivaliwe."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Isevisi ivulelwe:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Isevisi ivaliwe."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"I-ID Yomshayeli ishintshela kokungavinjelwe. Ucingo olulandelayo: Aluvinjelwe"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Isevisi ayilungiselelwe."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Ngeke ukwazi ukuguqul izilungiselelo zemininingwane yoshayayo."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Isevisi yedatha ivaliwe."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Isevisi ephuthumayo ivimbelwe."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Isevisi yezwi ivimbelwe."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Wonke amasevisi Wezwi avimbelwe."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Isevisi ye-SMS ivaliwe."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Amasevisi Wezwi/Idatha avimbelwe."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Amasevisi Wezwi/SMS avimbelwe."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Wonke amasevisi Wezwi/Idatha/SMS avimbelwe."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Ayikwazi ukufinyelela inethiwekhi"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Ukuze uthuthukise ukwamukela, zama ukushintsha uhlobo olukhethiwe kuzilungiselelo &gt; amanethiwekhi eselula &gt; uhlobo lwenethiwekhi olukhethayo."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"Umngani ucele imodi ye-TTY ephelele"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"Umngani ucele imodi ye-TTY HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"Umngani ucele imodi ye-TTY VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Iphrofayela yomsebenzi isusiwe ngenxa yohlelo lokusebenza lomlawuli elingekho."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Uhlelo lokusebenza lomlawuli lephrofayela yomsebenzi kungenzeka alukho noma lumoshekile. Njengomphumela walokho, iphrofayela yakho yomsebenzi nedatha ehlobene kususiwe. Xhumana nomlawuli wakho ukuze uthole usizo."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Iphrofayela yakho yomsebenzi ayisatholakali kule divayisi."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Ithrafikhi yenethiwekhi iyangamelwa"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Thepha ukuze ufunde kabanzi"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Idivayisi yakho izosulwa"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Uhlelo lokusebenza lomlawuli lushoda ngezingxenye noma lumoshekile, futhi alikwazi ukusetshenziswa. Idivayisi yakho manje izosulwa. Xhumana nomlawuli wakho ukuze uthole usizo."</string>
     <string name="me" msgid="6545696007631404292">"Mina"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Ivumela uhlelo lokusebenza ukuthi lusebenzise isevisi ye-IMS ukuze yenze amakholi ngaphandle kokungenelela kwakho."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"funda isimo sefoni kanye nesazisi"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Ivumela uhlelo lokusebenza ukufinyelela izici zefoni zedivayisi. Le mvume ivumela uhlelo lokusebenza ukucacisa inombolo yefoni nobunikazi bedivayisi, ukuthi noma ikholi iyasebenza, futhi nenombolo yesilawuli kude zixhunywe ngekholi."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"yanza imizila yamakholi ngesistimu"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Ivumela uhlelo lokusebenza ukwenza imizila yamakholi ngesistimu ukuze ithuthukise umuzwa wokushaya."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"gwema ithebhulethi ukuba ingalali"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"vimbela i-TV kusukela ekulaleni"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"gwema ifoni ukuba ingalali"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Akunalutho"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Amaringithoni"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Iringithoni engaziwa"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="one">Amanethiwekhi we-Wi-Fi ayatholakala</item>
-      <item quantity="other">Amanethiwekhi we-Wi-Fi ayatholakala</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="one">Vula amanethiwekhi we-Wi-Fi atholakalayo</item>
-      <item quantity="other">Vula amanethiwekhi we-Wi-Fi atholakalayo</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Ngena ngemvume kunethiwekhi ye-Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Ngena ngemvume kunethiwekhi"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Ivumela uhlelo lokusebenza ukufunda izikhathi. Lokhu kuzolivumela ukubona imininingwane mayelana nokufaka kwephakethi esebenzayo."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"cela amaphakheji wokufaka"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Ivumela uhlelo lokusebenza ukucela ukufakwa kwamaphakheji."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"cela ukuziba ukulungiselelwa kwebhethri"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Ivumela uhlelo lokusebenza ukuthi licele imvume yokuziba ukulungiselela ibhethri yalolo hlelo lokusebenza."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Thepha kabili ukuthola ukulawula ukusondeza"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Yehlulekile ukwengeza i-widget."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Iya"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Khetha unyaka"</string>
     <string name="deleted_key" msgid="7659477886625566590">"I-<xliff:g id="KEY">%1$s</xliff:g> isusiwe"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"Umsebenzi <xliff:g id="LABEL">%1$s</xliff:g>"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Ukuze ususe ukuphina lesi sikrini, thinta futhi ubambe okuthi Emuva."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Ukuze ususe ukuphina lesi sikrini, thinta futhi ubambe okuthi Emuva nokuthi Buka konke."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Uhlelo lokusebenza luphiniwe: Ukususa ukuphina akuvunyelwe kule divayisi."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Isikrini siphiniwe"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Isikrini sisuswe ukuphina"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Thinta ukuze ufunde kabanzi."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"I-<xliff:g id="LABEL">%1$s</xliff:g> ekhutshaziwe"</string>
     <string name="conference_call" msgid="3751093130790472426">"Ikholi yengqungquthela"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Hlala ubeke umoya phansi uphinde ufune ukukhuselwa eduze."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Phuma ngokushesha kusukela kuzifunda ezingasolwandle nasezindaweni zemifula uye endaweni ephephile efana nendawo ephakeme."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Hlala ubeke umoya phansi uphinde ufune ukukhuselwa eduze."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Ukuhlolwa kwemilayezo yesimo esiphuthumayo"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

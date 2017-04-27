@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"ಉಳಿಸಲಾಗಿದೆ"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP ಕಾನ್ಫಿಗರೇಶನ್ ವಿಫಲತೆ"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"ಕಡಿಮೆ ಗುಣಮಟ್ಟದ ನೆಟ್‌ವರ್ಕ್‌ನಿಂದಾಗಿ ಸಂಪರ್ಕ ಸಾಧಿಸಿಲ್ಲ"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"WiFi ಸಂಪರ್ಕ ವಿಫಲತೆ"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"ಪ್ರಮಾಣೀಕರಣ ಸಮಸ್ಯೆ"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"ವ್ಯಾಪ್ತಿಯಲ್ಲಿಲ್ಲ"</string>
@@ -155,7 +156,7 @@
     <string name="keep_screen_on" msgid="1146389631208760344">"ಎಚ್ಚರವಾಗಿರು"</string>
     <string name="keep_screen_on_summary" msgid="2173114350754293009">"ಚಾರ್ಜ್ ಮಾಡುವಾಗ ಪರದೆಯು ಎಂದಿಗೂ ನಿದ್ರಾವಸ್ಥೆಗೆ ಹೋಗುವುದಿಲ್ಲ"</string>
     <string name="bt_hci_snoop_log" msgid="3340699311158865670">"ಬ್ಲೂಟೂತ್‌‌ HCI ಸ್ನೂಪ್‌ಲಾಗ್"</string>
-    <string name="bt_hci_snoop_log_summary" msgid="730247028210113851">"ಫೈಲ್‌ನಲ್ಲಿ ಎಲ್ಲ bluetooth HCI ಪ್ಯಾಕೆಟ್‌ಗಳನ್ನು ಸೆರೆಹಿಡಿಯಿರಿ"</string>
+    <string name="bt_hci_snoop_log_summary" msgid="730247028210113851">"ಫೈಲ್‌ನಲ್ಲಿ ಎಲ್ಲ ಬ್ಲೂಟೂತ್ HCI ಪ್ಯಾಕೆಟ್‌ಗಳನ್ನು ಸೆರೆಹಿಡಿಯಿರಿ"</string>
     <string name="oem_unlock_enable" msgid="6040763321967327691">"OEM ಅನ್‌ಲಾಕ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ"</string>
     <string name="oem_unlock_enable_summary" msgid="4720281828891618376">"ಬೂಟ್‌ಲೋಡರ್‌ ಅನ್‌ಲಾಕ್‌ ಮಾಡಲು ಅನುಮತಿಸಿ"</string>
     <string name="confirm_enable_oem_unlock_title" msgid="4802157344812385674">"OEM ಅನ್‌ಲಾಕ್‌ ಮಾಡುವಿಕೆಯನ್ನು ಅನುಮತಿಸುವುದೇ?"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"ವೈ-ಫೈ ರೋಮ್ ಸ್ಕ್ಯಾನ್‌ಗಳನ್ನು ಯಾವಾಗಲೂ ಅನುಮತಿಸಿ"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"ಸೆಲ್ಯುಲರ್ ಡೇಟಾ ಯಾವಾಗಲೂ ಸಕ್ರಿಯ"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"ಸಂಪೂರ್ಣ ವಾಲ್ಯೂಮ್‌ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"ಬ್ಲೂಟೂತ್ AVRCP ಆವೃತ್ತಿ"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"ಬ್ಲೂಟೂತ್ AVRCP ಆವೃತ್ತಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"ಬ್ಲೂಟೂತ್ ಆಡಿಯೋ ಕೋಡೆಕ್"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"ಬ್ಲೂಟೂತ್‌ ಆಡಿಯೊ ಕೋಡೆಕ್ ಆಯ್ಕೆ ಮಾಡಿ"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"ಬ್ಲೂಟೂತ್ ಆಡಿಯೋ ಮಾದರಿ ದರ"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"ಬ್ಲೂಟೂತ್‌ ಆಡಿಯೋ ಕೋಡೆಕ್:\nಮಾದರಿ ದರ ಆಯ್ಕೆ ಮಾಡಿ"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"ಬ್ಲೂಟೂತ್‌ ಆಡಿಯೊ ಬಿಟ್ಸ್‌‌ನ ಪ್ರತಿ ಮಾದರಿ"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"ಬ್ಲೂಟೂತ್‌ ಆಡಿಯೋ ಕೋಡೆಕ್‌:\nಬಿಟ್ಸ್ ಪ್ರತಿ ಮಾದರಿ ಆಯ್ಕೆ ಮಾಡಿ"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"ಬ್ಲೂಟೂತ್ ಆಡಿಯೋ ಚಾನೆಲ್ ಮೋಡ್"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"ಬ್ಲೂಟೂತ್‌ ಆಡಿಯೋ ಕೋಡೆಕ್:\nಚಾನೆಲ್ ಮೋಡ್ ಆಯ್ಕೆ ಮಾಡಿ"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"ಬ್ಲೂಟೂತ್‌ ಆಡಿಯೊ LDAC ಕೋಡೆಕ್: ಪ್ಲೇಬ್ಯಾಕ್ ಗುಣಮಟ್ಟ"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"ಬ್ಲೂಟೂತ್‌ ಆಡಿಯೊ LDAC ಕೋಡೆಕ್:\nಪ್ಲೇಬ್ಯಾಕ್‌ ಗುಣಮಟ್ಟ ಆಯ್ಕೆ ಮಾಡಿ"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"ಸ್ಟ್ರೀಮಿಂಗ್: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"ವೈರ್‌ಲೆಸ್‌‌‌ ಪ್ರದರ್ಶನ ಪ್ರಮಾಣೀಕರಣಕ್ಕಾಗಿ ಆಯ್ಕೆಗಳನ್ನು ತೋರಿಸು"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"Wi‑Fi ಲಾಗಿಂಗ್ ಮಟ್ಟನ್ನು ಹೆಚ್ಚಿಸಿ, Wi‑Fi ಆಯ್ಕೆಯಲ್ಲಿ ಪ್ರತಿಯೊಂದು SSID RSSI ತೋರಿಸಿ"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"ಸಕ್ರಿಯಗೊಂಡರೆ, Wi‑Fi ಸಿಗ್ನಲ್ ದುರ್ಬಲವಾಗಿದ್ದರೂ ಕೂಡ, ಸೆಲ್ಯುಲರ್‌ಗೆ ಡೇಟಾ ಸಂಪರ್ಕವನ್ನು ಹಸ್ತಾಂತರಿಸುವಲ್ಲಿ Wi‑Fi ಹೆಚ್ಚು ಆಕ್ರಮಣಕಾರಿಯಾಗಿರುತ್ತದೆ"</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"ಕಸ್ಟಮ್ (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"ಸಹಾಯ ಮತ್ತು ಪ್ರತಿಕ್ರಿಯೆ"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"ಮೆನು"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"ಫ್ಯಾಕ್ಟರಿ ರಿಸೆಟ್‌ಗೆ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"ಮುಂದೆ"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"ಪಾಸ್‌ವರ್ಡ್ ಅಗತ್ಯವಿದೆ"</string>
 </resources>

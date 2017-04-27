@@ -66,6 +66,16 @@ public class CarrierConfigManager {
             KEY_IGNORE_SIM_NETWORK_LOCKED_EVENTS_BOOL = "ignore_sim_network_locked_events_bool";
 
     /**
+     * When checking if a given number is the voicemail number, if this flag is true
+     * then in addition to comparing the given number to the voicemail number, we also compare it
+     * to the mdn. If this flag is false, the given number is only compared to the voicemail number.
+     * By default this value is false.
+     * @hide
+     */
+    public static final String KEY_MDN_IS_ADDITIONAL_VOICEMAIL_NUMBER_BOOL =
+            "mdn_is_additional_voicemail_number_bool";
+
+    /**
      * Flag indicating whether the Phone app should provide a "Dismiss" button on the SIM network
      * unlock screen. The default value is true. If set to false, there will be *no way* to dismiss
      * the SIM network unlock screen if you don't enter the correct unlock code. (One important
@@ -398,6 +408,21 @@ public class CarrierConfigManager {
     public static final String KEY_CARRIER_VOLTE_PROVISIONING_REQUIRED_BOOL
             = "carrier_volte_provisioning_required_bool";
 
+    /**
+     * Flag specifying if WFC provisioning depends on VoLTE provisioning.
+     *
+     * {@code false}: default value; honor actual WFC provisioning state.
+     * {@code true}: when VoLTE is not provisioned, treat WFC as not provisioned; when VoLTE is
+     *               provisioned, honor actual WFC provisioning state.
+     *
+     * As of now, Verizon is the only carrier enforcing this dependency in their
+     * WFC awareness and activation requirements.
+     *
+     * @hide
+     *  */
+    public static final String KEY_CARRIER_VOLTE_OVERRIDE_WFC_PROVISIONING_BOOL
+            = "carrier_volte_override_wfc_provisioning_bool";
+
     /** Flag specifying whether VoLTE TTY is supported. */
     public static final String KEY_CARRIER_VOLTE_TTY_SUPPORTED_BOOL
             = "carrier_volte_tty_supported_bool";
@@ -508,6 +533,13 @@ public class CarrierConfigManager {
             "disable_severe_when_extreme_disabled_bool";
 
     /**
+     * The message expiration time in milliseconds for duplicate detection purposes.
+     * @hide
+     */
+    public static final String KEY_MESSAGE_EXPIRATION_TIME_LONG =
+            "message_expiration_time_long";
+
+    /**
      * The data call retry configuration for different types of APN.
      * @hide
      */
@@ -572,6 +604,38 @@ public class CarrierConfigManager {
         "vvm_cellular_data_required_bool";
 
     /**
+     * The default OMTP visual voicemail client prefix to use. Defaulted to "//VVM"
+     */
+    public static final String KEY_VVM_CLIENT_PREFIX_STRING =
+            "vvm_client_prefix_string";
+
+    /**
+     * Whether to use SSL to connect to the visual voicemail IMAP server. Defaulted to false.
+     */
+    public static final String KEY_VVM_SSL_ENABLED_BOOL = "vvm_ssl_enabled_bool";
+
+    /**
+     * A set of capabilities that should not be used even if it is reported by the visual voicemail
+     * IMAP CAPABILITY command.
+     */
+    public static final String KEY_VVM_DISABLED_CAPABILITIES_STRING_ARRAY =
+            "vvm_disabled_capabilities_string_array";
+
+    /**
+     * Whether legacy mode should be used when the visual voicemail client is disabled.
+     *
+     * <p>Legacy mode is a mode that on the carrier side visual voicemail is still activated, but on
+     * the client side all network operations are disabled. SMSs are still monitored so a new
+     * message SYNC SMS will be translated to show a message waiting indicator, like traditional
+     * voicemails.
+     *
+     * <p>This is for carriers that does not support VVM deactivation so voicemail can continue to
+     * function without the data cost.
+     */
+    public static final String KEY_VVM_LEGACY_MODE_ENABLED_BOOL =
+            "vvm_legacy_mode_enabled_bool";
+
+    /**
      * Whether to prefetch audio data on new voicemail arrival, defaulted to true.
      */
     public static final String KEY_VVM_PREFETCH_BOOL = "vvm_prefetch_bool";
@@ -579,8 +643,18 @@ public class CarrierConfigManager {
     /**
      * The package name of the carrier's visual voicemail app to ensure that dialer visual voicemail
      * and carrier visual voicemail are not active at the same time.
+     *
+     * @deprecated use {@link #KEY_CARRIER_VVM_PACKAGE_NAME_STRING_ARRAY}.
      */
+    @Deprecated
     public static final String KEY_CARRIER_VVM_PACKAGE_NAME_STRING = "carrier_vvm_package_name_string";
+
+    /**
+     * A list of the carrier's visual voicemail app package names to ensure that dialer visual
+     * voicemail and carrier visual voicemail are not active at the same time.
+     */
+    public static final String KEY_CARRIER_VVM_PACKAGE_NAME_STRING_ARRAY =
+            "carrier_vvm_package_name_string_array";
 
     /**
      * Flag specifying whether ICCID is showed in SIM Status screen, default to false.
@@ -648,6 +722,14 @@ public class CarrierConfigManager {
             "display_hd_audio_property_bool";
 
     /**
+     * Determines whether IMS conference calls are supported by a carrier.  When {@code true},
+     * IMS conference calling is supported, {@code false} otherwise.
+     * @hide
+     */
+    public static final String KEY_SUPPORT_IMS_CONFERENCE_CALL_BOOL =
+            "support_ims_conference_call_bool";
+
+    /**
      * Determines whether video conference calls are supported by a carrier.  When {@code true},
      * video calls can be merged into conference calls, {@code false} otherwiwse.
      * <p>
@@ -679,6 +761,16 @@ public class CarrierConfigManager {
      * Determine whether preferred network type can be shown.
      */
     public static final String KEY_HIDE_PREFERRED_NETWORK_TYPE_BOOL = "hide_preferred_network_type_bool";
+
+    /**
+     * String array for package names that need to be enabled for this carrier.
+     * If user has explicitly disabled some packages in the list, won't re-enable.
+     * Other carrier specific apps which are not in this list may be disabled for current carrier,
+     * and only be re-enabled when this config for another carrier includes it.
+     *
+     * @hide
+     */
+    public static final String KEY_ENABLE_APPS_STRING_ARRAY = "enable_apps_string_array";
 
     /**
      * Determine whether user can switch Wi-Fi preferred or Cellular preferred in calling preference.
@@ -778,6 +870,22 @@ public class CarrierConfigManager {
      */
     public static final String KEY_CARRIER_ADDITIONAL_CBS_CHANNELS_STRINGS =
             "carrier_additional_cbs_channels_strings";
+
+    /**
+      * Indicates whether STK LAUNCH_BROWSER command is disabled.
+      * If {@code true}, then the browser will not be launched
+      * on UI for the LAUNCH_BROWSER STK command.
+      * @hide
+      */
+    public static final String KEY_STK_DISABLE_LAUNCH_BROWSER_BOOL =
+            "stk_disable_launch_browser_bool";
+
+    /**
+     * Boolean indicating if show data RAT icon on status bar even when data is disabled
+     * @hide
+     */
+    public static final String KEY_ALWAYS_SHOW_DATA_RAT_ICON_BOOL =
+            "always_show_data_rat_icon_bool";
 
     // These variables are used by the MMS service and exposed through another API, {@link
     // SmsManager}. The variable names and string values are copied from there.
@@ -1135,12 +1243,49 @@ public class CarrierConfigManager {
             "editable_wfc_roaming_mode_bool";
 
     /**
+     * Carrier specified WiFi networks.
+     * @hide
+     */
+    public static final String KEY_CARRIER_WIFI_STRING_ARRAY = "carrier_wifi_string_array";
+
+    /**
+     * Time delay (in ms) after which we show the notification to switch the preferred network.
+     * @hide
+     */
+    public static final String KEY_PREF_NETWORK_NOTIFICATION_DELAY_INT =
+            "network_notification_delay_int";
+
+    /**
+     * Determine whether user edited tether APN (type dun) has effect
+     * {@code false} - Default. APN with dun type in telephony database has no effect.
+     *
+     * {@code true}  - DUN APN added/edited in ApnEditor will be used for tethering data call.
+     *
+     * @hide
+     */
+    public static final String KEY_EDITABLE_TETHER_APN_BOOL =
+            "editable_tether_apn_bool";
+
+    /**
      * Indicates whether the carrier supports 3gpp call forwarding MMI codes while roaming. If
      * false, the user will be notified that call forwarding is not available when the MMI code
      * fails.
      */
     public static final String KEY_SUPPORT_3GPP_CALL_FORWARDING_WHILE_ROAMING_BOOL =
-            "support_3gpp_call_forwarding_while_roaming_bool";
+        "support_3gpp_call_forwarding_while_roaming_bool";
+
+    /**
+     * An array containing custom call forwarding number prefixes that will be blocked while the
+     * device is reporting that it is roaming. By default, there are no custom call
+     * forwarding prefixes and none of these numbers will be filtered. If one or more entries are
+     * present, the system will not complete the call and display an error message.
+     *
+     * To display a message to the user when call forwarding fails for 3gpp MMI codes while roaming,
+     * use the {@link #KEY_SUPPORT_3GPP_CALL_FORWARDING_WHILE_ROAMING_BOOL} option instead.
+     * @hide
+     */
+    public static final String KEY_CALL_FORWARDING_BLOCKS_WHILE_ROAMING_STRING_ARRAY =
+            "call_forwarding_blocks_while_roaming_string_array";
 
     /**
      * When {@code true}, the user will be notified when they attempt to place an international call
@@ -1200,6 +1345,7 @@ public class CarrierConfigManager {
         sDefaults.putInt(KEY_CARRIER_DEFAULT_WFC_IMS_ROAMING_MODE_INT, 2);
         sDefaults.putBoolean(KEY_CARRIER_FORCE_DISABLE_ETWS_CMAS_TEST_BOOL, false);
         sDefaults.putBoolean(KEY_CARRIER_VOLTE_PROVISIONING_REQUIRED_BOOL, false);
+        sDefaults.putBoolean(KEY_CARRIER_VOLTE_OVERRIDE_WFC_PROVISIONING_BOOL, false);
         sDefaults.putBoolean(KEY_CARRIER_VOLTE_TTY_SUPPORTED_BOOL, true);
         sDefaults.putBoolean(KEY_CARRIER_ALLOW_TURNOFF_IMS_BOOL, true);
         sDefaults.putBoolean(KEY_CARRIER_IMS_GBA_REQUIRED_BOOL, false);
@@ -1217,6 +1363,7 @@ public class CarrierConfigManager {
         sDefaults.putBoolean(KEY_SIMPLIFIED_NETWORK_SETTINGS_BOOL, false);
         sDefaults.putBoolean(KEY_HIDE_SIM_LOCK_SETTINGS_BOOL, false);
         sDefaults.putBoolean(KEY_IGNORE_SIM_NETWORK_LOCKED_EVENTS_BOOL, false);
+        sDefaults.putBoolean(KEY_MDN_IS_ADDITIONAL_VOICEMAIL_NUMBER_BOOL, false);
         sDefaults.putBoolean(KEY_OPERATOR_SELECTION_EXPAND_BOOL, true);
         sDefaults.putBoolean(KEY_PREFER_2G_BOOL, true);
         sDefaults.putBoolean(KEY_SHOW_APN_SETTING_CDMA_BOOL, false);
@@ -1239,8 +1386,13 @@ public class CarrierConfigManager {
         sDefaults.putInt(KEY_VVM_PORT_NUMBER_INT, 0);
         sDefaults.putString(KEY_VVM_TYPE_STRING, "");
         sDefaults.putBoolean(KEY_VVM_CELLULAR_DATA_REQUIRED_BOOL, false);
+        sDefaults.putString(KEY_VVM_CLIENT_PREFIX_STRING,"//VVM");
+        sDefaults.putBoolean(KEY_VVM_SSL_ENABLED_BOOL,false);
+        sDefaults.putStringArray(KEY_VVM_DISABLED_CAPABILITIES_STRING_ARRAY, null);
+        sDefaults.putBoolean(KEY_VVM_LEGACY_MODE_ENABLED_BOOL,false);
         sDefaults.putBoolean(KEY_VVM_PREFETCH_BOOL, true);
         sDefaults.putString(KEY_CARRIER_VVM_PACKAGE_NAME_STRING, "");
+        sDefaults.putStringArray(KEY_CARRIER_VVM_PACKAGE_NAME_STRING_ARRAY, null);
         sDefaults.putBoolean(KEY_SHOW_ICCID_IN_SIM_STATUS_BOOL, false);
         sDefaults.putBoolean(KEY_CI_ACTION_ON_SYS_UPDATE_BOOL, false);
         sDefaults.putString(KEY_CI_ACTION_ON_SYS_UPDATE_INTENT_STRING, "");
@@ -1253,6 +1405,7 @@ public class CarrierConfigManager {
         sDefaults.putBoolean(KEY_BROADCAST_EMERGENCY_CALL_STATE_CHANGES_BOOL, false);
         sDefaults.putBoolean(KEY_ALWAYS_SHOW_EMERGENCY_ALERT_ONOFF_BOOL, false);
         sDefaults.putBoolean(KEY_DISABLE_SEVERE_WHEN_EXTREME_DISABLED_BOOL, true);
+        sDefaults.putLong(KEY_MESSAGE_EXPIRATION_TIME_LONG, 86400000L);
         sDefaults.putStringArray(KEY_CARRIER_DATA_CALL_RETRY_CONFIG_STRINGS, new String[]{
                 "default:default_randomization=2000,5000,10000,20000,40000,80000:5000,160000:5000,"
                         + "320000:5000,640000:5000,1280000:5000,1800000:5000",
@@ -1289,6 +1442,7 @@ public class CarrierConfigManager {
         sDefaults.putInt(KEY_CDMA_DTMF_TONE_DELAY_INT, 100);
         sDefaults.putInt(KEY_CDMA_3WAYCALL_FLASH_DELAY_INT , 0);
         sDefaults.putBoolean(KEY_SUPPORT_CONFERENCE_CALL_BOOL, true);
+        sDefaults.putBoolean(KEY_SUPPORT_IMS_CONFERENCE_CALL_BOOL, true);
         sDefaults.putBoolean(KEY_SUPPORT_VIDEO_CONFERENCE_CALL_BOOL, false);
         sDefaults.putBoolean(KEY_DISPLAY_HD_AUDIO_PROPERTY_BOOL, true);
         sDefaults.putBoolean(KEY_EDITABLE_ENHANCED_4G_LTE_BOOL, true);
@@ -1296,6 +1450,7 @@ public class CarrierConfigManager {
         sDefaults.putBoolean(KEY_HIDE_IMS_APN_BOOL, false);
         sDefaults.putBoolean(KEY_HIDE_PREFERRED_NETWORK_TYPE_BOOL, false);
         sDefaults.putBoolean(KEY_ALLOW_EMERGENCY_VIDEO_CALLS_BOOL, false);
+        sDefaults.putStringArray(KEY_ENABLE_APPS_STRING_ARRAY, null);
         sDefaults.putBoolean(KEY_EDITABLE_WFC_MODE_BOOL, true);
         sDefaults.putStringArray(KEY_WFC_OPERATOR_ERROR_CODES_STRING_ARRAY, null);
         sDefaults.putInt(KEY_WFC_SPN_FORMAT_IDX_INT, 0);
@@ -1379,11 +1534,17 @@ public class CarrierConfigManager {
         sDefaults.putBoolean(KEY_NOTIFY_VT_HANDOVER_TO_WIFI_FAILURE_BOOL, false);
         sDefaults.putStringArray(KEY_FILTERED_CNAP_NAMES_STRING_ARRAY, null);
         sDefaults.putBoolean(KEY_EDITABLE_WFC_ROAMING_MODE_BOOL, false);
+        sDefaults.putBoolean(KEY_STK_DISABLE_LAUNCH_BROWSER_BOOL, false);
+        sDefaults.putStringArray(KEY_CARRIER_WIFI_STRING_ARRAY, null);
+        sDefaults.putInt(KEY_PREF_NETWORK_NOTIFICATION_DELAY_INT, -1);
+        sDefaults.putBoolean(KEY_EDITABLE_TETHER_APN_BOOL, false);
         sDefaults.putBoolean(KEY_SUPPORT_3GPP_CALL_FORWARDING_WHILE_ROAMING_BOOL, true);
+        sDefaults.putStringArray(KEY_CALL_FORWARDING_BLOCKS_WHILE_ROAMING_STRING_ARRAY, null);
         sDefaults.putBoolean(KEY_NOTIFY_INTERNATIONAL_CALL_ON_WFC_BOOL, false);
         sDefaults.putInt(KEY_LTE_EARFCNS_RSRP_BOOST_INT, 0);
         sDefaults.putStringArray(KEY_BOOSTED_LTE_EARFCNS_STRING_ARRAY, null);
         sDefaults.putBoolean(KEY_DISABLE_VOICE_BARRING_NOTIFICATION_BOOL, false);
+        sDefaults.putBoolean(KEY_ALWAYS_SHOW_DATA_RAT_ICON_BOOL, false);
     }
 
     /**
@@ -1436,12 +1597,12 @@ public class CarrierConfigManager {
      * moment.
      * </p>
      * <p>Requires that the calling app has carrier privileges.
-     * @see #hasCarrierPrivileges
      * <p>
      * This method returns before the reload has completed, and
      * {@link android.service.carrier.CarrierService#onLoadConfig} will be called from an
      * arbitrary thread.
      * </p>
+     * @see #hasCarrierPrivileges
      */
     public void notifyConfigChangedForSubId(int subId) {
         try {

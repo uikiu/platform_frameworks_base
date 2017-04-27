@@ -46,6 +46,7 @@
     <string name="defaultMsisdnAlphaTag" msgid="2850889754919584674">"MSISDN1"</string>
     <string name="mmiError" msgid="5154499457739052907">"Sự cố kết nối hoặc mã MMI không hợp lệ."</string>
     <string name="mmiFdnError" msgid="5224398216385316471">"Chỉ hạn chế thao tác đối với số quay số định sẵn."</string>
+    <string name="mmiErrorWhileRoaming" msgid="762488890299284230">"Không thể thay đổi cài đặt chuyển tiếp cuộc gọi từ điện thoại của bạn khi bạn đang chuyển vùng."</string>
     <string name="serviceEnabled" msgid="8147278346414714315">"Dịch vụ đã được bật."</string>
     <string name="serviceEnabledFor" msgid="6856228140453471041">"Dịch vụ đã được bật cho:"</string>
     <string name="serviceDisabled" msgid="1937553226592516411">"Dịch vụ đã bị vô hiệu hóa."</string>
@@ -88,14 +89,24 @@
     <string name="CLIRDefaultOffNextCallOff" msgid="2567998633124408552">"Số gọi đến mặc định thành không bị giới hạn. Cuộc gọi tiếp theo. Không bị giới hạn"</string>
     <string name="serviceNotProvisioned" msgid="8614830180508686666">"Dịch vụ không được cấp phép."</string>
     <string name="CLIRPermanent" msgid="3377371145926835671">"Bạn không thể thay đổi cài đặt ID người gọi."</string>
-    <string name="RestrictedOnData" msgid="8653794784690065540">"Dịch vụ dữ liệu bị chặn."</string>
-    <string name="RestrictedOnEmergency" msgid="6581163779072833665">"Dịch vụ khẩn cấp đã bị chặn."</string>
-    <string name="RestrictedOnNormal" msgid="4953867011389750673">"Dịch vụ thoại đã bị chặn."</string>
-    <string name="RestrictedOnAllVoice" msgid="3396963652108151260">"Tất cả các dịch vụ thoại đã bị chặn."</string>
-    <string name="RestrictedOnSms" msgid="8314352327461638897">"Dịch vụ SMS đã bị chặn."</string>
-    <string name="RestrictedOnVoiceData" msgid="996636487106171320">"Dịch vụ thoại/dữ liệu đã bị chặn."</string>
-    <string name="RestrictedOnVoiceSms" msgid="1888588152792023873">"Dịch vụ Thoại/SMS đã bị chặn."</string>
-    <string name="RestrictedOnAll" msgid="5643028264466092821">"Tất cả các dịch vụ thoại/dữ liệu/SMS đã bị chặn."</string>
+    <!-- no translation found for RestrictedOnDataTitle (1322504692764166532) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyTitle (1236071219598685236) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalTitle (3179574012752700984) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceTitle (158800171499150681) -->
+    <skip />
+    <!-- no translation found for RestrictedOnDataContent (8997474569390996587) -->
+    <skip />
+    <!-- no translation found for RestrictedOnEmergencyContent (4573217945494650061) -->
+    <skip />
+    <!-- no translation found for RestrictedOnNormalContent (1579434198284512182) -->
+    <skip />
+    <!-- no translation found for RestrictedOnAllVoiceContent (5243580774142557047) -->
+    <skip />
+    <string name="NetworkPreferenceSwitchTitle" msgid="4008877505368566980">"Không thể kết nối mạng"</string>
+    <string name="NetworkPreferenceSwitchSummary" msgid="7335915397439759249">"Để cải thiện khả năng thu tín hiệu, hãy thử thay đổi loại được chọn tại Cài đặt &gt; Mạng di động &gt; Loại mạng ưa thích."</string>
     <string name="peerTtyModeFull" msgid="6165351790010341421">"TTY theo yêu cầu của thiết bị ngang hàng ở chế độ ĐẦY ĐỦ"</string>
     <string name="peerTtyModeHco" msgid="5728602160669216784">"TTY theo yêu cầu của thiết bị ngang hàng ở chế độ HCO"</string>
     <string name="peerTtyModeVco" msgid="1742404978686538049">"TTY theo yêu cầu của thiết bị ngang hàng ở chế độ VCO"</string>
@@ -179,6 +190,8 @@
     <string name="work_profile_deleted_description" msgid="6305147513054341102">"Đã xóa hồ sơ công việc do thiếu ứng dụng quản trị."</string>
     <string name="work_profile_deleted_details" msgid="226615743462361248">"Ứng dụng quản trị hồ sơ công việc bị thiếu hoặc hỏng. Do vậy, hồ sơ công việc của bạn và dữ liệu liên quan đã bị xóa. Hãy liên hệ với quản trị viên để được trợ giúp."</string>
     <string name="work_profile_deleted_description_dpm_wipe" msgid="6019770344820507579">"Hồ sơ công việc của bạn không có sẵn trên thiết bị này nữa."</string>
+    <string name="network_logging_notification_title" msgid="1805392571290161924">"Lưu lượng truy cập mạng đang được giám sát"</string>
+    <string name="network_logging_notification_text" msgid="2671761001956320094">"Nhấn để tìm hiểu thêm"</string>
     <string name="factory_reset_warning" msgid="5423253125642394387">"Thiết bị của bạn sẽ bị xóa"</string>
     <string name="factory_reset_message" msgid="4905025204141900666">"Ứng dụng quản trị đang bị thiếu thành phần hoặc bị hỏng và không thể sử dụng được. Bây giờ, thiết bị của bạn sẽ bị xóa. Hãy liên hệ với quản trị viên của bạn để được trợ giúp."</string>
     <string name="me" msgid="6545696007631404292">"Tôi"</string>
@@ -377,6 +390,8 @@
     <string name="permdesc_accessImsCallService" msgid="8992884015198298775">"Cho phép ứng dụng sử dụng dịch vụ IMS để thực hiện cuộc gọi mà không có sự can thiệp của bạn."</string>
     <string name="permlab_readPhoneState" msgid="9178228524507610486">"đọc trạng thái và nhận dạng của điện thoại"</string>
     <string name="permdesc_readPhoneState" msgid="1639212771826125528">"Cho phép ứng dụng truy cập vào các tính năng điện thoại của thiết bị. Quyền này cho phép ứng dụng xác định số điện thoại và ID thiết bị, cho dù cuộc gọi có hiện hoạt hay không và số từ xa có được kết nối bằng một cuộc gọi hay không."</string>
+    <string name="permlab_manageOwnCalls" msgid="1503034913274622244">"định tuyến cuộc gọi thông qua hệ thống"</string>
+    <string name="permdesc_manageOwnCalls" msgid="6552974537554717418">"Cho phép ứng dụng định tuyến cuộc gọi thông qua hệ thống nhằm cải thiện trải nghiệm gọi điện."</string>
     <string name="permlab_wakeLock" product="tablet" msgid="1531731435011495015">"ngăn máy tính bảng chuyển sang chế độ ngủ"</string>
     <string name="permlab_wakeLock" product="tv" msgid="2601193288949154131">"ngăn TV chuyển sang chế độ ngủ"</string>
     <string name="permlab_wakeLock" product="default" msgid="573480187941496130">"ngăn điện thoại chuyển sang chế độ ngủ"</string>
@@ -1063,14 +1078,6 @@
     <string name="ringtone_silent" msgid="7937634392408977062">"Không"</string>
     <string name="ringtone_picker_title" msgid="3515143939175119094">"Nhạc chuông"</string>
     <string name="ringtone_unknown" msgid="5477919988701784788">"Nhạc chuông không xác định"</string>
-    <plurals name="wifi_available" formatted="false" msgid="7900333017752027322">
-      <item quantity="other">Các mạng Wi-Fi khả dụng</item>
-      <item quantity="one">Mạng Wi-Fi khả dụng</item>
-    </plurals>
-    <plurals name="wifi_available_detailed" formatted="false" msgid="1140699367193975606">
-      <item quantity="other">Mở các mạng Wi-Fi khả dụng</item>
-      <item quantity="one">Mở mạng Wi-Fi khả dụng</item>
-    </plurals>
     <string name="wifi_available_sign_in" msgid="9157196203958866662">"Đăng nhập vào mạng Wi-Fi"</string>
     <string name="network_available_sign_in" msgid="1848877297365446605">"Đăng nhập vào mạng"</string>
     <!-- no translation found for network_available_sign_in_detailed (8000081941447976118) -->
@@ -1208,6 +1215,8 @@
     <string name="permdesc_readInstallSessions" msgid="2049771699626019849">"Cho phép ứng dụng đọc phiên cài đặt. Thao tác này sẽ cho phép ứng dụng xem chi tiết về gói cài đặt đang hoạt động."</string>
     <string name="permlab_requestInstallPackages" msgid="5782013576218172577">"yêu cầu gói cài đặt"</string>
     <string name="permdesc_requestInstallPackages" msgid="5740101072486783082">"Cho phép ứng dụng yêu cầu cài đặt gói."</string>
+    <string name="permlab_requestIgnoreBatteryOptimizations" msgid="8021256345643918264">"hỏi để bỏ qua tối ưu hóa pin"</string>
+    <string name="permdesc_requestIgnoreBatteryOptimizations" msgid="8359147856007447638">"Cho phép ứng dụng hỏi quyền để bỏ qua tối ưu hóa pin cho ứng dụng đó."</string>
     <string name="tutorial_double_tap_to_zoom_message_short" msgid="1311810005957319690">"Nhấn hai lần để kiểm soát thu phóng"</string>
     <string name="gadget_host_error_inflating" msgid="4882004314906466162">"Không thể thêm tiện ích."</string>
     <string name="ime_action_go" msgid="8320845651737369027">"Đến"</string>
@@ -1558,7 +1567,7 @@
     <string name="select_year" msgid="7952052866994196170">"Chọn năm"</string>
     <string name="deleted_key" msgid="7659477886625566590">"Đã xóa <xliff:g id="KEY">%1$s</xliff:g>"</string>
     <string name="managed_profile_label_badge" msgid="2355652472854327647">"<xliff:g id="LABEL">%1$s</xliff:g> làm việc"</string>
-    <string name="lock_to_app_toast" msgid="1420543809500606964">"Để bỏ ghim màn hình này, nhấn và giữ Quay lại."</string>
+    <string name="lock_to_app_toast" msgid="7693684144593484">"Để bỏ ghim màn hình này, chạm và giữ Quay lại và Tổng quan."</string>
     <string name="lock_to_app_toast_locked" msgid="9125176335701699164">"Ứng dụng được ghim: Không được phép bỏ ghim trên thiết bị này."</string>
     <string name="lock_to_app_start" msgid="6643342070839862795">"Đã ghim màn hình"</string>
     <string name="lock_to_app_exit" msgid="8598219838213787430">"Đã bỏ ghim màn hình"</string>
@@ -1678,4 +1687,17 @@
     <string name="audit_safemode_notification_details" msgid="1860601176690176413">"Chạm để tìm hiểu thêm."</string>
     <string name="suspended_widget_accessibility" msgid="6712143096475264190">"Đã tắt <xliff:g id="LABEL">%1$s</xliff:g>"</string>
     <string name="conference_call" msgid="3751093130790472426">"Cuộc gọi nhiều bên"</string>
+    <string name="etws_primary_default_message_earthquake" msgid="5541962250262769193">"Hãy bình tĩnh và tìm kiếm nơi trú ẩn gần đó."</string>
+    <string name="etws_primary_default_message_tsunami" msgid="1887685943498368548">"Ngay lập tức sơ tán khỏi các vùng ven biển và khu vực ven sông để tới một nơi an toàn hơn như vùng đất cao."</string>
+    <string name="etws_primary_default_message_earthquake_and_tsunami" msgid="998797956848445862">"Hãy bình tĩnh và tìm kiếm nơi trú ẩn gần đó."</string>
+    <string name="etws_primary_default_message_test" msgid="2709597093560037455">"Kiểm tra thông báo khẩn cấp"</string>
+    <string name="etws_primary_default_message_others" msgid="6293148756130398971"></string>
+    <!-- no translation found for mmcc_authentication_reject (7729819349669603406) -->
+    <skip />
+    <!-- no translation found for mmcc_imsi_unknown_in_hlr (6321202257374418726) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_ms (2769452751852211112) -->
+    <skip />
+    <!-- no translation found for mmcc_illegal_me (4438696681169345015) -->
+    <skip />
 </resources>

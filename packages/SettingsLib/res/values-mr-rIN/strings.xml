@@ -25,6 +25,7 @@
     <string name="wifi_remembered" msgid="4955746899347821096">"जतन केले"</string>
     <string name="wifi_disabled_generic" msgid="4259794910584943386">"अक्षम"</string>
     <string name="wifi_disabled_network_failure" msgid="2364951338436007124">"IP कॉन्फिगरेशन अयशस्वी"</string>
+    <string name="wifi_disabled_by_recommendation_provider" msgid="5168315140978066096">"कमी दर्जाच्या नेटवर्कमुळे कनेक्ट केलेले नाही"</string>
     <string name="wifi_disabled_wifi_failure" msgid="3081668066612876581">"WiFi कनेक्शन अयशस्वी"</string>
     <string name="wifi_disabled_password_failure" msgid="8659805351763133575">"प्रमाणीकरण समस्या"</string>
     <string name="wifi_not_in_range" msgid="1136191511238508967">"परिक्षेत्रामध्ये नाही"</string>
@@ -170,6 +171,19 @@
     <string name="wifi_allow_scan_with_traffic" msgid="3601853081178265786">"वाय-फाय रोम स्‍कॅनला नेहमी अनुमती द्या"</string>
     <string name="mobile_data_always_on" msgid="7745605759775320362">"सेल्युलर डेटा नेहमी सक्रिय"</string>
     <string name="bluetooth_disable_absolute_volume" msgid="2660673801947898809">"संपूर्ण आवाज अक्षम करा"</string>
+    <string name="bluetooth_select_avrcp_version_string" msgid="3750059931120293633">"ब्लूटुथ AVRCP आवृत्ती"</string>
+    <string name="bluetooth_select_avrcp_version_dialog_title" msgid="7277329668298705702">"ब्लूटुथ AVRCP आवृत्ती निवडा"</string>
+    <string name="bluetooth_select_a2dp_codec_type" msgid="90597356942154882">"ब्लूटूथ ऑडिओ कोडेक"</string>
+    <string name="bluetooth_select_a2dp_codec_type_dialog_title" msgid="4558347981670553665">"ब्लूटुथ ऑडिओ कोडेक निवडा"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate" msgid="4788245703824623062">"ब्लूटूथ ऑडिओ नमुना दर"</string>
+    <string name="bluetooth_select_a2dp_codec_sample_rate_dialog_title" msgid="5628790207448471613">"ब्लूटुथ ऑडिओ कोडेक निवडा:\nनमुना दर"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample" msgid="2099645202720164141">"प्रति नमुना ब्लूटुथ ऑडिओ बिट"</string>
+    <string name="bluetooth_select_a2dp_codec_bits_per_sample_dialog_title" msgid="4546131401358681321">"ब्लूटुथ ऑडिओ कोडेक निवडा:\nबिट प्रति नमुना"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode" msgid="884855779449390540">"ब्लूटूथ ऑडिओ चॅनेल मोड"</string>
+    <string name="bluetooth_select_a2dp_codec_channel_mode_dialog_title" msgid="9133545781346216071">"ब्लूटुथ ऑडिओ कोडेक निवडा:\nचॅनेल मोड"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality" msgid="3619694372407843405">"ब्लूटुथ ऑडिओ LDAC कोडेक: प्लेबॅक गुणवत्ता"</string>
+    <string name="bluetooth_select_a2dp_codec_ldac_playback_quality_dialog_title" msgid="3181967377574368400">"ब्लूटुथ ऑडिओ LDAC कोडेक निवडा:\nप्लेबॅक गुणवत्ता"</string>
+    <string name="bluetooth_select_a2dp_codec_streaming_label" msgid="5347862512596240506">"धारावाहिक: <xliff:g id="STREAMING_PARAMETER">%1$s</xliff:g>"</string>
     <string name="wifi_display_certification_summary" msgid="1155182309166746973">"वायरलेस प्रदर्शन प्रमाणिकरणासाठी पर्याय दर्शवा"</string>
     <string name="wifi_verbose_logging_summary" msgid="6615071616111731958">"वाय-फाय लॉगिंग स्‍तर वाढवा, वाय-फाय निवडकामध्‍ये प्रति SSID RSSI दर्शवा"</string>
     <string name="wifi_aggressive_handover_summary" msgid="6328455667642570371">"सक्षम केल्यास, वाय-फाय सिग्‍नल निम्‍न असताना, वाय-फाय डेटा कनेक्‍शन सेल्‍युलरवर बळपूर्वक स्विच करेल."</string>
@@ -192,7 +206,7 @@
     <string name="dev_settings_warning_title" msgid="7244607768088540165">"विकास सेटिंग्जला अनुमती द्यायची?"</string>
     <string name="dev_settings_warning_message" msgid="2298337781139097964">"या सेटिंग्जचा हेतू फक्त विकास करण्याच्या वापरासाठी आहे. त्यामुळे आपले डिव्हाइस आणि त्यावरील अनुप्रयोग विघटित होऊ शकतात किंवा गैरवर्तन करू शकतात."</string>
     <string name="verify_apps_over_usb_title" msgid="4177086489869041953">"USB वरील अॅप्स सत्यापित करा"</string>
-    <string name="verify_apps_over_usb_summary" msgid="9164096969924529200">"हानीकारक वर्तनासाठी ADB/ADT द्वारे स्थापित अॅप्स तपासा."</string>
+    <string name="verify_apps_over_usb_summary" msgid="9164096969924529200">"हानिकारक वर्तनासाठी ADB/ADT द्वारे स्थापित अॅप्स तपासा."</string>
     <string name="bluetooth_disable_absolute_volume_summary" msgid="6031284410786545957">"दूरस्थ डिव्हाइसेसमध्ये सहन न होणारा मोठा आवाज किंवा नियंत्रणचा अभाव यासारखी आवाजाची समस्या असल्यास ब्लूटुथ संपूर्ण आवाज वैशिष्ट्य अक्षम करते."</string>
     <string name="enable_terminal_title" msgid="95572094356054120">"स्थानिक टर्मिनल"</string>
     <string name="enable_terminal_summary" msgid="67667852659359206">"स्थानिक शेल प्रवेश देणारा टर्मिनल अॅप सक्षम करा"</string>
@@ -341,4 +355,7 @@
     <string name="screen_zoom_summary_custom" msgid="5611979864124160447">"सानुकूल करा (<xliff:g id="DENSITYDPI">%d</xliff:g>)"</string>
     <string name="help_feedback_label" msgid="6815040660801785649">"मदत आणि अभिप्राय"</string>
     <string name="content_description_menu_button" msgid="8182594799812351266">"मेनू"</string>
+    <string name="retail_demo_reset_message" msgid="118771671364131297">"डेमो मोडमध्ये फॅक्टरी रीसेट करण्यासाठी संकेतशब्द प्रविष्ट करा"</string>
+    <string name="retail_demo_reset_next" msgid="8356731459226304963">"पुढील"</string>
+    <string name="retail_demo_reset_title" msgid="696589204029930100">"संकेतशब्द आवश्यक"</string>
 </resources>

@@ -161,6 +161,8 @@ public final class SystemServer {
             "com.google.android.clockwork.bluetooth.WearBluetoothService";
     private static final String WEAR_WIFI_MEDIATOR_SERVICE_CLASS =
             "com.google.android.clockwork.wifi.WearWifiMediatorService";
+    private static final String WEAR_CELLULAR_MEDIATOR_SERVICE_CLASS =
+            "com.google.android.clockwork.cellular.WearCellularMediatorService";
     private static final String WEAR_TIME_SERVICE_CLASS =
             "com.google.android.clockwork.time.WearTimeService";
     private static final String ACCOUNT_SERVICE_CLASS =
@@ -205,6 +207,7 @@ public final class SystemServer {
 
     private boolean mOnlyCore;
     private boolean mFirstBoot;
+    private final boolean mRuntimeRestart;
 
     /**
      * Start the sensor service.
@@ -221,6 +224,8 @@ public final class SystemServer {
     public SystemServer() {
         // Check for factory test mode.
         mFactoryTestMode = FactoryTest.getMode();
+        // Remember if it's runtime restart(when sys.boot_completed is already set) or reboot
+        mRuntimeRestart = "1".equals(SystemProperties.get("sys.boot_completed"));
     }
 
     private void run() {
@@ -329,6 +334,7 @@ public final class SystemServer {
 
             // Create the system service manager.
             mSystemServiceManager = new SystemServiceManager(mSystemContext);
+            mSystemServiceManager.setRuntimeRestarted(mRuntimeRestart);
             LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);
         } finally {
             Trace.traceEnd(Trace.TRACE_TAG_SYSTEM_SERVER);
@@ -1207,6 +1213,9 @@ public final class SystemServer {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
             mSystemServiceManager.startService(WEAR_BLUETOOTH_SERVICE_CLASS);
             mSystemServiceManager.startService(WEAR_WIFI_MEDIATOR_SERVICE_CLASS);
+            if (SystemProperties.getBoolean("config.enable_cellmediator", false)) {
+                mSystemServiceManager.startService(WEAR_CELLULAR_MEDIATOR_SERVICE_CLASS);
+            }
           if (!disableNonCoreServices) {
               mSystemServiceManager.startService(WEAR_TIME_SERVICE_CLASS);
           }
