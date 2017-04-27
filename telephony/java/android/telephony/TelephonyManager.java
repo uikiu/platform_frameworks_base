@@ -889,6 +889,15 @@ public class TelephonyManager {
      *
      * @deprecated Use (@link getImei} which returns IMEI for GSM or (@link getMeid} which returns
      * MEID for CDMA.
+	 * //-------------------------------------------------------------------------------------------
+	 * Added in API level 1
+	 * 返回设备唯一ID:
+	 * 1>GSM:IMEI
+	 * 2>CDMA:MEID || ESN
+	 * 方法已被弃用，新方式如下：
+	 * 1>获取GSM的IMEI: (@link getImei}
+	 * 2>获取CDMA的MEID:(@link getMeid}
+	 * 
      */
     @Deprecated
     public String getDeviceId() {
@@ -915,6 +924,13 @@ public class TelephonyManager {
      *
      * @deprecated Use (@link getImei} which returns IMEI for GSM or (@link getMeid} which returns
      * MEID for CDMA.
+	 * //----------------------------------------------------------------------------------------------
+	 * Added in API level 23
+	 * slotIndex:SIM卡槽的index
+	 * 方法已被弃用，新方式如下：
+	 * 1>获取GSM的IMEI: (@link getImei}
+	 * 2>获取CDMA的MEID:(@link getMeid}
+	 * 
      */
     @Deprecated
     public String getDeviceId(int slotIndex) {
@@ -937,6 +953,10 @@ public class TelephonyManager {
      *
      * <p>Requires Permission:
      *   {@link android.Manifest.permission#READ_PHONE_STATE READ_PHONE_STATE}
+	 * //------------------------------------------------------------------------------------------
+	 * 返回IMIE(国际移动设备唯一编码)。如果此IMEI不可获得，会返回null。
+	 * 
+	 * 
      */
     public String getImei() {
         return getImei(getDefaultSim());

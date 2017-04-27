@@ -449,7 +449,7 @@ public class TextUtils {
      * @return true if str is null or zero length
      */
     public static boolean isEmpty(@Nullable CharSequence str) {
-        if (str == null || str.length() == 0)
+        if (str == null || str.length() == 0)//这里最好加入一个选项str.trim.lenth()=0
             return true;
         else
             return false;
