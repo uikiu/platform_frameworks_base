@@ -1019,6 +1019,9 @@ public class TelephonyManager {
      *
      * <p>Requires Permission:
      *   {@link android.Manifest.permission#READ_PHONE_STATE READ_PHONE_STATE}
+	 * //--------------------------------------------------------------------------------------
+	 * 返回C网的MEID，如果获取不到则返回null
+	 *
      */
     public String getMeid() {
         return getMeid(getDefaultSim());
@@ -1031,6 +1034,9 @@ public class TelephonyManager {
      *   {@link android.Manifest.permission#READ_PHONE_STATE READ_PHONE_STATE}
      *
      * @param slotIndex of which MEID is returned
+	 * //--------------------------------------------------------------------------------------
+	 * 返回C网的MEID，如果获取不到则返回null
+	 * @param slotIndex SIM卡槽的index
      */
     public String getMeid(int slotIndex) {
         ITelephony telephony = getITelephony();
@@ -4026,6 +4032,9 @@ public class TelephonyManager {
      *  @return default SIM's slot index. If SIM is not inserted, return default SIM slot index.
      *
      * {@hide}
+	 * //------------------------------------------------------------------------------------------------
+	 * 返回默认的SIM卡槽的index，如果SIM没有插入，返回默认SIM卡槽的inde
+	 *
      */
     @VisibleForTesting
     public int getDefaultSim() {

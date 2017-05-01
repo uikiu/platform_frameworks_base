@@ -53,7 +53,7 @@ public class SubscriptionManager {
     private static final boolean VDBG = false;
 
     /** An invalid subscription identifier */
-    public static final int INVALID_SUBSCRIPTION_ID = -1;
+    public static final int INVALID_SUBSCRIPTION_ID = -1;//无效的订阅ID
 
     /** Base value for Dummy SUBSCRIPTION_ID's. */
     /** FIXME: Remove DummySubId's, but for now have them map just below INVALID_SUBSCRIPTION_ID
@@ -404,6 +404,9 @@ public class SubscriptionManager {
      *
      * @param context to use.
      * @return SubscriptionManager instance
+	 * //----------------------------------------------------------------
+	 * 获取SubscriptionManager实例
+	 *
      */
     public static SubscriptionManager from(Context context) {
         return (SubscriptionManager) context.getSystemService(
@@ -551,6 +554,10 @@ public class SubscriptionManager {
      * @return List of all SubscriptionInfo records in database,
      * include those that were inserted before, maybe empty but not null.
      * @hide
+	 * //----------------------------------------------------------------
+	 * 返回存储在数据库中的所有订阅信息，包括之前插入的，可能是空，但不会是null
+	 *
+	 *
      */
     public List<SubscriptionInfo> getAllSubscriptionInfoList() {
         if (VDBG) logd("[getAllSubscriptionInfoList]+");
@@ -915,6 +922,13 @@ public class SubscriptionManager {
      * May return an INVALID_SUBSCRIPTION_ID on error.
      *
      * @return the "system" default subscription id.
+	 * //-----------------------------------------------------------------------------
+	 * 返回系统默认的订阅ID
+	 * 对于提供通话功能的设备来说，它将返回getDefaultVoiceSubscriptionId
+	 * 对于仅有数据功能的设备来说，它将返回getDefaultDataSubscriptionId
+	 * 有可能返回：INVALID_SUBSCRIPTION_ID = -1;//无效的订阅ID
+	 * 
+	 * 
      */
     public static int getDefaultSubscriptionId() {
         int subId = INVALID_SUBSCRIPTION_ID;

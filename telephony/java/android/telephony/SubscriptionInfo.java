@@ -43,6 +43,9 @@ public class SubscriptionInfo implements Parcelable {
     /**
      * Subscription Identifier, this is a device unique number
      * and not an index into an array
+	 * //------------------------------------------------------
+	 * 订阅id，设备唯一编码而不是数组索引
+	 *
      */
     private int mId;
 
