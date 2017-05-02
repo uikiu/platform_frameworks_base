@@ -130,6 +130,9 @@ public abstract class Context {
      * already exists then write data to the end of the existing file
      * instead of erasing it.
      * @see #openFileOutput
+	 * //---------------------------------------------------------------------
+	 * File创建模式：在{@link #openFileOutput}方法中使用。类似于StringBuilder.append("");
+	 * 如果文件已经存在那么在已存在文件后面写入数据以代替清除这个文件中内容。
      */
     public static final int MODE_APPEND = 0x8000;
 
@@ -781,6 +784,14 @@ public abstract class Context {
      * @see #fileList
      * @see #deleteFile
      * @see java.io.FileOutputStream#FileOutputStream(String)
+	 * //-----------------------------------------------------------------
+	 * 打开本app内部指定名称的私有文件等待写入。
+	 * 无需任何额外权限。
+	 * @param name 要打开的私有文件的名称，不能包含路径分隔符“/”
+	 * @param mode 操作模式。两种操作模式具体见下面
+	 * MODE_PRIVATE = 0 : 每次都会重写文件中的内容。
+	 * MODE_APPEND = 0x8000 : 如果文件已经存在，则在文件的末尾继续拼接数据
+	 * 
      */
     public abstract FileOutputStream openFileOutput(String name, int mode)
         throws FileNotFoundException;
@@ -799,6 +810,12 @@ public abstract class Context {
      * @see #openFileOutput
      * @see #fileList
      * @see java.io.File#delete()
+	 * //------------------------------------------------------------------------
+	 * 与{@link #getFilesOutput}相对应。getFilesOutput是打开指定的文件，本方法是删除指定的文件。
+	 * @param name 要删除的文件名称。
+	 * @return 如果删除成功则返回true，否则返回false。
+	 *
+	 *
      */
     public abstract boolean deleteFile(String name);
 
@@ -866,6 +883,13 @@ public abstract class Context {
      * @see #openFileOutput
      * @see #getFileStreamPath
      * @see #getDir
+	 * //-----------------------------------------------------------------------------
+	 * 该方法与{@link openFileOutput}方法相对应。返回/data/data/包名/files/这个目录。
+	 * android系统会在/data/data/包名/下面创建三个子目录：1>cache;2>code_cache;3>files 。而本方法返回
+	 * 所有子目录中的files。
+	 * 如果app被移动到外部存储：这个路径可能会变更。
+	 * 仅相对路径应该被持久化。
+	 *
      */
     public abstract File getFilesDir();
 
@@ -1148,6 +1172,13 @@ public abstract class Context {
      * @see #getFileStreamPath
      * @see #getDir
      * @see #getExternalCacheDir
+	 * //------------------------------------------------------------------------
+	 * 返回私有缓存目录：/data/data/包名/cache
+	 * 这些文件将是设备在存储空间不足时首先被删除的文件。
+	 * 注意：你不应该等待cache目录下系统去给删除这些文件。你应该有自己的一个合理值，当达到这个合理值就去修改这些缓存文件。
+	 * 例如，你可以将缓存目录最大值设定为1M，你应该使用{@link #getExternalCacheDir()}
+	 * 与{@ink  #getFilesDir}如果app被移动到外部存储，这个目录的路径会发生变化。
+	 * app不需要额外的权限读写缓存文件。
      */
     public abstract File getCacheDir();
 
@@ -1338,6 +1369,9 @@ public abstract class Context {
      * @see #openFileInput
      * @see #openFileOutput
      * @see #deleteFile
+	 * //------------------------------------------------------------------------
+	 * 返回/data/data/包名/files 目录下的所有的文件名称。以数组形式返回。
+	 * 
      */
     public abstract String[] fileList();
 
