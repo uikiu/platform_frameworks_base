@@ -985,13 +985,14 @@ public abstract class Context {
      * @param type The type of files directory to return. May be {@code null}
      *            for the root of the files directory or one of the following
      *            constants for a subdirectory:
-     *            {@link android.os.Environment#DIRECTORY_MUSIC},
-     *            {@link android.os.Environment#DIRECTORY_PODCASTS},
-     *            {@link android.os.Environment#DIRECTORY_RINGTONES},
-     *            {@link android.os.Environment#DIRECTORY_ALARMS},
-     *            {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
-     *            {@link android.os.Environment#DIRECTORY_PICTURES}, or
-     *            {@link android.os.Environment#DIRECTORY_MOVIES}.
+     *            {@link android.os.Environment#DIRECTORY_MUSIC},//音乐
+     *            {@link android.os.Environment#DIRECTORY_PODCASTS},//播客
+     *            {@link android.os.Environment#DIRECTORY_RINGTONES},//铃声
+     *            {@link android.os.Environment#DIRECTORY_ALARMS},//闹钟
+     *            {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},//通知
+     *            {@link android.os.Environment#DIRECTORY_PICTURES}, or//图片
+     *            {@link android.os.Environment#DIRECTORY_MOVIES}.//视频
+	 *            ...
      * @return the absolute path to application-specific directory. May return
      *         {@code null} if shared storage is not currently available.
      * @see #getFilesDir

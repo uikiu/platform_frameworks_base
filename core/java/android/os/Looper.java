@@ -52,6 +52,7 @@ import android.util.Printer;
   *  }</pre>
   * //-----------------------------------------------------------------------------
   * Looper的本质就是线程的“局部变量副本”ThreadLocal的升级版-添加了轮训功能。
+  * Looper最大的特点就是内部包含有一个ThreadLocal对象。并且在Looper初始化的时候，通过sThreadLocal.set(new Looper(quitAllowed))设置线程局部变量。
   * 每个线程只能由一个Looper类的实例对象。Looper类的实例对象必须通过prepare()创建。
   * prepare()方法会创建一个Looper对象，并把它保存在变量副本mThreadLocal中。一个线程中多次调用prepare()方法将会抛出异常：每个线程只能创建一个looper
   * 线程在默认情况下是没有消息轮训器关联到它们的。其实就是局部线程默认情况下是没有“变量副本”的。
@@ -59,7 +60,7 @@ import android.util.Printer;
   * 开启变量副本自身的特性--消息轮训：Looper.loop()
   * //-----------------------------------------------------------------------------
   * 模仿秀：
-  * 我们可以模仿Looper这个变量为线程池中的工作线程添加一个“变量副本”以便监听线程的对任务执行状态的监听。
+  * 我们可以模仿Looper这个变量为线程池中的工作线程添加一个threadLocal“变量副本”以便监听线程的对任务执行状态的监听。
   */
 public final class Looper {
     /*
@@ -242,7 +243,7 @@ public final class Looper {
 	 */
     private Looper(boolean quitAllowed) {
         mQueue = new MessageQueue(quitAllowed);
-        mThread = Thread.currentThread();
+        mThread = Thread.currentThread();//在Looper初始化的时候确定线程，使用当前线程且不可修改
     }
 
     /**

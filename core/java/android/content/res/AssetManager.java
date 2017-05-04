@@ -38,6 +38,10 @@ import java.util.HashMap;
  * This class presents a lower-level API that allows you to open and read raw
  * files that have been bundled with the application as a simple stream of
  * bytes.
+ * //------------------------------------------------------------------------
+ * 让你可以以字节流的形式打开和读取和应用程序绑定在一起的原始资源文件，但不支持写入。
+ * 注意：原始资源文件asset、raw都是只读文件。
+ *
  */
 public final class AssetManager implements AutoCloseable {
     /* modes used when opening an asset */

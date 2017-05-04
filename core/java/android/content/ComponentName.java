@@ -31,6 +31,16 @@ import java.lang.Comparable;
  * pieces of information, encapsulated here, are required to identify
  * a component: the package (a String) it exists in, and the class (a String)
  * name inside of that package.
+ * //--------------------------------------------------------------------------------
+ * 组件名称。
+ * 4大组件的唯一标识。
+ * 需要在这里封装两条信息来标识组件：1>包名；2>类名；
+ * 包名packageName来源：1>用户直接传入包名；2>调用者传入Context，通过Context获取。context.getPackageName();
+ * 类名className来源：1>用户直接传入类名；2>用户传入Class<?>对象，通过class.getName()获取。
+ * 以上包名、类名的获取方式任意组合。就是一种构造ComponentName的方式。
+ * 以上证明构造ComponentName的方式特别多，但是推荐使用ComponentName对外提供的ComponentName对外提供的两个静态方法：
+ * {@ilnk #createReleative(String pkg,String cls)}
+ * {@link #createReleative(Context context,String cls)}
  * 
  */
 public final class ComponentName implements Parcelable, Cloneable, Comparable<ComponentName> {
@@ -51,6 +61,13 @@ public final class ComponentName implements Parcelable, Cloneable, Comparable<Co
      * @param cls the name of the class inside of <var>pkg</var> that implements
      *            the component
      * @return the new ComponentName
+	 * //---------------------------------------------------------------------------------------- 
+	 * 对外提供的构建ComponentName方法一：
+	 * 创建一个新的ComponentName。class name 可能是绝对类名，也可能是相对类名。
+	 * 也就是说class name可能会以“.ClassName”这种方式出现，也是就是相对路径。例如：
+	 * packageName: com.example  className: .appMyActivity
+	 * 那么ComponentName会将className的前面自动拼接packageName，完整版className:com.example.appMyActivity
+	 * 
      */
     public static ComponentName createRelative(String pkg, String cls) {
         if (TextUtils.isEmpty(cls)) {
@@ -82,6 +99,12 @@ public final class ComponentName implements Parcelable, Cloneable, Comparable<Co
      * @param cls the name of the class inside of <var>pkg</var> that implements
      *            the component
      * @return the new ComponentName
+	 * //------------------------------------------------------------------------------------
+	 * 对外提供的构建ComponentName方法一：
+	 * 传入参数：1>上下文；2>类名。
+	 * 通过上下文可以获取到包名。
+	 *
+	 *
      */
     public static ComponentName createRelative(Context pkg, String cls) {
         return createRelative(pkg.getPackageName(), cls);
@@ -94,6 +117,10 @@ public final class ComponentName implements Parcelable, Cloneable, Comparable<Co
      * not be null.
      * @param cls The name of the class inside of <var>pkg</var> that
      * implements the component.  Can not be null.
+	 * //-------------------------------------------------------------------------------------
+	 * 真正的ComponentName的构造方法，参数接收包名、类名。不建议直接使用此方法。可以使用ComponentName对外提供的两个静态方法：
+	 * {@ilnk #createReleative(String pkg,String cls)}
+	 * {@link #createReleative(Context context,String cls)}
      */
     public ComponentName(String pkg, String cls) {
         if (pkg == null) throw new NullPointerException("package name is null");
@@ -109,6 +136,10 @@ public final class ComponentName implements Parcelable, Cloneable, Comparable<Co
      * from which the actual package name will be retrieved.
      * @param cls The name of the class inside of <var>pkg</var> that
      * implements the component.
+	 * //-------------------------------------------------------------------------------------
+	 * 真正的ComponentName的构造方法，参数接收包名、类名。不建议直接使用此方法。可以使用ComponentName对外提供的两个静态方法：
+	 * {@ilnk #createReleative(String pkg,String cls)}
+	 * {@link #createReleative(Context context,String cls)}
      */
     public ComponentName(Context pkg, String cls) {
         if (cls == null) throw new NullPointerException("class name is null");
@@ -123,12 +154,21 @@ public final class ComponentName implements Parcelable, Cloneable, Comparable<Co
      * which the actual package name will be retrieved.
      * @param cls The Class object of the desired component, from which the
      * actual class name will be retrieved.
+	 * //----------------------------------------------------------------------
+	 * 构造ComponentName的一种方式。接收：1>Context pkg; 2>Class<?> cls
+	 * 通过context获取包名：context.getPackageName();
+	 * 通过Class<?>获取类名：cls.getName();
      */
     public ComponentName(Context pkg, Class<?> cls) {
         mPackage = pkg.getPackageName();
         mClass = cls.getName();
     }
 
+	/**
+	 * clone 一份ComponentName对象出来。
+	 * 其实就是根据包名、类名重新创建了一个ComponentName对象。
+	 *
+	 */
     public ComponentName clone() {
         return new ComponentName(mPackage, mClass);
     }
@@ -150,13 +190,17 @@ public final class ComponentName implements Parcelable, Cloneable, Comparable<Co
     /**
      * Return the class name, either fully qualified or in a shortened form
      * (with a leading '.') if it is a suffix of the package.
+	 * //------------------------------------------------------------------
+	 * 返回简短的类名（不包含包名信息）
+	 * 例如：packageName: com.example  className: com.example.appMyActivity
+	 * 只返回 “appMyActivity” 部分
      */
     public String getShortClassName() {
-        if (mClass.startsWith(mPackage)) {
-            int PN = mPackage.length();
-            int CN = mClass.length();
-            if (CN > PN && mClass.charAt(PN) == '.') {
-                return mClass.substring(PN, CN);
+        if (mClass.startsWith(mPackage)) {//如果类名以包名开头
+            int PN = mPackage.length();//获取包名长度
+            int CN = mClass.length();//获取类名长度
+            if (CN > PN && mClass.charAt(PN) == '.') {//类名长度>包名&&类名的第（包名长度）个字符为'.'
+                return mClass.substring(PN, CN);//截取包名以后的部分
             }
         }
         return mClass;

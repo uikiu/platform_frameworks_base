@@ -513,6 +513,9 @@ public class Environment {
      * the user.  Note that this is primarily a convention for the top-level
      * public directory, as the media scanner will find and collect pictures
      * in any directory.
+	 * //------------------------------------------------------------------------
+	 * 
+	 *
      */
     public static String DIRECTORY_PICTURES = "Pictures";
 
@@ -545,7 +548,7 @@ public class Environment {
      * Standard directory in which to place documents that have been created by
      * the user.
      */
-    public static String DIRECTORY_DOCUMENTS = "Documents";
+    public static String DIRECTORY_DOCUMENTS = "Documents";//文件
 
     /**
      * List of standard storage directories.
@@ -726,6 +729,9 @@ public class Environment {
      * read/write access.
      *
      * @see #getExternalStorageState(File)
+	 * //------------------------------------------------------------------------
+	 * 存储状态：存在且挂载成功，且可读可写
+	 *
      */
     public static final String MEDIA_MOUNTED = "mounted";
 
@@ -734,6 +740,9 @@ public class Environment {
      * read-only access.
      *
      * @see #getExternalStorageState(File)
+	 * //---------------------------------------------------------------------------
+	 * 存储状态：存在且挂载成功，可读不可写
+	 *
      */
     public static final String MEDIA_MOUNTED_READ_ONLY = "mounted_ro";
 
@@ -742,6 +751,9 @@ public class Environment {
      * mass storage.
      *
      * @see #getExternalStorageState(File)
+	 * //---------------------------------------------------------------------------
+	 * 存在但是没有挂载，通过USB大容量存储共享。
+	 *
      */
     public static final String MEDIA_SHARED = "shared";
 

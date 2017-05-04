@@ -22,7 +22,7 @@ package android.os;
  * //---
  * HandlerThread意即：处理线程，对所有处理任务结果做统一处理的线程。通常处理handler发送Message来的任务。
  * 已添加"变量副本"Looper的线程：HandlerThread是特殊的线程，此线程已经为线程添加"变量副本"-Looper。
- *
+ * HandlerThread
  *
  */
 public class HandlerThread extends Thread {
