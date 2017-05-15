@@ -2699,6 +2699,10 @@ public abstract class PackageManager {
      * main activity in the package. Returns <code>null</code> if the package
      * does not contain such an activity, or if <em>packageName</em> is not
      * recognized.
+	 * //------------------------------------------------------------------------
+	 * 仅通过packageName获取启动app的Intent。没有找到入口activity则返回null 
+	 * 通常情况下，我们启动app需要提供包名&入口类名。如果仅知道包名，可以通过此方法尝试获取启动app的Intent。
+	 * 
      */
     public abstract Intent getLaunchIntentForPackage(String packageName);
 
@@ -3091,6 +3095,9 @@ public abstract class PackageManager {
      * @see #MATCH_DISABLED_COMPONENTS
      * @see #MATCH_DISABLED_UNTIL_USED_COMPONENTS
      * @see #MATCH_UNINSTALLED_PACKAGES
+	 * //-----------------------------------------------------------------------------
+	 * 返回设备已经安装的所有的app---PackageInfo。即包含手动安装的apk包信息，也包含系统预装的应用软件信息。
+	 *
      */
     public abstract List<PackageInfo> getInstalledPackages(@PackageInfoFlags int flags);
 

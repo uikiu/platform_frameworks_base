@@ -23,6 +23,9 @@ import android.util.Slog;
 
 /**
  * Special handler thread that we create for system services that require their own loopers.
+ * ServiceThread是一个特殊的HandlerThread。
+ * 
+ * 
  */
 public class ServiceThread extends HandlerThread {
     private static final String TAG = "ServiceThread";

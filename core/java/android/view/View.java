@@ -19927,6 +19927,19 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * @see #getSuggestedMinimumWidth()
      * @see android.view.View.MeasureSpec#getMode(int)
      * @see android.view.View.MeasureSpec#getSize(int)
+	 * //----------------------------------------------------------------------------------
+	 * meausre是测量的意思
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
      */
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),

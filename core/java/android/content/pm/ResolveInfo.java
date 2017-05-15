@@ -34,6 +34,11 @@ import java.util.Comparator;
  * against an IntentFilter. This partially corresponds to
  * information collected from the AndroidManifest.xml's
  * &lt;intent&gt; tags.
+ * //------------------------------------------------------------
+ * resolving 分解的意思
+ * ResolveInfo这个类是通过解析一个与IntentFilter相对应的intent得到的信息。它部分地对应于从AndroidManifest.xml的<intent>标签收集到的信息。
+ * 
+ *
  */
 public class ResolveInfo implements Parcelable {
     private static final String TAG = "ResolveInfo";

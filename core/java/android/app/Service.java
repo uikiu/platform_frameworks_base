@@ -419,6 +419,11 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * call with a null Intent because it will will only be re-started if
      * it is not finished processing all Intents sent to it (and any such
      * pending events will be delivered at the point of restart).
+	 * //------------------------------------------------------------------------
+	 * onStartCommond的返回值，意即：重新投递。
+	 * 在服务启动以后，如果当前服务的所在进程被杀死，那么系统会重新安排启动这个服务并且将上次最后投递的intent的再重新投递一次。
+	 *
+	 *
      */
     public static final int START_REDELIVER_INTENT = 3;
 

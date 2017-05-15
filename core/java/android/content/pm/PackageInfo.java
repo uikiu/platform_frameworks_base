@@ -82,6 +82,9 @@ public class PackageInfo implements Parcelable {
     /**
      * Information collected from the &lt;application&gt; tag, or null if
      * there was none.
+	 * //-----------------------------------------------------------------
+	 * application的信息。
+	 *
      */
     public ApplicationInfo applicationInfo;
     

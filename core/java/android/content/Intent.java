@@ -6706,9 +6706,13 @@ public class Intent implements Parcelable, Cloneable {
      * @see #setComponent
      * @see #getComponent
      * @see #resolveActivityInfo
+	 * //--------------------------------------------------------------------------
+	 * 
+	 *
+	 *
      */
     public ComponentName resolveActivity(PackageManager pm) {
-        if (mComponent != null) {
+        if (mComponent != null) {//如果Intent内部的ComponentName不为空，则返回Intent内部的ComponentName
             return mComponent;
         }
 

@@ -70,10 +70,10 @@ public class Build {
     public static final String MANUFACTURER = getString("ro.product.manufacturer");
 
     /** The consumer-visible brand with which the product/hardware will be associated, if any. */
-    public static final String BRAND = getString("ro.product.brand");
+    public static final String BRAND = getString("ro.product.brand");//品牌
 
     /** The end-user-visible name for the end product. */
-    public static final String MODEL = getString("ro.product.model");
+    public static final String MODEL = getString("ro.product.model");//型号
 
     /** The system bootloader version number. */
     public static final String BOOTLOADER = getString("ro.bootloader");

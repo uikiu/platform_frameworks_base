@@ -40,6 +40,9 @@ import java.util.Objects;
  * Information you can retrieve about a particular application.  This
  * corresponds to information collected from the AndroidManifest.xml's
  * &lt;application&gt; tag.
+ * //----------------------------------------------------------------------
+ * 
+ *
  */
 public class ApplicationInfo extends PackageItemInfo implements Parcelable {
     
@@ -423,6 +426,9 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
      * {@link #FLAG_IS_DATA_ONLY}, {@link #FLAG_IS_GAME},
      * {@link #FLAG_FULL_BACKUP_ONLY}, {@link #FLAG_USES_CLEARTEXT_TRAFFIC},
      * {@link #FLAG_MULTIARCH}.
+	 * //------------------------------------------------------------------------
+	 * 此flag<=0则为非系统应用程序
+	 *
      */
     public int flags = 0;
 
