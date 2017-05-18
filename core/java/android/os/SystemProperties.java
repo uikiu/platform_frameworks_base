@@ -30,6 +30,10 @@ import java.util.HashMap;
  * store contains a list of string key-value pairs.
  *
  * {@hide}
+ * //
+ * 提供对系统属性存储的访问。 系统属性存储包含字符串键值对列表。
+ *
+ *
  */
 public class SystemProperties {
     private static final String TAG = "SystemProperties";

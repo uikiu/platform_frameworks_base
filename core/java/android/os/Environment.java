@@ -692,6 +692,9 @@ public class Environment {
      * media.
      *
      * @see #getExternalStorageState(File)
+	 * //------------------------------------------------------------------------------
+	 * 外部存储的路径状态：未知存储状态。例如外部存储不支持此路径。
+	 *
      */
     public static final String MEDIA_UNKNOWN = "unknown";
 
@@ -699,6 +702,9 @@ public class Environment {
      * Storage state if the media is not present.
      *
      * @see #getExternalStorageState(File)
+	 * //----------------------------------------------------------------------------
+	 * 移除状态：存储介质不存在，sdcard成功移除。
+	 *
      */
     public static final String MEDIA_REMOVED = "removed";
 
@@ -706,6 +712,9 @@ public class Environment {
      * Storage state if the media is present but not mounted.
      *
      * @see #getExternalStorageState(File)
+	 * //---------------------------------------------------------------------------
+	 * 识别到存储介质存在但并没挂载成功。
+	 *
      */
     public static final String MEDIA_UNMOUNTED = "unmounted";
 
@@ -713,6 +722,9 @@ public class Environment {
      * Storage state if the media is present and being disk-checked.
      *
      * @see #getExternalStorageState(File)
+	 * //---------------------------------------------------------------------------
+	 * 存储介质存在并且正在进行磁盘检查。
+	 * 
      */
     public static final String MEDIA_CHECKING = "checking";
 
@@ -721,6 +733,10 @@ public class Environment {
      * unsupported filesystem.
      *
      * @see #getExternalStorageState(File)
+	 * //---------------------------------------------------------------------------
+	 * 存储介质存在但是无法加载成功。可能是sdcard无存储介质，或者sdcard卡的文件系统与android不兼容。
+	 *
+	 *
      */
     public static final String MEDIA_NOFS = "nofs";
 
@@ -730,7 +746,7 @@ public class Environment {
      *
      * @see #getExternalStorageState(File)
 	 * //------------------------------------------------------------------------
-	 * 存储状态：存在且挂载成功，且可读可写
+	 * 存在且挂载成功，且可读可写
 	 *
      */
     public static final String MEDIA_MOUNTED = "mounted";
@@ -741,7 +757,7 @@ public class Environment {
      *
      * @see #getExternalStorageState(File)
 	 * //---------------------------------------------------------------------------
-	 * 存储状态：存在且挂载成功，可读不可写
+	 * 存在且挂载成功，可读不可写
 	 *
      */
     public static final String MEDIA_MOUNTED_READ_ONLY = "mounted_ro";
@@ -752,7 +768,7 @@ public class Environment {
      *
      * @see #getExternalStorageState(File)
 	 * //---------------------------------------------------------------------------
-	 * 存在但是没有挂载，通过USB大容量存储共享。
+	 * 共享状态：识别到sdcard卡，但sdcard未挂载，而是作为mass storage等设备(如以u盘的方式连接到电脑上)。
 	 *
      */
     public static final String MEDIA_SHARED = "shared";
@@ -761,6 +777,9 @@ public class Environment {
      * Storage state if the media was removed before it was unmounted.
      *
      * @see #getExternalStorageState(File)
+	 * //---------------------------------------------------------------------------
+	 * 非法移除状态：在移除sdcard之前，没有卸载sdcard
+	 *
      */
     public static final String MEDIA_BAD_REMOVAL = "bad_removal";
 
@@ -769,6 +788,9 @@ public class Environment {
      * this happens if the file system on the media is corrupted.
      *
      * @see #getExternalStorageState(File)
+	 * //----------------------------------------------------------------------------
+	 * 介质存在（可识别）但是不能够挂载。通常，如果介质上的文件系统损坏，则会发生这种情况。
+	 *
      */
     public static final String MEDIA_UNMOUNTABLE = "unmountable";
 
@@ -776,6 +798,9 @@ public class Environment {
      * Storage state if the media is in the process of being ejected.
      *
      * @see #getExternalStorageState(File)
+	 * //-----------------------------------------------------------------------------
+	 * 存储介质正在被弹出，进行时。 
+	 *
      */
     public static final String MEDIA_EJECTING = "ejecting";
 
@@ -788,6 +813,10 @@ public class Environment {
      *         {@link #MEDIA_NOFS}, {@link #MEDIA_MOUNTED},
      *         {@link #MEDIA_MOUNTED_READ_ONLY}, {@link #MEDIA_SHARED},
      *         {@link #MEDIA_BAD_REMOVAL}, or {@link #MEDIA_UNMOUNTABLE}.
+	 * //------------------------------------------------------------------------
+	 * 返回外部存储的状态，外部存储的状态分为10种。
+	 *
+	 *
      */
     public static String getExternalStorageState() {
         final File externalDir = sCurrentUser.getExternalDirs()[0];
@@ -811,6 +840,9 @@ public class Environment {
      *         {@link #MEDIA_NOFS}, {@link #MEDIA_MOUNTED},
      *         {@link #MEDIA_MOUNTED_READ_ONLY}, {@link #MEDIA_SHARED},
      *         {@link #MEDIA_BAD_REMOVAL}, or {@link #MEDIA_UNMOUNTABLE}.
+	 * //------------------------------------------------------------------------
+	 * 返回外部存储上指定路径的的状态。路径状态分为10种。
+	 *
      */
     public static String getExternalStorageState(File path) {
         final StorageVolume volume = StorageManager.getStorageVolume(path, UserHandle.myUserId());

@@ -785,7 +785,7 @@ public abstract class Context {
      * @see #deleteFile
      * @see java.io.FileOutputStream#FileOutputStream(String)
 	 * //-----------------------------------------------------------------
-	 * 打开本app内部指定名称的私有文件等待写入。
+	 * 打开本app内部指定名称的私有文件等待写入。如果文件不存在则创建。
 	 * 无需任何额外权限。
 	 * @param name 要打开的私有文件的名称，不能包含路径分隔符“/”
 	 * @param mode 操作模式。两种操作模式具体见下面
@@ -811,7 +811,7 @@ public abstract class Context {
      * @see #fileList
      * @see java.io.File#delete()
 	 * //------------------------------------------------------------------------
-	 * 与{@link #getFilesOutput}相对应。getFilesOutput是打开指定的文件，本方法是删除指定的文件。
+	 * 与{@link #getFilesOutput}相对应。getFilesOutput是打开指定的文件，本方法是删除file目录下指定的文件。
 	 * @param name 要删除的文件名称。
 	 * @return 如果删除成功则返回true，否则返回false。
 	 *
