@@ -186,10 +186,10 @@ public interface RILConstants {
     int CDMA_CELL_BROADCAST_SMS_DISABLED = 1;
     int CDMA_CELL_BROADCAST_SMS_ENABLED  = 0;
 
-    int NO_PHONE = 0;
-    int GSM_PHONE = 1;
-    int CDMA_PHONE = 2;
-    int SIP_PHONE  = 3;
+    int NO_PHONE = 0;//没有通话功能的android设备
+    int GSM_PHONE = 1;//支持gsm网络的android设备
+    int CDMA_PHONE = 2;//支持cdma网络的android设备
+    int SIP_PHONE  = 3;//支持网络电话sip的android设备
     int THIRD_PARTY_PHONE = 4;
     int IMS_PHONE = 5;
     int CDMA_LTE_PHONE = 6;

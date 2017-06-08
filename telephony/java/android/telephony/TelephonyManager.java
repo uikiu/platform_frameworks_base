@@ -220,6 +220,9 @@ public class TelephonyManager {
      * Returns 0 if none of voice, sms, data is not supported
      * Returns 1 for Single standby mode (Single SIM functionality)
      * Returns 2 for Dual standby mode.(Dual SIM functionality)
+	 * //-----------------------------------------------------------
+	 * 返回支持的sim卡的个数
+	 *
      */
     public int getPhoneCount() {
         int phoneCount = 1;
@@ -1292,6 +1295,10 @@ public class TelephonyManager {
      * @see #PHONE_TYPE_GSM
      * @see #PHONE_TYPE_CDMA
      * @see #PHONE_TYPE_SIP
+	 * //--------------------------------------------------------
+	 * 返回一个表示设备电话类型的常量。
+	 * 
+	 *
      */
     public int getPhoneType() {
         if (!isVoiceCapable()) {
