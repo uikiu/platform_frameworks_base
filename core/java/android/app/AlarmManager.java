@@ -74,6 +74,25 @@ import java.io.IOException;
  * instantiate this class directly; instead, retrieve it through
  * {@link android.content.Context#getSystemService
  * Context.getSystemService(Context.ALARM_SERVICE)}.
+ * //------------------------------------------------------------------------------------------
+ * 报警管理器AlarmManager
+ * 报警类型：1>决定睡眠状态下报警是否可用;2>决定时间类型的选择。
+ * 时间类型：绝对时间&相对时间elapsed
+ * 所以，报警类型1>会影响到睡眠状态下报警是否可用；2>也会影响到时间类型的选择，例如：ELAPSED_REALTIME的报警类型，时间类型只能选择相对时间。
+ * 报警类型区分：1>带有WAKE_UP的指的是在睡眠状态下会唤醒，否则反之；2>带有RTC的指的是时间使用绝对时间。(RTC 是一个简称，全称为Real-time clock 实时时钟)；3>带有elapsed的为相对时间；
+ * 时间类型区分：
+ * 
+ * <>triggerAtMillis</>
+ * triggerAtMillis 报警第一次执行时间，通常为当前时间，也可以自定义时间。本属性与第一个属性闹钟类型type密切相关，
+ * 如果闹钟类型为相对时间(elapsed,例如：ELAPSED_REALTIME,ELAPSED_REALTIME_WAKEUP)，那么本属性就得使用相对时间（例如当前时间：SysemClock.elapsedRealtime()）
+ * 如果闹钟类型为绝对时间(rtc,例如：RTC、RTC_WAKEUP、POWER_OFF_WAKEUP),那么本属性就得使用绝对时间(例如当前时间：System.currentTimeMillis())
+ *
+ * <>intervalMills</>
+ * 两次报警执行间隔，以毫秒为单位。
+ *
+ * <>operation</>
+ * 绑定了报警的执行动作
+ * 
  */
 public class AlarmManager {
     private static final String TAG = "AlarmManager";
@@ -82,6 +101,11 @@ public class AlarmManager {
      * Alarm time in {@link System#currentTimeMillis System.currentTimeMillis()}
      * (wall clock time in UTC), which will wake up the device when
      * it goes off.
+	 * //----------------------------------------------------------------
+	 * 报警类型：睡眠可唤醒，时间为绝对时间。
+	 * 闹钟在睡眠状态下会唤醒系统并执行提示功能，该报警类型报警的时间类型选择为绝对时间，即当前系统时间。
+	 *
+	 *
      */
     public static final int RTC_WAKEUP = 0;
     /**
@@ -89,12 +113,22 @@ public class AlarmManager {
      * (wall clock time in UTC).  This alarm does not wake the
      * device up; if it goes off while the device is asleep, it will not be
      * delivered until the next time the device wakes up.
+	 * //----------------------------------------------------------------
+	 * 报警类型：睡眠不可唤醒，时间为绝对时间
+	 * 闹钟在睡眠状态下不可用，该报警类型下报警的时间类型选择为绝对时间，即当前系统时间。
+	 * RTC 是一个简称，全称为Real-time clock 实时时钟
+	 *
      */
     public static final int RTC = 1;
     /**
      * Alarm time in {@link android.os.SystemClock#elapsedRealtime
      * SystemClock.elapsedRealtime()} (time since boot, including sleep),
      * which will wake up the device when it goes off.
+	 * //---------------------------------------------------------------
+	 * 报警类型：睡眠可唤醒，时间为相对时间
+	 * elapsed 时间过去，消失v  realtime实时的  wakeup唤醒
+	 * 闹钟在睡眠状态下会唤醒系统并进行提示功能，该报警类型下报警的时间类型为相对时间。
+	 *
      */
     public static final int ELAPSED_REALTIME_WAKEUP = 2;
     /**
@@ -103,6 +137,10 @@ public class AlarmManager {
      * This alarm does not wake the device up; if it goes off while the device
      * is asleep, it will not be delivered until the next time the device
      * wakes up.
+	 * //---------------------------------------------------------------
+	 * 报警类型：睡眠不可唤醒，时间为相对时间
+	 * elapsed 时间过去，消失v  realtime实时的
+	 * 闹钟在手机睡眠状态下不可用，该报警类型下报警的时间类型为相对时间。
      */
     public static final int ELAPSED_REALTIME = 3;
 
@@ -331,6 +369,21 @@ public class AlarmManager {
      * @see #ELAPSED_REALTIME_WAKEUP
      * @see #RTC
      * @see #RTC_WAKEUP
+	 * //------------------------------------------------------------------------------------
+	 * 报警一次
+	 * @param type 闹钟类型
+	 * @param triggerAtMillis 触发时间，精确到毫秒
+	 * @param operaation 将要触发的操作
+	 * triggerAtMillis 是时间类型
+	 *
+	 * <>triggerAtMillis</>
+	 * triggerAtMillis 报警第一次执行时间，通常为当前时间，也可以自定义时间。本属性与第一个属性闹钟类型type密切相关，
+	 * 如果闹钟类型为相对时间(elapsed,例如：ELAPSED_REALTIME,ELAPSED_REALTIME_WAKEUP)，那么本属性就得使用相对时间（例如当前时间：SysemClock.elapsedRealtime()）
+	 * 如果闹钟类型为绝对时间(rtc,例如：RTC、RTC_WAKEUP、POWER_OFF_WAKEUP),那么本属性就得使用绝对时间(例如当前时间：System.currentTimeMillis())
+	 *
+	 * <>operation</>
+	 * 绑定了报警的执行动作
+	 * 
      */
     public void set(int type, long triggerAtMillis, PendingIntent operation) {
         setImpl(type, triggerAtMillis, legacyExactLength(), 0, 0, operation, null, null,
@@ -421,6 +474,25 @@ public class AlarmManager {
      * @see #ELAPSED_REALTIME_WAKEUP
      * @see #RTC
      * @see #RTC_WAKEUP
+	 * //------------------------------------------------------------------------------------------
+	 * 定期重复报警。比如：1>每天的 8：00AM 间隔时长为24小时。2>每隔5分钟报警一次，间隔时长为5分钟。
+	 * repeat 重复的意思
+	 * @param type 闹钟类型
+	 * @param triggerAtMillis 触发时间，精确到毫秒
+	 * @param intervalMills 间隔时长，精确到毫秒
+	 * @param operaation 将要触发的操作
+	 * 
+	 * <>triggerAtMillis</>
+	 * triggerAtMillis 报警第一次执行时间，通常为当前时间，也可以自定义时间。本属性与第一个属性闹钟类型type密切相关，
+	 * 如果闹钟类型为相对时间(elapsed,例如：ELAPSED_REALTIME,ELAPSED_REALTIME_WAKEUP)，那么本属性就得使用相对时间（例如当前时间：SysemClock.elapsedRealtime()）
+	 * 如果闹钟类型为绝对时间(rtc,例如：RTC、RTC_WAKEUP、POWER_OFF_WAKEUP),那么本属性就得使用绝对时间(例如当前时间：System.currentTimeMillis())
+	 *
+	 * <>intervalMills</>
+	 * 两次报警执行间隔，以毫秒为单位。
+	 *
+	 * <>operation</>
+	 * 绑定了报警的执行动作
+	 *
      */
     public void setRepeating(int type, long triggerAtMillis,
             long intervalMillis, PendingIntent operation) {
@@ -762,6 +834,13 @@ public class AlarmManager {
      * @see #INTERVAL_HOUR
      * @see #INTERVAL_HALF_DAY
      * @see #INTERVAL_DAY
+	 * //------------------------------------------------------------------------------------------
+	 * 不定时的重复报警。间隔时长不固定
+	 * @param type 闹钟类型
+	 * @param triggerAtMillis 触发时间，精确到毫秒
+	 * @param intervalMillis 间隔时长
+	 * @param operaation 将要触发的操作
+	 *
      */
     public void setInexactRepeating(int type, long triggerAtMillis,
             long intervalMillis, PendingIntent operation) {
