@@ -41,7 +41,7 @@ import java.util.Objects;
  * looper (handler was null).
  */
 public class TestAlarmManager {
-    private final AlarmManager mAlarmManager;//AlarmManager
+    private final AlarmManager mAlarmManager;
     private final List<PendingAlarm> mPendingAlarms;
 
     public TestAlarmManager() throws Exception {
@@ -63,16 +63,13 @@ public class TestAlarmManager {
     /**
      * Dispatch a pending alarm with the given tag
      * @return if any alarm was dispatched
-	 * //------------------------------------------
-	 * 
-	 * 
      */
     public boolean dispatch(String tag) {
-        for (int i = 0; i < mPendingAlarms.size(); ++i) {//遍历所有的PendingAlarm
-            PendingAlarm alarm = mPendingAlarms.get(i);//获取pendingAlarm
-            if (Objects.equals(tag, alarm.getTag())) {//判断指定的tag与遍历到的alarm的tag是否相同
-                mPendingAlarms.remove(i);//从集合中移除此alarm
-                alarm.dispatch();//触发此alarm
+        for (int i = 0; i < mPendingAlarms.size(); ++i) {
+            PendingAlarm alarm = mPendingAlarms.get(i);
+            if (Objects.equals(tag, alarm.getTag())) {
+                mPendingAlarms.remove(i);
+                alarm.dispatch();
                 return true;
             }
         }
@@ -106,15 +103,11 @@ public class TestAlarmManager {
         return -1;
     }
 
-	/*
-	* 对任务的封装：类型type、触发时间triggerAtMillis、标签tag、执行任务Runnable
-	*
-	*/
     private static class PendingAlarm {
         private final int mType;
         private final long mTriggerAtMillis;
         private final String mTag;
-        private final Runnable mCallback;//在这里是AlarmListenerRunnable
+        private final Runnable mCallback;
 
         public PendingAlarm(int type, long triggerAtMillis, String tag, Runnable callback) {
             mType = type;
@@ -123,10 +116,6 @@ public class TestAlarmManager {
             mCallback = callback;
         }
 
-		/*
-		* 执行Runnable
-		*
-		*/
         public void dispatch() {
             if (mCallback != null) {
                 mCallback.run();
@@ -147,17 +136,15 @@ public class TestAlarmManager {
     }
 
     private class SetListenerAnswer extends AnswerWithArguments {
-        public void answer(int type,long triggerAtMillis,String tag,AlarmManager.OnAlarmListener listener, Handler handler) 
-		{
-            mPendingAlarms.add
-			(
-				new PendingAlarm(type, triggerAtMillis, tag,new AlarmListenerRunnable(listener, handler))//
-			);
+        public void answer(int type, long triggerAtMillis, String tag,
+                AlarmManager.OnAlarmListener listener, Handler handler) {
+            mPendingAlarms.add(new PendingAlarm(type, triggerAtMillis, tag,
+                            new AlarmListenerRunnable(listener, handler)));
         }
     }
 
     private class CancelListenerAnswer extends AnswerWithArguments {
-        public void answer(AlarmManager.OnAlarmListener listener) {//接收一个AlarmManager.OnAlarmListener
+        public void answer(AlarmManager.OnAlarmListener listener) {
             Iterator<PendingAlarm> alarmItr = mPendingAlarms.iterator();
             while (alarmItr.hasNext()) {
                 PendingAlarm alarm = alarmItr.next();
@@ -172,12 +159,6 @@ public class TestAlarmManager {
         }
     }
 
-	/*
-	* 要执行的任务
-	* 包含有AlarmManager.OnAlarmListener和Handler
-	* 用handler发送消息到looper进行处理listener
-	*
-	*/
     private static class AlarmListenerRunnable implements Runnable {
         private final AlarmManager.OnAlarmListener mListener;
         private final Handler mHandler;
@@ -199,7 +180,7 @@ public class TestAlarmManager {
                             mListener.onAlarm();
                         }
                     });
-            } else { // normally gets dispatched in main looper 通常在主looper中处理任务，主looper绑定的是主线程
+            } else { // normally gets dispatched in main looper
                 mListener.onAlarm();
             }
         }

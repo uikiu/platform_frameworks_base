@@ -137,9 +137,6 @@ public abstract class IntentService extends Service {
      * override {@link #onHandleIntent}, which the system calls when the IntentService
      * receives a start request.
      * @see android.app.Service#onStartCommand
-	 * //---------------------------------------------------------------------------
-	 * 不要覆写此方法，而是应该覆写{@link #onHandleIntent}
-	 *
      */
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
@@ -178,10 +175,6 @@ public abstract class IntentService extends Service {
      *               its process has gone away; see
      *               {@link android.app.Service#onStartCommand}
      *               for details.
-	 *
-	 * //--------------------------------------------------------------------
-	 * android.content.Context#startService(Intent)调起此方法
-	 *
      */
     @WorkerThread
     protected abstract void onHandleIntent(@Nullable Intent intent);

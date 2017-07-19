@@ -217,9 +217,6 @@ public class AlarmManager {
     public interface OnAlarmListener {
         /**
          * Callback method that is invoked by the system when the alarm time is reached.
-		 * //-----------------------------------------------------------------------------
-		 * 达到闹钟时间后系统调用的回调方法
-		 * 
          */
         public void onAlarm();
     }
@@ -602,13 +599,6 @@ public class AlarmManager {
      * @see #ELAPSED_REALTIME_WAKEUP
      * @see #RTC
      * @see #RTC_WAKEUP
-	 * //--------------------------------------------------------------------------------
-	 * 此方法在android API19---android4.4 以后加入。
-	 * 也就是在android引入非准确传递机制(操作系统会转换闹钟，来最小化唤醒和电池使用)后加入的此方法，exact准确的、精确的。
-	 * 此方法与set(int,long,PendingIntent)方法类似。但是不允许操作系统调整交付时间，警报将尽可能接近要求的触发时间。
-	 *
-	 *
-	 *
      */
     public void setExact(int type, long triggerAtMillis, PendingIntent operation) {
         setImpl(type, triggerAtMillis, WINDOW_EXACT, 0, 0, operation, null, null, null,
