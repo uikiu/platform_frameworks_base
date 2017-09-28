@@ -373,7 +373,7 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * {@link #onStartCommand} will be called again after being killed.
 	 * //----------------------------------------------------------------------
 	 * {@link #START_STICKY}的兼容版本。 
-	 * 服务死后不能保证会再次唤醒。
+	 * 服务死后不能保证会再次唤醒(尽量唤醒)。
 	 *
      */
     public static final int START_STICKY_COMPATIBILITY = 0;
@@ -393,8 +393,10 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * and stopped to run for arbitrary periods of time, such as a service
      * performing background music playback.
 	 * //----------------------------------------------------------------------
-	 * 
-	 *
+	 * 2.重启但是不重新投递模式
+	 * 如果服务所在进程被杀死，会置service为已经启动状态但是不会保留投递的intent。
+	 * 随后系统将会重启这个服务。因为这个service已经为启动状态，它将确保在调用onstartCommand后重新创建一个service实例。
+	 * 此时的intent不会使用旧的，会传入一个null，所以这种模式下需要做非空判断。
 	 *
      */
     public static final int START_STICKY = 1;
@@ -420,6 +422,9 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * and spawns a thread to do its networking.  If its process is killed
      * while doing that check, the service will not be restarted until the
      * alarm goes off.
+	 * //------------------------------------------------------------------
+	 * 1. 不重启更不重新投递模式
+	 *
      */
     public static final int START_NOT_STICKY = 2;
 
@@ -525,6 +530,26 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * constants associated with the {@link #START_CONTINUATION_MASK} bits.
      * 
      * @see #stopSelfResult(int)
+	 * 
+	 * //-----------------------------------------------------------------------------------------
+	 * @param intent 是由startService传递而来。当程序员在返回值中选择了“粘性&不重新投递”，那么当service被android系统再次重启时可能会为空。
+	 * @param flags 请求标签。由0普通、1重新投递、2三个值可选。其中两个常量已经定义：START_FLAG_REDELIVERY=1，START_FLAG_RETRY=2
+	 * REDELIVERY 的意思是：re-delivery 再交付，重新投递。
+	 * START_FLAG_REDELIVERY=1 代表intent为先前传递过的intent的重新传递，因为服务之前被设置为START_REDELIVER_INTENT(重新投递intent)。
+	 * START_FLAG_RETRY=2 代表重启但不重新投递intent.
+	 * @param startId 每次请求启动服务的唯一的id。这个id会在stopSelfResult(int)方法中作为参数。详见：stopSelfResult(int)方法
+	 * //----------------------------------------------------------------------------------------
+	 * 三种模式：
+		1.不重启不重新投递： 
+		returnValue : START_NOT_STICKY=2 
+		flag：0
+		2.重启但不重新投递： 
+		returnValue：START_STICKY=1 
+		flag：START_FLAG_RETRY=2
+		3.重启并重新投递： 
+		returnValue：START_REDELIVER_INTENT=3 
+		flag：START_FLAG_REDELIVERY=1
+	 * 
      */
     public @StartResult int onStartCommand(Intent intent, @StartArgFlags int flags, int startId) {
         onStart(intent, startId);
@@ -631,6 +656,20 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * Old version of {@link #stopSelfResult} that doesn't return a result.
      *  
      * @see #stopSelfResult
+	 * //----------------------------------------------------------------------
+	 * Stop the service if the most recent time it was started was startId. 
+	 * This is the same as calling stopService(Intent) for this particular service 
+	 * but allows you to safely avoid stopping if there is a start request from a client that you haven't yet seen in onStart(Intent, int).
+	 * Be careful about ordering of your calls to this function.. 
+	 * If you call this function with the most-recently received ID before you have called it for previously received IDs, 
+	 * the service will be immediately stopped anyway. 
+	 * If you may end up processing IDs out of order (such as by dispatching them on separate threads), 
+	 * then you are responsible for stopping them in the same order you received them.
+	 * //----------------------------------------------------------------------
+	 * stopService(intent)和stopSelf(int startId)效果是一样的。但是使用stopSelf(int)在特定情况下更加安全，
+	 * 例如：你尚未在onStart(Intent,int)中看到客户端的启动请求，则可以安全避免停止本服务。
+	 *
+	 *
      */
     public final void stopSelf(int startId) {
         if (mActivityManager == null) {
