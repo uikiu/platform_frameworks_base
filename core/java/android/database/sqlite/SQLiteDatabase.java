@@ -413,6 +413,13 @@ public final class SQLiteDatabase extends SQLiteClosable {
      *     db.endTransaction();
      *   }
      * </pre>
+	 *
+	 * //----------------------------------------------------------------------------------------------------
+	 * 开启事务，使用
+	 * 
+	 * 
+	 * 
+	 * 
      */
     public void beginTransaction() {
         beginTransaction(null /* transactionStatusCallback */, true);

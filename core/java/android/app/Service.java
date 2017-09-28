@@ -356,6 +356,14 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * the service if it is killed.  May be {@link #START_STICKY},
      * {@link #START_NOT_STICKY}, {@link #START_REDELIVER_INTENT},
      * or {@link #START_STICKY_COMPATIBILITY}.
+	 * //----------------------------------------------------------------------
+	 * describing：描述的意思
+	 * 代表一个二进制数。这个二进制数是由{@link #onStartCommand} 返回。这个二进制数，可以是以下四种的一个。
+	 * {@link #START_STICKY},
+	 * {@link #START_NOT_STICKY},
+	 * {@link #START_REDELIVER_INTENT}
+	 *  {@link #START_STICKY_COMPATIBILITY}.
+	 *
      */
     public static final int START_CONTINUATION_MASK = 0xf;
     
@@ -363,6 +371,10 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * Constant to return from {@link #onStartCommand}: compatibility
      * version of {@link #START_STICKY} that does not guarantee that
      * {@link #onStartCommand} will be called again after being killed.
+	 * //----------------------------------------------------------------------
+	 * {@link #START_STICKY}的兼容版本。 
+	 * 服务死后不能保证会再次唤醒。
+	 *
      */
     public static final int START_STICKY_COMPATIBILITY = 0;
     
@@ -380,6 +392,10 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
      * <p>This mode makes sense for things that will be explicitly started
      * and stopped to run for arbitrary periods of time, such as a service
      * performing background music playback.
+	 * //----------------------------------------------------------------------
+	 * 
+	 *
+	 *
      */
     public static final int START_STICKY = 1;
     

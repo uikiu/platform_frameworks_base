@@ -4103,6 +4103,18 @@ public final class Settings {
          *
          * @param context App context.
          * @return true if the calling app can write to system settings, false otherwise
+		 *
+		 * //-------------------------------------------------------------------------------------
+		 * prompt 提示
+		 * grant：准许
+		 * approval赞同
+		 *
+		 * 检查指定的app是否拥有修改系统设置的权限，要求api23以上。
+		 * app不能修改系统设置，保证两条：
+		 * 1>它声明{@link android.Manifest.permission#WRITE_SETTINGS}这个权限在manifest中
+		 * 2>用户明确准许app拥有这个能力。
+		 *
+		 *
          */
         public static boolean canWrite(Context context) {
             return isCallingPackageAllowedToWriteSettings(context, Process.myUid(),
@@ -9750,6 +9762,15 @@ public final class Settings {
      * privileged/preinstalled apps. If the provided uid does not match the
      * callingPackage, a negative result will be returned.
      * @hide
+	 * 
+	 * //-----------------------------------------------------------------------------------
+	 * 
+	 * privileged 特权
+	 * preinstalled 预装
+	 *
+	 * 实施严格而全面检查调用此方法的app是否允许写入和修改系统设置。
+	 * 如果uid和package不匹配则返回false
+	 *
      */
     public static boolean isCallingPackageAllowedToWriteSettings(Context context, int uid,
             String callingPackage, boolean throwException) {
@@ -9836,6 +9857,14 @@ public final class Settings {
      * protected by appops can be performed by a caller or not. e.g. OP_SYSTEM_ALERT_WINDOW and
      * OP_WRITE_SETTINGS
      * @hide
+	 * //----------------------------------------------------------------------------------------
+	 * comprehensive 全方位
+	 *
+	 * @param makeNote
+	 * @param appOpsOpCode: AppOpsManager.OP_WRITE_SETTINGS=23
+	 * 
+	 * 注意使用canwrite方法检查时，传进来的mateNote是 false
+	 * 
      */
     public static boolean isCallingPackageAllowedToPerformAppOpsProtectedOperation(Context context,
             int uid, String callingPackage, boolean throwException, int appOpsOpCode, String[]
@@ -9852,6 +9881,7 @@ public final class Settings {
             mode = appOpsMgr.checkOpNoThrow(appOpsOpCode, uid, callingPackage);
         }
 
+		//最终canwrite方法，mode = AppOpsManager.MODE_DEFAULT
         switch (mode) {
             case AppOpsManager.MODE_ALLOWED:
                 return true;

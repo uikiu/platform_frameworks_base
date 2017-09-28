@@ -315,6 +315,10 @@ public abstract class SQLiteOpenHelper {
      * creation of tables and the initial population of the tables should happen.
      *
      * @param db The database.
+	 * 
+	 * -----------------------------------------------------------------------------
+	 * 数据库被创建的第一时间调用此方法。此方法内应该创建不同的表格，和初始化表格数据。
+	 *
      */
     public abstract void onCreate(SQLiteDatabase db);
 

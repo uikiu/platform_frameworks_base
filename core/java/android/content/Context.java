@@ -1000,6 +1000,15 @@ public abstract class Context {
      * @see Environment#getExternalStorageState(File)
      * @see Environment#isExternalStorageEmulated(File)
      * @see Environment#isExternalStorageRemovable(File)
+	 * 
+	 * //------------------------------------------------------------------
+	 *  返回：SDCard/Android/data/你的应用的包名/files/这个目录。如果传入null则返回这个根目录。如果传入type类型，则返回这个目录下制定类型的目录。
+	 *  上面提到的常量其实不全，我们可以使用的常量很多，可以在Environment.STANDARD_DIRECTORIES字符数组常量中查看。
+	 *  
+	 *  
+	 *  
+	 *  
+	 *  
      */
     @Nullable
     public abstract File getExternalFilesDir(@Nullable String type);

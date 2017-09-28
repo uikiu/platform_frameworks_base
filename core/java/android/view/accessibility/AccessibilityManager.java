@@ -64,6 +64,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @see android.accessibilityservice.AccessibilityService
  * @see Context#getSystemService
  * @see Context#ACCESSIBILITY_SERVICE
+ * 
+ * //---------------------------------------------------------------------------------------
+ * 系统级别的service，用于派发事件{@link AccessibilityEvent}
+ *
+ *
  */
 public final class AccessibilityManager {
     private static final boolean DEBUG = false;
