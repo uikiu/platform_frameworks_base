@@ -1,0 +1,16 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/.gradle/
+/.idea/
+/app/build/
+/volley/build/
+/gradle/wrapper/gradle-wrapper.properties
+
+/platform_frameworks_base.si4project/
