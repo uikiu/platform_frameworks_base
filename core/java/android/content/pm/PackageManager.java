@@ -3929,6 +3929,10 @@ public abstract class PackageManager {
      * @see #MATCH_DIRECT_BOOT_UNAWARE
      * @see #MATCH_SYSTEM_ONLY
      * @see #MATCH_UNINSTALLED_PACKAGES
+     * ---------------------------------------------------------------------------------------------
+     * 获取所有可以处理的广播，通过给定intent过滤
+     *
+     *
      */
     public abstract List<ResolveInfo> queryBroadcastReceivers(Intent intent,
             @ResolveInfoFlags int flags);

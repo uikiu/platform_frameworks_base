@@ -91,6 +91,7 @@ import java.util.Set;
  * For more information about managing policies for device administration, read the <a href=
  * "{@docRoot}guide/topics/admin/device-admin.html">Device Administration</a> developer
  * guide. </div>
+ * -------------------------------------------------------------------------------------------------
  */
 public class DevicePolicyManager {
     private static String TAG = "DevicePolicyManager";

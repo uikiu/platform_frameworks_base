@@ -35,6 +35,8 @@ import java.util.List;
 /**
  * Internal IPC interface to the device policy service.
  * {@hide}
+ * -------------------------------------------------------------------------------------------------
+ * 内部隐藏的IPC接口，修改设备管理器策略的接口
  */
 interface IDevicePolicyManager {
     void setPasswordQuality(in ComponentName who, int quality, boolean parent);

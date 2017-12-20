@@ -48,6 +48,10 @@ public class ResolveInfo implements Parcelable {
      * match, if this resolution is for an activity or broadcast receiver.
      * Exactly one of {@link #activityInfo}, {@link #serviceInfo}, or
      * {@link #providerInfo} will be non-null.
+     * ---------------------------------------------------------------------------------------------
+     * corresponds 对应、符合
+     * resolution 解析
+     *
      */
     public ActivityInfo activityInfo;
 

@@ -50,6 +50,10 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * Attributes}, {@link android.R.styleable#TextView TextView Attributes}, {@link
  * android.R.styleable#View View Attributes}
  * </p>
+ * -------------------------------------------------------------------------------------------------
+ *
+ * 一个button拥有两个状态
+ *
  */
 public abstract class CompoundButton extends Button implements Checkable {
     private boolean mChecked;

@@ -57,6 +57,8 @@ import java.util.List;
  * <p>The only existing implementation of this abstract class is
  * android.view.PhoneWindow, which you should instantiate when needing a
  * Window.
+ * ----------------------------------------------------------------------------
+ * Window是一个抽象类，提供了绘制窗口的一组通用API
  */
 public abstract class Window {
     /** Flag for the "options panel" feature.  This is enabled by default. */

@@ -1203,6 +1203,13 @@ public final class SQLiteDatabase extends SQLiteClosable {
      * @return A {@link Cursor} object, which is positioned before the first entry. Note that
      * {@link Cursor}s are not synchronized, see the documentation for more details.
      * @see Cursor
+     *
+     *
+     * ---------------------------------------------------------------------------------------------
+     * @param table 表名
+     * @param columns 你想要返回的列，是一个数组，可以返回多列数据集。
+     * @param selection selection是select的名词形式，选择的意思。它会被格式化为SQL语句中的 where语句
+     *
      */
     public Cursor query(String table, String[] columns, String selection,
             String[] selectionArgs, String groupBy, String having,
