@@ -24,18 +24,23 @@ import android.os.Parcelable;
  * acting as the USB host.
  * Each device contains one or more {@link UsbInterface}s, each of which contains a number of
  * {@link UsbEndpoint}s (the channels via which data is transmitted over USB).
- *
+ * <p>
  * <p> This class contains information (along with {@link UsbInterface} and {@link UsbEndpoint})
  * that describes the capabilities of the USB device.
  * To communicate with the device, you open a {@link UsbDeviceConnection} for the device
  * and use {@link UsbRequest} to send and receive data on an endpoint.
  * {@link UsbDeviceConnection#controlTransfer} is used for control requests on endpoint zero.
- *
+ * <p>
  * <div class="special reference">
  * <h3>Developer Guides</h3>
  * <p>For more information about communicating with USB hardware, read the
  * <a href="{@docRoot}guide/topics/usb/index.html">USB</a> developer guide.</p>
  * </div>
+ * <p>
+ * //-----------------------------------------------------------------------------------------------
+ * 插件A8Translate的作用是翻译，ALT+T即可翻译。
+ *
+ *
  */
 public class UsbDevice implements Parcelable {
 
@@ -59,11 +64,12 @@ public class UsbDevice implements Parcelable {
 
     /**
      * UsbDevice should only be instantiated by UsbService implementation
+     *
      * @hide
      */
     public UsbDevice(String name, int vendorId, int productId,
-            int Class, int subClass, int protocol,
-            String manufacturerName, String productName, String version, String serialNumber) {
+                     int Class, int subClass, int protocol,
+                     String manufacturerName, String productName, String version, String serialNumber) {
         mName = name;
         mVendorId = vendorId;
         mProductId = productId;
@@ -196,7 +202,7 @@ public class UsbDevice implements Parcelable {
      * @return the configuration
      */
     public UsbConfiguration getConfiguration(int index) {
-        return (UsbConfiguration)mConfigurations[index];
+        return (UsbConfiguration) mConfigurations[index];
     }
 
     private UsbInterface[] getInterfaceList() {
@@ -204,14 +210,14 @@ public class UsbDevice implements Parcelable {
             int configurationCount = mConfigurations.length;
             int interfaceCount = 0;
             for (int i = 0; i < configurationCount; i++) {
-                UsbConfiguration configuration = (UsbConfiguration)mConfigurations[i];
+                UsbConfiguration configuration = (UsbConfiguration) mConfigurations[i];
                 interfaceCount += configuration.getInterfaceCount();
             }
 
             mInterfaces = new UsbInterface[interfaceCount];
             int offset = 0;
             for (int i = 0; i < configurationCount; i++) {
-                UsbConfiguration configuration = (UsbConfiguration)mConfigurations[i];
+                UsbConfiguration configuration = (UsbConfiguration) mConfigurations[i];
                 interfaceCount = configuration.getInterfaceCount();
                 for (int j = 0; j < interfaceCount; j++) {
                     mInterfaces[offset++] = configuration.getInterface(j);
@@ -246,6 +252,7 @@ public class UsbDevice implements Parcelable {
 
     /**
      * Only used by UsbService implementation
+     *
      * @hide
      */
     public void setConfigurations(Parcelable[] configuration) {
@@ -255,9 +262,9 @@ public class UsbDevice implements Parcelable {
     @Override
     public boolean equals(Object o) {
         if (o instanceof UsbDevice) {
-            return ((UsbDevice)o).mName.equals(mName);
+            return ((UsbDevice) o).mName.equals(mName);
         } else if (o instanceof String) {
-            return ((String)o).equals(mName);
+            return ((String) o).equals(mName);
         } else {
             return false;
         }
@@ -284,29 +291,29 @@ public class UsbDevice implements Parcelable {
     }
 
     public static final Parcelable.Creator<UsbDevice> CREATOR =
-        new Parcelable.Creator<UsbDevice>() {
-        public UsbDevice createFromParcel(Parcel in) {
-            String name = in.readString();
-            int vendorId = in.readInt();
-            int productId = in.readInt();
-            int clasz = in.readInt();
-            int subClass = in.readInt();
-            int protocol = in.readInt();
-            String manufacturerName = in.readString();
-            String productName = in.readString();
-            String version = in.readString();
-            String serialNumber = in.readString();
-            Parcelable[] configurations = in.readParcelableArray(UsbInterface.class.getClassLoader());
-            UsbDevice device = new UsbDevice(name, vendorId, productId, clasz, subClass, protocol,
-                                 manufacturerName, productName, version, serialNumber);
-            device.setConfigurations(configurations);
-            return device;
-        }
+            new Parcelable.Creator<UsbDevice>() {
+                public UsbDevice createFromParcel(Parcel in) {
+                    String name = in.readString();
+                    int vendorId = in.readInt();
+                    int productId = in.readInt();
+                    int clasz = in.readInt();
+                    int subClass = in.readInt();
+                    int protocol = in.readInt();
+                    String manufacturerName = in.readString();
+                    String productName = in.readString();
+                    String version = in.readString();
+                    String serialNumber = in.readString();
+                    Parcelable[] configurations = in.readParcelableArray(UsbInterface.class.getClassLoader());
+                    UsbDevice device = new UsbDevice(name, vendorId, productId, clasz, subClass, protocol,
+                            manufacturerName, productName, version, serialNumber);
+                    device.setConfigurations(configurations);
+                    return device;
+                }
 
-        public UsbDevice[] newArray(int size) {
-            return new UsbDevice[size];
-        }
-    };
+                public UsbDevice[] newArray(int size) {
+                    return new UsbDevice[size];
+                }
+            };
 
     public int describeContents() {
         return 0;
@@ -324,7 +331,7 @@ public class UsbDevice implements Parcelable {
         parcel.writeString(mVersion);
         parcel.writeString(mSerialNumber);
         parcel.writeParcelableArray(mConfigurations, 0);
-   }
+    }
 
     public static int getDeviceId(String name) {
         return native_get_device_id(name);
@@ -335,5 +342,6 @@ public class UsbDevice implements Parcelable {
     }
 
     private static native int native_get_device_id(String name);
+
     private static native String native_get_device_name(int id);
 }
