@@ -554,6 +554,11 @@ public abstract class AccessibilityService extends Service {
      * </p>
      *
      * @return The root node if this service can retrieve window content.
+	 * //------------------------------------------------------------------------------------------
+	 * 如果程序员将此服务配置为可以检索窗口内容，则通过这个方法可以后去窗口的根节点。
+	 * 
+	 * 
+	 * 
      */
     public AccessibilityNodeInfo getRootInActiveWindow() {
         return AccessibilityInteractionClient.getInstance().getRootInActiveWindow(mConnectionId);

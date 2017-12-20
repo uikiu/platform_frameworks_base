@@ -536,7 +536,7 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
 	 * @param flags 请求标签。由0普通、1重新投递、2三个值可选。其中两个常量已经定义：START_FLAG_REDELIVERY=1，START_FLAG_RETRY=2
 	 * REDELIVERY 的意思是：re-delivery 再交付，重新投递。
 	 * START_FLAG_REDELIVERY=1 代表intent为先前传递过的intent的重新传递，因为服务之前被设置为START_REDELIVER_INTENT(重新投递intent)。
-	 * START_FLAG_RETRY=2 代表重启但不重新投递intent.
+	 * START_FLAG_RETRY=2 代表重启但不重新投递intent.所以intent可能为空，需要非空判断。
 	 * @param startId 每次请求启动服务的唯一的id。这个id会在stopSelfResult(int)方法中作为参数。详见：stopSelfResult(int)方法
 	 * //----------------------------------------------------------------------------------------
 	 * 三种模式：
@@ -546,6 +546,7 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
 		2.重启但不重新投递： 
 		returnValue：START_STICKY=1 
 		flag：START_FLAG_RETRY=2
+		这种模式intent需要非空判断。
 		3.重启并重新投递： 
 		returnValue：START_REDELIVER_INTENT=3 
 		flag：START_FLAG_REDELIVERY=1

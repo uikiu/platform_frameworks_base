@@ -398,7 +398,8 @@ public final class SQLiteDatabase extends SQLiteClosable {
      * <p>
      * Transactions can be nested.
      * When the outer transaction is ended all of
-     * the work done in that transaction and all of the nested transactions will be committed or
+     * the work 
+	 done in that transaction and all of the nested transactions will be committed or
      * rolled back. The changes will be rolled back if any transaction is ended without being
      * marked as clean (by calling setTransactionSuccessful). Otherwise they will be committed.
      * </p>
@@ -1499,6 +1500,13 @@ public final class SQLiteDatabase extends SQLiteClosable {
      * @return the number of rows affected if a whereClause is passed in, 0
      *         otherwise. To remove all rows and get a count pass "1" as the
      *         whereClause.
+	 * //------------------------------------------------------------------------------
+	 * 删除数据库中的指定表的指定行
+	 * @param table 数据库表名
+	 * @param whereClause where条款，也就是数据库中的where子句
+	 * @param whereArgs where限定参数值
+	 * @return 受此操作的行数
+	 *
      */
     public int delete(String table, String whereClause, String[] whereArgs) {
         acquireReference();
