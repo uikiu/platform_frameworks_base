@@ -413,6 +413,12 @@ public abstract class LayoutInflater {
      * @return The root View of the inflated hierarchy. If root was supplied and
      *         attachToRoot is true, this is root; otherwise it is the root of
      *         the inflated XML file.
+     * ---------------------------------------------------------------------------------------------
+     * 名词翻译：hierarchy层次
+     * 从xml定义的视图，转换为View对象
+     * @param resource 为xml的id
+     *
+     *
      */
     public View inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot) {
         final Resources res = getContext().getResources();
@@ -456,6 +462,7 @@ public abstract class LayoutInflater {
             Trace.traceBegin(Trace.TRACE_TAG_VIEW, "inflate");
 
             final Context inflaterContext = mContext;
+            //xml解析咱们写的xml布局中的参数，并放入到参数集合中attributeSet。以供LayoutParams使用
             final AttributeSet attrs = Xml.asAttributeSet(parser);
             Context lastContext = (Context) mConstructorArgs[0];
             mConstructorArgs[0] = inflaterContext;
@@ -482,7 +489,7 @@ public abstract class LayoutInflater {
                             + name);
                     System.out.println("**************************");
                 }
-
+                //是否为merge标签
                 if (TAG_MERGE.equals(name)) {
                     if (root == null || !attachToRoot) {
                         throw new InflateException("<merge /> can be used only with a valid "
@@ -492,6 +499,7 @@ public abstract class LayoutInflater {
                     rInflate(parser, root, inflaterContext, attrs, false);
                 } else {
                     // Temp is the root view that was found in the xml
+                    // 生成根节点
                     final View temp = createViewFromTag(root, name, inflaterContext, attrs);
 
                     ViewGroup.LayoutParams params = null;
@@ -502,6 +510,7 @@ public abstract class LayoutInflater {
                                     root);
                         }
                         // Create layout params that match root, if supplied
+                        //将xml中的属性解析为LayoutParams
                         params = root.generateLayoutParams(attrs);
                         if (!attachToRoot) {
                             // Set the layout params for temp if we are not
@@ -515,6 +524,7 @@ public abstract class LayoutInflater {
                     }
 
                     // Inflate all children under temp against its context.
+                    //解析根节点完毕，下面开始解析children
                     rInflateChildren(parser, temp, attrs, true);
 
                     if (DEBUG) {
@@ -849,10 +859,12 @@ public abstract class LayoutInflater {
                 parseViewTag(parser, parent, attrs);
             } else if (TAG_INCLUDE.equals(name)) {
                 if (parser.getDepth() == 0) {
+                    //这就是为什么include标签不能作为根节点的原因
                     throw new InflateException("<include /> cannot be the root element");
                 }
                 parseInclude(parser, context, parent, attrs);
             } else if (TAG_MERGE.equals(name)) {
+                //merge只能作为根节点的原因
                 throw new InflateException("<merge /> must be the root element");
             } else {
                 final View view = createViewFromTag(parent, name, context, attrs);

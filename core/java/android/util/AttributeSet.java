@@ -54,6 +54,9 @@ package android.util;
  * compiled XML resource that is not available in a normal XML file, such
  * as {@link #getAttributeNameResource(int)} which returns the resource
  * identifier associated with a particular XML attribute name.
+ * -------------------------------------------------------------------------------------------------
+ * 通过AttributeSet可以获得布局文件中定义的所有属性的key和value
+ *
  */
 public interface AttributeSet {
     /**

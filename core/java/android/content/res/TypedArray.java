@@ -40,6 +40,12 @@ import java.util.Arrays;
  *
  * The indices used to retrieve values from this structure correspond to
  * the positions of the attributes given to obtainStyledAttributes.
+ * -------------------------------------------------------------------------------------------------
+ * 名词解释：Typed 输入、打字
+ * TypedArray是一个数组容器，用于检索
+ * {@link Resources.Theme#obtainStyledAttributes(AttributeSet, int[], int, int)}
+ * or {@link Resources#obtainAttributes}.
+ * 使用它的时候请确保最后调用{@link #recycle}
  */
 public class TypedArray {
 

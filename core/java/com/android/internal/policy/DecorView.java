@@ -106,6 +106,13 @@ import static android.view.WindowManager.LayoutParams.TYPE_DRAWN_APPLICATION;
 import static com.android.internal.policy.PhoneWindow.FEATURE_OPTIONS_PANEL;
 
 /** @hide */
+
+/**
+ * -------------------------------------------------------------------------------------------------
+ * 名词解释：decor装饰、装潢、布置
+ * DecorView一个特殊的FrameLayout，是window的根节点。专门用来加载View视图的
+ * 注意本类为隐藏类
+ */
 public class DecorView extends FrameLayout implements RootViewSurfaceTaker, WindowCallbacks {
     private static final String TAG = "DecorView";
 

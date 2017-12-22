@@ -34,13 +34,6 @@ public abstract class Observable<T> {
     protected final ArrayList<T> mObservers = new ArrayList<T>();
 
     /**
-     * Adds an observer to the list. The observer cannot be null and it must not already
-     * be registered.
-     * @param observer the observer to register
-     * @throws IllegalArgumentException the observer is null
-     * @throws IllegalStateException the observer is already registered
-     */
-    public void registerObserver(T observer) {
         if (observer == null) {
             throw new IllegalArgumentException("The observer is null.");
         }

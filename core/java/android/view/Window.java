@@ -59,6 +59,8 @@ import java.util.List;
  * Window.
  * ----------------------------------------------------------------------------
  * Window是一个抽象类，提供了绘制窗口的一组通用API
+ * Window的实现类必须添加到window manager中
+ * Window仅有一个实现类PhoneWindow
  */
 public abstract class Window {
     /** Flag for the "options panel" feature.  This is enabled by default. */

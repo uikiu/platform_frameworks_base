@@ -171,6 +171,9 @@ public class Xml {
      *         through its XML document.
      *
      * @see AttributeSet
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：attribute 属性、特质，attributeSet 属性集合。
+     * 将我们在xml中定义的属性进行统一收集，到属性集合中AttributeSet
      */
     public static AttributeSet asAttributeSet(XmlPullParser parser) {
         return (parser instanceof AttributeSet)

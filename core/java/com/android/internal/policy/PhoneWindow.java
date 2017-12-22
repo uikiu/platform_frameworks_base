@@ -112,7 +112,7 @@ import java.util.ArrayList;
  * @hide -------------------------------------------------------------------
  * andorid 具体的window
  * // TODO: 2017/12/11 需要将一些通用的功能提取到基类当中
- * 1. PhoneWindow 继承自Window,是其实现类。
+ * 1. PhoneWindow 继承自Window,是其唯一实现类。
  * 2. 该类内部包含了一个DecorView对象，该DectorView对象是所有应用窗口（Activity）的根View
  * 3. DecorView是PhoneWindow的内部类，是FrameLayout的子类，是对FrameLayout进行功能的修饰（所以叫DecorXXX），是所有应用窗口的根View。
  * 4. 从根视图DecorView开始都是继承自View，所以从视图的绘制从这个DecorView开始依次递归调用：
@@ -149,6 +149,9 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
     TypedValue mFixedHeightMinor;
 
     // This is the top-level view of the window, containing the window decor.
+    /**
+     * DecorView 继承自 FrameLayout，是window的根节点
+     */
     private DecorView mDecor;
 
     // When we reuse decor views, we need to recreate the content root. This happens when the decor
@@ -157,6 +160,9 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
 
     // This is the view in which the window contents are placed. It is either
     // mDecor itself, or a child of mDecor where the contents go.
+    /**
+     * Activity中设置要显示的内容，它要么是一个DecorView，要么是一个它的子类
+     */
     ViewGroup mContentParent;
     // Whether the client has explicitly set the content view. If false and mContentParent is not
     // null, then the content parent was set due to window preservation.
@@ -405,6 +411,10 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
         return mContentScene;
     }
 
+    /**
+     * mConentParent就是DecorView
+     * @param layoutResID
+     */
     @Override
     public void setContentView(int layoutResID) {
         // Note: FEATURE_CONTENT_TRANSITIONS may be set in the process of installing the window
@@ -421,6 +431,7 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
                     getContext());
             transitionTo(newScene);
         } else {
+            //将xml中的布局添加到DecorView中
             mLayoutInflater.inflate(layoutResID, mContentParent);
         }
         mContentParent.requestApplyInsets();
@@ -2301,7 +2312,7 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
 
     protected ViewGroup generateLayout(DecorView decor) {
         // Apply data from current theme.
-
+        //获取window的style
         TypedArray a = getWindowStyle();
 
         if (false) {
@@ -2313,7 +2324,7 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
             }
             System.out.println(s);
         }
-
+        //window是否为floating形式，例如Dialog
         mIsFloating = a.getBoolean(R.styleable.Window_windowIsFloating, false);
         int flagsToUpdate = (FLAG_LAYOUT_IN_SCREEN | FLAG_LAYOUT_INSET_DECOR)
                 & (~getForcedWindowFlags());
@@ -2403,7 +2414,7 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
         if (a.getBoolean(R.styleable.Window_windowActivityTransitions, false)) {
             requestFeature(FEATURE_ACTIVITY_TRANSITIONS);
         }
-
+        //window 是否为透明的
         mIsTranslucent = a.getBoolean(R.styleable.Window_windowIsTranslucent, false);
 
         final Context context = getContext();
@@ -2509,6 +2520,7 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
         // Inflate the window decor.
 
         int layoutResource;
+        // 获取features属性，根据不同的features属性，Decor加载不同的layout，然后再将我们自己定义的layout添加进去。所有我们在Activity中设置setFeatures，必须在setContentView之前。
         int features = getLocalFeatures();
         // System.out.println("Features: 0x" + Integer.toHexString(features));
         if ((features & (1 << FEATURE_SWIPE_TO_DISMISS)) != 0) {
@@ -2632,6 +2644,9 @@ public class PhoneWindow extends Window implements MenuBuilder.Callback {
         mAlwaysReadCloseOnTouchAttr = true;
     }
 
+    /**
+     * 安装装饰器，即DecorView的初始化
+     */
     private void installDecor() {
         mForceDecorInstall = false;
         if (mDecor == null) {
