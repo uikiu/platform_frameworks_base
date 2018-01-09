@@ -6101,8 +6101,12 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
      * @param childDimension How big the child wants to be in the current
      *        dimension
      * @return a MeasureSpec integer for the child
+     * ---------------------------------------------------------------------------------------------
+     * 名词翻译：dimension尺寸、维度
+     * 上一层的容器决定下一层的容器或者View的测量规格。
      */
     public static int getChildMeasureSpec(int spec, int padding, int childDimension) {
+        //1. 拿到父容器给的测量模式&测量大小
         int specMode = MeasureSpec.getMode(spec);
         int specSize = MeasureSpec.getSize(spec);
 
@@ -6119,12 +6123,12 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
                 resultMode = MeasureSpec.EXACTLY;
             } else if (childDimension == LayoutParams.MATCH_PARENT) {
                 // Child wants to be our size. So be it.
-                resultSize = size;
+                resultSize = size;//父容器给定的最大值
                 resultMode = MeasureSpec.EXACTLY;
             } else if (childDimension == LayoutParams.WRAP_CONTENT) {
                 // Child wants to determine its own size. It can't be
                 // bigger than us.
-                resultSize = size;
+                resultSize = size;//父容器给定的最大值
                 resultMode = MeasureSpec.AT_MOST;
             }
             break;

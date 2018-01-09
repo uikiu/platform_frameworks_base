@@ -1191,6 +1191,8 @@ public class Dialog implements DialogInterface, Window.Callback,
     /**
      * Sets whether this dialog is cancelable with the
      * {@link KeyEvent#KEYCODE_BACK BACK} key.
+     * ---------------------------------------------------------------------------------------------
+     * 设置是否可取消，实际上这个方法可能不起作用。
      */
     public void setCancelable(boolean flag) {
         mCancelable = flag;
@@ -1204,6 +1206,8 @@ public class Dialog implements DialogInterface, Window.Callback,
      * 
      * @param cancel Whether the dialog should be canceled when touched outside
      *            the window.
+     * ---------------------------------------------------------------------------------------------
+     * 点击非dialog区域，是否允许取消dialog。传入true则点击可取消，传入false则点击不可取消
      */
     public void setCanceledOnTouchOutside(boolean cancel) {
         if (cancel && !mCancelable) {

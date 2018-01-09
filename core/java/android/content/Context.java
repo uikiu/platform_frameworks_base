@@ -992,6 +992,7 @@ public abstract class Context {
      *            {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},//通知
      *            {@link android.os.Environment#DIRECTORY_PICTURES}, or//图片
      *            {@link android.os.Environment#DIRECTORY_MOVIES}.//视频
+     *            {@link android.os.Environment#DIRECTORY_DOWNLOADS}.//下载
 	 *            ...
      * @return the absolute path to application-specific directory. May return
      *         {@code null} if shared storage is not currently available.

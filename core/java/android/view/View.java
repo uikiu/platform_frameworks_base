@@ -11813,6 +11813,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * {@link #MEASURED_SIZE_MASK}).
      *
      * @return The raw measured width of this view.
+     * ---------------------------------------------------------------------------------------------
+     * 必须在onMeasure方法执行后才能调用
      */
     public final int getMeasuredWidth() {
         return mMeasuredWidth & MEASURED_SIZE_MASK;
@@ -11841,6 +11843,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * {@link #MEASURED_SIZE_MASK}).
      *
      * @return The raw measured height of this view.
+     * ---------------------------------------------------------------------------------------------
+     * 必须在onMeasure方法执行后才能调用
      */
     public final int getMeasuredHeight() {
         return mMeasuredHeight & MEASURED_SIZE_MASK;
@@ -14998,6 +15002,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
     /*
      * Caller is responsible for calling requestLayout if necessary.
      * (This allows addViewInLayout to not request a new layout.)
+     * 名词解释 :assign分配
+     * 给本view设置Parent
      */
     void assignParent(ViewParent parent) {
         if (mParent == null) {
@@ -17617,6 +17623,10 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * @param t Top position, relative to parent
      * @param r Right position, relative to parent
      * @param b Bottom position, relative to parent
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：assign分配；descendants子节点、后代；phase阶段；mechanism机制原理；
+     * 布局方法：为View自身和其子view分配大小和位置。
+     * 这是第二个阶段（第一阶段是measure测量）
      */
     @SuppressWarnings({"unchecked"})
     public void layout(int l, int t, int r, int b) {
@@ -19757,6 +19767,21 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      *
      * <p>Subclasses which override this method should call the superclass method to
      * handle possible request-during-layout errors correctly.</p>
+     *
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：invalidated 无效的
+     * 本view的布局已经失效，请求重新布局。
+     * 如果子View调用了这个方法，其实会从View树重新进行一次测量、布局、绘制这三个流程，最终就会显示子View的最终情况。
+     *
+     * 在requestLayout方法中，首先先判断当前View树是否正在布局流程，接着为当前子View设置标记位，
+     * 该标记位的作用就是标记了当前的View是需要进行重新布局的，接着调用mParent.requestLayout方法，
+     * 这个十分重要，因为这里是向父容器请求布局，即调用父容器的requestLayout方法，为父容器添加PFLAG_FORCE_LAYOUT标记位，
+     * 而父容器又会调用它的父容器的requestLayout方法，
+     * 即requestLayout事件层层向上传递，直到DecorView，即根View，而根View又会传递给ViewRootImpl，
+     * 也即是说子View的requestLayout事件，最终会被ViewRootImpl接收并得到处理。
+     * 纵观这个向上传递的流程，其实是采用了责任链模式，即不断向上传递该事件，直到找到能处理该事件的上级，
+     * 在这里，只有ViewRootImpl能够处理requestLayout事件。
+     * {@link android.view.ViewRootImpl#requestLayout()}
      */
     @CallSuper
     public void requestLayout() {
@@ -19773,11 +19798,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
             }
             mAttachInfo.mViewRequestingLayout = this;
         }
-
+        //为当前view设置标记位 PFLAG_FORCE_LAYOUT
         mPrivateFlags |= PFLAG_FORCE_LAYOUT;
         mPrivateFlags |= PFLAG_INVALIDATED;
 
         if (mParent != null && !mParent.isLayoutRequested()) {
+            //向父容器请求布局
             mParent.requestLayout();
         }
         if (mAttachInfo != null && mAttachInfo.mViewRequestingLayout == this) {
@@ -19799,7 +19825,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
 
     /**
      * <p>
-     * This is called to find out how big a view should be. The parent
+     * This is called to  how big a view should be. The parent
      * supplies constraint information in the width and height parameters.
      * </p>
      *
@@ -19816,9 +19842,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      *        parent
      *
      * @see #onMeasure(int, int)
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：find out 查出、查明
+     *
      */
     public final void measure(int widthMeasureSpec, int heightMeasureSpec) {
-        boolean optical = isLayoutModeOptical(this);
+        boolean optical = isLayoutModeOptical(this);//是否有光影效果，阴影
         if (optical != isLayoutModeOptical(mParent)) {
             Insets insets = getOpticalInsets();
             int oWidth  = insets.left + insets.right;
@@ -19929,6 +19958,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * @see android.view.View.MeasureSpec#getSize(int)
 	 * //----------------------------------------------------------------------------------
 	 * meausre是测量的意思
+     * measure方法会调用本方法onMeasure
 	 *
 	 *
 	 *
@@ -19982,6 +20012,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * @param measuredHeight The measured height of this view.  May be a complex
      * bit mask as defined by {@link #MEASURED_SIZE_MASK} and
      * {@link #MEASURED_STATE_TOO_SMALL}.
+     * ---------------------------------------------------------------------------------------------
+     * raw 生的，未加工的
      */
     private void setMeasuredDimensionRaw(int measuredWidth, int measuredHeight) {
         mMeasuredWidth = measuredWidth;
@@ -22260,6 +22292,14 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      *
      * MeasureSpecs are implemented as ints to reduce object allocation. This class
      * is provided to pack and unpack the &lt;size, mode&gt; tuple into the int.
+     * ---------------------------------------------------------------------------------------------
+     * 名词翻译：MeasureSpec 测量规格；encapsulates封装；requirements需要；
+     * MeasureSpec是View的内部静态类,直译为“测量规格”
+     * 在Measure流程中，系统将View的LayoutParmas根据父容器所施加的规则转换
+     * 为对应的MesureSpec，在onMesuare中根据这个MeasureSpec来确定View的测量宽高。
+     * 测量模式：
+     * 主要有getMode和getSize方法。
+     *
      */
     public static class MeasureSpec {
         private static final int MODE_SHIFT = 30;
@@ -22280,12 +22320,16 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
          * Measure specification mode: The parent has determined an exact size
          * for the child. The child is going to be given those bounds regardless
          * of how big it wants to be.
+         * -----------------------------------------------------------------------------------------
+         * 测量模式：精确测量，父容器已经测出所需的精准大小，也就是childView的最终大小
+         * 1>具体的值;2>match_parent
          */
         public static final int EXACTLY     = 1 << MODE_SHIFT;
 
         /**
          * Measure specification mode: The child can be as large as it wants up
          * to the specified size.
+         * 测量模式：childView最终的大小不能大于父容器给的值
          */
         public static final int AT_MOST     = 2 << MODE_SHIFT;
 

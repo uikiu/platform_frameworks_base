@@ -163,6 +163,8 @@ final class RemoteServiceException extends AndroidRuntimeException {
  * manager requests.
  *
  * {@hide}
+ * ---------------------------------------------------------------------------------------------------------------------
+ * activity 的生命周期、执行过程均在ActivityThread中依次进行的
  */
 public final class ActivityThread {
     /** @hide */
@@ -2717,6 +2719,12 @@ public final class ActivityThread {
         return baseContext;
     }
 
+    /**
+     * activity的声明周期的回调在本方法和performLaunchActivity方法中
+     * @param r
+     * @param customIntent
+     * @param reason
+     */
     private void handleLaunchActivity(ActivityClientRecord r, Intent customIntent, String reason) {
         // If we are getting ready to gc after going to the background, well
         // we are back active so skip it.
@@ -3514,9 +3522,12 @@ public final class ActivityThread {
                 }
             }
             if (r.window == null && !a.mFinished && willBeVisible) {
+                //获取window
                 r.window = r.activity.getWindow();
+                //获取decorView
                 View decor = r.window.getDecorView();
                 decor.setVisibility(View.INVISIBLE);
+                //获取windowManager以及其属性
                 ViewManager wm = a.getWindowManager();
                 WindowManager.LayoutParams l = r.window.getAttributes();
                 a.mDecor = decor;
@@ -3536,6 +3547,7 @@ public final class ActivityThread {
                 }
                 if (a.mVisibleFromClient && !a.mWindowAdded) {
                     a.mWindowAdded = true;
+                    //将decorView添加到windowManager
                     wm.addView(decor, l);
                 }
 

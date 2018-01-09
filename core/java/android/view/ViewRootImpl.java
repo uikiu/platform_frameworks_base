@@ -543,6 +543,7 @@ public final class ViewRootImpl implements ViewParent,
 
     /**
      * We have one child
+     * mView 就是decorView
      */
     public void setView(View view, WindowManager.LayoutParams attrs, View panelParentView) {
         synchronized (this) {
@@ -727,7 +728,7 @@ public final class ViewRootImpl implements ViewParent,
                     mInputEventReceiver = new WindowInputEventReceiver(mInputChannel,
                             Looper.myLooper());
                 }
-
+                //把ViewRootImpl自己设置为decorView的parent
                 view.assignParent(this);
                 mAddedTouchMode = (res & WindowManagerGlobal.ADD_FLAG_IN_TOUCH_MODE) != 0;
                 mAppVisible = (res & WindowManagerGlobal.ADD_FLAG_APP_VISIBLE) != 0;
@@ -1441,8 +1442,13 @@ public final class ViewRootImpl implements ViewParent,
         return (int) (displayMetrics.density * dip + 0.5f);
     }
 
+    /**
+     * 名词解释：perform执行，Traversals遍历
+     * 真正执行UI绘制的流程。遍历执行，会依次执行：performMeasure、performLayout、performDraw
+     */
     private void performTraversals() {
         // cache mView since it is used so much below...
+        //mView其实就是DecorView
         final View host = mView;
 
         if (DBG) {
@@ -1460,7 +1466,8 @@ public final class ViewRootImpl implements ViewParent,
         boolean newSurface = false;
         boolean surfaceChanged = false;
         WindowManager.LayoutParams lp = mWindowAttributes;
-
+        //名词解释：desired 想要的
+        //根据父容器的宽高决定子视图的宽高，顶层就是decorView的宽高即window的宽高
         int desiredWindowWidth;
         int desiredWindowHeight;
 
@@ -2019,7 +2026,7 @@ public final class ViewRootImpl implements ViewParent,
                             + " measuredHeight=" + host.getMeasuredHeight()
                             + " coveredInsetsChanged=" + contentInsetsChanged);
 
-                     // Ask host how big it wants to be
+                     // Ask host how big it wants to be:真正的测量流程
                     performMeasure(childWidthMeasureSpec, childHeightMeasureSpec);
 
                     // Implementation of weights from WindowManager.LayoutParams
@@ -2269,9 +2276,15 @@ public final class ViewRootImpl implements ViewParent,
         mLayoutRequested = true;    // ask wm for a new surface next time.
     }
 
+    /**
+     * 真正的测量流程，测量控件需要多大，测量子view的测量规格
+     * @param childWidthMeasureSpec
+     * @param childHeightMeasureSpec
+     */
     private void performMeasure(int childWidthMeasureSpec, int childHeightMeasureSpec) {
         Trace.traceBegin(Trace.TRACE_TAG_VIEW, "measure");
         try {
+            //最终使用view的measure方法进行测量
             mView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
         } finally {
             Trace.traceEnd(Trace.TRACE_TAG_VIEW);
@@ -2329,6 +2342,12 @@ public final class ViewRootImpl implements ViewParent,
         }
     }
 
+    /**
+     * 真正的布局流程
+     * @param lp
+     * @param desiredWindowWidth
+     * @param desiredWindowHeight
+     */
     private void performLayout(WindowManager.LayoutParams lp, int desiredWindowWidth,
             int desiredWindowHeight) {
         mLayoutRequested = false;
@@ -2491,12 +2510,14 @@ public final class ViewRootImpl implements ViewParent,
      *            window.
      *
      * @return The measure spec to use to measure the root view.
+     * ---------------------------------------------------------------------------------------------
+     *
      */
     private static int getRootMeasureSpec(int windowSize, int rootDimension) {
         int measureSpec;
         switch (rootDimension) {
 
-        case ViewGroup.LayoutParams.MATCH_PARENT:
+        case ViewGroup.LayoutParams.MATCH_PARENT://DecorView的布局默认为match_parent
             // Window can't resize. Force root view to be windowSize.
             measureSpec = MeasureSpec.makeMeasureSpec(windowSize, MeasureSpec.EXACTLY);
             break;
@@ -2594,6 +2615,9 @@ public final class ViewRootImpl implements ViewParent,
         }
     }
 
+    /**
+     * 真正的绘制路程
+     */
     private void performDraw() {
         if (mAttachInfo.mDisplayState == Display.STATE_OFF && !mReportNextDraw) {
             return;

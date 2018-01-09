@@ -45,6 +45,9 @@ import dalvik.system.CloseGuard;
  * <p><strong>Note:</strong> A Surface acts like a
  * {@link java.lang.ref.WeakReference weak reference} to the consumer it is associated with. By
  * itself it will not keep its parent consumer from being reclaimed.</p>
+ * -------------------------------------------------------------------------------------------------
+ * @see <a href="https://github.com/clarkehe/Android/wiki/Android绘制系统(1):-Surface">https://github.com/clarkehe/Android/wiki/Android绘制系统(1):-Surface<a/>
+ * surface在android的绘制系统中是一个承上启下的类，上向View提供画布Canvas，下向surfaceFlinger提供可显示的缓存。
  */
 public class Surface implements Parcelable {
     private static final String TAG = "Surface";

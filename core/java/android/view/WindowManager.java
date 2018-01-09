@@ -50,6 +50,8 @@ import java.util.Objects;
  *
  * @see android.content.Context#getSystemService
  * @see android.content.Context#WINDOW_SERVICE
+ * ---------------------------------------------------------------------------------------------------------------------
+ * windowManager是一个接口，并且其还继承自ViewManager。所以我们需要看其实现类WindownManagerImpl
  */
 public interface WindowManager extends ViewManager {
 

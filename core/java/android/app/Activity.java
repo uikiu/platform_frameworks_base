@@ -6608,6 +6608,25 @@ public class Activity extends ContextThemeWrapper
         mParent = parent;
     }
 
+    /**
+     * phoneWindow是在本方法中进行的初始化
+     * @param context
+     * @param aThread
+     * @param instr
+     * @param token
+     * @param ident
+     * @param application
+     * @param intent
+     * @param info
+     * @param title
+     * @param parent
+     * @param id
+     * @param lastNonConfigurationInstances
+     * @param config
+     * @param referrer
+     * @param voiceInteractor
+     * @param window
+     */
     final void attach(Context context, ActivityThread aThread,
             Instrumentation instr, IBinder token, int ident,
             Application application, Intent intent, ActivityInfo info,
@@ -6618,7 +6637,7 @@ public class Activity extends ContextThemeWrapper
         attachBaseContext(context);
 
         mFragments.attachHost(null /*parent*/);
-
+        //初始化PhoneWindow
         mWindow = new PhoneWindow(this, window);
         mWindow.setWindowControllerCallback(this);
         mWindow.setCallback(this);

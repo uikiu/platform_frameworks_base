@@ -1024,7 +1024,7 @@ public class DownloadManager {
      * @return an ID for the download, unique across the system.  This ID is used to make future
      * calls related to this download.
 	 * //------------------------------------------------------------------------------------------------
-	 * 开启一个先的下载。此方法返回一个编号用于标示此下载任务。
+	 * 开启一个新的下载。此方法返回一个编号用于标示此下载任务。
 	 *
      */
     public long enqueue(Request request) {
