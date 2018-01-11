@@ -6060,13 +6060,17 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
      * and margins. The child must have MarginLayoutParams The heavy lifting is
      * done in getChildMeasureSpec.
      *
-     * @param child The child to measure
-     * @param parentWidthMeasureSpec The width requirements for this view
+     * @param child The child to measure 要被测量的对象
+     * @param parentWidthMeasureSpec The width requirements for this view 父View对子View的布局要求，也就是MeasureSpec
      * @param widthUsed Extra space that has been used up by the parent
      *        horizontally (possibly by other children of the parent)
      * @param parentHeightMeasureSpec The height requirements for this view
      * @param heightUsed Extra space that has been used up by the parent
      *        vertically (possibly by other children of the parent)
+     * ---------------------------------------------------------------------------------------------
+     * 测量子View的边缘。margin 边缘的意思。
+     *
+     * 一个子View的宽高的测量，由两个因素决定：1、父容器的提供的测量规则；2、子View自身的LayoutParams属性。
      */
     protected void measureChildWithMargins(View child,
             int parentWidthMeasureSpec, int widthUsed,

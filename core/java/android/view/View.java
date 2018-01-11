@@ -22293,11 +22293,18 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * MeasureSpecs are implemented as ints to reduce object allocation. This class
      * is provided to pack and unpack the &lt;size, mode&gt; tuple into the int.
      * ---------------------------------------------------------------------------------------------
-     * 名词翻译：MeasureSpec 测量规格；encapsulates封装；requirements需要；
-     * MeasureSpec是View的内部静态类,直译为“测量规格”
-     * 在Measure流程中，系统将View的LayoutParmas根据父容器所施加的规则转换
-     * 为对应的MesureSpec，在onMesuare中根据这个MeasureSpec来确定View的测量宽高。
-     * 测量模式：
+     * 名词翻译：MeasureSpec 测量规格、测量要求；encapsulates封装；requirements需要；
+     *
+     * MeasureSpec定义：父容器对子view测量规则的封装。服务于测量流程，便于父容器对ziView的限制以及控制。
+     * 一个子View的宽高的测量，由两个因素决定：1、父容器的提供的测量规则；2、子View自身的LayoutParams属性。
+     * 而子View宽高的测量就是基于以上两点，将view的LayoutParams根据父容器所要求的规则转换为对应的MesureSpec。
+     *
+     * 一、测量规则之测量模式（父容器给的测量要求）：
+     * 1. EXACTLY:父容器已经测量出所需要的精确大小，这也是childView的最终大小。-----match_parent
+     * 2. ATMOST:child view 最终大小不能不超过父容器给给定值。-----wrap_content
+     * 3. UNSPECIFIED:动态测量，经常为滑动的View内部使用。例如：scrollView，listView
+     *
+     *
      * 主要有getMode和getSize方法。
      *
      */

@@ -66,7 +66,9 @@ public class Build {
     @Deprecated
     public static final String CPU_ABI2;
 
-    /** The manufacturer of the product/hardware. */
+    /** The manufacturer of the product/hardware.
+     * 厂商，使用这个代替型号有时候更可靠，例如：华为厂商旗下会出现两个品牌（华为&荣耀）但是装的系统都一致。
+     */
     public static final String MANUFACTURER = getString("ro.product.manufacturer");
 
     /** The consumer-visible brand with which the product/hardware will be associated, if any. */
