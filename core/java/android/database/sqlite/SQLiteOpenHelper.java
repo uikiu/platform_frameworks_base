@@ -72,6 +72,15 @@ public abstract class SQLiteOpenHelper {
      * @param version number of the database (starting at 1); if the database is older,
      *     {@link #onUpgrade} will be used to upgrade the database; if the database is
      *     newer, {@link #onDowngrade} will be used to downgrade the database
+     * ---------------------------------------------------------------------------------------------
+     * 用于创建、打开、管理数据库。
+     * 数据库默认并非是创建或者打开状态，所以你如果想要管理这个数据库，首先需要调用方法：
+     * {@link #getWritableDatabase} 获取可写入可读取权限的数据库。
+     * {@link #getReadableDatabase} 获取可写入的数据库。
+     *
+     * @param name 数据库名称
+     * @param factory 是CursorFactory，用于创建cursor对象，可以传入null则使用默认cursor
+     * @param version 数据库的版本，从1开始。
      */
     public SQLiteOpenHelper(Context context, String name, CursorFactory factory, int version) {
         this(context, name, factory, version, null);

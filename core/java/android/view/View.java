@@ -1283,6 +1283,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * Bit of {@link #getMeasuredWidthAndState()} and
      * {@link #getMeasuredWidthAndState()} that indicates the measured size
      * is smaller that the space the view would like to have.
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：spec 空间；
      */
     public static final int MEASURED_STATE_TOO_SMALL = 0x01000000;
 
@@ -20050,30 +20052,39 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * optionally the bit {@link #MEASURED_STATE_TOO_SMALL} set if the
      * resulting size is smaller than the size the view wants to be.
      *
-     * @param size How big the view wants to be.
-     * @param measureSpec Constraints imposed by the parent.
+     * @param size How big the view wants to be. 子View期望大小，即：LayoutParmas
+     * @param measureSpec Constraints imposed by the parent.父View要求的测量规则
      * @param childMeasuredState Size information bit mask for the view's
      *                           children.
      * @return Size information bit mask as defined by
      *         {@link #MEASURED_SIZE_MASK} and
      *         {@link #MEASURED_STATE_TOO_SMALL}.
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：Utility效用；reconcile调和；desired期望、愿望、欲；constraints限制；imposed强加、施加；
+     * unless除非；constraints约束；compound复合；resolved解决；MEASURED测试；
+     * 通过MeasureSpec施加的限制来协调期望的大小和状态。resolveSizeAndState方法用于在测量阶段根据自身要求
+     * 的size和父视图的限制生成合适的size。当子视图不满意父视图给的约束时，可以通过
+     * 协调包含两个方面：1、MeasureSpec的限制约束；2、子View的layoutParams
+     * 如果MeasureSpec没有限制则以子View的LayoutParamas为准，否则需要将MeasureSpec与子view的LayoutParamas结合。
+     *
+     *
      */
     public static int resolveSizeAndState(int size, int measureSpec, int childMeasuredState) {
-        final int specMode = MeasureSpec.getMode(measureSpec);
-        final int specSize = MeasureSpec.getSize(measureSpec);
-        final int result;
+        final int specMode = MeasureSpec.getMode(measureSpec);//获取父容器要求的测量模式
+        final int specSize = MeasureSpec.getSize(measureSpec);//获取父容器要求的测量大小
+        final int result;//最终返回值
         switch (specMode) {
-            case MeasureSpec.AT_MOST:
-                if (specSize < size) {
-                    result = specSize | MEASURED_STATE_TOO_SMALL;
+            case MeasureSpec.AT_MOST://父容器给出了边界：specSize
+                if (specSize < size) {//如果父View给定的边界小于子View期望的值：
+                    result = specSize | MEASURED_STATE_TOO_SMALL;//MEASURED_STATE_TOO_SMALL的值为0x01000000，转换为2进制1000000000000000000000000
                 } else {
                     result = size;
                 }
                 break;
-            case MeasureSpec.EXACTLY:
+            case MeasureSpec.EXACTLY://父容器给出了确定的值，子view只能从了父view的要求
                 result = specSize;
                 break;
-            case MeasureSpec.UNSPECIFIED:
+            case MeasureSpec.UNSPECIFIED://父容器对子View没有要求，子View就可以成为它期望的大小
             default:
                 result = size;
         }
@@ -22295,17 +22306,32 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * ---------------------------------------------------------------------------------------------
      * 名词翻译：MeasureSpec 测量规格、测量要求；encapsulates封装；requirements需要；
      *
-     * MeasureSpec定义：父容器对子view测量规则的封装。服务于测量流程，便于父容器对ziView的限制以及控制。
+     * MeasureSpec定义：父容器对子view测量规则的封装。服务于测量流程，便于父容器对子View的限制以及控制。
      * 一个子View的宽高的测量，由两个因素决定：1、父容器的提供的测量规则；2、子View自身的LayoutParams属性。
      * 而子View宽高的测量就是基于以上两点，将view的LayoutParams根据父容器所要求的规则转换为对应的MesureSpec。
+     * 它的0-30位表示size，31-32位表示模式。
      *
-     * 一、测量规则之测量模式（父容器给的测量要求）：
-     * 1. EXACTLY:父容器已经测量出所需要的精确大小，这也是childView的最终大小。-----match_parent
-     * 2. ATMOST:child view 最终大小不能不超过父容器给给定值。-----wrap_content
-     * 3. UNSPECIFIED:动态测量，经常为滑动的View内部使用。例如：scrollView，listView
-     *
+     * 一、测量规则之测量模式（父布局对子布局的要求）：
+     * 1. EXACTLY:父布局已经决定了子布局的确切大小，这也是childView的最终大小。-----match_parent
+     * 2. ATMOST:父布局已经给出了子布局的边界值，即最大值。-----wrap_content
+     * 3. UNSPECIFIED:父布局未对子布局添加任何约束。子布局可以动态测量，经常为滑动的View内部使用。
+     * 例如：scrollView，listView
      *
      * 主要有getMode和getSize方法。
+     * ---------------------------------------------------------------------------------------------
+     * 一、复习java中的位运算
+     * 1. 与运算符"&"
+     * 与运算符，两个操作数中的位都为1，结果才为1，否则为0
+     * 2. 或运算符"|"
+     * 或运算符,两个位只要有一个为1，那么结果就是1
+     *
+     * 一、复习java中的位移运算
+     * 1.左移运算符<<
+     *  num << 1,相当于num乘以2
+     * 2.右移运算符>>
+     *  num >> 1,相当于num除以2
+     * 3.无符号右移>>>
+     *  忽略符号位，空位都以0补齐
      *
      */
     public static class MeasureSpec {
