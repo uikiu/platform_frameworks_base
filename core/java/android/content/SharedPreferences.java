@@ -225,6 +225,8 @@ public interface SharedPreferences {
          * previously did implement it and are now getting errors
          * about missing <code>apply()</code>, you can simply call
          * {@link #commit} from <code>apply()</code>.
+         * -----------------------------------------------------------------------------------------
+         * apply方法是将share的修改提交到内存而后异步写入磁盘
          */
         void apply();
     }

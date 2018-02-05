@@ -1510,7 +1510,7 @@ public final class SQLiteDatabase extends SQLiteClosable {
 	 * //------------------------------------------------------------------------------
 	 * 删除数据库中的指定表的指定行
 	 * @param table 数据库表名
-	 * @param whereClause where条款，也就是数据库中的where子句
+	 * @param whereClause where条款，也就是数据库中的where子句.如果传入null，则删除所有的行。
 	 * @param whereArgs where限定参数值
 	 * @return 受此操作的行数
 	 *

@@ -73,6 +73,12 @@ import java.util.List;
  * <li>All APKs must have unique split names.
  * <li>All installations must contain a single base APK.
  * </ul>
+ * -------------------------------------------------------------------------------------------------
+ * 提供在设备上安装、更新、删除app的能力。这包含将app打包为一个单一的apk，或者将app打包为多个分离的apk。
+ * 无论app的安装、更新、删除，哪一种操作都是通过{@link PackageInstaller.Session}来执行的，
+ * 一旦创建这个session，安装器可以可以操作一个或者连续多个的apk直到这个session提交或者销毁。
+ *
+ *
  */
 public class PackageInstaller {
     private static final String TAG = "PackageInstaller";
@@ -809,6 +815,12 @@ public class PackageInstaller {
          *
          * @throws SecurityException if streams opened through
          *             {@link #openWrite(String, long, long)} are still open.
+         *
+         *
+         * -----------------------------------------------------------------------------------------
+         * 名词解释：staged分段的、阶梯；immediately立即；mutations突变；finalized敲定
+         * 在session中提交IntentSender后，结果会通过回调通知。
+         *
          */
         public void commit(@NonNull IntentSender statusReceiver) {
             try {

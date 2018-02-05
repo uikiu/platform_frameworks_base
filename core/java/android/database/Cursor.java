@@ -54,7 +54,7 @@ public interface Cursor extends Closeable {
 
     /**
      * Returns the numbers of rows in the cursor.
-     *
+     * 返回所有的查询到的条数
      * @return the number of rows in the cursor.
      */
     int getCount();
