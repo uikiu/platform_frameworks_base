@@ -31,8 +31,8 @@ import android.annotation.Nullable;
  * 它可以用canvas.drawPath(path,paint)将Path画出来。
  * Path不仅可以使用Paint的填充模式和描边模式，也可以使用于画布剪裁或者画文字
  * //--------------------------------------------------------------------------
- * 画几何路径，需要确定画画的：1、范围；2、方向
- * 
+ * 画几何路径，需要确定画画的：1、范围；2、方向。
+ * 这里面主要区分：moveTo、lineTo、quadTo、cubicTo、arcTo几个方法的区别。
  * 
  */
 public class Path {
@@ -338,6 +338,9 @@ public class Path {
      *
      * @param x The x-coordinate of the start of a new contour
      * @param y The y-coordinate of the start of a new contour
+     * ---------------------------------------------------------------------------------------------
+     * 翻译：将下一个轮廓的起点设置在点(x,y)位置。
+     * 意即：不进行绘制，只用于移动画笔。
      */
     public void moveTo(float x, float y) {
         native_moveTo(mNativePath, x, y);
@@ -364,6 +367,8 @@ public class Path {
      *
      * @param x The x-coordinate of the end of a line
      * @param y The y-coordinate of the end of a line
+     * ---------------------------------------------------------------------------------------------
+     * 用于进行直线绘制。
      */
     public void lineTo(float x, float y) {
         isSimplePath = false;

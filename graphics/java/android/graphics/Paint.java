@@ -35,6 +35,14 @@ import libcore.util.NativeAllocationRegistry;
 /**
  * The Paint class holds the style and color information about how to draw
  * geometries, text and bitmaps.
+ * -----------------------------------------------------------------------------
+ * 名词翻译：geometries 几何、几何学；
+ * 画笔，本画笔主要绘画：图形、路径、文字。
+ * paint方法主要可抽象为两大部分：1、绘制图形和路径；2、绘制文字
+ *
+ *
+ *
+ *
  */
 public class Paint {
 
@@ -369,20 +377,29 @@ public class Paint {
     /**
      * The Cap specifies the treatment for the beginning and ending of
      * stroked lines and paths. The default is BUTT.
+     * 线冒类型，默认为无线冒butt。
+     * 冒多出来的那块区域就是线帽！就相当于给原来的直线加上一个帽子一样，所以叫线帽 。
      */
     public enum Cap {
         /**
          * The stroke ends with the path, and does not project beyond it.
+         * -----------------------------------------------------------------------------------------
+         * 名词解释:butt 屁股、臀部；beyond 以外；
+         * 不设置线冒：笔画以路径结束，不会超出它。
          */
         BUTT    (0),
         /**
          * The stroke projects out as a semicircle, with the center at the
          * end of the path.
+         * 设置为圆形线冒：笔画的外部会多出一个半圆形的部分，称之为圆形线冒。
          */
         ROUND   (1),
         /**
          * The stroke projects out as a square, with the center at the end
          * of the path.
+         * -----------------------------------------------------------------------------------------
+         *
+         * 设置圆形线冒：笔画的外部会多出一个方形的部分，称之为方形线冒。
          */
         SQUARE  (2);
 
@@ -395,18 +412,28 @@ public class Paint {
     /**
      * The Join specifies the treatment where lines and curve segments
      * join on a stroked path. The default is MITER.
+     * ---------------------------------------------------------------------------------------------
+     * 线段的连接样式。默认WieMITER
+     *
      */
     public enum Join {
         /**
          * The outer edges of a join meet at a sharp angle
+         * -----------------------------------------------------------------------------------------
+         * 名词解释：miter斜接，斜接规，斜槽规；edges边缘；angle角；
+         * 结合处为锐角
          */
         MITER   (0),
         /**
          * The outer edges of a join meet in a circular arc.
+         * -----------------------------------------------------------------------------------------
+         * 结合处为圆弧
          */
         ROUND   (1),
         /**
          * The outer edges of a join meet with a straight line
+         * -----------------------------------------------------------------------------------------
+         * 结合处为直线
          */
         BEVEL   (2);
 
@@ -656,6 +683,10 @@ public class Paint {
      * setFilterBitmap() to affect how colors are treated.
      *
      * @param aa true to set the antialias bit in the flags, false to clear it
+     * ------------------------------------------------------------------------------
+     * @see <a href="android绘图Paint.setAntiAlias()和Paint.setDither()方法的作用" http://blog.csdn.net/lovexieyuan520/article/details/50732023</a>
+     * 设置是否抗锯齿。抗锯齿会看着更加平滑，但是会有一定的性能消耗。
+     * @param aa true代表抗锯齿；false代表不抗锯齿。
      */
     public void setAntiAlias(boolean aa) {
         nSetAntiAlias(mNativePaint, aa);
@@ -686,6 +717,9 @@ public class Paint {
      * artifacts.
      *
      * @param dither true to set the dithering bit in flags, false to clear it
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：dither 高频振动
+     * 设置图像是否使用抖动处理：会使回执出来的图片颜色更加平滑和饱满、图像更加清晰。
      */
     public void setDither(boolean dither) {
         nSetDither(mNativePaint, dither);
@@ -842,6 +876,14 @@ public class Paint {
      * Fill).
      *
      * @param style The new style to set in the paint
+     * ---------------------------------------------------------------------------------
+     * 设置画笔样式。取值有三个:
+     * Paint.Style.FILL:填充内部
+     * Paint.Style.FILL_AND_STROKE:填充内部和描边
+     * Paint.Style.STROKE:仅描边
+     * 注意：STROKE 和 FILL_AND_STROKE
+     *
+     *
      */
     public void setStyle(Style style) {
         nSetStyle(mNativePaint, style.nativeInt);
@@ -869,6 +911,8 @@ public class Paint {
      * See the Color class for more details.
      *
      * @param color The new color (including alpha) to set in the paint.
+     * --------------------------------------------------------------------------------
+     * 设置画笔颜色
      */
     public void setColor(@ColorInt int color) {
         nSetColor(mNativePaint, color);
@@ -895,6 +939,8 @@ public class Paint {
      * value is outside of the range [0..255]
      *
      * @param a set the alpha component [0..255] of the paint's color.
+     * --------------------------------------------------------------------------
+     * 设置透明度
      */
     public void setAlpha(int a) {
         nSetAlpha(mNativePaint, a);
@@ -936,6 +982,8 @@ public class Paint {
      *
      * @param width set the paint's stroke width, used whenever the paint's
      *              style is Stroke or StrokeAndFill.
+     * ---------------------------------------------------------------------------------------------
+     * 设置画笔宽度
      */
     public void setStrokeWidth(float width) {
         nSetStrokeWidth(mNativePaint, width);
@@ -962,6 +1010,9 @@ public class Paint {
      *
      * @param miter set the miter limit on the paint, used whenever the paint's
      *              style is Stroke or StrokeAndFill.
+     * ---------------------------------------------------------------------------------------------
+     * 设置画笔的倾斜度
+     *
      */
     public void setStrokeMiter(float miter) {
         nSetStrokeMiter(mNativePaint, miter);
@@ -985,6 +1036,10 @@ public class Paint {
      *
      * @param cap set the paint's line cap style, used whenever the paint's
      *            style is Stroke or StrokeAndFill.
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：stroke笔画;  cap帽子；
+     * 设置先冒，冒多出来的那块区域就是线帽！就相当于给原来的直线加上一个帽子一样，所以叫线帽 。
+     * @param cap 线冒类型。
      */
     public void setStrokeCap(Cap cap) {
         nSetStrokeCap(mNativePaint, cap.nativeInt);
@@ -1004,6 +1059,12 @@ public class Paint {
      *
      * @param join set the paint's Join, used whenever the paint's style is
      *             Stroke or StrokeAndFill.
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：join 加入、连接，这里是连接的意思。例如：left join 左连接；right join 右连接；
+     *          whenever 每当；
+     * 设置线段的连接样式。参数Join是枚举类型，代表设置的连接样式。
+     * @param join 连接样式。
+     *
      */
     public void setStrokeJoin(Join join) {
         nSetStrokeJoin(mNativePaint, join.nativeInt);
@@ -1121,6 +1182,10 @@ public class Paint {
      *
      * @param effect May be null. The patheffect to be installed in the paint
      * @return       effect
+     * ---------------------------------------------------------------------------------------------
+     * 名词解释：path 路径；effect 效果；
+     * 设置或者清空路径样式效果。如果传入null则清空特效，显示出来会比较生硬。
+     *
      */
     public PathEffect setPathEffect(PathEffect effect) {
         long effectNative = 0;
