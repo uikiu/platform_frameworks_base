@@ -1,8 +1,13 @@
 package android.net.wifi;
 
+import android.Manifest;
 import android.annotation.NonNull;
+import android.annotation.RequiresPermission;
+import android.annotation.SuppressLint;
 import android.annotation.SystemApi;
+import android.annotation.SystemService;
 import android.content.Context;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +25,7 @@ import com.android.internal.util.Protocol;
 
 /** @hide */
 @SystemApi
+@SystemService(Context.WIFI_RTT_SERVICE)
 public class RttManager {
 
     private static final boolean DBG = false;
@@ -167,6 +173,7 @@ public class RttManager {
 
     /** @deprecated Use the new {@link android.net.wifi.RttManager#getRttCapabilities()} API.*/
     @Deprecated
+    @SuppressLint("Doclava125")
     public Capabilities getCapabilities() {
         return new Capabilities();
     }
@@ -307,6 +314,7 @@ public class RttManager {
              };
     }
 
+    @RequiresPermission(Manifest.permission.LOCATION_HARDWARE)
     public RttCapabilities getRttCapabilities() {
         synchronized (mCapabilitiesLock) {
             if (mRttCapabilities == null) {
@@ -660,10 +668,10 @@ public class RttManager {
         @Deprecated
         public int tx_rate;
 
-        /** average transmit rate. Unit (100kbps). */
+        /** average transmit rate. Unit (kbps). */
         public int txRate;
 
-        /** average receiving rate Unit (100kbps). */
+        /** average receiving rate Unit (kbps). */
         public int rxRate;
 
        /**
@@ -673,7 +681,7 @@ public class RttManager {
         @Deprecated
         public long rtt_ns;
 
-        /** average round trip time in 0.1 nano second. */
+        /** average round trip time in picoseconds. */
         public long rtt;
 
         /**
@@ -683,7 +691,7 @@ public class RttManager {
         @Deprecated
         public long rtt_sd_ns;
 
-        /** standard deviation of RTT in 0.1 ns. */
+        /** standard deviation of RTT in picoseconds. */
         public long rttStandardDeviation;
 
         /**
@@ -693,7 +701,7 @@ public class RttManager {
         @Deprecated
         public long rtt_spread_ns;
 
-        /** spread (i.e. max - min) RTT in 0.1 ns. */
+        /** spread (i.e. max - min) RTT in picoseconds. */
         public long rttSpread;
 
         /**
@@ -919,6 +927,51 @@ public class RttManager {
         public void onAborted();
     }
 
+    /**
+     * A parcelable that contains rtt client information.
+     *
+     * @hide
+     */
+    public static class RttClient implements Parcelable {
+        // Package name of RttClient.
+        private final String mPackageName;
+
+        public RttClient(String packageName) {
+            mPackageName = packageName;
+        }
+
+        protected RttClient(Parcel in) {
+            mPackageName = in.readString();
+        }
+
+        public static final Creator<RttManager.RttClient> CREATOR =
+                new Creator<RttManager.RttClient>() {
+            @Override
+            public RttManager.RttClient createFromParcel(Parcel in) {
+                return new RttManager.RttClient(in);
+            }
+
+            @Override
+            public RttManager.RttClient[] newArray(int size) {
+                return new RttManager.RttClient[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(mPackageName);
+        }
+
+        public String getPackageName() {
+            return mPackageName;
+        }
+    }
+
     private boolean rttParamSanity(RttParams params, int index) {
         if (mRttCapabilities == null) {
             if(getRttCapabilities() == null) {
@@ -990,7 +1043,7 @@ public class RttManager {
      * @exception throw IllegalArgumentException when params are illegal
      *            throw IllegalStateException when RttCapabilities do not exist
      */
-
+    @RequiresPermission(android.Manifest.permission.LOCATION_HARDWARE)
     public void startRanging(RttParams[] params, RttListener listener) {
         int index  = 0;
         for(RttParams rttParam : params) {
@@ -1006,6 +1059,7 @@ public class RttManager {
                 0, putListener(listener), parcelableParams);
     }
 
+    @RequiresPermission(android.Manifest.permission.LOCATION_HARDWARE)
     public void stopRanging(RttListener listener) {
         validateChannel();
         mAsyncChannel.sendMessage(CMD_OP_STOP_RANGING, 0, removeListener(listener));
@@ -1039,6 +1093,7 @@ public class RttManager {
      * @param callback Callback for responder enabling/disabling result.
      * @throws IllegalArgumentException If {@code callback} is null.
      */
+    @RequiresPermission(android.Manifest.permission.LOCATION_HARDWARE)
     public void enableResponder(ResponderCallback callback) {
         if (callback == null) {
             throw new IllegalArgumentException("callback cannot be null");
@@ -1058,6 +1113,7 @@ public class RttManager {
      * @param callback The same callback used for enabling responder.
      * @throws IllegalArgumentException If {@code callback} is null.
      */
+    @RequiresPermission(android.Manifest.permission.LOCATION_HARDWARE)
     public void disableResponder(ResponderCallback callback) {
         if (callback == null) {
             throw new IllegalArgumentException("callback cannot be null");
@@ -1179,6 +1235,8 @@ public class RttManager {
             CMD_OP_ENALBE_RESPONDER_SUCCEEDED           = BASE + 7;
     public static final int
             CMD_OP_ENALBE_RESPONDER_FAILED              = BASE + 8;
+    /** @hide */
+    public static final int CMD_OP_REG_BINDER           = BASE + 9;
 
     private static final int INVALID_KEY = 0;
 
@@ -1207,9 +1265,10 @@ public class RttManager {
         mContext = context;
         mService = service;
         Messenger messenger = null;
+        int[] key = new int[1];
         try {
             Log.d(TAG, "Get the messenger from " + mService);
-            messenger = mService.getMessenger();
+            messenger = mService.getMessenger(new Binder(), key);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1224,7 +1283,9 @@ public class RttManager {
         mAsyncChannel.connectSync(mContext, handler, messenger);
         // We cannot use fullyConnectSync because it sends the FULL_CONNECTION message
         // synchronously, which causes RttService to receive the wrong replyTo value.
-        mAsyncChannel.sendMessage(AsyncChannel.CMD_CHANNEL_FULL_CONNECTION);
+        mAsyncChannel.sendMessage(AsyncChannel.CMD_CHANNEL_FULL_CONNECTION,
+                new RttClient(context.getPackageName()));
+        mAsyncChannel.sendMessage(CMD_OP_REG_BINDER, key[0]);
     }
 
     private void validateChannel() {
@@ -1368,3 +1429,4 @@ public class RttManager {
     }
 
 }
+

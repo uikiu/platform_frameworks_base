@@ -31,7 +31,6 @@ import android.util.Slog;
 
 import com.android.server.ServiceThread;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -108,7 +107,8 @@ final class NetworkLogger {
             return false;
         }
         try {
-           if (mIpConnectivityMetrics.registerNetdEventCallback(mNetdEventCallback)) {
+           if (mIpConnectivityMetrics.addNetdEventCallback(
+                    INetdEventCallback.CALLBACK_CALLER_DEVICE_POLICY, mNetdEventCallback)) {
                 mHandlerThread = new ServiceThread(TAG, Process.THREAD_PRIORITY_BACKGROUND,
                         /* allowIo */ false);
                 mHandlerThread.start();
@@ -130,6 +130,8 @@ final class NetworkLogger {
         Log.d(TAG, "Stopping network logging");
         // stop the logging regardless of whether we fail to unregister listener
         mIsLoggingEnabled.set(false);
+        discardLogs();
+
         try {
             if (!checkIpConnectivityMetricsService()) {
                 // the IIpConnectivityMetrics service should have been present at this point
@@ -137,12 +139,47 @@ final class NetworkLogger {
                 // logging is forcefully disabled even if unregistering fails
                 return true;
             }
-            return mIpConnectivityMetrics.unregisterNetdEventCallback();
+            return mIpConnectivityMetrics.removeNetdEventCallback(
+                    INetdEventCallback.CALLBACK_CALLER_DEVICE_POLICY);
         } catch (RemoteException re) {
             Slog.wtf(TAG, "Failed to make remote calls to unregister the callback", re);
-        } finally {
-            mHandlerThread.quitSafely();
             return true;
+        } finally {
+            if (mHandlerThread != null) {
+                mHandlerThread.quitSafely();
+            }
+        }
+    }
+
+    /**
+     * If logs are being collected, keep collecting them but stop notifying the device owner that
+     * new logs are available (since they cannot be retrieved)
+     */
+    void pause() {
+        if (mNetworkLoggingHandler != null) {
+            mNetworkLoggingHandler.pause();
+        }
+    }
+
+    /**
+     * If logs are being collected, start notifying the device owner when logs are ready to be
+     * collected again (if it was paused).
+     * <p>If logging is enabled and there are logs ready to be retrieved, this method will attempt
+     * to notify the device owner. Therefore calling identity should be cleared before calling it
+     * (in case the method is called from a user other than the DO's user).
+     */
+    void resume() {
+        if (mNetworkLoggingHandler != null) {
+            mNetworkLoggingHandler.resume();
+        }
+    }
+
+    /**
+     * Discard all collected logs.
+     */
+    void discardLogs() {
+        if (mNetworkLoggingHandler != null) {
+            mNetworkLoggingHandler.discardLogs();
         }
     }
 

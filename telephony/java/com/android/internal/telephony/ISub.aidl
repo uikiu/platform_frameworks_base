@@ -18,7 +18,6 @@ package com.android.internal.telephony;
 
 import android.app.PendingIntent;
 import android.telephony.SubscriptionInfo;
-import com.android.internal.telephony.ISubscriptionListener;
 
 interface ISub {
     /**
@@ -92,6 +91,21 @@ interface ISub {
      * @return the maximum number of subscriptions this device will support at any one time.
      */
     int getActiveSubInfoCountMax();
+
+    /**
+     * @see android.telephony.SubscriptionManager#getAvailableSubscriptionInfoList
+     */
+    List<SubscriptionInfo> getAvailableSubscriptionInfoList(String callingPackage);
+
+    /**
+     * @see android.telephony.SubscriptionManager#getAccessibleSubscriptionInfoList
+     */
+    List<SubscriptionInfo> getAccessibleSubscriptionInfoList(String callingPackage);
+
+    /**
+     * @see android.telephony.SubscriptionManager#requestEmbeddedSubscriptionInfoListRefresh
+     */
+    oneway void requestEmbeddedSubscriptionInfoListRefresh();
 
     /**
      * Add a new SubscriptionInfo to subinfo database if needed

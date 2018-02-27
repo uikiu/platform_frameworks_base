@@ -39,21 +39,27 @@ import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.content.pm.PackageInstaller.SessionInfo;
 import android.content.pm.PackageInstaller.SessionParams;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.pm.VersionedPackage;
+import android.content.pm.dex.DexMetadataHelper;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.ShellCommand;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.text.TextUtils;
+import android.util.ArraySet;
 import android.util.PrintWriterPrinter;
 import com.android.internal.content.PackageHelper;
 import com.android.internal.util.SizedInputStream;
+import com.android.server.SystemConfig;
 
 import dalvik.system.DexFile;
 
@@ -75,6 +81,11 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
 class PackageManagerShellCommand extends ShellCommand {
+    /** Path for streaming APK content */
+    private static final String STDIN_PATH = "-";
+    /** Whether or not APK content must be streamed from stdin */
+    private static final boolean FORCE_STREAM_INSTALL = true;
+
     final IPackageManager mInterface;
     final private WeakHashMap<String, Resources> mResourceCache =
             new WeakHashMap<String, Resources>();
@@ -108,6 +119,8 @@ class PackageManagerShellCommand extends ShellCommand {
                     return runInstallRemove();
                 case "install-write":
                     return runInstallWrite();
+                case "install-existing":
+                    return runInstallExisting();
                 case "compile":
                     return runCompile();
                 case "reconcile-secondary-dex-files":
@@ -134,6 +147,14 @@ class PackageManagerShellCommand extends ShellCommand {
                     return runSuspend(false);
                 case "set-home-activity":
                     return runSetHomeActivity();
+                case "get-privapp-permissions":
+                    return runGetPrivappPermissions();
+                case "get-privapp-deny-permissions":
+                    return runGetPrivappDenyPermissions();
+                case "get-instantapp-resolver":
+                    return runGetInstantAppResolver();
+                case "has-feature":
+                    return runHasFeature();
                 default:
                     return handleDefaultCommands(cmd);
             }
@@ -143,37 +164,46 @@ class PackageManagerShellCommand extends ShellCommand {
         return -1;
     }
 
+    private void setParamsSize(InstallParams params, String inPath) {
+        // If we're forced to stream the package, the params size
+        // must be set via command-line argument. There's nothing
+        // to do here.
+        if (FORCE_STREAM_INSTALL) {
+            return;
+        }
+        final PrintWriter pw = getOutPrintWriter();
+        if (params.sessionParams.sizeBytes == -1 && !STDIN_PATH.equals(inPath)) {
+            File file = new File(inPath);
+            if (file.isFile()) {
+                try {
+                    ApkLite baseApk = PackageParser.parseApkLite(file, 0);
+                    PackageLite pkgLite = new PackageLite(null, baseApk, null, null, null, null,
+                            null, null);
+                    params.sessionParams.setSize(PackageHelper.calculateInstalledSize(
+                            pkgLite, false, params.sessionParams.abiOverride));
+                } catch (PackageParserException | IOException e) {
+                    pw.println("Error: Failed to parse APK file: " + file);
+                    throw new IllegalArgumentException(
+                            "Error: Failed to parse APK file: " + file, e);
+                }
+            } else {
+                pw.println("Error: Can't open non-file: " + inPath);
+                throw new IllegalArgumentException("Error: Can't open non-file: " + inPath);
+            }
+        }
+    }
+
     private int runInstall() throws RemoteException {
         final PrintWriter pw = getOutPrintWriter();
         final InstallParams params = makeInstallParams();
         final String inPath = getNextArg();
-        boolean installExternal =
-                (params.sessionParams.installFlags & PackageManager.INSTALL_EXTERNAL) != 0;
-        if (params.sessionParams.sizeBytes < 0 && inPath != null) {
-            File file = new File(inPath);
-            if (file.isFile()) {
-                if (installExternal) {
-                    try {
-                        ApkLite baseApk = PackageParser.parseApkLite(file, 0);
-                        PackageLite pkgLite = new PackageLite(null, baseApk, null, null, null);
-                        params.sessionParams.setSize(
-                                PackageHelper.calculateInstalledSize(pkgLite, false,
-                                        params.sessionParams.abiOverride));
-                    } catch (PackageParserException | IOException e) {
-                        pw.println("Error: Failed to parse APK file : " + e);
-                        return 1;
-                    }
-                } else {
-                    params.sessionParams.setSize(file.length());
-                }
-            }
-        }
 
+        setParamsSize(params, inPath);
         final int sessionId = doCreateSession(params.sessionParams,
                 params.installerPackageName, params.userId);
         boolean abandonSession = true;
         try {
-            if (inPath == null && params.sessionParams.sizeBytes == 0) {
+            if (inPath == null && params.sessionParams.sizeBytes == -1) {
                 pw.println("Error: must either specify a package size or an APK file");
                 return 1;
             }
@@ -283,6 +313,51 @@ class PackageManagerShellCommand extends ShellCommand {
         return doRemoveSplit(sessionId, splitName, true /*logSuccess*/);
     }
 
+    private int runInstallExisting() throws RemoteException {
+        final PrintWriter pw = getOutPrintWriter();
+        int userId = UserHandle.USER_SYSTEM;
+        int installFlags = 0;
+        String opt;
+        while ((opt = getNextOption()) != null) {
+            switch (opt) {
+                case "--user":
+                    userId = UserHandle.parseUserArg(getNextArgRequired());
+                    break;
+                case "--ephemeral":
+                case "--instant":
+                    installFlags |= PackageManager.INSTALL_INSTANT_APP;
+                    installFlags &= ~PackageManager.INSTALL_FULL_APP;
+                    break;
+                case "--full":
+                    installFlags &= ~PackageManager.INSTALL_INSTANT_APP;
+                    installFlags |= PackageManager.INSTALL_FULL_APP;
+                    break;
+                default:
+                    pw.println("Error: Unknown option: " + opt);
+                    return 1;
+            }
+        }
+
+        final String packageName = getNextArg();
+        if (packageName == null) {
+            pw.println("Error: package name not specified");
+            return 1;
+        }
+
+        try {
+            final int res = mInterface.installExistingPackageAsUser(packageName, userId,
+                    installFlags, PackageManager.INSTALL_REASON_UNKNOWN);
+            if (res == PackageManager.INSTALL_FAILED_INVALID_URI) {
+                throw new NameNotFoundException("Package " + packageName + " doesn't exist");
+            }
+            pw.println("Package " + packageName + " installed for user: " + userId);
+            return 0;
+        } catch (RemoteException | NameNotFoundException e) {
+            pw.println(e.toString());
+            return 1;
+        }
+    }
+
     private int runCompile() throws RemoteException {
         final PrintWriter pw = getOutPrintWriter();
         boolean checkProfiles = SystemProperties.getBoolean("dalvik.vm.usejitprofiles", false);
@@ -293,6 +368,7 @@ class PackageManagerShellCommand extends ShellCommand {
         String compilationReason = null;
         String checkProfilesRaw = null;
         boolean secondaryDex = false;
+        String split = null;
 
         String opt;
         while ((opt = getNextOption()) != null) {
@@ -323,6 +399,9 @@ class PackageManagerShellCommand extends ShellCommand {
                 case "--secondary-dex":
                     secondaryDex = true;
                     break;
+                case "--split":
+                    split = getNextArgRequired();
+                    break;
                 default:
                     pw.println("Error: Unknown option: " + opt);
                     return 1;
@@ -348,6 +427,16 @@ class PackageManagerShellCommand extends ShellCommand {
         if (compilerFilter == null && compilationReason == null) {
             pw.println("Cannot run without any of compilation filter (\"-m\") and compilation " +
                     "reason (\"-r\") at the same time");
+            return 1;
+        }
+
+        if (allPackages && split != null) {
+            pw.println("-a cannot be specified together with --split");
+            return 1;
+        }
+
+        if (secondaryDex && split != null) {
+            pw.println("--secondary-dex cannot be specified together with --split");
             return 1;
         }
 
@@ -390,16 +479,23 @@ class PackageManagerShellCommand extends ShellCommand {
         }
 
         List<String> failedPackages = new ArrayList<>();
+        int index = 0;
         for (String packageName : packageNames) {
             if (clearProfileData) {
                 mInterface.clearApplicationProfileData(packageName);
+            }
+
+            if (allPackages) {
+                pw.println(++index + "/" + packageNames.size() + ": " + packageName);
+                pw.flush();
             }
 
             boolean result = secondaryDex
                     ? mInterface.performDexOptSecondary(packageName,
                             targetCompilerFilter, forceCompilation)
                     : mInterface.performDexOptMode(packageName,
-                            checkProfiles, targetCompilerFilter, forceCompilation);
+                            checkProfiles, targetCompilerFilter, forceCompilation,
+                            true /* bootComplete */, split);
             if (!result) {
                 failedPackages.add(packageName);
             }
@@ -590,6 +686,9 @@ class PackageManagerShellCommand extends ShellCommand {
         boolean listDisabled = false, listEnabled = false;
         boolean listSystem = false, listThirdParty = false;
         boolean listInstaller = false;
+        boolean showUid = false;
+        boolean showVersionCode = false;
+        int uid = -1;
         int userId = UserHandle.USER_SYSTEM;
         try {
             String opt;
@@ -610,20 +709,27 @@ class PackageManagerShellCommand extends ShellCommand {
                     case "-l":
                         // old compat
                         break;
-                    case "-lf":
-                        showSourceDir = true;
-                        break;
                     case "-s":
                         listSystem = true;
                         break;
+                    case "-U":
+                        showUid = true;
+                        break;
                     case "-u":
-                        getFlags |= PackageManager.GET_UNINSTALLED_PACKAGES;
+                        getFlags |= PackageManager.MATCH_UNINSTALLED_PACKAGES;
                         break;
                     case "-3":
                         listThirdParty = true;
                         break;
+                    case "--show-versioncode":
+                        showVersionCode = true;
+                        break;
                     case "--user":
                         userId = UserHandle.parseUserArg(getNextArgRequired());
+                        break;
+                    case "--uid":
+                        showUid = true;
+                        uid = Integer.parseInt(getNextArgRequired());
                         break;
                     default:
                         pw.println("Error: Unknown option: " + opt);
@@ -648,6 +754,9 @@ class PackageManagerShellCommand extends ShellCommand {
             if (filter != null && !info.packageName.contains(filter)) {
                 continue;
             }
+            if (uid != -1 && info.applicationInfo.uid != uid) {
+                continue;
+            }
             final boolean isSystem =
                     (info.applicationInfo.flags&ApplicationInfo.FLAG_SYSTEM) != 0;
             if ((!listDisabled || !info.applicationInfo.enabled) &&
@@ -660,9 +769,17 @@ class PackageManagerShellCommand extends ShellCommand {
                     pw.print("=");
                 }
                 pw.print(info.packageName);
+                if (showVersionCode) {
+                    pw.print(" versionCode:");
+                    pw.print(info.applicationInfo.versionCode);
+                }
                 if (listInstaller) {
                     pw.print("  installer=");
                     pw.print(mInterface.getInstallerPackageName(info.packageName));
+                }
+                if (showUid) {
+                    pw.print(" uid:");
+                    pw.print(info.applicationInfo.uid);
                 }
                 pw.println();
             }
@@ -762,6 +879,7 @@ class PackageManagerShellCommand extends ShellCommand {
         final PrintWriter pw = getOutPrintWriter();
         int flags = 0;
         int userId = UserHandle.USER_ALL;
+        int versionCode = PackageManager.VERSION_CODE_HIGHEST;
 
         String opt;
         while ((opt = getNextOption()) != null) {
@@ -771,6 +889,9 @@ class PackageManagerShellCommand extends ShellCommand {
                     break;
                 case "--user":
                     userId = UserHandle.parseUserArg(getNextArgRequired());
+                    break;
+                case "--versionCode":
+                    versionCode = Integer.parseInt(getNextArgRequired());
                     break;
                 default:
                     pw.println("Error: Unknown option: " + opt);
@@ -795,7 +916,8 @@ class PackageManagerShellCommand extends ShellCommand {
             userId = UserHandle.USER_SYSTEM;
             flags |= PackageManager.DELETE_ALL_USERS;
         } else {
-            final PackageInfo info = mInterface.getPackageInfo(packageName, 0, userId);
+            final PackageInfo info = mInterface.getPackageInfo(packageName,
+                    PackageManager.MATCH_STATIC_SHARED_LIBRARIES, userId);
             if (info == null) {
                 pw.println("Failure [not installed for " + userId + "]");
                 return 1;
@@ -811,7 +933,8 @@ class PackageManagerShellCommand extends ShellCommand {
         }
 
         final LocalIntentReceiver receiver = new LocalIntentReceiver();
-        mInterface.getPackageInstaller().uninstall(packageName, null /*callerPackageName*/, flags,
+        mInterface.getPackageInstaller().uninstall(new VersionedPackage(packageName,
+                versionCode), null /*callerPackageName*/, flags,
                 receiver.getIntentSender(), userId);
 
         final Intent result = receiver.getResult();
@@ -918,7 +1041,7 @@ class PackageManagerShellCommand extends ShellCommand {
             throw new RuntimeException(e.getMessage(), e);
         }
         try {
-            ResolveInfo ri = mInterface.resolveIntent(intent, null, 0, mTargetUser);
+            ResolveInfo ri = mInterface.resolveIntent(intent, intent.getType(), 0, mTargetUser);
             PrintWriter pw = getOutPrintWriter();
             if (ri == null) {
                 pw.println("No activity found");
@@ -940,7 +1063,7 @@ class PackageManagerShellCommand extends ShellCommand {
             throw new RuntimeException(e.getMessage(), e);
         }
         try {
-            List<ResolveInfo> result = mInterface.queryIntentActivities(intent, null, 0,
+            List<ResolveInfo> result = mInterface.queryIntentActivities(intent, intent.getType(), 0,
                     mTargetUser).getList();
             PrintWriter pw = getOutPrintWriter();
             if (result == null || result.size() <= 0) {
@@ -974,7 +1097,7 @@ class PackageManagerShellCommand extends ShellCommand {
             throw new RuntimeException(e.getMessage(), e);
         }
         try {
-            List<ResolveInfo> result = mInterface.queryIntentServices(intent, null, 0,
+            List<ResolveInfo> result = mInterface.queryIntentServices(intent, intent.getType(), 0,
                     mTargetUser).getList();
             PrintWriter pw = getOutPrintWriter();
             if (result == null || result.size() <= 0) {
@@ -1008,7 +1131,7 @@ class PackageManagerShellCommand extends ShellCommand {
             throw new RuntimeException(e.getMessage(), e);
         }
         try {
-            List<ResolveInfo> result = mInterface.queryIntentReceivers(intent, null, 0,
+            List<ResolveInfo> result = mInterface.queryIntentReceivers(intent, intent.getType(), 0,
                     mTargetUser).getList();
             PrintWriter pw = getOutPrintWriter();
             if (result == null || result.size() <= 0) {
@@ -1091,13 +1214,24 @@ class PackageManagerShellCommand extends ShellCommand {
                     }
                     break;
                 case "-S":
-                    sessionParams.setSize(Long.parseLong(getNextArg()));
+                    final long sizeBytes = Long.parseLong(getNextArg());
+                    if (sizeBytes <= 0) {
+                        throw new IllegalArgumentException("Size must be positive");
+                    }
+                    sessionParams.setSize(sizeBytes);
                     break;
                 case "--abi":
                     sessionParams.abiOverride = checkAbiArgument(getNextArg());
                     break;
                 case "--ephemeral":
-                    sessionParams.installFlags |= PackageManager.INSTALL_EPHEMERAL;
+                case "--instantapp":
+                    sessionParams.setInstallAsInstantApp(true /*isInstantApp*/);
+                    break;
+                case "--full":
+                    sessionParams.setInstallAsInstantApp(false /*isInstantApp*/);
+                    break;
+                case "--preload":
+                    sessionParams.setInstallAsVirtualPreload();
                     break;
                 case "--user":
                     params.userId = UserHandle.parseUserArg(getNextArgRequired());
@@ -1156,6 +1290,68 @@ class PackageManagerShellCommand extends ShellCommand {
         }
     }
 
+    private int runGetPrivappPermissions() {
+        final String pkg = getNextArg();
+        if (pkg == null) {
+            System.err.println("Error: no package specified.");
+            return 1;
+        }
+        ArraySet<String> privAppPermissions = SystemConfig.getInstance().getPrivAppPermissions(pkg);
+        getOutPrintWriter().println(privAppPermissions == null
+                ? "{}" : privAppPermissions.toString());
+        return 0;
+    }
+
+    private int runGetPrivappDenyPermissions() {
+        final String pkg = getNextArg();
+        if (pkg == null) {
+            System.err.println("Error: no package specified.");
+            return 1;
+        }
+        ArraySet<String> privAppDenyPermissions =
+                SystemConfig.getInstance().getPrivAppDenyPermissions(pkg);
+        getOutPrintWriter().println(privAppDenyPermissions == null
+                ? "{}" : privAppDenyPermissions.toString());
+        return 0;
+    }
+
+    private int runGetInstantAppResolver() {
+        final PrintWriter pw = getOutPrintWriter();
+        try {
+            final ComponentName instantAppsResolver = mInterface.getInstantAppResolverComponent();
+            if (instantAppsResolver == null) {
+                return 1;
+            }
+            pw.println(instantAppsResolver.flattenToString());
+            return 0;
+        } catch (Exception e) {
+            pw.println(e.toString());
+            return 1;
+        }
+    }
+
+    private int runHasFeature() {
+        final PrintWriter err = getErrPrintWriter();
+        final String featureName = getNextArg();
+        if (featureName == null) {
+            err.println("Error: expected FEATURE name");
+            return 1;
+        }
+        final String versionString = getNextArg();
+        try {
+            final int version = (versionString == null) ? 0 : Integer.parseInt(versionString);
+            final boolean hasFeature = mInterface.hasSystemFeature(featureName, version);
+            getOutPrintWriter().println(hasFeature);
+            return hasFeature ? 0 : 1;
+        } catch (NumberFormatException e) {
+            err.println("Error: illegal version number " + versionString);
+            return 1;
+        } catch (RemoteException e) {
+            err.println(e.toString());
+            return 1;
+        }
+    }
+
     private static String checkAbiArgument(String abi) {
         if (TextUtils.isEmpty(abi)) {
             throw new IllegalArgumentException("Missing ABI argument");
@@ -1196,15 +1392,22 @@ class PackageManagerShellCommand extends ShellCommand {
     private int doWriteSplit(int sessionId, String inPath, long sizeBytes, String splitName,
             boolean logSuccess) throws RemoteException {
         final PrintWriter pw = getOutPrintWriter();
+        if (FORCE_STREAM_INSTALL && inPath != null && !STDIN_PATH.equals(inPath)) {
+            pw.println("Error: APK content must be streamed");
+            return 1;
+        }
+        if (STDIN_PATH.equals(inPath)) {
+            inPath = null;
+        } else if (inPath != null) {
+            final File file = new File(inPath);
+            if (file.isFile()) {
+                sizeBytes = file.length();
+            }
+        }
         if (sizeBytes <= 0) {
             pw.println("Error: must specify a APK size");
             return 1;
         }
-        if (inPath != null && !"-".equals(inPath)) {
-            pw.println("Error: APK content must be streamed");
-            return 1;
-        }
-        inPath = null;
 
         final SessionInfo info = mInterface.getPackageInstaller().getSessionInfo(sessionId);
 
@@ -1277,6 +1480,14 @@ class PackageManagerShellCommand extends ShellCommand {
         try {
             session = new PackageInstaller.Session(
                     mInterface.getPackageInstaller().openSession(sessionId));
+
+            // Sanity check that all .dm files match an apk.
+            // (The installer does not support standalone .dm files and will not process them.)
+            try {
+                DexMetadataHelper.validateDexPaths(session.getNames());
+            } catch (IllegalStateException | IOException e) {
+                pw.println("Warning [Could not validate the dex paths: " + e.getMessage() + "]");
+            }
 
             final LocalIntentReceiver receiver = new LocalIntentReceiver();
             session.commit(receiver.getIntentSender());
@@ -1445,7 +1656,7 @@ class PackageManagerShellCommand extends ShellCommand {
         pw.println("  help");
         pw.println("    Print this help text.");
         pw.println("");
-        pw.println("  compile [-m MODE | -r REASON] [-f] [-c]");
+        pw.println("  compile [-m MODE | -r REASON] [-f] [-c] [--split SPLIT_NAME]");
         pw.println("          [--reset] [--check-prof (true | false)] (-a | TARGET-PACKAGE)");
         pw.println("    Trigger compilation of TARGET-PACKAGE or all packages if \"-a\".");
         pw.println("    Options:");
@@ -1454,10 +1665,10 @@ class PackageManagerShellCommand extends ShellCommand {
         pw.println("      -f: force compilation even if not needed");
         pw.println("      -m: select compilation mode");
         pw.println("          MODE is one of the dex2oat compiler filters:");
-        pw.println("            verify-none");
-        pw.println("            verify-at-runtime");
-        pw.println("            verify-profile");
-        pw.println("            interpret-only");
+        pw.println("            assume-verified");
+        pw.println("            extract");
+        pw.println("            verify");
+        pw.println("            quicken");
         pw.println("            space-profile");
         pw.println("            space");
         pw.println("            speed-profile");
@@ -1471,6 +1682,7 @@ class PackageManagerShellCommand extends ShellCommand {
         pw.println("      --reset: restore package to its post-install state");
         pw.println("      --check-prof (true | false): look at profiles when doing dexopt?");
         pw.println("      --secondary-dex: compile app secondary dex files");
+        pw.println("      --split SPLIT: compile only the given split name");
         pw.println("  bg-dexopt-job");
         pw.println("    Execute the background optimizations immediately.");
         pw.println("    Note that the command only runs the background optimizer logic. It may");
@@ -1485,7 +1697,8 @@ class PackageManagerShellCommand extends ShellCommand {
         pw.println("      -f: dump the name of the .apk file containing the test package");
         pw.println("  list libraries");
         pw.println("    Prints all system libraries.");
-        pw.println("  list packages [-f] [-d] [-e] [-s] [-3] [-i] [-u] [--user USER_ID] [FILTER]");
+        pw.println("  list packages [-f] [-d] [-e] [-s] [-3] [-i] [-l] [-u] [-U] "
+                + "[--uid UID] [--user USER_ID] [FILTER]");
         pw.println("    Prints all packages; optionally only those whose name contains");
         pw.println("    the text in FILTER.");
         pw.println("    Options:");
@@ -1495,7 +1708,11 @@ class PackageManagerShellCommand extends ShellCommand {
         pw.println("      -s: filter to only show system packages");
         pw.println("      -3: filter to only show third party packages");
         pw.println("      -i: see the installer for the packages");
+        pw.println("      -l: ignored (used for compatibility with older releases)");
+        pw.println("      -U: also show the package UID");
         pw.println("      -u: also include uninstalled packages");
+        pw.println("      --uid UID: filter to only show packages with the given UID");
+        pw.println("      --user USER_ID: only list packages belonging to the given user");
         pw.println("  reconcile-secondary-dex-files TARGET-PACKAGE");
         pw.println("    Reconciles the package secondary dex files with the generated oat files.");
         pw.println("  list permission-groups");
@@ -1525,6 +1742,9 @@ class PackageManagerShellCommand extends ShellCommand {
         pw.println("    Unsuspends the specified package (as user).");
         pw.println("  set-home-activity [--user USER_ID] TARGET-COMPONENT");
         pw.println("    set the default home activity (aka launcher).");
+        pw.println("  has-feature FEATURE_NAME [version]");
+        pw.println("   prints true and returns exit status 0 when system has a FEATURE_NAME,");
+        pw.println("   otherwise prints false and returns exit status 1");
         pw.println();
         Intent.printIntentArgsHelp(pw , "");
     }
@@ -1534,7 +1754,7 @@ class PackageManagerShellCommand extends ShellCommand {
 
         private IIntentSender.Stub mLocalSender = new IIntentSender.Stub() {
             @Override
-            public void send(int code, Intent intent, String resolvedType,
+            public void send(int code, Intent intent, String resolvedType, IBinder whitelistToken,
                     IIntentReceiver finishedReceiver, String requiredPermission, Bundle options) {
                 try {
                     mResult.offer(intent, 5, TimeUnit.SECONDS);

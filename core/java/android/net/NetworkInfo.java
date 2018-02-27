@@ -16,8 +16,8 @@
 
 package android.net;
 
-import android.os.Parcelable;
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.android.internal.annotations.VisibleForTesting;
 
@@ -121,13 +121,13 @@ public class NetworkInfo implements Parcelable {
     private boolean mIsFailover;
     private boolean mIsAvailable;
     private boolean mIsRoaming;
-    private boolean mIsMetered;
 
     /**
      * @hide
      */
     public NetworkInfo(int type, int subtype, String typeName, String subtypeName) {
-        if (!ConnectivityManager.isNetworkTypeValid(type)) {
+        if (!ConnectivityManager.isNetworkTypeValid(type)
+                && type != ConnectivityManager.TYPE_NONE) {
             throw new IllegalArgumentException("Invalid network type: " + type);
         }
         mNetworkType = type;
@@ -153,7 +153,6 @@ public class NetworkInfo implements Parcelable {
                 mIsFailover = source.mIsFailover;
                 mIsAvailable = source.mIsAvailable;
                 mIsRoaming = source.mIsRoaming;
-                mIsMetered = source.mIsMetered;
             }
         }
     }
@@ -306,11 +305,17 @@ public class NetworkInfo implements Parcelable {
     }
 
     /**
-     * Indicates whether the device is currently roaming on this network.
-     * When {@code true}, it suggests that use of data on this network
-     * may incur extra costs.
+     * Indicates whether the device is currently roaming on this network. When
+     * {@code true}, it suggests that use of data on this network may incur
+     * extra costs.
+     *
      * @return {@code true} if roaming is in effect, {@code false} otherwise.
+     * @deprecated Callers should switch to checking
+     *             {@link NetworkCapabilities#NET_CAPABILITY_NOT_ROAMING}
+     *             instead, since that handles more complex situations, such as
+     *             VPNs.
      */
+    @Deprecated
     public boolean isRoaming() {
         synchronized (this) {
             return mIsRoaming;
@@ -319,34 +324,10 @@ public class NetworkInfo implements Parcelable {
 
     /** {@hide} */
     @VisibleForTesting
+    @Deprecated
     public void setRoaming(boolean isRoaming) {
         synchronized (this) {
             mIsRoaming = isRoaming;
-        }
-    }
-
-    /**
-     * Returns if this network is metered. A network is classified as metered
-     * when the user is sensitive to heavy data usage on that connection due to
-     * monetary costs, data limitations or battery/performance issues. You
-     * should check this before doing large data transfers, and warn the user or
-     * delay the operation until another network is available.
-     *
-     * @return {@code true} if large transfers should be avoided, otherwise
-     *         {@code false}.
-     * @hide
-     */
-    public boolean isMetered() {
-        synchronized (this) {
-            return mIsMetered;
-        }
-    }
-
-    /** {@hide} */
-    @VisibleForTesting
-    public void setMetered(boolean isMetered) {
-        synchronized (this) {
-            mIsMetered = isMetered;
         }
     }
 
@@ -433,7 +414,6 @@ public class NetworkInfo implements Parcelable {
             append(", failover: ").append(mIsFailover).
             append(", available: ").append(mIsAvailable).
             append(", roaming: ").append(mIsRoaming).
-            append(", metered: ").append(mIsMetered).
             append("]");
             return builder.toString();
         }
@@ -456,7 +436,6 @@ public class NetworkInfo implements Parcelable {
             dest.writeInt(mIsFailover ? 1 : 0);
             dest.writeInt(mIsAvailable ? 1 : 0);
             dest.writeInt(mIsRoaming ? 1 : 0);
-            dest.writeInt(mIsMetered ? 1 : 0);
             dest.writeString(mReason);
             dest.writeString(mExtraInfo);
         }
@@ -475,7 +454,6 @@ public class NetworkInfo implements Parcelable {
             netInfo.mIsFailover = in.readInt() != 0;
             netInfo.mIsAvailable = in.readInt() != 0;
             netInfo.mIsRoaming = in.readInt() != 0;
-            netInfo.mIsMetered = in.readInt() != 0;
             netInfo.mReason = in.readString();
             netInfo.mExtraInfo = in.readString();
             return netInfo;

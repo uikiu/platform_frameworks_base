@@ -31,7 +31,7 @@
 #include <SkCanvas.h>
 #include <SkColor.h>
 #include <SkPaint.h>
-#include <SkXfermode.h>
+#include <SkBlendMode.h>
 #pragma GCC diagnostic pop
 
 namespace android {
@@ -108,7 +108,7 @@ PointerController::PointerController(const sp<PointerControllerPolicyInterface>&
     mLocked.pointerAlpha = 0.0f; // pointer is initially faded
     mLocked.pointerSprite = mSpriteController->createSprite();
     mLocked.pointerIconChanged = false;
-    mLocked.requestedPointerType= mPolicy->getDefaultPointerIconId();
+    mLocked.requestedPointerType = mPolicy->getDefaultPointerIconId();
 
     mLocked.animationFrameIndex = 0;
     mLocked.lastFrameUpdatedTime = 0;
@@ -551,18 +551,20 @@ bool PointerController::doFadingAnimationLocked(nsecs_t timestamp) {
     }
 
     // Animate spots that are fading out and being removed.
-    for (size_t i = 0; i < mLocked.spots.size(); i++) {
+    for (size_t i = 0; i < mLocked.spots.size();) {
         Spot* spot = mLocked.spots.itemAt(i);
         if (spot->id == Spot::INVALID_ID) {
             spot->alpha -= float(frameDelay) / SPOT_FADE_DURATION;
             if (spot->alpha <= 0) {
-                mLocked.spots.removeAt(i--);
+                mLocked.spots.removeAt(i);
                 releaseSpotLocked(spot);
+                continue;
             } else {
                 spot->sprite->setAlpha(spot->alpha);
                 keepAnimating = true;
             }
         }
+        ++i;
     }
     return keepAnimating;
 }
@@ -631,7 +633,7 @@ void PointerController::updatePointerLocked() {
 
     if (mLocked.pointerIconChanged || mLocked.presentationChanged) {
         if (mLocked.presentation == PRESENTATION_POINTER) {
-            if (mLocked.requestedPointerType== mPolicy->getDefaultPointerIconId()) {
+            if (mLocked.requestedPointerType == mPolicy->getDefaultPointerIconId()) {
                 mLocked.pointerSprite->setIcon(mLocked.pointerIcon);
             } else {
                 std::map<int32_t, SpriteIcon>::const_iterator iter =

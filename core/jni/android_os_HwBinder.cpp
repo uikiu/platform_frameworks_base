@@ -23,7 +23,9 @@
 #include "android_os_HwParcel.h"
 #include "android_os_HwRemoteBinder.h"
 
-#include <JNIHelp.h>
+#include <cstring>
+
+#include <nativehelper/JNIHelp.h>
 #include <android/hidl/manager/1.0/IServiceManager.h>
 #include <android/hidl/base/1.0/IBase.h>
 #include <android/hidl/base/1.0/BpHwBase.h>
@@ -33,13 +35,17 @@
 #include <hidl/HidlTransportSupport.h>
 #include <hwbinder/ProcessState.h>
 #include <nativehelper/ScopedLocalRef.h>
+#include <nativehelper/ScopedUtfChars.h>
 #include <vintf/parse_string.h>
+#include <utils/misc.h>
 
 #include "core_jni_helpers.h"
 
 using android::AndroidRuntime;
 using android::hardware::hidl_vec;
 using android::hardware::hidl_string;
+using android::hardware::IPCThreadState;
+using android::hardware::ProcessState;
 template<typename T>
 using Return = android::hardware::Return<T>;
 
@@ -55,6 +61,29 @@ static struct fields_t {
     jfieldID contextID;
     jmethodID onTransactID;
 } gFields;
+
+struct JHwBinderHolder : public RefBase {
+    JHwBinderHolder() {}
+
+    sp<JHwBinder> get(JNIEnv *env, jobject obj) {
+        Mutex::Autolock autoLock(mLock);
+
+        sp<JHwBinder> binder = mBinder.promote();
+
+        if (binder == NULL) {
+            binder = new JHwBinder(env, obj);
+            mBinder = binder;
+        }
+
+        return binder;
+    }
+
+private:
+    Mutex mLock;
+    wp<JHwBinder> mBinder;
+
+    DISALLOW_COPY_AND_ASSIGN(JHwBinderHolder);
+};
 
 // static
 void JHwBinder::InitClass(JNIEnv *env) {
@@ -73,10 +102,10 @@ void JHwBinder::InitClass(JNIEnv *env) {
 }
 
 // static
-sp<JHwBinder> JHwBinder::SetNativeContext(
-        JNIEnv *env, jobject thiz, const sp<JHwBinder> &context) {
-    sp<JHwBinder> old =
-        (JHwBinder *)env->GetLongField(thiz, gFields.contextID);
+sp<JHwBinderHolder> JHwBinder::SetNativeContext(
+        JNIEnv *env, jobject thiz, const sp<JHwBinderHolder> &context) {
+    sp<JHwBinderHolder> old =
+        (JHwBinderHolder *)env->GetLongField(thiz, gFields.contextID);
 
     if (context != NULL) {
         context->incStrong(NULL /* id */);
@@ -92,27 +121,27 @@ sp<JHwBinder> JHwBinder::SetNativeContext(
 }
 
 // static
-sp<JHwBinder> JHwBinder::GetNativeContext(
+sp<JHwBinder> JHwBinder::GetNativeBinder(
         JNIEnv *env, jobject thiz) {
-    return (JHwBinder *)env->GetLongField(thiz, gFields.contextID);
+    JHwBinderHolder *holder =
+        reinterpret_cast<JHwBinderHolder *>(
+                env->GetLongField(thiz, gFields.contextID));
+
+    return holder->get(env, thiz);
 }
 
 JHwBinder::JHwBinder(JNIEnv *env, jobject thiz) {
     jclass clazz = env->GetObjectClass(thiz);
     CHECK(clazz != NULL);
 
-    mClass = (jclass)env->NewGlobalRef(clazz);
-    mObject = env->NewWeakGlobalRef(thiz);
+    mObject = env->NewGlobalRef(thiz);
 }
 
 JHwBinder::~JHwBinder() {
     JNIEnv *env = AndroidRuntime::getJNIEnv();
 
-    env->DeleteWeakGlobalRef(mObject);
+    env->DeleteGlobalRef(mObject);
     mObject = NULL;
-
-    env->DeleteGlobalRef(mClass);
-    mClass = NULL;
 }
 
 status_t JHwBinder::onTransact(
@@ -151,13 +180,15 @@ status_t JHwBinder::onTransact(
     if (env->ExceptionCheck()) {
         jthrowable excep = env->ExceptionOccurred();
         env->ExceptionDescribe();
+        env->ExceptionClear();
 
+        // It is illegal to call IsInstanceOf if there is a pending exception.
+        // Attempting to do so results in a JniAbort which crashes the entire process.
         if (env->IsInstanceOf(excep, gErrorClass)) {
             /* It's an error */
             LOG(ERROR) << "Forcefully exiting";
             exit(1);
         } else {
-            env->ExceptionClear();
             LOG(ERROR) << "Uncaught exception!";
         }
 
@@ -199,10 +230,10 @@ status_t JHwBinder::onTransact(
 using namespace android;
 
 static void releaseNativeContext(void *nativeContext) {
-    sp<JHwBinder> binder = (JHwBinder *)nativeContext;
+    sp<JHwBinderHolder> context = static_cast<JHwBinderHolder *>(nativeContext);
 
-    if (binder != NULL) {
-        binder->decStrong(NULL /* id */);
+    if (context != NULL) {
+        context->decStrong(NULL /* id */);
     }
 }
 
@@ -213,8 +244,7 @@ static jlong JHwBinder_native_init(JNIEnv *env) {
 }
 
 static void JHwBinder_native_setup(JNIEnv *env, jobject thiz) {
-    sp<JHwBinder> context = new JHwBinder(env, thiz);
-
+    sp<JHwBinderHolder> context = new JHwBinderHolder;
     JHwBinder::SetNativeContext(env, thiz, context);
 }
 
@@ -232,17 +262,12 @@ static void JHwBinder_native_registerService(
         JNIEnv *env,
         jobject thiz,
         jstring serviceNameObj) {
-    if (serviceNameObj == NULL) {
-        jniThrowException(env, "java/lang/NullPointerException", NULL);
-        return;
+    ScopedUtfChars str(env, serviceNameObj);
+    if (str.c_str() == nullptr) {
+        return;  // NPE will be pending.
     }
 
-    const char *serviceName = env->GetStringUTFChars(serviceNameObj, NULL);
-    if (serviceName == NULL) {
-        return;  // XXX exception already pending?
-    }
-
-    sp<hardware::IBinder> binder = JHwBinder::GetNativeContext(env, thiz);
+    sp<hardware::IBinder> binder = JHwBinder::GetNativeBinder(env, thiz);
 
     /* TODO(b/33440494) this is not right */
     sp<hidl::base::V1_0::IBase> base = new hidl::base::V1_0::BpHwBase(binder);
@@ -255,15 +280,12 @@ static void JHwBinder_native_registerService(
         return;
     }
 
-    Return<bool> ret = manager->add(serviceName, base);
-
-    env->ReleaseStringUTFChars(serviceNameObj, serviceName);
-    serviceName = NULL;
+    Return<bool> ret = manager->add(str.c_str(), base);
 
     bool ok = ret.isOk() && ret;
 
     if (ok) {
-        LOG(INFO) << "Starting thread pool.";
+        LOG(INFO) << "HwBinder: Starting thread pool for " << str.c_str();
         ::android::hardware::ProcessState::self()->startThreadPool();
     }
 
@@ -274,88 +296,57 @@ static jobject JHwBinder_native_getService(
         JNIEnv *env,
         jclass /* clazzObj */,
         jstring ifaceNameObj,
-        jstring serviceNameObj) {
+        jstring serviceNameObj,
+        jboolean retry) {
 
     using ::android::hidl::base::V1_0::IBase;
-    using ::android::hidl::manager::V1_0::IServiceManager;
+    using ::android::hardware::details::getRawServiceInternal;
 
-    if (ifaceNameObj == NULL) {
-        jniThrowException(env, "java/lang/NullPointerException", NULL);
-        return NULL;
-    }
-    if (serviceNameObj == NULL) {
-        jniThrowException(env, "java/lang/NullPointerException", NULL);
-        return NULL;
-    }
-
-    auto manager = hardware::defaultServiceManager();
-
-    if (manager == nullptr) {
-        LOG(ERROR) << "Could not get hwservicemanager.";
-        signalExceptionForError(env, UNKNOWN_ERROR, true /* canThrowRemoteException */);
-        return NULL;
+    std::string ifaceName;
+    {
+        ScopedUtfChars str(env, ifaceNameObj);
+        if (str.c_str() == nullptr) {
+            return nullptr;  // NPE will be pending.
+        }
+        ifaceName = str.c_str();
     }
 
-    const char *ifaceNameCStr = env->GetStringUTFChars(ifaceNameObj, NULL);
-    if (ifaceNameCStr == NULL) {
-        return NULL; // XXX exception already pending?
-    }
-    std::string ifaceName(ifaceNameCStr);
-    env->ReleaseStringUTFChars(ifaceNameObj, ifaceNameCStr);
-    ::android::hardware::hidl_string ifaceNameHStr;
-    ifaceNameHStr.setToExternal(ifaceName.c_str(), ifaceName.size());
-
-    const char *serviceNameCStr = env->GetStringUTFChars(serviceNameObj, NULL);
-    if (serviceNameCStr == NULL) {
-        return NULL; // XXX exception already pending?
-    }
-    std::string serviceName(serviceNameCStr);
-    env->ReleaseStringUTFChars(serviceNameObj, serviceNameCStr);
-    ::android::hardware::hidl_string serviceNameHStr;
-    serviceNameHStr.setToExternal(serviceName.c_str(), serviceName.size());
-
-    LOG(INFO) << "Looking for service "
-              << ifaceName
-              << "/"
-              << serviceName;
-
-    Return<IServiceManager::Transport> transportRet =
-            manager->getTransport(ifaceNameHStr, serviceNameHStr);
-
-    if (!transportRet.isOk()) {
-        signalExceptionForError(env, UNKNOWN_ERROR, true /* canThrowRemoteException */);
-        return NULL;
+    std::string serviceName;
+    {
+        ScopedUtfChars str(env, serviceNameObj);
+        if (str.c_str() == nullptr) {
+            return nullptr;  // NPE will be pending.
+        }
+        serviceName = str.c_str();
     }
 
-    IServiceManager::Transport transport = transportRet;
-
-    if (   transport != IServiceManager::Transport::EMPTY
-        && transport != IServiceManager::Transport::HWBINDER) {
-        LOG(ERROR) << "service " << ifaceName << " declares transport method "
-                   << toString(transport) << " but framework expects hwbinder.";
-        signalExceptionForError(env, UNKNOWN_ERROR, true /* canThrowRemoteException */);
-        return NULL;
-    }
-
-    Return<sp<hidl::base::V1_0::IBase>> ret = manager->get(ifaceNameHStr, serviceNameHStr);
-
-    if (!ret.isOk()) {
-        signalExceptionForError(env, UNKNOWN_ERROR, true /* canThrowRemoteException */);
-        return NULL;
-    }
-
-    sp<hardware::IBinder> service = hardware::toBinder<
-            hidl::base::V1_0::IBase, hidl::base::V1_0::BpHwBase>(ret);
+    sp<IBase> ret = getRawServiceInternal(ifaceName, serviceName, retry /* retry */, false /* getStub */);
+    sp<hardware::IBinder> service = hardware::toBinder<hidl::base::V1_0::IBase>(ret);
 
     if (service == NULL) {
         signalExceptionForError(env, NAME_NOT_FOUND);
         return NULL;
     }
 
-    LOG(INFO) << "Starting thread pool.";
+    LOG(INFO) << "HwBinder: Starting thread pool for " << serviceName << "::" << ifaceName;
     ::android::hardware::ProcessState::self()->startThreadPool();
 
     return JHwRemoteBinder::NewObject(env, service);
+}
+
+void JHwBinder_native_configureRpcThreadpool(JNIEnv *, jclass,
+        jlong maxThreads, jboolean callerWillJoin) {
+    CHECK(maxThreads > 0);
+    ProcessState::self()->setThreadPoolConfiguration(maxThreads, callerWillJoin /*callerJoinsPool*/);
+}
+
+void JHwBinder_native_joinRpcThreadpool() {
+    IPCThreadState::self()->joinThreadPool();
+}
+
+static void JHwBinder_report_sysprop_change(JNIEnv * /*env*/, jclass /*clazz*/)
+{
+    report_sysprop_change();
 }
 
 static JNINativeMethod gMethods[] = {
@@ -369,8 +360,17 @@ static JNINativeMethod gMethods[] = {
     { "registerService", "(Ljava/lang/String;)V",
         (void *)JHwBinder_native_registerService },
 
-    { "getService", "(Ljava/lang/String;Ljava/lang/String;)L" PACKAGE_PATH "/IHwBinder;",
+    { "getService", "(Ljava/lang/String;Ljava/lang/String;Z)L" PACKAGE_PATH "/IHwBinder;",
         (void *)JHwBinder_native_getService },
+
+    { "configureRpcThreadpool", "(JZ)V",
+        (void *)JHwBinder_native_configureRpcThreadpool },
+
+    { "joinRpcThreadpool", "()V",
+        (void *)JHwBinder_native_joinRpcThreadpool },
+
+    { "native_report_sysprop_change", "()V",
+        (void *)JHwBinder_report_sysprop_change },
 };
 
 namespace android {

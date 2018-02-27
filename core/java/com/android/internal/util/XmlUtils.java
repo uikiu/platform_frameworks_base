@@ -1594,6 +1594,9 @@ public class XmlUtils {
 
     public static int readIntAttribute(XmlPullParser in, String name, int defaultValue) {
         final String value = in.getAttributeValue(null, name);
+        if (TextUtils.isEmpty(value)) {
+            return defaultValue;
+        }
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
@@ -1617,6 +1620,9 @@ public class XmlUtils {
 
     public static long readLongAttribute(XmlPullParser in, String name, long defaultValue) {
         final String value = in.getAttributeValue(null, name);
+        if (TextUtils.isEmpty(value)) {
+            return defaultValue;
+        }
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException e) {
@@ -1688,10 +1694,10 @@ public class XmlUtils {
         return in.getAttributeValue(null, name);
     }
 
-    public static void writeStringAttribute(XmlSerializer out, String name, String value)
+    public static void writeStringAttribute(XmlSerializer out, String name, CharSequence value)
             throws IOException {
         if (value != null) {
-            out.attribute(null, name, value);
+            out.attribute(null, name, value.toString());
         }
     }
 

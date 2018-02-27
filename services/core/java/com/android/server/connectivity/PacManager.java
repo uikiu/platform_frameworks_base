@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.ProxyInfo;
+import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -53,12 +54,12 @@ import java.net.URLConnection;
  * @hide
  */
 public class PacManager {
-    public static final String PAC_PACKAGE = "com.android.pacprocessor";
-    public static final String PAC_SERVICE = "com.android.pacprocessor.PacService";
-    public static final String PAC_SERVICE_NAME = "com.android.net.IProxyService";
+    private static final String PAC_PACKAGE = "com.android.pacprocessor";
+    private static final String PAC_SERVICE = "com.android.pacprocessor.PacService";
+    private static final String PAC_SERVICE_NAME = "com.android.net.IProxyService";
 
-    public static final String PROXY_PACKAGE = "com.android.proxyhandler";
-    public static final String PROXY_SERVICE = "com.android.proxyhandler.ProxyService";
+    private static final String PROXY_PACKAGE = "com.android.proxyhandler";
+    private static final String PROXY_SERVICE = "com.android.proxyhandler.ProxyService";
 
     private static final String TAG = "PacManager";
 
@@ -70,8 +71,6 @@ public class PacManager {
     private static final int DELAY_LONG = 4;
     private static final long MAX_PAC_SIZE = 20 * 1000 * 1000;
 
-    /** Keep these values up-to-date with ProxyService.java */
-    public static final String KEY_PROXY = "keyProxy";
     private String mCurrentPac;
     @GuardedBy("mProxyLock")
     private volatile Uri mPacUrl = Uri.EMPTY;
@@ -110,11 +109,14 @@ public class PacManager {
             String file;
             final Uri pacUrl = mPacUrl;
             if (Uri.EMPTY.equals(pacUrl)) return;
+            final int oldTag = TrafficStats.getAndSetThreadStatsTag(TrafficStats.TAG_SYSTEM_PAC);
             try {
                 file = get(pacUrl);
             } catch (IOException ioe) {
                 file = null;
                 Log.w(TAG, "Failed to load PAC file: " + ioe);
+            } finally {
+                TrafficStats.setThreadStatsTag(oldTag);
             }
             if (file != null) {
                 synchronized (mProxyLock) {

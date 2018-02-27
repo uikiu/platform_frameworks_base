@@ -84,7 +84,7 @@ public class DiscoverySessionCallback {
 
     /**
      * Called when a discovery session (publish or subscribe) terminates. Termination may be due
-     * to user-request (either directly through {@link DiscoverySession#destroy()} or
+     * to user-request (either directly through {@link DiscoverySession#close()} or
      * application-specified expiration, e.g. {@link PublishConfig.Builder#setTtlSec(int)}
      * or {@link SubscribeConfig.Builder#setTtlSec(int)}).
      */
@@ -100,7 +100,12 @@ public class DiscoverySessionCallback {
      * @param serviceSpecificInfo The service specific information (arbitrary
      *            byte array) provided by the peer as part of its discovery
      *            configuration.
-     * @param matchFilter The filter which resulted in this service discovery.
+     * @param matchFilter The filter which resulted in this service discovery. For
+     * {@link PublishConfig#PUBLISH_TYPE_UNSOLICITED},
+     * {@link SubscribeConfig#SUBSCRIBE_TYPE_PASSIVE} discovery sessions this is the publisher's
+     *                    match filter. For {@link PublishConfig#PUBLISH_TYPE_SOLICITED},
+     *                    {@link SubscribeConfig#SUBSCRIBE_TYPE_ACTIVE} discovery sessions this
+     *                    is the subscriber's match filter.
      */
     public void onServiceDiscovered(PeerHandle peerHandle,
             byte[] serviceSpecificInfo, List<byte[]> matchFilter) {

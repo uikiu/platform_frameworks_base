@@ -112,7 +112,7 @@ public class VoicemailContract {
     /** @hide */
     @SdkConstant(SdkConstantType.BROADCAST_INTENT_ACTION)
     public static final String ACTION_VOICEMAIL_SMS_RECEIVED =
-            "android.intent.action.VOICEMAIL_SMS_RECEIVED";
+            "com.android.internal.provider.action.VOICEMAIL_SMS_RECEIVED";
 
     /**
      * Extra in {@link #ACTION_VOICEMAIL_SMS_RECEIVED} indicating the content of the SMS.
@@ -232,6 +232,39 @@ public class VoicemailContract {
          */
         public static final String TRANSCRIPTION = "transcription";
         /**
+         * The state of the voicemail transcription.
+         * <P> Possible values: {@link #TRANSCRIPTION_NOT_STARTED},
+         * {@link #TRANSCRIPTION_IN_PROGRESS}, {@link #TRANSCRIPTION_FAILED},
+         * {@link #TRANSCRIPTION_AVAILABLE}.
+         * <P>Type: INTEGER</P>
+         * @hide
+         */
+        public static final String TRANSCRIPTION_STATE = "transcription_state";
+        /**
+         * Value of {@link #TRANSCRIPTION_STATE} when the voicemail transcription has not yet
+         * been attempted.
+         * @hide
+         */
+        public static final int TRANSCRIPTION_NOT_STARTED = 0;
+        /**
+         * Value of {@link #TRANSCRIPTION_STATE} when the voicemail transcription has begun
+         * but is not yet complete.
+         * @hide
+         */
+        public static final int TRANSCRIPTION_IN_PROGRESS = 1;
+        /**
+         * Value of {@link #TRANSCRIPTION_STATE} when the voicemail transcription has
+         * been attempted and failed.
+         * @hide
+         */
+        public static final int TRANSCRIPTION_FAILED = 2;
+        /**
+         * Value of {@link #TRANSCRIPTION_STATE} when the voicemail transcription has
+         * completed and the result has been stored in the {@link #TRANSCRIPTION} column.
+         * @hide
+         */
+        public static final int TRANSCRIPTION_AVAILABLE = 3;
+        /**
          * Path to the media content file. Internal only field.
          * @hide
          */
@@ -284,8 +317,6 @@ public class VoicemailContract {
          * not.
          *
          * <P>Type: INTEGER (boolean)</P>
-         *
-         * @hide
          */
         public static final String BACKED_UP = "backed_up";
 
@@ -294,8 +325,6 @@ public class VoicemailContract {
          * restored, 0 if not.
          *
          * <P>Type: INTEGER (boolean)</P>
-         *
-         * @hide
          */
         public static final String RESTORED = "restored";
 
@@ -305,19 +334,19 @@ public class VoicemailContract {
          * if not.
          *
          * <P>Type: INTEGER (boolean)</P>
-         *
-         * @hide
          */
         public static final String ARCHIVED = "archived";
 
         /**
          * Flag to indicate the voicemail is a OMTP voicemail handled by the {@link
          * android.telephony.VisualVoicemailService}. The UI should only show OMTP voicemails from
-         * the current visual voicemail package.
+         * the current visual voicemail package. For example, the selection could be
+         * {@code WHERE (IS_OMTP_VOICEMAIL == 0) OR ( IS_OMTP_VOICEMAIL == 1 AND SOURCE_PACKAGE ==
+         * "current.vvm.package")}
          *
          * <P>Type: INTEGER (boolean)</P>
          *
-         * @hide
+         * @see android.telephony.TelephonyManager#getVisualVoicemailPackageName
          */
         public static final String IS_OMTP_VOICEMAIL = "is_omtp_voicemail";
 

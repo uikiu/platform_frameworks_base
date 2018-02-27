@@ -19,9 +19,12 @@ package android.os;
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
 import android.util.Log;
+import android.util.Slog;
+
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.os.Zygote;
 import com.android.internal.util.Preconditions;
+
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -30,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /*package*/ class ZygoteStartFailedEx extends Exception {
     ZygoteStartFailedEx(String s) {
@@ -58,16 +62,25 @@ public class ZygoteProcess {
     /**
      * The name of the socket used to communicate with the primary zygote.
      */
-    private final String mSocket;
+    private final LocalSocketAddress mSocket;
 
     /**
      * The name of the secondary (alternate ABI) zygote socket.
      */
-    private final String mSecondarySocket;
+    private final LocalSocketAddress mSecondarySocket;
 
     public ZygoteProcess(String primarySocket, String secondarySocket) {
+        this(new LocalSocketAddress(primarySocket, LocalSocketAddress.Namespace.RESERVED),
+                new LocalSocketAddress(secondarySocket, LocalSocketAddress.Namespace.RESERVED));
+    }
+
+    public ZygoteProcess(LocalSocketAddress primarySocket, LocalSocketAddress secondarySocket) {
         mSocket = primarySocket;
         mSecondarySocket = secondarySocket;
+    }
+
+    public LocalSocketAddress getPrimarySocketAddress() {
+        return mSocket;
     }
 
     /**
@@ -89,14 +102,13 @@ public class ZygoteProcess {
             this.abiList = abiList;
         }
 
-        public static ZygoteState connect(String socketAddress) throws IOException {
+        public static ZygoteState connect(LocalSocketAddress address) throws IOException {
             DataInputStream zygoteInputStream = null;
             BufferedWriter zygoteWriter = null;
             final LocalSocket zygoteSocket = new LocalSocket();
 
             try {
-                zygoteSocket.connect(new LocalSocketAddress(socketAddress,
-                        LocalSocketAddress.Namespace.RESERVED));
+                zygoteSocket.connect(address);
 
                 zygoteInputStream = new DataInputStream(zygoteSocket.getInputStream());
 
@@ -112,8 +124,8 @@ public class ZygoteProcess {
             }
 
             String abiListString = getAbiList(zygoteWriter, zygoteInputStream);
-            Log.i("Zygote", "Process: zygote socket " + socketAddress + " opened, supported ABIS: "
-                    + abiListString);
+            Log.i("Zygote", "Process: zygote socket " + address.getNamespace() + "/"
+                    + address.getName() + " opened, supported ABIS: " + abiListString);
 
             return new ZygoteState(zygoteSocket, zygoteInputStream, zygoteWriter,
                     Arrays.asList(abiListString.split(",")));
@@ -172,7 +184,7 @@ public class ZygoteProcess {
      *
      * When invokeWith is not null, the process will be started as a fresh app
      * and not a zygote fork. Note that this is only allowed for uid 0 or when
-     * debugFlags contains DEBUG_ENABLE_DEBUGGER.
+     * runtimeFlags contains DEBUG_ENABLE_DEBUGGER.
      *
      * @param processClass The class to use as the process's main entry
      *                     point.
@@ -180,7 +192,7 @@ public class ZygoteProcess {
      * @param uid The user-id under which the process will run.
      * @param gid The group-id under which the process will run.
      * @param gids Additional group-ids associated with the process.
-     * @param debugFlags Additional flags.
+     * @param runtimeFlags Additional flags.
      * @param targetSdkVersion The target SDK version for the app.
      * @param seInfo null-ok SELinux information for the new process.
      * @param abi non-null the ABI this app should be started with.
@@ -195,7 +207,7 @@ public class ZygoteProcess {
     public final Process.ProcessStartResult start(final String processClass,
                                                   final String niceName,
                                                   int uid, int gid, int[] gids,
-                                                  int debugFlags, int mountExternal,
+                                                  int runtimeFlags, int mountExternal,
                                                   int targetSdkVersion,
                                                   String seInfo,
                                                   String abi,
@@ -205,8 +217,9 @@ public class ZygoteProcess {
                                                   String[] zygoteArgs) {
         try {
             return startViaZygote(processClass, niceName, uid, gid, gids,
-                    debugFlags, mountExternal, targetSdkVersion, seInfo,
-                    abi, instructionSet, appDataDir, invokeWith, zygoteArgs);
+                    runtimeFlags, mountExternal, targetSdkVersion, seInfo,
+                    abi, instructionSet, appDataDir, invokeWith, false /* startChildZygote */,
+                    zygoteArgs);
         } catch (ZygoteStartFailedEx ex) {
             Log.e(LOG_TAG,
                     "Starting VM process through Zygote failed");
@@ -316,12 +329,14 @@ public class ZygoteProcess {
      * @param gid a POSIX gid that the new process shuold setgid() to
      * @param gids null-ok; a list of supplementary group IDs that the
      * new process should setgroup() to.
-     * @param debugFlags Additional flags.
+     * @param runtimeFlags Additional flags for the runtime.
      * @param targetSdkVersion The target SDK version for the app.
      * @param seInfo null-ok SELinux information for the new process.
      * @param abi the ABI the process should use.
      * @param instructionSet null-ok the instruction set to use.
      * @param appDataDir null-ok the data directory of the app.
+     * @param startChildZygote Start a sub-zygote. This creates a new zygote process
+     * that has its state cloned from this zygote process.
      * @param extraArgs Additional arguments to supply to the zygote process.
      * @return An object that describes the result of the attempt to start the process.
      * @throws ZygoteStartFailedEx if process start failed for any reason
@@ -330,13 +345,14 @@ public class ZygoteProcess {
                                                       final String niceName,
                                                       final int uid, final int gid,
                                                       final int[] gids,
-                                                      int debugFlags, int mountExternal,
+                                                      int runtimeFlags, int mountExternal,
                                                       int targetSdkVersion,
                                                       String seInfo,
                                                       String abi,
                                                       String instructionSet,
                                                       String appDataDir,
                                                       String invokeWith,
+                                                      boolean startChildZygote,
                                                       String[] extraArgs)
                                                       throws ZygoteStartFailedEx {
         ArrayList<String> argsForZygote = new ArrayList<String>();
@@ -346,33 +362,7 @@ public class ZygoteProcess {
         argsForZygote.add("--runtime-args");
         argsForZygote.add("--setuid=" + uid);
         argsForZygote.add("--setgid=" + gid);
-        if ((debugFlags & Zygote.DEBUG_ENABLE_JNI_LOGGING) != 0) {
-            argsForZygote.add("--enable-jni-logging");
-        }
-        if ((debugFlags & Zygote.DEBUG_ENABLE_SAFEMODE) != 0) {
-            argsForZygote.add("--enable-safemode");
-        }
-        if ((debugFlags & Zygote.DEBUG_ENABLE_JDWP) != 0) {
-            argsForZygote.add("--enable-jdwp");
-        }
-        if ((debugFlags & Zygote.DEBUG_ENABLE_CHECKJNI) != 0) {
-            argsForZygote.add("--enable-checkjni");
-        }
-        if ((debugFlags & Zygote.DEBUG_GENERATE_DEBUG_INFO) != 0) {
-            argsForZygote.add("--generate-debug-info");
-        }
-        if ((debugFlags & Zygote.DEBUG_ALWAYS_JIT) != 0) {
-            argsForZygote.add("--always-jit");
-        }
-        if ((debugFlags & Zygote.DEBUG_NATIVE_DEBUGGABLE) != 0) {
-            argsForZygote.add("--native-debuggable");
-        }
-        if ((debugFlags & Zygote.DEBUG_JAVA_DEBUGGABLE) != 0) {
-            argsForZygote.add("--java-debuggable");
-        }
-        if ((debugFlags & Zygote.DEBUG_ENABLE_ASSERT) != 0) {
-            argsForZygote.add("--enable-assert");
-        }
+        argsForZygote.add("--runtime-flags=" + runtimeFlags);
         if (mountExternal == Zygote.MOUNT_EXTERNAL_DEFAULT) {
             argsForZygote.add("--mount-external-default");
         } else if (mountExternal == Zygote.MOUNT_EXTERNAL_READ) {
@@ -419,6 +409,10 @@ public class ZygoteProcess {
             argsForZygote.add(invokeWith);
         }
 
+        if (startChildZygote) {
+            argsForZygote.add("--start-child-zygote");
+        }
+
         argsForZygote.add(processClass);
 
         if (extraArgs != null) {
@@ -429,6 +423,18 @@ public class ZygoteProcess {
 
         synchronized(mLock) {
             return zygoteSendArgsAndGetResult(openZygoteSocketIfNeeded(abi), argsForZygote);
+        }
+    }
+
+    /**
+     * Closes the connections to the zygote, if they exist.
+     */
+    public void close() {
+        if (primaryZygoteState != null) {
+            primaryZygoteState.close();
+        }
+        if (secondaryZygoteState != null) {
+            secondaryZygoteState.close();
         }
     }
 
@@ -487,11 +493,11 @@ public class ZygoteProcess {
      * Instructs the zygote to pre-load the classes and native libraries at the given paths
      * for the specified abi. Not all zygotes support this function.
      */
-    public void preloadPackageForAbi(String packagePath, String libsPath, String abi)
-            throws ZygoteStartFailedEx, IOException {
+    public boolean preloadPackageForAbi(String packagePath, String libsPath, String cacheKey,
+                                        String abi) throws ZygoteStartFailedEx, IOException {
         synchronized(mLock) {
             ZygoteState state = openZygoteSocketIfNeeded(abi);
-            state.writer.write("3");
+            state.writer.write("4");
             state.writer.newLine();
 
             state.writer.write("--preload-package");
@@ -503,7 +509,97 @@ public class ZygoteProcess {
             state.writer.write(libsPath);
             state.writer.newLine();
 
+            state.writer.write(cacheKey);
+            state.writer.newLine();
+
             state.writer.flush();
+
+            return (state.inputStream.readInt() == 0);
         }
+    }
+
+    /**
+     * Instructs the zygote to preload the default set of classes and resources. Returns
+     * {@code true} if a preload was performed as a result of this call, and {@code false}
+     * otherwise. The latter usually means that the zygote eagerly preloaded at startup
+     * or due to a previous call to {@code preloadDefault}. Note that this call is synchronous.
+     */
+    public boolean preloadDefault(String abi) throws ZygoteStartFailedEx, IOException {
+        synchronized (mLock) {
+            ZygoteState state = openZygoteSocketIfNeeded(abi);
+            // Each query starts with the argument count (1 in this case)
+            state.writer.write("1");
+            state.writer.newLine();
+            state.writer.write("--preload-default");
+            state.writer.newLine();
+            state.writer.flush();
+
+            return (state.inputStream.readInt() == 0);
+        }
+    }
+
+    /**
+     * Try connecting to the Zygote over and over again until we hit a time-out.
+     * @param socketName The name of the socket to connect to.
+     */
+    public static void waitForConnectionToZygote(String socketName) {
+        final LocalSocketAddress address =
+                new LocalSocketAddress(socketName, LocalSocketAddress.Namespace.RESERVED);
+        waitForConnectionToZygote(address);
+    }
+
+    /**
+     * Try connecting to the Zygote over and over again until we hit a time-out.
+     * @param address The name of the socket to connect to.
+     */
+    public static void waitForConnectionToZygote(LocalSocketAddress address) {
+        for (int n = 20; n >= 0; n--) {
+            try {
+                final ZygoteState zs = ZygoteState.connect(address);
+                zs.close();
+                return;
+            } catch (IOException ioe) {
+                Log.w(LOG_TAG,
+                        "Got error connecting to zygote, retrying. msg= " + ioe.getMessage());
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ie) {
+            }
+        }
+        Slog.wtf(LOG_TAG, "Failed to connect to Zygote through socket " + address.getName());
+    }
+
+    /**
+     * Starts a new zygote process as a child of this zygote. This is used to create
+     * secondary zygotes that inherit data from the zygote that this object
+     * communicates with. This returns a new ZygoteProcess representing a connection
+     * to the newly created zygote. Throws an exception if the zygote cannot be started.
+     */
+    public ChildZygoteProcess startChildZygote(final String processClass,
+                                               final String niceName,
+                                               int uid, int gid, int[] gids,
+                                               int runtimeFlags,
+                                               String seInfo,
+                                               String abi,
+                                               String instructionSet) {
+        // Create an unguessable address in the global abstract namespace.
+        final LocalSocketAddress serverAddress = new LocalSocketAddress(
+                processClass + "/" + UUID.randomUUID().toString());
+
+        final String[] extraArgs = {Zygote.CHILD_ZYGOTE_SOCKET_NAME_ARG + serverAddress.getName()};
+
+        Process.ProcessStartResult result;
+        try {
+            result = startViaZygote(processClass, niceName, uid, gid,
+                    gids, runtimeFlags, 0 /* mountExternal */, 0 /* targetSdkVersion */, seInfo,
+                    abi, instructionSet, null /* appDataDir */, null /* invokeWith */,
+                    true /* startChildZygote */, extraArgs);
+        } catch (ZygoteStartFailedEx ex) {
+            throw new RuntimeException("Starting child-zygote through Zygote failed", ex);
+        }
+
+        return new ChildZygoteProcess(serverAddress, result.pid);
     }
 }

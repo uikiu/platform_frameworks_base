@@ -21,6 +21,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
+import android.net.Uri;
 import android.net.nsd.NsdServiceInfo;
 import android.net.nsd.DnsSdTxtRecord;
 import android.net.nsd.INsdManager;
@@ -35,19 +36,21 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Slog;
 import android.util.SparseArray;
+import android.util.SparseIntArray;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.util.AsyncChannel;
+import com.android.internal.util.DumpUtils;
 import com.android.internal.util.Protocol;
 import com.android.internal.util.State;
 import com.android.internal.util.StateMachine;
-import com.android.server.NativeDaemonConnector.Command;
 
 /**
  * Network Service Discovery Service handles remote service discovery operation requests by
@@ -64,8 +67,8 @@ public class NsdService extends INsdManager.Stub {
     private final Context mContext;
     private final NsdSettings mNsdSettings;
     private final NsdStateMachine mNsdStateMachine;
-    private final NativeDaemonConnector mNativeConnector;
-    private final CountDownLatch mNativeDaemonConnected = new CountDownLatch(1);
+    private final DaemonConnection mDaemon;
+    private final NativeCallbackReceiver mDaemonCallback;
 
     /**
      * Clients receiving asynchronous messages
@@ -95,20 +98,15 @@ public class NsdService extends INsdManager.Stub {
          * Observes the NSD on/off setting, and takes action when changed.
          */
         private void registerForNsdSetting() {
-            ContentObserver contentObserver = new ContentObserver(this.getHandler()) {
+            final ContentObserver contentObserver = new ContentObserver(this.getHandler()) {
                 @Override
                 public void onChange(boolean selfChange) {
-                    if (isNsdEnabled()) {
-                        mNsdStateMachine.sendMessage(NsdManager.ENABLE);
-                    } else {
-                        mNsdStateMachine.sendMessage(NsdManager.DISABLE);
-                    }
+                    notifyEnabled(isNsdEnabled());
                 }
             };
 
-            mContext.getContentResolver().registerContentObserver(
-                    Settings.Global.getUriFor(Settings.Global.NSD_ON),
-                    false, contentObserver);
+            final Uri uri = Settings.Global.getUriFor(Settings.Global.NSD_ON);
+            mNsdSettings.registerContentObserver(uri, contentObserver);
         }
 
         NsdStateMachine(String name, Handler handler) {
@@ -116,11 +114,8 @@ public class NsdService extends INsdManager.Stub {
             addState(mDefaultState);
                 addState(mDisabledState, mDefaultState);
                 addState(mEnabledState, mDefaultState);
-            if (isNsdEnabled()) {
-                setInitialState(mEnabledState);
-            } else {
-                setInitialState(mDisabledState);
-            }
+            State initialState = isNsdEnabled() ? mEnabledState : mDisabledState;
+            setInitialState(initialState);
             setLogRecSize(25);
             registerForNsdSetting();
         }
@@ -160,7 +155,7 @@ public class NsdService extends INsdManager.Stub {
                         }
                         //Last client
                         if (mClients.size() == 0) {
-                            stopMDnsDaemon();
+                            mDaemon.stop();
                         }
                         break;
                     case AsyncChannel.CMD_CHANNEL_FULL_CONNECTION:
@@ -220,14 +215,14 @@ public class NsdService extends INsdManager.Stub {
             public void enter() {
                 sendNsdStateChangeBroadcast(true);
                 if (mClients.size() > 0) {
-                    startMDnsDaemon();
+                    mDaemon.start();
                 }
             }
 
             @Override
             public void exit() {
                 if (mClients.size() > 0) {
-                    stopMDnsDaemon();
+                    mDaemon.stop();
                 }
             }
 
@@ -246,8 +241,8 @@ public class NsdService extends INsdManager.Stub {
             }
 
             private void removeRequestMap(int clientId, int globalId, ClientInfo clientInfo) {
-                clientInfo.mClientIds.remove(clientId);
-                clientInfo.mClientRequests.remove(clientId);
+                clientInfo.mClientIds.delete(clientId);
+                clientInfo.mClientRequests.delete(clientId);
                 mIdToClientInfoMap.remove(globalId);
             }
 
@@ -261,7 +256,7 @@ public class NsdService extends INsdManager.Stub {
                         //First client
                         if (msg.arg1 == AsyncChannel.STATUS_SUCCESSFUL &&
                                 mClients.size() == 0) {
-                            startMDnsDaemon();
+                            mDaemon.start();
                         }
                         return NOT_HANDLED;
                     case AsyncChannel.CMD_CHANNEL_DISCONNECTED:
@@ -300,7 +295,7 @@ public class NsdService extends INsdManager.Stub {
                         clientInfo = mClients.get(msg.replyTo);
 
                         try {
-                            id = clientInfo.mClientIds.get(msg.arg2).intValue();
+                            id = clientInfo.mClientIds.get(msg.arg2);
                         } catch (NullPointerException e) {
                             replyToMessage(msg, NsdManager.STOP_DISCOVERY_FAILED,
                                     NsdManager.FAILURE_INTERNAL_ERROR);
@@ -338,7 +333,7 @@ public class NsdService extends INsdManager.Stub {
                         if (DBG) Slog.d(TAG, "unregister service");
                         clientInfo = mClients.get(msg.replyTo);
                         try {
-                            id = clientInfo.mClientIds.get(msg.arg2).intValue();
+                            id = clientInfo.mClientIds.get(msg.arg2);
                         } catch (NullPointerException e) {
                             replyToMessage(msg, NsdManager.UNREGISTER_SERVICE_FAILED,
                                     NsdManager.FAILURE_INTERNAL_ERROR);
@@ -545,18 +540,13 @@ public class NsdService extends INsdManager.Stub {
     }
 
     @VisibleForTesting
-    NsdService(Context ctx, NsdSettings settings, Handler handler) {
+    NsdService(Context ctx, NsdSettings settings, Handler handler, DaemonConnectionSupplier fn) {
         mContext = ctx;
         mNsdSettings = settings;
-
-        NativeCallbackReceiver callback = new NativeCallbackReceiver();
-        mNativeConnector = new NativeDaemonConnector(callback, "mdns", 10, MDNS_TAG, 25, null);
-
         mNsdStateMachine = new NsdStateMachine(TAG, handler);
         mNsdStateMachine.start();
-
-        Thread th = new Thread(mNativeConnector, MDNS_TAG);
-        th.start();
+        mDaemonCallback = new NativeCallbackReceiver();
+        mDaemon = fn.get(mDaemonCallback);
     }
 
     public static NsdService create(Context context) throws InterruptedException {
@@ -564,8 +554,8 @@ public class NsdService extends INsdManager.Stub {
         HandlerThread thread = new HandlerThread(TAG);
         thread.start();
         Handler handler = new Handler(thread.getLooper());
-        NsdService service = new NsdService(context, settings, handler);
-        service.mNativeDaemonConnected.await();
+        NsdService service = new NsdService(context, settings, handler, DaemonConnection::new);
+        service.mDaemonCallback.awaitConnection();
         return service;
     }
 
@@ -574,25 +564,22 @@ public class NsdService extends INsdManager.Stub {
         return new Messenger(mNsdStateMachine.getHandler());
     }
 
-    public void setEnabled(boolean enable) {
+    public void setEnabled(boolean isEnabled) {
         mContext.enforceCallingOrSelfPermission(android.Manifest.permission.CONNECTIVITY_INTERNAL,
                 "NsdService");
-        mNsdSettings.putEnabledStatus(enable);
-        if (enable) {
-            mNsdStateMachine.sendMessage(NsdManager.ENABLE);
-        } else {
-            mNsdStateMachine.sendMessage(NsdManager.DISABLE);
-        }
+        mNsdSettings.putEnabledStatus(isEnabled);
+        notifyEnabled(isEnabled);
     }
 
-    private void sendNsdStateChangeBroadcast(boolean enabled) {
+    private void notifyEnabled(boolean isEnabled) {
+        mNsdStateMachine.sendMessage(isEnabled ? NsdManager.ENABLE : NsdManager.DISABLE);
+    }
+
+    private void sendNsdStateChangeBroadcast(boolean isEnabled) {
         final Intent intent = new Intent(NsdManager.ACTION_NSD_STATE_CHANGED);
         intent.addFlags(Intent.FLAG_RECEIVER_REGISTERED_ONLY_BEFORE_BOOT);
-        if (enabled) {
-            intent.putExtra(NsdManager.EXTRA_NSD_STATE, NsdManager.NSD_STATE_ENABLED);
-        } else {
-            intent.putExtra(NsdManager.EXTRA_NSD_STATE, NsdManager.NSD_STATE_DISABLED);
-        }
+        int nsdState = isEnabled ? NsdManager.NSD_STATE_ENABLED : NsdManager.NSD_STATE_DISABLED;
+        intent.putExtra(NsdManager.EXTRA_NSD_STATE, nsdState);
         mContext.sendStickyBroadcastAsUser(intent, UserHandle.ALL);
     }
 
@@ -664,14 +651,23 @@ public class NsdService extends INsdManager.Stub {
     }
 
     class NativeCallbackReceiver implements INativeDaemonConnectorCallbacks {
-        public void onDaemonConnected() {
-            mNativeDaemonConnected.countDown();
+        private final CountDownLatch connected = new CountDownLatch(1);
+
+        public void awaitConnection() throws InterruptedException {
+            connected.await();
         }
 
+        @Override
+        public void onDaemonConnected() {
+            connected.countDown();
+        }
+
+        @Override
         public boolean onCheckHoldWakeLock(int code) {
             return false;
         }
 
+        @Override
         public boolean onEvent(int code, String raw, String[] cooked) {
             // TODO: NDC translates a message to a callback, we could enhance NDC to
             // directly interact with a state machine through messages
@@ -681,143 +677,93 @@ public class NsdService extends INsdManager.Stub {
         }
     }
 
-    private boolean startMDnsDaemon() {
-        if (DBG) Slog.d(TAG, "startMDnsDaemon");
-        try {
-            mNativeConnector.execute("mdnssd", "start-service");
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to start daemon" + e);
-            return false;
-        }
-        return true;
+    interface DaemonConnectionSupplier {
+        DaemonConnection get(NativeCallbackReceiver callback);
     }
 
-    private boolean stopMDnsDaemon() {
-        if (DBG) Slog.d(TAG, "stopMDnsDaemon");
-        try {
-            mNativeConnector.execute("mdnssd", "stop-service");
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to start daemon" + e);
-            return false;
+    @VisibleForTesting
+    public static class DaemonConnection {
+        final NativeDaemonConnector mNativeConnector;
+
+        DaemonConnection(NativeCallbackReceiver callback) {
+            mNativeConnector = new NativeDaemonConnector(callback, "mdns", 10, MDNS_TAG, 25, null);
+            new Thread(mNativeConnector, MDNS_TAG).start();
         }
-        return true;
+
+        public boolean execute(Object... args) {
+            if (DBG) {
+                Slog.d(TAG, "mdnssd " + Arrays.toString(args));
+            }
+            try {
+                mNativeConnector.execute("mdnssd", args);
+            } catch (NativeDaemonConnectorException e) {
+                Slog.e(TAG, "Failed to execute mdnssd " + Arrays.toString(args), e);
+                return false;
+            }
+            return true;
+        }
+
+        public void start() {
+            execute("start-service");
+        }
+
+        public void stop() {
+            execute("stop-service");
+        }
     }
 
     private boolean registerService(int regId, NsdServiceInfo service) {
-        if (DBG) Slog.d(TAG, "registerService: " + regId + " " + service);
-        try {
-            Command cmd = new Command("mdnssd", "register", regId, service.getServiceName(),
-                    service.getServiceType(), service.getPort(),
-                    Base64.encodeToString(service.getTxtRecord(), Base64.DEFAULT)
-                            .replace("\n", ""));
-
-            mNativeConnector.execute(cmd);
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to execute registerService " + e);
-            return false;
+        if (DBG) {
+            Slog.d(TAG, "registerService: " + regId + " " + service);
         }
-        return true;
+        String name = service.getServiceName();
+        String type = service.getServiceType();
+        int port = service.getPort();
+        byte[] textRecord = service.getTxtRecord();
+        String record = Base64.encodeToString(textRecord, Base64.DEFAULT).replace("\n", "");
+        return mDaemon.execute("register", regId, name, type, port, record);
     }
 
     private boolean unregisterService(int regId) {
-        if (DBG) Slog.d(TAG, "unregisterService: " + regId);
-        try {
-            mNativeConnector.execute("mdnssd", "stop-register", regId);
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to execute unregisterService " + e);
-            return false;
-        }
-        return true;
+        return mDaemon.execute("stop-register", regId);
     }
 
     private boolean updateService(int regId, DnsSdTxtRecord t) {
-        if (DBG) Slog.d(TAG, "updateService: " + regId + " " + t);
-        try {
-            if (t == null) return false;
-            mNativeConnector.execute("mdnssd", "update", regId, t.size(), t.getRawData());
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to updateServices " + e);
+        if (t == null) {
             return false;
         }
-        return true;
+        return mDaemon.execute("update", regId, t.size(), t.getRawData());
     }
 
     private boolean discoverServices(int discoveryId, String serviceType) {
-        if (DBG) Slog.d(TAG, "discoverServices: " + discoveryId + " " + serviceType);
-        try {
-            mNativeConnector.execute("mdnssd", "discover", discoveryId, serviceType);
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to discoverServices " + e);
-            return false;
-        }
-        return true;
+        return mDaemon.execute("discover", discoveryId, serviceType);
     }
 
     private boolean stopServiceDiscovery(int discoveryId) {
-        if (DBG) Slog.d(TAG, "stopServiceDiscovery: " + discoveryId);
-        try {
-            mNativeConnector.execute("mdnssd", "stop-discover", discoveryId);
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to stopServiceDiscovery " + e);
-            return false;
-        }
-        return true;
+        return mDaemon.execute("stop-discover", discoveryId);
     }
 
     private boolean resolveService(int resolveId, NsdServiceInfo service) {
-        if (DBG) Slog.d(TAG, "resolveService: " + resolveId + " " + service);
-        try {
-            mNativeConnector.execute("mdnssd", "resolve", resolveId, service.getServiceName(),
-                    service.getServiceType(), "local.");
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to resolveService " + e);
-            return false;
-        }
-        return true;
+        String name = service.getServiceName();
+        String type = service.getServiceType();
+        return mDaemon.execute("resolve", resolveId, name, type, "local.");
     }
 
     private boolean stopResolveService(int resolveId) {
-        if (DBG) Slog.d(TAG, "stopResolveService: " + resolveId);
-        try {
-            mNativeConnector.execute("mdnssd", "stop-resolve", resolveId);
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to stop resolve " + e);
-            return false;
-        }
-        return true;
+        return mDaemon.execute("stop-resolve", resolveId);
     }
 
     private boolean getAddrInfo(int resolveId, String hostname) {
-        if (DBG) Slog.d(TAG, "getAdddrInfo: " + resolveId);
-        try {
-            mNativeConnector.execute("mdnssd", "getaddrinfo", resolveId, hostname);
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to getAddrInfo " + e);
-            return false;
-        }
-        return true;
+        return mDaemon.execute("getaddrinfo", resolveId, hostname);
     }
 
     private boolean stopGetAddrInfo(int resolveId) {
-        if (DBG) Slog.d(TAG, "stopGetAdddrInfo: " + resolveId);
-        try {
-            mNativeConnector.execute("mdnssd", "stop-getaddrinfo", resolveId);
-        } catch(NativeDaemonConnectorException e) {
-            Slog.e(TAG, "Failed to stopGetAddrInfo " + e);
-            return false;
-        }
-        return true;
+        return mDaemon.execute("stop-getaddrinfo", resolveId);
     }
 
     @Override
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
-        if (mContext.checkCallingOrSelfPermission(android.Manifest.permission.DUMP)
-                != PackageManager.PERMISSION_GRANTED) {
-            pw.println("Permission Denial: can't dump ServiceDiscoverService from from pid="
-                    + Binder.getCallingPid()
-                    + ", uid=" + Binder.getCallingUid());
-            return;
-        }
+        if (!DumpUtils.checkDumpPermission(mContext, TAG, pw)) return;
 
         for (ClientInfo client : mClients.values()) {
             pw.println("Client Info");
@@ -868,10 +814,10 @@ public class NsdService extends INsdManager.Stub {
         private NsdServiceInfo mResolvedService;
 
         /* A map from client id to unique id sent to mDns */
-        private final SparseArray<Integer> mClientIds = new SparseArray<>();
+        private final SparseIntArray mClientIds = new SparseIntArray();
 
         /* A map from client id to the type of the request we had received */
-        private final SparseArray<Integer> mClientRequests = new SparseArray<>();
+        private final SparseIntArray mClientRequests = new SparseIntArray();
 
         private ClientInfo(AsyncChannel c, Messenger m) {
             mChannel = c;
@@ -898,6 +844,7 @@ public class NsdService extends INsdManager.Stub {
         // and send cancellations to the daemon.
         private void expungeAllRequests() {
             int globalId, clientId, i;
+            // TODO: to keep handler responsive, do not clean all requests for that client at once.
             for (i = 0; i < mClientIds.size(); i++) {
                 clientId = mClientIds.keyAt(i);
                 globalId = mClientIds.valueAt(i);
@@ -925,25 +872,26 @@ public class NsdService extends INsdManager.Stub {
         // mClientIds is a sparse array of listener id -> mDnsClient id.  For a given mDnsClient id,
         // return the corresponding listener id.  mDnsClient id is also called a global id.
         private int getClientId(final int globalId) {
-            // This doesn't use mClientIds.indexOfValue because indexOfValue uses == (not .equals)
-            // while also coercing the int primitives to Integer objects.
-            for (int i = 0, nSize = mClientIds.size(); i < nSize; i++) {
-                int mDnsId = mClientIds.valueAt(i);
-                if (globalId == mDnsId) {
-                    return mClientIds.keyAt(i);
-                }
+            int idx = mClientIds.indexOfValue(globalId);
+            if (idx < 0) {
+                return idx;
             }
-            return -1;
+            return mClientIds.keyAt(idx);
         }
     }
 
+    /**
+     * Interface which encapsulates dependencies of NsdService that are hard to mock, hard to
+     * override, or have side effects on global state in unit tests.
+     */
     @VisibleForTesting
     public interface NsdSettings {
         boolean isEnabled();
         void putEnabledStatus(boolean isEnabled);
+        void registerContentObserver(Uri uri, ContentObserver observer);
 
         static NsdSettings makeDefault(Context context) {
-            ContentResolver resolver = context.getContentResolver();
+            final ContentResolver resolver = context.getContentResolver();
             return new NsdSettings() {
                 @Override
                 public boolean isEnabled() {
@@ -953,6 +901,11 @@ public class NsdService extends INsdManager.Stub {
                 @Override
                 public void putEnabledStatus(boolean isEnabled) {
                     Settings.Global.putInt(resolver, Settings.Global.NSD_ON, isEnabled ? 1 : 0);
+                }
+
+                @Override
+                public void registerContentObserver(Uri uri, ContentObserver observer) {
+                    resolver.registerContentObserver(uri, false, observer);
                 }
             };
         }

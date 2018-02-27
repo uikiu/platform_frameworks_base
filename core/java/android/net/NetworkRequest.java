@@ -16,6 +16,7 @@
 
 package android.net;
 
+import android.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -32,7 +33,7 @@ public class NetworkRequest implements Parcelable {
      * The {@link NetworkCapabilities} that define this request.
      * @hide
      */
-    public final NetworkCapabilities networkCapabilities;
+    public final @NonNull NetworkCapabilities networkCapabilities;
 
     /**
      * Identifies the request.  NetworkRequests should only be constructed by
@@ -155,14 +156,13 @@ public class NetworkRequest implements Parcelable {
          * Add the given capability requirement to this builder.  These represent
          * the requested network's required capabilities.  Note that when searching
          * for a network to satisfy a request, all capabilities requested must be
-         * satisfied.  See {@link NetworkCapabilities} for {@code NET_CAPABILITY_*}
-         * definitions.
+         * satisfied.
          *
-         * @param capability The {@code NetworkCapabilities.NET_CAPABILITY_*} to add.
+         * @param capability The capability to add.
          * @return The builder to facilitate chaining
          *         {@code builder.addCapability(...).addCapability();}.
          */
-        public Builder addCapability(int capability) {
+        public Builder addCapability(@NetworkCapabilities.NetCapability int capability) {
             mNetworkCapabilities.addCapability(capability);
             return this;
         }
@@ -170,10 +170,10 @@ public class NetworkRequest implements Parcelable {
         /**
          * Removes (if found) the given capability from this builder instance.
          *
-         * @param capability The {@code NetworkCapabilities.NET_CAPABILITY_*} to remove.
+         * @param capability The capability to remove.
          * @return The builder to facilitate chaining.
          */
-        public Builder removeCapability(int capability) {
+        public Builder removeCapability(@NetworkCapabilities.NetCapability int capability) {
             mNetworkCapabilities.removeCapability(capability);
             return this;
         }
@@ -208,13 +208,12 @@ public class NetworkRequest implements Parcelable {
          * Adds the given transport requirement to this builder.  These represent
          * the set of allowed transports for the request.  Only networks using one
          * of these transports will satisfy the request.  If no particular transports
-         * are required, none should be specified here.  See {@link NetworkCapabilities}
-         * for {@code TRANSPORT_*} definitions.
+         * are required, none should be specified here.
          *
-         * @param transportType The {@code NetworkCapabilities.TRANSPORT_*} to add.
+         * @param transportType The transport type to add.
          * @return The builder to facilitate chaining.
          */
-        public Builder addTransportType(int transportType) {
+        public Builder addTransportType(@NetworkCapabilities.Transport int transportType) {
             mNetworkCapabilities.addTransportType(transportType);
             return this;
         }
@@ -222,10 +221,10 @@ public class NetworkRequest implements Parcelable {
         /**
          * Removes (if found) the given transport from this builder instance.
          *
-         * @param transportType The {@code NetworkCapabilities.TRANSPORT_*} to remove.
+         * @param transportType The transport type to remove.
          * @return The builder to facilitate chaining.
          */
-        public Builder removeTransportType(int transportType) {
+        public Builder removeTransportType(@NetworkCapabilities.Transport int transportType) {
             mNetworkCapabilities.removeTransportType(transportType);
             return this;
         }
@@ -309,7 +308,7 @@ public class NetworkRequest implements Parcelable {
         return 0;
     }
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(networkCapabilities, flags);
+        networkCapabilities.writeToParcel(dest, flags);
         dest.writeInt(legacyType);
         dest.writeInt(requestId);
         dest.writeString(type.name());
@@ -317,7 +316,7 @@ public class NetworkRequest implements Parcelable {
     public static final Creator<NetworkRequest> CREATOR =
         new Creator<NetworkRequest>() {
             public NetworkRequest createFromParcel(Parcel in) {
-                NetworkCapabilities nc = (NetworkCapabilities)in.readParcelable(null);
+                NetworkCapabilities nc = NetworkCapabilities.CREATOR.createFromParcel(in);
                 int legacyType = in.readInt();
                 int requestId = in.readInt();
                 Type type = Type.valueOf(in.readString());  // IllegalArgumentException if invalid.

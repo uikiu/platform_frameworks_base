@@ -124,6 +124,94 @@ public final class Call {
      */
     public static final String AVAILABLE_PHONE_ACCOUNTS = "selectPhoneAccountAccounts";
 
+    /**
+     * Extra key used to indicate the time (in milliseconds since midnight, January 1, 1970 UTC)
+     * when the last outgoing emergency call was made.  This is used to identify potential emergency
+     * callbacks.
+     */
+    public static final String EXTRA_LAST_EMERGENCY_CALLBACK_TIME_MILLIS =
+            "android.telecom.extra.LAST_EMERGENCY_CALLBACK_TIME_MILLIS";
+
+    /**
+     * Call event sent from a {@link Call} via {@link #sendCallEvent(String, Bundle)} to inform
+     * Telecom that the user has requested that the current {@link Call} should be handed over
+     * to another {@link ConnectionService}.
+     * <p>
+     * The caller must specify the {@link #EXTRA_HANDOVER_PHONE_ACCOUNT_HANDLE} to indicate to
+     * Telecom which {@link PhoneAccountHandle} the {@link Call} should be handed over to.
+     * @hide
+     */
+    public static final String EVENT_REQUEST_HANDOVER =
+            "android.telecom.event.REQUEST_HANDOVER";
+
+    /**
+     * Extra key used with the {@link #EVENT_REQUEST_HANDOVER} call event.  Specifies the
+     * {@link PhoneAccountHandle} to which a call should be handed over to.
+     * @hide
+     */
+    public static final String EXTRA_HANDOVER_PHONE_ACCOUNT_HANDLE =
+            "android.telecom.extra.HANDOVER_PHONE_ACCOUNT_HANDLE";
+
+    /**
+     * Integer extra key used with the {@link #EVENT_REQUEST_HANDOVER} call event.  Specifies the
+     * video state of the call when it is handed over to the new {@link PhoneAccount}.
+     * <p>
+     * Valid values: {@link VideoProfile#STATE_AUDIO_ONLY},
+     * {@link VideoProfile#STATE_BIDIRECTIONAL}, {@link VideoProfile#STATE_RX_ENABLED}, and
+     * {@link VideoProfile#STATE_TX_ENABLED}.
+     * @hide
+     */
+    public static final String EXTRA_HANDOVER_VIDEO_STATE =
+            "android.telecom.extra.HANDOVER_VIDEO_STATE";
+
+    /**
+     * Extra key used with the {@link #EVENT_REQUEST_HANDOVER} call event.  Used by the
+     * {@link InCallService} initiating a handover to provide a {@link Bundle} with extra
+     * information to the handover {@link ConnectionService} specified by
+     * {@link #EXTRA_HANDOVER_PHONE_ACCOUNT_HANDLE}.
+     * <p>
+     * This {@link Bundle} is not interpreted by Telecom, but passed as-is to the
+     * {@link ConnectionService} via the request extras when
+     * {@link ConnectionService#onCreateOutgoingConnection(PhoneAccountHandle, ConnectionRequest)}
+     * is called to initate the handover.
+     * @hide
+     */
+    public static final String EXTRA_HANDOVER_EXTRAS = "android.telecom.extra.HANDOVER_EXTRAS";
+
+    /**
+     * Call event sent from Telecom to the handover {@link ConnectionService} via
+     * {@link Connection#onCallEvent(String, Bundle)} to inform a {@link Connection} that a handover
+     * to the {@link ConnectionService} has completed successfully.
+     * <p>
+     * A handover is initiated with the {@link #EVENT_REQUEST_HANDOVER} call event.
+     * @hide
+     */
+    public static final String EVENT_HANDOVER_COMPLETE =
+            "android.telecom.event.HANDOVER_COMPLETE";
+
+    /**
+     * Call event sent from Telecom to the handover destination {@link ConnectionService} via
+     * {@link Connection#onCallEvent(String, Bundle)} to inform the handover destination that the
+     * source connection has disconnected.  The {@link Bundle} parameter for the call event will be
+     * {@code null}.
+     * <p>
+     * A handover is initiated with the {@link #EVENT_REQUEST_HANDOVER} call event.
+     * @hide
+     */
+    public static final String EVENT_HANDOVER_SOURCE_DISCONNECTED =
+            "android.telecom.event.HANDOVER_SOURCE_DISCONNECTED";
+
+    /**
+     * Call event sent from Telecom to the handover {@link ConnectionService} via
+     * {@link Connection#onCallEvent(String, Bundle)} to inform a {@link Connection} that a handover
+     * to the {@link ConnectionService} has failed.
+     * <p>
+     * A handover is initiated with the {@link #EVENT_REQUEST_HANDOVER} call event.
+     * @hide
+     */
+    public static final String EVENT_HANDOVER_FAILED =
+            "android.telecom.event.HANDOVER_FAILED";
+
     public static class Details {
 
         /** Call can currently be put on hold or unheld. */
@@ -264,8 +352,11 @@ public final class Call {
          */
         public static final int CAPABILITY_CAN_PULL_CALL = 0x00800000;
 
+        /** Call supports the deflect feature. */
+        public static final int CAPABILITY_SUPPORT_DEFLECT = 0x01000000;
+
         //******************************************************************************************
-        // Next CAPABILITY value: 0x01000000
+        // Next CAPABILITY value: 0x02000000
         //******************************************************************************************
 
         /**
@@ -328,8 +419,21 @@ public final class Call {
          */
         public static final int PROPERTY_SELF_MANAGED = 0x00000100;
 
+        /**
+         * Indicates the call used Assisted Dialing.
+         * See also {@link Connection#PROPERTY_ASSISTED_DIALING_USED}
+         * @hide
+         */
+        public static final int PROPERTY_ASSISTED_DIALING_USED = 0x00000200;
+
+        /**
+         * Indicates that the call is an RTT call. Use {@link #getRttCall()} to get the
+         * {@link RttCall} object that is used to send and receive text.
+         */
+        public static final int PROPERTY_RTT = 0x00000400;
+
         //******************************************************************************************
-        // Next PROPERTY value: 0x00000200
+        // Next PROPERTY value: 0x00000800
         //******************************************************************************************
 
         private final String mTelecomCallId;
@@ -434,6 +538,9 @@ public final class Call {
             if (can(capabilities, CAPABILITY_CAN_PULL_CALL)) {
                 builder.append(" CAPABILITY_CAN_PULL_CALL");
             }
+            if (can(capabilities, CAPABILITY_SUPPORT_DEFLECT)) {
+                builder.append(" CAPABILITY_SUPPORT_DEFLECT");
+            }
             builder.append("]");
             return builder.toString();
         }
@@ -488,6 +595,9 @@ public final class Call {
             }
             if(hasProperty(properties, PROPERTY_HAS_CDMA_VOICE_PRIVACY)) {
                 builder.append(" PROPERTY_HAS_CDMA_VOICE_PRIVACY");
+            }
+            if(hasProperty(properties, PROPERTY_ASSISTED_DIALING_USED)) {
+                builder.append(" PROPERTY_ASSISTED_DIALING_USED");
             }
             builder.append("]");
             return builder.toString();
@@ -767,6 +877,46 @@ public final class Call {
      */
     public static abstract class Callback {
         /**
+         * @hide
+         */
+        @IntDef({HANDOVER_FAILURE_DEST_APP_REJECTED, HANDOVER_FAILURE_DEST_NOT_SUPPORTED,
+                HANDOVER_FAILURE_DEST_INVALID_PERM, HANDOVER_FAILURE_DEST_USER_REJECTED,
+                HANDOVER_FAILURE_ONGOING_EMERG_CALL})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface HandoverFailureErrors {}
+
+        /**
+         * Handover failure reason returned via {@link #onHandoverFailed(Call, int)} when the app
+         * to handover the call rejects handover.
+         */
+        public static final int HANDOVER_FAILURE_DEST_APP_REJECTED = 1;
+
+        /**
+         * Handover failure reason returned via {@link #onHandoverFailed(Call, int)} when there is
+         * an error associated with unsupported handover.
+         */
+        public static final int HANDOVER_FAILURE_DEST_NOT_SUPPORTED = 2;
+
+        /**
+         * Handover failure reason returned via {@link #onHandoverFailed(Call, int)} when there
+         * are some permission errors associated with APIs doing handover.
+         */
+        public static final int HANDOVER_FAILURE_DEST_INVALID_PERM = 3;
+
+        /**
+         * Handover failure reason returned via {@link #onHandoverFailed(Call, int)} when user
+         * rejects handover.
+         */
+        public static final int HANDOVER_FAILURE_DEST_USER_REJECTED = 4;
+
+        /**
+         * Handover failure reason returned via {@link #onHandoverFailed(Call, int)} when there
+         * is ongoing emergency call.
+         */
+        public static final int HANDOVER_FAILURE_ONGOING_EMERG_CALL = 5;
+
+
+        /**
          * Invoked when the state of this {@code Call} has changed. See {@link #getState()}.
          *
          * @param call The {@code Call} invoking this method.
@@ -901,6 +1051,21 @@ public final class Call {
          *               {@link android.telecom.Connection.RttModifyStatus#SESSION_MODIFY_REQUEST_SUCCESS}.
          */
         public void onRttInitiationFailure(Call call, int reason) {}
+
+        /**
+         * Invoked when Call handover from one {@link PhoneAccount} to other {@link PhoneAccount}
+         * has completed successfully.
+         * @param call The call which had initiated handover.
+         */
+        public void onHandoverComplete(Call call) {}
+
+        /**
+         * Invoked when Call handover from one {@link PhoneAccount} to other {@link PhoneAccount}
+         * has failed.
+         * @param call The call which had initiated handover.
+         * @param failureReason Error reason for failure
+         */
+        public void onHandoverFailed(Call call, @HandoverFailureErrors int failureReason) {}
     }
 
     /**
@@ -1001,12 +1166,17 @@ public final class Call {
          * @return A string containing text sent by the remote user, or {@code null} if the
          * conversation has been terminated or if there was an error while reading.
          */
-        public String read() throws IOException {
-            int numRead = mReceiveStream.read(mReadBuffer, 0, READ_BUFFER_SIZE);
-            if (numRead < 0) {
+        public String read() {
+            try {
+                int numRead = mReceiveStream.read(mReadBuffer, 0, READ_BUFFER_SIZE);
+                if (numRead < 0) {
+                    return null;
+                }
+                return new String(mReadBuffer, 0, numRead);
+            } catch (IOException e) {
+                Log.w(this, "Exception encountered when reading from InputStreamReader: %s", e);
                 return null;
             }
-            return new String(mReadBuffer, 0, numRead);
         }
 
         /**
@@ -1017,9 +1187,30 @@ public final class Call {
          */
         public String readImmediately() throws IOException {
             if (mReceiveStream.ready()) {
-                return read();
+                int numRead = mReceiveStream.read(mReadBuffer, 0, READ_BUFFER_SIZE);
+                if (numRead < 0) {
+                    return null;
+                }
+                return new String(mReadBuffer, 0, numRead);
             } else {
                 return null;
+            }
+        }
+
+        /**
+         * Closes the underlying file descriptors
+         * @hide
+         */
+        public void close() {
+            try {
+                mReceiveStream.close();
+            } catch (IOException e) {
+                // ignore
+            }
+            try {
+                mTransmitStream.close();
+            } catch (IOException e) {
+                // ignore
             }
         }
     }
@@ -1071,6 +1262,15 @@ public final class Call {
      */
     public void answer(int videoState) {
         mInCallAdapter.answerCall(mTelecomCallId, videoState);
+    }
+
+    /**
+     * Instructs this {@link #STATE_RINGING} {@code Call} to deflect.
+     *
+     * @param address The address to which the call will be deflected.
+     */
+    public void deflect(Uri address) {
+        mInCallAdapter.deflectCall(mTelecomCallId, address);
     }
 
     /**
@@ -1246,7 +1446,7 @@ public final class Call {
      * @param extras Bundle containing extra information associated with the event.
      */
     public void sendCallEvent(String event, Bundle extras) {
-        mInCallAdapter.sendCallEvent(mTelecomCallId, event, extras);
+        mInCallAdapter.sendCallEvent(mTelecomCallId, event, mTargetSdkVersion, extras);
     }
 
     /**
@@ -1267,6 +1467,24 @@ public final class Call {
      */
     public void respondToRttRequest(int id, boolean accept) {
         mInCallAdapter.respondToRttRequest(mTelecomCallId, id, accept);
+    }
+
+    /**
+     * Initiates a handover of this {@link Call} to the {@link ConnectionService} identified
+     * by {@code toHandle}.  The videoState specified indicates the desired video state after the
+     * handover.
+     * <p>
+     * A handover request is initiated by the user from one app to indicate a desire
+     * to handover a call to another.
+     *
+     * @param toHandle {@link PhoneAccountHandle} of the {@link ConnectionService} to handover
+     *                 this call to.
+     * @param videoState Indicates the video state desired after the handover.
+     * @param extras Bundle containing extra information to be passed to the
+     *               {@link ConnectionService}
+     */
+    public void handoverTo(PhoneAccountHandle toHandle, int videoState, Bundle extras) {
+        mInCallAdapter.handoverTo(mTelecomCallId, toHandle, videoState, extras);
     }
 
     /**
@@ -1470,7 +1688,7 @@ public final class Call {
      * @return true if there is a connection, false otherwise.
      */
     public boolean isRttActive() {
-        return mRttCall != null;
+        return mRttCall != null && mDetails.hasProperty(Details.PROPERTY_RTT);
     }
 
     /**
@@ -1673,7 +1891,8 @@ public final class Call {
 
         boolean isRttChanged = false;
         boolean rttModeChanged = false;
-        if (parcelableCall.getParcelableRttCall() != null && parcelableCall.getIsRttCallChanged()) {
+        if (parcelableCall.getIsRttCallChanged()
+                && mDetails.hasProperty(Details.PROPERTY_RTT)) {
             ParcelableRttCall parcelableRttCall = parcelableCall.getParcelableRttCall();
             InputStreamReader receiveStream = new InputStreamReader(
                     new ParcelFileDescriptor.AutoCloseInputStream(
@@ -1769,6 +1988,24 @@ public final class Call {
             final Call call = this;
             final Callback callback = record.getCallback();
             record.getHandler().post(() -> callback.onRttInitiationFailure(call, reason));
+        }
+    }
+
+    /** {@hide} */
+    final void internalOnHandoverFailed(int error) {
+        for (CallbackRecord<Callback> record : mCallbackRecords) {
+            final Call call = this;
+            final Callback callback = record.getCallback();
+            record.getHandler().post(() -> callback.onHandoverFailed(call, error));
+        }
+    }
+
+    /** {@hide} */
+    final void internalOnHandoverComplete() {
+        for (CallbackRecord<Callback> record : mCallbackRecords) {
+            final Call call = this;
+            final Callback callback = record.getCallback();
+            record.getHandler().post(() -> callback.onHandoverComplete(call));
         }
     }
 

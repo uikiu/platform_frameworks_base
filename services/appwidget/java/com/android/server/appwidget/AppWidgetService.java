@@ -19,6 +19,7 @@ package com.android.server.appwidget;
 import android.content.Context;
 
 import com.android.server.AppWidgetBackupBridge;
+import com.android.server.FgThread;
 import com.android.server.SystemService;
 
 /**
@@ -34,6 +35,7 @@ public class AppWidgetService extends SystemService {
 
     @Override
     public void onStart() {
+        mImpl.onStart();
         publishBinderService(Context.APPWIDGET_SERVICE, mImpl);
         AppWidgetBackupBridge.register(mImpl);
     }
@@ -47,7 +49,7 @@ public class AppWidgetService extends SystemService {
 
     @Override
     public void onUnlockUser(int userHandle) {
-        mImpl.onUserUnlocked(userHandle);
+        FgThread.getHandler().post(() -> mImpl.onUserUnlocked(userHandle));
     }
 
     @Override

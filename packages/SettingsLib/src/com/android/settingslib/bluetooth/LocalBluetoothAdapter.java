@@ -35,7 +35,7 @@ import java.util.Set;
  * are handled by {@link CachedBluetoothDeviceManager},
  * {@link BluetoothEventManager}, and {@link LocalBluetoothProfileManager}.
  */
-public final class LocalBluetoothAdapter {
+public class LocalBluetoothAdapter {
     private static final String TAG = "LocalBluetoothAdapter";
 
     /** This class does not allow direct access to the BluetoothAdapter. */
@@ -88,6 +88,10 @@ public final class LocalBluetoothAdapter {
 
     public boolean disable() {
         return mAdapter.disable();
+    }
+
+    public String getAddress() {
+        return mAdapter.getAddress();
     }
 
     void getProfileProxy(Context context,
@@ -190,8 +194,13 @@ public final class LocalBluetoothAdapter {
         return mState;
     }
 
-    synchronized void setBluetoothStateInt(int state) {
-        mState = state;
+    void setBluetoothStateInt(int state) {
+        synchronized(this) {
+            if (mState == state) {
+                return;
+            }
+            mState = state;
+        }
 
         if (state == BluetoothAdapter.STATE_ON) {
             // if mProfileManager hasn't been constructed yet, it will
@@ -234,5 +243,9 @@ public final class LocalBluetoothAdapter {
 
     public BluetoothDevice getRemoteDevice(String address) {
         return mAdapter.getRemoteDevice(address);
+    }
+
+    public int getMaxConnectedAudioDevices() {
+        return mAdapter.getMaxConnectedAudioDevices();
     }
 }

@@ -27,6 +27,7 @@
 #include <fcntl.h>
 #include <grp.h>
 #include <inttypes.h>
+#include <malloc.h>
 #include <mntent.h>
 #include <paths.h>
 #include <signal.h>
@@ -44,19 +45,22 @@
 #include <unistd.h>
 
 #include "android-base/logging.h"
+#include <android-base/file.h>
+#include <android-base/stringprintf.h>
 #include <cutils/fs.h>
 #include <cutils/multiuser.h>
 #include <cutils/sched_policy.h>
 #include <private/android_filesystem_config.h>
 #include <utils/String8.h>
 #include <selinux/android.h>
+#include <seccomp_policy.h>
 #include <processgroup/processgroup.h>
 
 #include "core_jni_helpers.h"
-#include "JNIHelp.h"
-#include "ScopedLocalRef.h"
-#include "ScopedPrimitiveArray.h"
-#include "ScopedUtfChars.h"
+#include <nativehelper/JNIHelp.h>
+#include <nativehelper/ScopedLocalRef.h>
+#include <nativehelper/ScopedPrimitiveArray.h>
+#include <nativehelper/ScopedUtfChars.h>
 #include "fd_utils.h"
 
 #include "nativebridge/native_bridge.h"
@@ -64,12 +68,16 @@
 namespace {
 
 using android::String8;
+using android::base::StringPrintf;
+using android::base::WriteStringToFile;
 
 static pid_t gSystemServerPid = 0;
 
 static const char kZygoteClassName[] = "com/android/internal/os/Zygote";
 static jclass gZygoteClass;
 static jmethodID gCallPostForkChildHooks;
+
+static bool g_is_security_enforced = true;
 
 // Must match values in com.android.internal.os.Zygote.
 enum MountExternalKind {
@@ -107,13 +115,9 @@ static void SigChldHandler(int /*signal_number*/) {
      // changes its locking strategy or its use of syscalls within the
      // lazy-init critical section, its use here may become unsafe.
     if (WIFEXITED(status)) {
-      if (WEXITSTATUS(status)) {
-        ALOGI("Process %d exited cleanly (%d)", pid, WEXITSTATUS(status));
-      }
+      ALOGI("Process %d exited cleanly (%d)", pid, WEXITSTATUS(status));
     } else if (WIFSIGNALED(status)) {
-      if (WTERMSIG(status) != SIGKILL) {
-        ALOGI("Process %d exited due to signal (%d)", pid, WTERMSIG(status));
-      }
+      ALOGI("Process %d exited due to signal (%d)", pid, WTERMSIG(status));
       if (WCOREDUMP(status)) {
         ALOGI("Process %d dumped core.", pid);
       }
@@ -137,32 +141,45 @@ static void SigChldHandler(int /*signal_number*/) {
   errno = saved_errno;
 }
 
-// Configures the SIGCHLD handler for the zygote process. This is configured
-// very late, because earlier in the runtime we may fork() and exec()
-// other processes, and we want to waitpid() for those rather than
+// Configures the SIGCHLD/SIGHUP handlers for the zygote process. This is
+// configured very late, because earlier in the runtime we may fork() and
+// exec() other processes, and we want to waitpid() for those rather than
 // have them be harvested immediately.
+//
+// Ignore SIGHUP because all processes forked by the zygote are in the same
+// process group as the zygote and we don't want to be notified if we become
+// an orphaned group and have one or more stopped processes. This is not a
+// theoretical concern :
+// - we can become an orphaned group if one of our direct descendants forks
+//   and is subsequently killed before its children.
+// - crash_dump routinely STOPs the process it's tracing.
+//
+// See issues b/71965619 and b/25567761 for further details.
 //
 // This ends up being called repeatedly before each fork(), but there's
 // no real harm in that.
-static void SetSigChldHandler() {
-  struct sigaction sa;
-  memset(&sa, 0, sizeof(sa));
-  sa.sa_handler = SigChldHandler;
+static void SetSignalHandlers() {
+  struct sigaction sig_chld = {};
+  sig_chld.sa_handler = SigChldHandler;
 
-  int err = sigaction(SIGCHLD, &sa, NULL);
-  if (err < 0) {
+  if (sigaction(SIGCHLD, &sig_chld, NULL) < 0) {
     ALOGW("Error setting SIGCHLD handler: %s", strerror(errno));
+  }
+
+  struct sigaction sig_hup = {};
+  sig_hup.sa_handler = SIG_IGN;
+  if (sigaction(SIGHUP, &sig_hup, NULL) < 0) {
+    ALOGW("Error setting SIGHUP handler: %s", strerror(errno));
   }
 }
 
 // Sets the SIGCHLD handler back to default behavior in zygote children.
-static void UnsetSigChldHandler() {
+static void UnsetChldSignalHandler() {
   struct sigaction sa;
   memset(&sa, 0, sizeof(sa));
   sa.sa_handler = SIG_DFL;
 
-  int err = sigaction(SIGCHLD, &sa, NULL);
-  if (err < 0) {
+  if (sigaction(SIGCHLD, &sa, NULL) < 0) {
     ALOGW("Error unsetting SIGCHLD handler: %s", strerror(errno));
   }
 }
@@ -219,6 +236,28 @@ static void SetRLimits(JNIEnv* env, jobjectArray javaRlimits) {
 
 // The debug malloc library needs to know whether it's the zygote or a child.
 extern "C" int gMallocLeakZygoteChild;
+
+static void PreApplicationInit() {
+  // The child process sets this to indicate it's not the zygote.
+  gMallocLeakZygoteChild = 1;
+
+  // Set the jemalloc decay time to 1.
+  mallopt(M_DECAY_TIME, 1);
+}
+
+static void SetUpSeccompFilter(uid_t uid) {
+  if (!g_is_security_enforced) {
+    ALOGI("seccomp disabled by setenforce 0");
+    return;
+  }
+
+  // Apply system or app filter based on uid.
+  if (getuid() >= AID_APP_START) {
+    set_app_seccomp_filter();
+  } else {
+    set_system_seccomp_filter();
+  }
+}
 
 static void EnableKeepCapabilities(JNIEnv* env) {
   int rc = prctl(PR_SET_KEEPCAPS, 1, 0, 0, 0);
@@ -472,14 +511,14 @@ static void FillFileDescriptorVector(JNIEnv* env,
 
 // Utility routine to fork zygote and specialize the child process.
 static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArray javaGids,
-                                     jint debug_flags, jobjectArray javaRlimits,
+                                     jint runtime_flags, jobjectArray javaRlimits,
                                      jlong permittedCapabilities, jlong effectiveCapabilities,
                                      jint mount_external,
                                      jstring java_se_info, jstring java_se_name,
                                      bool is_system_server, jintArray fdsToClose,
-                                     jintArray fdsToIgnore,
+                                     jintArray fdsToIgnore, bool is_child_zygote,
                                      jstring instructionSet, jstring dataDir) {
-  SetSigChldHandler();
+  SetSignalHandlers();
 
   sigset_t sigchld;
   sigemptyset(&sigchld);
@@ -516,8 +555,7 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
   pid_t pid = fork();
 
   if (pid == 0) {
-    // The child process.
-    gMallocLeakZygoteChild = 1;
+    PreApplicationInit();
 
     // Clean up any descriptors which must be closed immediately
     DetachDescriptors(env, fdsToClose);
@@ -532,6 +570,11 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
       ALOGE("sigprocmask(SIG_SETMASK, { SIGCHLD }) failed: %s", strerror(errno));
       RuntimeAbort(env, __LINE__, "Call to sigprocmask(SIG_UNBLOCK, { SIGCHLD }) failed.");
     }
+
+    // Must be called when the new process still has CAP_SYS_ADMIN.  The other alternative is to
+    // call prctl(PR_SET_NO_NEW_PRIVS, 1) afterward, but that breaks SELinux domain transition (see
+    // b/71859146).
+    SetUpSeccompFilter(uid);
 
     // Keep capabilities across UID change, unless we're staying root.
     if (uid != 0) {
@@ -652,10 +695,11 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
     delete se_info;
     delete se_name;
 
-    UnsetSigChldHandler();
+    // Unset the SIGCHLD handler, but keep ignoring SIGHUP (rationale in SetSignalHandlers).
+    UnsetChldSignalHandler();
 
-    env->CallStaticVoidMethod(gZygoteClass, gCallPostForkChildHooks, debug_flags,
-                              is_system_server, instructionSet);
+    env->CallStaticVoidMethod(gZygoteClass, gCallPostForkChildHooks, runtime_flags,
+                              is_system_server, is_child_zygote, instructionSet);
     if (env->ExceptionCheck()) {
       RuntimeAbort(env, __LINE__, "Error calling post fork hooks.");
     }
@@ -670,16 +714,41 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
   }
   return pid;
 }
+
+static uint64_t GetEffectiveCapabilityMask(JNIEnv* env) {
+    __user_cap_header_struct capheader;
+    memset(&capheader, 0, sizeof(capheader));
+    capheader.version = _LINUX_CAPABILITY_VERSION_3;
+    capheader.pid = 0;
+
+    __user_cap_data_struct capdata[2];
+    if (capget(&capheader, &capdata[0]) == -1) {
+        ALOGE("capget failed: %s", strerror(errno));
+        RuntimeAbort(env, __LINE__, "capget failed");
+    }
+
+    return capdata[0].effective |
+           (static_cast<uint64_t>(capdata[1].effective) << 32);
+}
 }  // anonymous namespace
 
 namespace android {
 
+static void com_android_internal_os_Zygote_nativeSecurityInit(JNIEnv*, jclass) {
+  // security_getenforce is not allowed on app process. Initialize and cache the value before
+  // zygote forks.
+  g_is_security_enforced = security_getenforce();
+}
+
+static void com_android_internal_os_Zygote_nativePreApplicationInit(JNIEnv*, jclass) {
+  PreApplicationInit();
+}
+
 static jint com_android_internal_os_Zygote_nativeForkAndSpecialize(
         JNIEnv* env, jclass, jint uid, jint gid, jintArray gids,
-        jint debug_flags, jobjectArray rlimits,
+        jint runtime_flags, jobjectArray rlimits,
         jint mount_external, jstring se_info, jstring se_name,
-        jintArray fdsToClose,
-        jintArray fdsToIgnore,
+        jintArray fdsToClose, jintArray fdsToIgnore, jboolean is_child_zygote,
         jstring instructionSet, jstring appDataDir) {
     jlong capabilities = 0;
 
@@ -716,20 +785,33 @@ static jint com_android_internal_os_Zygote_nativeForkAndSpecialize(
       capabilities |= (1LL << CAP_BLOCK_SUSPEND);
     }
 
-    return ForkAndSpecializeCommon(env, uid, gid, gids, debug_flags,
+    // If forking a child zygote process, that zygote will need to be able to change
+    // the UID and GID of processes it forks, as well as drop those capabilities.
+    if (is_child_zygote) {
+      capabilities |= (1LL << CAP_SETUID);
+      capabilities |= (1LL << CAP_SETGID);
+      capabilities |= (1LL << CAP_SETPCAP);
+    }
+
+    // Containers run without some capabilities, so drop any caps that are not
+    // available.
+    capabilities &= GetEffectiveCapabilityMask(env);
+
+    return ForkAndSpecializeCommon(env, uid, gid, gids, runtime_flags,
             rlimits, capabilities, capabilities, mount_external, se_info,
-            se_name, false, fdsToClose, fdsToIgnore, instructionSet, appDataDir);
+            se_name, false, fdsToClose, fdsToIgnore, is_child_zygote == JNI_TRUE,
+            instructionSet, appDataDir);
 }
 
 static jint com_android_internal_os_Zygote_nativeForkSystemServer(
         JNIEnv* env, jclass, uid_t uid, gid_t gid, jintArray gids,
-        jint debug_flags, jobjectArray rlimits, jlong permittedCapabilities,
+        jint runtime_flags, jobjectArray rlimits, jlong permittedCapabilities,
         jlong effectiveCapabilities) {
   pid_t pid = ForkAndSpecializeCommon(env, uid, gid, gids,
-                                      debug_flags, rlimits,
+                                      runtime_flags, rlimits,
                                       permittedCapabilities, effectiveCapabilities,
                                       MOUNT_EXTERNAL_DEFAULT, NULL, NULL, true, NULL,
-                                      NULL, NULL, NULL);
+                                      NULL, false, NULL, NULL);
   if (pid > 0) {
       // The zygote process checks whether the child process has died or not.
       ALOGI("System server process %d has been created", pid);
@@ -741,6 +823,11 @@ static jint com_android_internal_os_Zygote_nativeForkSystemServer(
       if (waitpid(pid, &status, WNOHANG) == pid) {
           ALOGE("System server process %d has died. Restarting Zygote!", pid);
           RuntimeAbort(env, __LINE__, "System server process has died. Restarting Zygote!");
+      }
+
+      // Assign system_server to the correct memory cgroup.
+      if (!WriteStringToFile(StringPrintf("%d", pid), "/dev/memcg/system/tasks")) {
+        ALOGE("couldn't write %d to /dev/memcg/system/tasks", pid);
       }
   }
   return pid;
@@ -795,21 +882,25 @@ static void com_android_internal_os_Zygote_nativeUnmountStorageOnInit(JNIEnv* en
 }
 
 static const JNINativeMethod gMethods[] = {
+    { "nativeSecurityInit", "()V",
+      (void *) com_android_internal_os_Zygote_nativeSecurityInit },
     { "nativeForkAndSpecialize",
-      "(II[II[[IILjava/lang/String;Ljava/lang/String;[I[ILjava/lang/String;Ljava/lang/String;)I",
+      "(II[II[[IILjava/lang/String;Ljava/lang/String;[I[IZLjava/lang/String;Ljava/lang/String;)I",
       (void *) com_android_internal_os_Zygote_nativeForkAndSpecialize },
     { "nativeForkSystemServer", "(II[II[[IJJ)I",
       (void *) com_android_internal_os_Zygote_nativeForkSystemServer },
     { "nativeAllowFileAcrossFork", "(Ljava/lang/String;)V",
       (void *) com_android_internal_os_Zygote_nativeAllowFileAcrossFork },
     { "nativeUnmountStorageOnInit", "()V",
-      (void *) com_android_internal_os_Zygote_nativeUnmountStorageOnInit }
+      (void *) com_android_internal_os_Zygote_nativeUnmountStorageOnInit },
+    { "nativePreApplicationInit", "()V",
+      (void *) com_android_internal_os_Zygote_nativePreApplicationInit }
 };
 
 int register_com_android_internal_os_Zygote(JNIEnv* env) {
   gZygoteClass = MakeGlobalRefOrDie(env, FindClassOrDie(env, kZygoteClassName));
   gCallPostForkChildHooks = GetStaticMethodIDOrDie(env, gZygoteClass, "callPostForkChildHooks",
-                                                   "(IZLjava/lang/String;)V");
+                                                   "(IZZLjava/lang/String;)V");
 
   return RegisterMethodsOrDie(env, "com/android/internal/os/Zygote", gMethods, NELEM(gMethods));
 }

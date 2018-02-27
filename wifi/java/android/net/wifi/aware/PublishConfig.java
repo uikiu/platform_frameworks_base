@@ -93,12 +93,17 @@ public final class PublishConfig implements Parcelable {
 
     @Override
     public String toString() {
-        return "PublishConfig [mServiceName='" + mServiceName + ", mServiceSpecificInfo='" + (
-                (mServiceSpecificInfo == null) ? "null" : HexEncoding.encode(mServiceSpecificInfo))
-                + ", mMatchFilter=" + (new TlvBufferUtils.TlvIterable(0, 1,
-                mMatchFilter)).toString() + ", mPublishType=" + mPublishType
-                + ", mTtlSec=" + mTtlSec + ", mEnableTerminateNotification="
-                + mEnableTerminateNotification + "]";
+        return "PublishConfig [mServiceName='" + (mServiceName == null ? "<null>" : String.valueOf(
+                HexEncoding.encode(mServiceName))) + ", mServiceName.length=" + (
+                mServiceName == null ? 0 : mServiceName.length) + ", mServiceSpecificInfo='" + (
+                (mServiceSpecificInfo == null) ? "<null>" : String.valueOf(
+                        HexEncoding.encode(mServiceSpecificInfo)))
+                + ", mServiceSpecificInfo.length=" + (mServiceSpecificInfo == null ? 0
+                : mServiceSpecificInfo.length) + ", mMatchFilter="
+                + (new TlvBufferUtils.TlvIterable(0, 1, mMatchFilter)).toString()
+                + ", mMatchFilter.length=" + (mMatchFilter == null ? 0 : mMatchFilter.length)
+                + ", mPublishType=" + mPublishType + ", mTtlSec=" + mTtlSec
+                + ", mEnableTerminateNotification=" + mEnableTerminateNotification + "]";
     }
 
     @Override
@@ -314,7 +319,7 @@ public final class PublishConfig implements Parcelable {
          * {@link #setTerminateNotificationEnabled(boolean)} disables the callback].
          * <p>
          *     Optional. 0 by default - indicating the session doesn't terminate on its own.
-         *     Session will be terminated when {@link DiscoverySession#destroy()} is
+         *     Session will be terminated when {@link DiscoverySession#close()} is
          *     called.
          *
          * @param ttlSec Lifetime of a publish session in seconds.

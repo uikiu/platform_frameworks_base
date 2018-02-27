@@ -30,7 +30,8 @@
 #include "core_jni_helpers.h"
 
 #include "android_util_Binder.h"
-#include "JNIHelp.h"
+#include <nativehelper/JNIHelp.h>
+#include "android_os_Debug.h"
 
 #include <dirent.h>
 #include <fcntl.h>
@@ -176,6 +177,22 @@ void android_os_Process_setThreadGroup(JNIEnv* env, jobject clazz, int tid, jint
     }
 }
 
+void android_os_Process_setThreadGroupAndCpuset(JNIEnv* env, jobject clazz, int tid, jint grp)
+{
+    ALOGV("%s tid=%d grp=%" PRId32, __func__, tid, grp);
+    SchedPolicy sp = (SchedPolicy) grp;
+    int res = set_sched_policy(tid, sp);
+
+    if (res != NO_ERROR) {
+        signalExceptionForGroupError(env, -res, tid);
+    }
+
+    res = set_cpuset_policy(tid, sp);
+    if (res != NO_ERROR) {
+        signalExceptionForGroupError(env, -res, tid);
+    }
+}
+
 void android_os_Process_setProcessGroup(JNIEnv* env, jobject clazz, int pid, jint grp)
 {
     ALOGV("%s pid=%d grp=%" PRId32, __func__, pid, grp);
@@ -202,7 +219,7 @@ void android_os_Process_setProcessGroup(JNIEnv* env, jobject clazz, int pid, jin
         strcpy(cmdline, "unknown");
 
         sprintf(proc_path, "/proc/%d/cmdline", pid);
-        fd = open(proc_path, O_RDONLY);
+        fd = open(proc_path, O_RDONLY | O_CLOEXEC);
         if (fd >= 0) {
             int rc = read(fd, cmdline, sizeof(cmdline)-1);
             cmdline[rc] = 0;
@@ -340,6 +357,7 @@ static void get_cpuset_cores_for_policy(SchedPolicy policy, cpu_set_t *cpu_set)
         case SP_FOREGROUND:
         case SP_AUDIO_APP:
         case SP_AUDIO_SYS:
+        case SP_RT_APP:
             filename = "/dev/cpuset/foreground/cpus";
             break;
         case SP_TOP_APP:
@@ -537,7 +555,7 @@ jboolean android_os_Process_setSwappiness(JNIEnv *env, jobject clazz,
         return false;
     }
 
-    int fd = open(text, O_WRONLY);
+    int fd = open(text, O_WRONLY | O_CLOEXEC);
     if (fd >= 0) {
         sprintf(text, "%" PRId32, pid);
         write(fd, text, strlen(text));
@@ -585,7 +603,7 @@ static int pid_compare(const void* v1, const void* v2)
 
 static jlong getFreeMemoryImpl(const char* const sums[], const size_t sumsLen[], size_t num)
 {
-    int fd = open("/proc/meminfo", O_RDONLY);
+    int fd = open("/proc/meminfo", O_RDONLY | O_CLOEXEC);
 
     if (fd < 0) {
         ALOGW("Unable to open /proc/meminfo");
@@ -698,7 +716,7 @@ void android_os_Process_readProcLines(JNIEnv* env, jobject clazz, jstring fileSt
         sizesArray[i] = 0;
     }
 
-    int fd = open(file.string(), O_RDONLY);
+    int fd = open(file.string(), O_RDONLY | O_CLOEXEC);
 
     if (fd >= 0) {
         const size_t BUFFER_SIZE = 2048;
@@ -1005,7 +1023,7 @@ jboolean android_os_Process_readProcFile(JNIEnv* env, jobject clazz,
         jniThrowException(env, "java/lang/OutOfMemoryError", NULL);
         return JNI_FALSE;
     }
-    int fd = open(file8, O_RDONLY);
+    int fd = open(file8, O_RDONLY | O_CLOEXEC);
 
     if (fd < 0) {
         if (kDebugProc) {
@@ -1075,26 +1093,20 @@ static jlong android_os_Process_getElapsedCpuTime(JNIEnv* env, jobject clazz)
 
 static jlong android_os_Process_getPss(JNIEnv* env, jobject clazz, jint pid)
 {
-    char filename[64];
-
-    snprintf(filename, sizeof(filename), "/proc/%" PRId32 "/smaps", pid);
-
-    FILE * file = fopen(filename, "r");
-    if (!file) {
+    UniqueFile file = OpenSmapsOrRollup(pid);
+    if (file == nullptr) {
         return (jlong) -1;
     }
 
     // Tally up all of the Pss from the various maps
     char line[256];
     jlong pss = 0;
-    while (fgets(line, sizeof(line), file)) {
+    while (fgets(line, sizeof(line), file.get())) {
         jlong v;
         if (sscanf(line, "Pss: %" SCNd64 " kB", &v) == 1) {
             pss += v;
         }
     }
-
-    fclose(file);
 
     // Return the Pss value in bytes, not kilobytes
     return pss * 1024;
@@ -1145,7 +1157,7 @@ jintArray android_os_Process_getPidsForCommands(JNIEnv* env, jobject clazz,
         char data[PATH_MAX];
         snprintf(path, sizeof(path), "/proc/%d/cmdline", pid);
 
-        int fd = open(path, O_RDONLY);
+        int fd = open(path, O_RDONLY | O_CLOEXEC);
         if (fd < 0) {
             continue;
         }
@@ -1207,6 +1219,7 @@ static const JNINativeMethod methods[] = {
     {"getThreadPriority",   "(I)I", (void*)android_os_Process_getThreadPriority},
     {"getThreadScheduler",   "(I)I", (void*)android_os_Process_getThreadScheduler},
     {"setThreadGroup",      "(II)V", (void*)android_os_Process_setThreadGroup},
+    {"setThreadGroupAndCpuset", "(II)V", (void*)android_os_Process_setThreadGroupAndCpuset},
     {"setProcessGroup",     "(II)V", (void*)android_os_Process_setProcessGroup},
     {"getProcessGroup",     "(I)I", (void*)android_os_Process_getProcessGroup},
     {"getExclusiveCores",   "()[I", (void*)android_os_Process_getExclusiveCores},

@@ -17,6 +17,7 @@
 package android.hardware.usb;
 
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbPort;
@@ -95,6 +96,11 @@ interface IUsbManager
      */
     void setCurrentFunction(String function, boolean usbDataUnlocked);
 
+    /* Sets the screen unlocked USB function(s), which will be set automatically
+     * when the screen is unlocked.
+     */
+    void setScreenUnlockedFunctions(String function);
+
     /* Allow USB debugging from the attached host. If alwaysAllow is true, add the
      * the public key to list of host keys that the user has approved.
      */
@@ -114,4 +120,7 @@ interface IUsbManager
 
     /* Sets the port's current role. */
     void setPortRoles(in String portId, int powerRole, int dataRole);
+
+   /* Sets USB device connection handler. */
+   void setUsbDeviceConnectionHandler(in ComponentName usbDeviceConnectionHandler);
 }

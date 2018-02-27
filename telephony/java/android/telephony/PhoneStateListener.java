@@ -204,16 +204,6 @@ public class PhoneStateListener {
     public static final int LISTEN_VOLTE_STATE                              = 0x00004000;
 
     /**
-     * Listen for OEM hook raw event
-     *
-     * @see #onOemHookRawEvent
-     * @hide
-     * @deprecated OEM needs a vendor-extension hal and their apps should use that instead
-     */
-    @Deprecated
-    public static final int LISTEN_OEM_HOOK_RAW_EVENT                       = 0x00008000;
-
-    /**
      * Listen for carrier network changes indicated by a carrier app.
      *
      * @see #onCarrierNetworkRequest
@@ -254,7 +244,22 @@ public class PhoneStateListener {
      */
     public static final int LISTEN_DATA_ACTIVATION_STATE                   = 0x00040000;
 
-     /*
+    /**
+     *  Listen for changes to the user mobile data state
+     *
+     *  @see #onUserMobileDataStateChanged
+     */
+    public static final int LISTEN_USER_MOBILE_DATA_STATE                  = 0x00080000;
+
+    /**
+     *  Listen for changes to the physical channel configuration.
+     *
+     *  @see #onPhysicalChannelConfigurationChanged
+     *  @hide
+     */
+    public static final int LISTEN_PHYSICAL_CHANNEL_CONFIGURATION          = 0x00100000;
+
+    /*
      * Subscription used to listen to the phone state changes
      * @hide
      */
@@ -359,13 +364,16 @@ public class PhoneStateListener {
                     case LISTEN_DATA_ACTIVATION_STATE:
                         PhoneStateListener.this.onDataActivationStateChanged((int)msg.obj);
                         break;
-                    case LISTEN_OEM_HOOK_RAW_EVENT:
-                        PhoneStateListener.this.onOemHookRawEvent((byte[])msg.obj);
+                    case LISTEN_USER_MOBILE_DATA_STATE:
+                        PhoneStateListener.this.onUserMobileDataStateChanged((boolean)msg.obj);
                         break;
                     case LISTEN_CARRIER_NETWORK_CHANGE:
                         PhoneStateListener.this.onCarrierNetworkChange((boolean)msg.obj);
                         break;
-
+                    case LISTEN_PHYSICAL_CHANNEL_CONFIGURATION:
+                        PhoneStateListener.this.onPhysicalChannelConfigurationChanged(
+                            (List<PhysicalChannelConfig>)msg.obj);
+                        break;
                 }
             }
         };
@@ -421,7 +429,7 @@ public class PhoneStateListener {
     /**
      * Callback invoked when device call state changes.
      * @param state call state
-     * @param incomingNumber incoming call phone number. If application does not have
+     * @param phoneNumber call phone number. If application does not have
      * {@link android.Manifest.permission#READ_PHONE_STATE READ_PHONE_STATE} permission, an empty
      * string will be passed as an argument.
      *
@@ -429,7 +437,7 @@ public class PhoneStateListener {
      * @see TelephonyManager#CALL_STATE_RINGING
      * @see TelephonyManager#CALL_STATE_OFFHOOK
      */
-    public void onCallStateChanged(int state, String incomingNumber) {
+    public void onCallStateChanged(int state, String phoneNumber) {
         // default implementation empty
     }
 
@@ -556,12 +564,20 @@ public class PhoneStateListener {
     }
 
     /**
-     * Callback invoked when OEM hook raw event is received. Requires
-     * the READ_PRIVILEGED_PHONE_STATE permission.
-     * @param rawData is the byte array of the OEM hook raw data.
+     * Callback invoked when the user mobile data state has changed
+     * @param enabled indicates whether the current user mobile data state is enabled or disabled.
+     */
+    public void onUserMobileDataStateChanged(boolean enabled) {
+        // default implementation empty
+    }
+
+    /**
+     * Callback invoked when the current physical channel configuration has changed
+     *
+     * @param configs List of the current {@link PhysicalChannelConfig}s
      * @hide
      */
-    public void onOemHookRawEvent(byte[] rawData) {
+    public void onPhysicalChannelConfigurationChanged(List<PhysicalChannelConfig> configs) {
         // default implementation empty
     }
 
@@ -677,8 +693,8 @@ public class PhoneStateListener {
             send(LISTEN_DATA_ACTIVATION_STATE, 0, 0, activationState);
         }
 
-        public void onOemHookRawEvent(byte[] rawData) {
-            send(LISTEN_OEM_HOOK_RAW_EVENT, 0, 0, rawData);
+        public void onUserMobileDataStateChanged(boolean enabled) {
+            send(LISTEN_USER_MOBILE_DATA_STATE, 0, 0, enabled);
         }
 
         public void onCarrierNetworkChange(boolean active) {

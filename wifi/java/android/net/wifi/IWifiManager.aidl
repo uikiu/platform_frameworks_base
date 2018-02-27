@@ -19,6 +19,7 @@ package android.net.wifi;
 
 import android.content.pm.ParceledListSlice;
 
+import android.net.wifi.hotspot2.OsuProvider;
 import android.net.wifi.hotspot2.PasspointConfiguration;
 
 import android.net.wifi.WifiConfiguration;
@@ -61,6 +62,8 @@ interface IWifiManager
 
     WifiConfiguration getMatchingWifiConfig(in ScanResult scanResult);
 
+    List<OsuProvider> getMatchingOsuProviders(in ScanResult scanResult);
+
     int addOrUpdateNetwork(in WifiConfiguration config);
 
     boolean addOrUpdatePasspointConfiguration(in PasspointConfiguration config);
@@ -81,7 +84,7 @@ interface IWifiManager
 
     boolean disableNetwork(int netId);
 
-    void startScan(in ScanSettings requested, in WorkSource ws);
+    void startScan(in ScanSettings requested, in WorkSource ws, in String packageName);
 
     List<ScanResult> getScanResults(String callingPackage);
 
@@ -91,7 +94,7 @@ interface IWifiManager
 
     void reassociate();
 
-    WifiInfo getConnectionInfo();
+    WifiInfo getConnectionInfo(String callingPackage);
 
     boolean setWifiEnabled(String packageName, boolean enable);
 
@@ -131,6 +134,14 @@ interface IWifiManager
 
     boolean stopSoftAp();
 
+    int startLocalOnlyHotspot(in Messenger messenger, in IBinder binder, in String packageName);
+
+    void stopLocalOnlyHotspot();
+
+    void startWatchLocalOnlyHotspot(in Messenger messenger, in IBinder binder);
+
+    void stopWatchLocalOnlyHotspot();
+
     int getWifiApEnabledState();
 
     WifiConfiguration getWifiApConfiguration();
@@ -143,7 +154,7 @@ interface IWifiManager
 
     void enableTdlsWithMacAddress(String remoteMacAddress, boolean enable);
 
-    String getWpsNfcConfigurationToken(int netId);
+    String getCurrentNetworkWpsNfcConfigurationToken();
 
     void enableVerboseLogging(int verbose);
 

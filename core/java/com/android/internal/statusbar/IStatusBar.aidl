@@ -32,6 +32,7 @@ oneway interface IStatusBar
     void animateExpandNotificationsPanel();
     void animateExpandSettingsPanel(String subPanel);
     void animateCollapsePanels();
+    void togglePanel();
 
     /**
      * Notifies the status bar of a System UI visibility flag change.
@@ -53,9 +54,6 @@ oneway interface IStatusBar
     void setImeWindowStatus(in IBinder token, int vis, int backDisposition,
             boolean showImeSwitcher);
     void setWindowState(int window, int state);
-    void buzzBeepBlinked();
-    void notificationLightOff();
-    void notificationLightPulse(int argb, int millisOn, int millisOff);
 
     void showRecentApps(boolean triggeredFromAltTab, boolean fromHome);
     void hideRecentApps(boolean triggeredFromAltTab, boolean triggeredFromHomeKey);
@@ -105,12 +103,26 @@ oneway interface IStatusBar
     void onCameraLaunchGestureDetected(int source);
 
     /**
-     * Shows the TV's picture-in-picture menu if an activity is in picture-in-picture mode.
+     * Shows the picture-in-picture menu if an activity is in picture-in-picture mode.
      */
-    void showTvPictureInPictureMenu();
+    void showPictureInPictureMenu();
+
+    /**
+     * Shows the global actions menu.
+     */
+    void showGlobalActionsMenu();
+
+    /**
+     * Set whether the top app currently hides the statusbar.
+     *
+     * @param hidesStatusBar whether it is being hidden
+     */
+    void setTopAppHidesStatusBar(boolean hidesStatusBar);
 
     void addQsTile(in ComponentName tile);
     void remQsTile(in ComponentName tile);
     void clickQsTile(in ComponentName tile);
-    void handleSystemNavigationKey(in int key);
+    void handleSystemKey(in int key);
+
+    void showShutdownUi(boolean isReboot, String reason);
 }

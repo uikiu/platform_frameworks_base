@@ -16,9 +16,12 @@
 
 package com.android.settingslib.bluetooth;
 
+import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothHeadset;
+import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -38,7 +42,7 @@ import java.util.Set;
  * API and dispatches the event on the UI thread to the right class in the
  * Settings.
  */
-public final class BluetoothEventManager {
+public class BluetoothEventManager {
     private static final String TAG = "BluetoothEventManager";
 
     private final LocalBluetoothAdapter mLocalAdapter;
@@ -97,24 +101,32 @@ public final class BluetoothEventManager {
 
         // Pairing broadcasts
         addHandler(BluetoothDevice.ACTION_BOND_STATE_CHANGED, new BondStateChangedHandler());
-        addHandler(BluetoothDevice.ACTION_PAIRING_CANCEL, new PairingCancelHandler());
 
         // Fine-grained state broadcasts
         addHandler(BluetoothDevice.ACTION_CLASS_CHANGED, new ClassChangedHandler());
         addHandler(BluetoothDevice.ACTION_UUID, new UuidChangedHandler());
+        addHandler(BluetoothDevice.ACTION_BATTERY_LEVEL_CHANGED, new BatteryLevelChangedHandler());
 
         // Dock event broadcasts
         addHandler(Intent.ACTION_DOCK_EVENT, new DockEventHandler());
 
+        // Active device broadcasts
+        addHandler(BluetoothA2dp.ACTION_ACTIVE_DEVICE_CHANGED,
+                   new ActiveDeviceChangedHandler());
+        addHandler(BluetoothHeadset.ACTION_ACTIVE_DEVICE_CHANGED,
+                   new ActiveDeviceChangedHandler());
+
         mContext.registerReceiver(mBroadcastReceiver, mAdapterIntentFilter, null, mReceiverHandler);
+        mContext.registerReceiver(mProfileBroadcastReceiver, mProfileIntentFilter, null, mReceiverHandler);
     }
 
     void registerProfileIntentReceiver() {
-        mContext.registerReceiver(mBroadcastReceiver, mProfileIntentFilter, null, mReceiverHandler);
+        mContext.registerReceiver(mProfileBroadcastReceiver, mProfileIntentFilter, null, mReceiverHandler);
     }
 
     public void setReceiverHandler(android.os.Handler handler) {
         mContext.unregisterReceiver(mBroadcastReceiver);
+        mContext.unregisterReceiver(mProfileBroadcastReceiver);
         mReceiverHandler = handler;
         mContext.registerReceiver(mBroadcastReceiver, mAdapterIntentFilter, null, mReceiverHandler);
         registerProfileIntentReceiver();
@@ -148,11 +160,31 @@ public final class BluetoothEventManager {
         }
     };
 
+    private final BroadcastReceiver mProfileBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            BluetoothDevice device = intent
+                    .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+            Handler handler = mHandlerMap.get(action);
+            if (handler != null) {
+                handler.onReceive(context, intent, device);
+            }
+        }
+    };
+
     private class AdapterStateChangedHandler implements Handler {
         public void onReceive(Context context, Intent intent,
                 BluetoothDevice device) {
             int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
                                     BluetoothAdapter.ERROR);
+            // Reregister Profile Broadcast Receiver as part of TURN OFF
+            if (state == BluetoothAdapter.STATE_OFF)
+            {
+                context.unregisterReceiver(mProfileBroadcastReceiver);
+                registerProfileIntentReceiver();
+            }
             // update local profiles and get paired devices
             mLocalAdapter.setBluetoothStateInt(state);
             // send callback to update UI and possibly start scanning
@@ -200,7 +232,7 @@ public final class BluetoothEventManager {
             cachedDevice.setRssi(rssi);
             cachedDevice.setBtClass(btClass);
             cachedDevice.setNewName(name);
-            cachedDevice.setVisible(true);
+            cachedDevice.setJustDiscovered(true);
         }
     }
 
@@ -343,24 +375,6 @@ public final class BluetoothEventManager {
         }
     }
 
-    private class PairingCancelHandler implements Handler {
-        public void onReceive(Context context, Intent intent, BluetoothDevice device) {
-            if (device == null) {
-                Log.e(TAG, "ACTION_PAIRING_CANCEL with no EXTRA_DEVICE");
-                return;
-            }
-            CachedBluetoothDevice cachedDevice = mDeviceManager.findDevice(device);
-            if (cachedDevice == null) {
-                Log.e(TAG, "ACTION_PAIRING_CANCEL with no cached device");
-                return;
-            }
-            int errorMsg = R.string.bluetooth_pairing_error_message;
-            if (context != null && cachedDevice != null) {
-                Utils.showError(context, cachedDevice.getName(), errorMsg);
-            }
-        }
-    }
-
     private class DockEventHandler implements Handler {
         public void onReceive(Context context, Intent intent, BluetoothDevice device) {
             // Remove if unpair device upon undocking
@@ -370,12 +384,23 @@ public final class BluetoothEventManager {
                 if (device != null && device.getBondState() == BluetoothDevice.BOND_NONE) {
                     CachedBluetoothDevice cachedDevice = mDeviceManager.findDevice(device);
                     if (cachedDevice != null) {
-                        cachedDevice.setVisible(false);
+                        cachedDevice.setJustDiscovered(false);
                     }
                 }
             }
         }
     }
+
+    private class BatteryLevelChangedHandler implements Handler {
+        public void onReceive(Context context, Intent intent,
+                BluetoothDevice device) {
+            CachedBluetoothDevice cachedDevice = mDeviceManager.findDevice(device);
+            if (cachedDevice != null) {
+                cachedDevice.refresh();
+            }
+        }
+    }
+
     boolean readPairedDevices() {
         Set<BluetoothDevice> bondedDevices = mLocalAdapter.getBondedDevices();
         if (bondedDevices == null) {
@@ -393,5 +418,36 @@ public final class BluetoothEventManager {
         }
 
         return deviceAdded;
+    }
+
+    private class ActiveDeviceChangedHandler implements Handler {
+        @Override
+        public void onReceive(Context context, Intent intent, BluetoothDevice device) {
+            String action = intent.getAction();
+            if (action == null) {
+                Log.w(TAG, "ActiveDeviceChangedHandler: action is null");
+                return;
+            }
+            CachedBluetoothDevice activeDevice = mDeviceManager.findDevice(device);
+            int bluetoothProfile = 0;
+            if (Objects.equals(action, BluetoothA2dp.ACTION_ACTIVE_DEVICE_CHANGED)) {
+                bluetoothProfile = BluetoothProfile.A2DP;
+            } else if (Objects.equals(action, BluetoothHeadset.ACTION_ACTIVE_DEVICE_CHANGED)) {
+                bluetoothProfile = BluetoothProfile.HEADSET;
+            } else {
+                Log.w(TAG, "ActiveDeviceChangedHandler: unknown action " + action);
+                return;
+            }
+            dispatchActiveDeviceChanged(activeDevice, bluetoothProfile);
+        }
+    }
+
+    private void dispatchActiveDeviceChanged(CachedBluetoothDevice activeDevice,
+                                             int bluetoothProfile) {
+        synchronized (mCallbacks) {
+            for (BluetoothCallback callback : mCallbacks) {
+                callback.onActiveDeviceChanged(activeDevice, bluetoothProfile);
+            }
+        }
     }
 }

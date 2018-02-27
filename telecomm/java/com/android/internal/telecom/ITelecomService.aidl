@@ -187,17 +187,17 @@ interface ITelecomService {
     /**
      * @see TelecomServiceImpl#endCall
      */
-    boolean endCall();
+    boolean endCall(String callingPackage);
 
     /**
      * @see TelecomServiceImpl#acceptRingingCall
      */
-    void acceptRingingCall();
+    void acceptRingingCall(String callingPackage);
 
     /**
      * @see TelecomServiceImpl#acceptRingingCallWithVideoState(int)
      */
-    void acceptRingingCallWithVideoState(int videoState);
+    void acceptRingingCallWithVideoState(String callingPackage, int videoState);
 
     /**
      * @see TelecomServiceImpl#cancelMissedCallsNotification
@@ -274,4 +274,9 @@ interface ITelecomService {
      * @see TelecomServiceImpl#waitOnHandler
      */
     void waitOnHandlers();
+
+    /**
+     * @see TelecomServiceImpl#acceptHandover
+     */
+    void acceptHandover(in Uri srcAddr, int videoState, in PhoneAccountHandle destAcct);
 }

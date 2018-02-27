@@ -287,7 +287,7 @@ public class Patterns {
      * RFC 1035 Section 2.3.4 limits the labels to a maximum 63 octets.
      */
     private static final String IRI_LABEL =
-            "[" + LABEL_CHAR + "](?:[" + LABEL_CHAR + "\\-]{0,61}[" + LABEL_CHAR + "]){0,1}";
+            "[" + LABEL_CHAR + "](?:[" + LABEL_CHAR + "_\\-]{0,61}[" + LABEL_CHAR + "]){0,1}";
 
     /**
      * RFC 3492 references RFC 1034 and limits Punycode algorithm output to 63 characters.
@@ -301,7 +301,7 @@ public class Patterns {
     private static final String DOMAIN_NAME_STR = "(" + HOST_NAME + "|" + IP_ADDRESS_STRING + ")";
     public static final Pattern DOMAIN_NAME = Pattern.compile(DOMAIN_NAME_STR);
 
-    private static final String PROTOCOL = "(?i:http|https|rtsp):\\/\\/";
+    private static final String PROTOCOL = "(?i:http|https|rtsp)://";
 
     /* A word boundary or end of input.  This is to stop foo.sure from matching as foo.su */
     private static final String WORD_BOUNDARY = "(?:\\b|$|^)";
@@ -312,9 +312,9 @@ public class Patterns {
 
     private static final String PORT_NUMBER = "\\:\\d{1,5}";
 
-    private static final String PATH_AND_QUERY = "\\/(?:(?:[" + LABEL_CHAR
-            + "\\;\\/\\?\\:\\@\\&\\=\\#\\~"  // plus optional query params
-            + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])|(?:\\%[a-fA-F0-9]{2}))*";
+    private static final String PATH_AND_QUERY = "[/\\?](?:(?:[" + LABEL_CHAR
+            + ";/\\?:@&=#~"  // plus optional query params
+            + "\\-\\.\\+!\\*'\\(\\),_\\$])|(?:%[a-fA-F0-9]{2}))*";
 
     /**
      *  Regular expression pattern to match most part of RFC 3987
@@ -406,7 +406,7 @@ public class Patterns {
      * the local part to be at most 64 octets.
      */
     private static final String EMAIL_ADDRESS_LOCAL_PART =
-            "[" + EMAIL_CHAR + "]" + "(?:[" + EMAIL_CHAR + "\\.]{1,62}[" + EMAIL_CHAR + "])?";
+            "[" + EMAIL_CHAR + "]" + "(?:[" + EMAIL_CHAR + "\\.]{0,62}[" + EMAIL_CHAR + "])?";
 
     /**
      * Regular expression for the domain part of an email address. RFC5321 section 4.5.3.1.2 limits

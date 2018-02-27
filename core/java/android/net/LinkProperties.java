@@ -18,14 +18,13 @@ package android.net;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.net.ProxyInfo;
-import android.os.Parcelable;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
-import java.net.InetAddress;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,6 +50,8 @@ public final class LinkProperties implements Parcelable {
     private String mIfaceName;
     private ArrayList<LinkAddress> mLinkAddresses = new ArrayList<LinkAddress>();
     private ArrayList<InetAddress> mDnses = new ArrayList<InetAddress>();
+    private boolean mUsePrivateDns;
+    private String mPrivateDnsServerName;
     private String mDomains;
     private ArrayList<RouteInfo> mRoutes = new ArrayList<RouteInfo>();
     private ProxyInfo mHttpProxy;
@@ -71,8 +72,23 @@ public final class LinkProperties implements Parcelable {
      * @hide
      */
     public static class CompareResult<T> {
-        public List<T> removed = new ArrayList<T>();
-        public List<T> added = new ArrayList<T>();
+        public final List<T> removed = new ArrayList<T>();
+        public final List<T> added = new ArrayList<T>();
+
+        public CompareResult() {}
+
+        public CompareResult(Collection<T> oldItems, Collection<T> newItems) {
+            if (oldItems != null) {
+                removed.addAll(oldItems);
+            }
+            if (newItems != null) {
+                for (T newItem : newItems) {
+                    if (!removed.remove(newItem)) {
+                        added.add(newItem);
+                    }
+                }
+            }
+        }
 
         @Override
         public String toString() {
@@ -151,6 +167,8 @@ public final class LinkProperties implements Parcelable {
             mIfaceName = source.getInterfaceName();
             for (LinkAddress l : source.getLinkAddresses()) mLinkAddresses.add(l);
             for (InetAddress i : source.getDnsServers()) mDnses.add(i);
+            mUsePrivateDns = source.mUsePrivateDns;
+            mPrivateDnsServerName = source.mPrivateDnsServerName;
             mDomains = source.getDomains();
             for (RouteInfo r : source.getRoutes()) mRoutes.add(r);
             mHttpProxy = (source.getHttpProxy() == null)  ?
@@ -377,6 +395,59 @@ public final class LinkProperties implements Parcelable {
     }
 
     /**
+     * Set whether private DNS is currently in use on this network.
+     *
+     * @param usePrivateDns The private DNS state.
+     * @hide
+     */
+    public void setUsePrivateDns(boolean usePrivateDns) {
+        mUsePrivateDns = usePrivateDns;
+    }
+
+    /**
+     * Returns whether private DNS is currently in use on this network. When
+     * private DNS is in use, applications must not send unencrypted DNS
+     * queries as doing so could reveal private user information. Furthermore,
+     * if private DNS is in use and {@link #getPrivateDnsServerName} is not
+     * {@code null}, DNS queries must be sent to the specified DNS server.
+     *
+     * @return {@code true} if private DNS is in use, {@code false} otherwise.
+     */
+    public boolean isPrivateDnsActive() {
+        return mUsePrivateDns;
+    }
+
+    /**
+     * Set the name of the private DNS server to which private DNS queries
+     * should be sent when in strict mode. This value should be {@code null}
+     * when private DNS is off or in opportunistic mode.
+     *
+     * @param privateDnsServerName The private DNS server name.
+     * @hide
+     */
+    public void setPrivateDnsServerName(@Nullable String privateDnsServerName) {
+        mPrivateDnsServerName = privateDnsServerName;
+    }
+
+    /**
+     * Returns the private DNS server name that is in use. If not {@code null},
+     * private DNS is in strict mode. In this mode, applications should ensure
+     * that all DNS queries are encrypted and sent to this hostname and that
+     * queries are only sent if the hostname's certificate is valid. If
+     * {@code null} and {@link #isPrivateDnsActive} is {@code true}, private
+     * DNS is in opportunistic mode, and applications should ensure that DNS
+     * queries are encrypted and sent to a DNS server returned by
+     * {@link #getDnsServers}. System DNS will handle each of these cases
+     * correctly, but applications implementing their own DNS lookups must make
+     * sure to follow these requirements.
+     *
+     * @return The private DNS server name.
+     */
+    public @Nullable String getPrivateDnsServerName() {
+        return mPrivateDnsServerName;
+    }
+
+    /**
      * Sets the DNS domain search path used on this link.
      *
      * @param domains A {@link String} listing in priority order the comma separated
@@ -504,11 +575,22 @@ public final class LinkProperties implements Parcelable {
     }
 
     /**
+     * Make sure this LinkProperties instance contains routes that cover the local subnet
+     * of its link addresses. Add any route that is missing.
+     * @hide
+     */
+    public void ensureDirectlyConnectedRoutes() {
+        for (LinkAddress addr: mLinkAddresses) {
+            addRoute(new RouteInfo(addr, null, mIfaceName));
+        }
+    }
+
+    /**
      * Returns all the routes on this link and all the links stacked above it.
      * @hide
      */
     public List<RouteInfo> getAllRoutes() {
-        List<RouteInfo> routes = new ArrayList();
+        List<RouteInfo> routes = new ArrayList<>();
         routes.addAll(mRoutes);
         for (LinkProperties stacked: mStackedLinks.values()) {
             routes.addAll(stacked.getAllRoutes());
@@ -597,6 +679,8 @@ public final class LinkProperties implements Parcelable {
         mIfaceName = null;
         mLinkAddresses.clear();
         mDnses.clear();
+        mUsePrivateDns = false;
+        mPrivateDnsServerName = null;
         mDomains = null;
         mRoutes.clear();
         mHttpProxy = null;
@@ -624,6 +708,13 @@ public final class LinkProperties implements Parcelable {
         for (InetAddress addr : mDnses) dns += addr.getHostAddress() + ",";
         dns += "] ";
 
+        String usePrivateDns = "UsePrivateDns: " + mUsePrivateDns + " ";
+
+        String privateDnsServerName = "";
+        if (privateDnsServerName != null) {
+            privateDnsServerName = "PrivateDnsServerName: " + mPrivateDnsServerName + " ";
+        }
+
         String domainName = "Domains: " + mDomains;
 
         String mtu = " MTU: " + mMtu;
@@ -646,8 +737,9 @@ public final class LinkProperties implements Parcelable {
             }
             stacked += "] ";
         }
-        return "{" + ifaceName + linkAddresses + routes + dns + domainName + mtu
-            + tcpBuffSizes + proxy + stacked + "}";
+        return "{" + ifaceName + linkAddresses + routes + dns + usePrivateDns
+            + privateDnsServerName + domainName + mtu + tcpBuffSizes + proxy
+            + stacked + "}";
     }
 
     /**
@@ -658,9 +750,9 @@ public final class LinkProperties implements Parcelable {
      */
     public boolean hasIPv4Address() {
         for (LinkAddress address : mLinkAddresses) {
-          if (address.getAddress() instanceof Inet4Address) {
-            return true;
-          }
+            if (address.getAddress() instanceof Inet4Address) {
+                return true;
+            }
         }
         return false;
     }
@@ -700,9 +792,9 @@ public final class LinkProperties implements Parcelable {
      */
     public boolean hasIPv4DefaultRoute() {
         for (RouteInfo r : mRoutes) {
-          if (r.isIPv4Default()) {
-            return true;
-          }
+            if (r.isIPv4Default()) {
+                return true;
+            }
         }
         return false;
     }
@@ -715,9 +807,9 @@ public final class LinkProperties implements Parcelable {
      */
     public boolean hasIPv6DefaultRoute() {
         for (RouteInfo r : mRoutes) {
-          if (r.isIPv6Default()) {
-            return true;
-          }
+            if (r.isIPv6Default()) {
+                return true;
+            }
         }
         return false;
     }
@@ -730,9 +822,9 @@ public final class LinkProperties implements Parcelable {
      */
     public boolean hasIPv4DnsServer() {
         for (InetAddress ia : mDnses) {
-          if (ia instanceof Inet4Address) {
-            return true;
-          }
+            if (ia instanceof Inet4Address) {
+                return true;
+            }
         }
         return false;
     }
@@ -745,9 +837,9 @@ public final class LinkProperties implements Parcelable {
      */
     public boolean hasIPv6DnsServer() {
         for (InetAddress ia : mDnses) {
-          if (ia instanceof Inet6Address) {
-            return true;
-          }
+            if (ia instanceof Inet6Address) {
+                return true;
+            }
         }
         return false;
     }
@@ -871,6 +963,20 @@ public final class LinkProperties implements Parcelable {
     }
 
     /**
+     * Compares this {@code LinkProperties} private DNS settings against the
+     * target.
+     *
+     * @param target LinkProperties to compare.
+     * @return {@code true} if both are identical, {@code false} otherwise.
+     * @hide
+     */
+    public boolean isIdenticalPrivateDns(LinkProperties target) {
+        return (isPrivateDnsActive() == target.isPrivateDnsActive()
+                && TextUtils.equals(getPrivateDnsServerName(),
+                target.getPrivateDnsServerName()));
+    }
+
+    /**
      * Compares this {@code LinkProperties} Routes against the target
      *
      * @param target LinkProperties to compare.
@@ -964,14 +1070,15 @@ public final class LinkProperties implements Parcelable {
          * stacked interfaces are not so much a property of the link as a
          * description of connections between links.
          */
-        return isIdenticalInterfaceName(target) &&
-                isIdenticalAddresses(target) &&
-                isIdenticalDnses(target) &&
-                isIdenticalRoutes(target) &&
-                isIdenticalHttpProxy(target) &&
-                isIdenticalStackedLinks(target) &&
-                isIdenticalMtu(target) &&
-                isIdenticalTcpBufferSizes(target);
+        return isIdenticalInterfaceName(target)
+                && isIdenticalAddresses(target)
+                && isIdenticalDnses(target)
+                && isIdenticalPrivateDns(target)
+                && isIdenticalRoutes(target)
+                && isIdenticalHttpProxy(target)
+                && isIdenticalStackedLinks(target)
+                && isIdenticalMtu(target)
+                && isIdenticalTcpBufferSizes(target);
     }
 
     /**
@@ -990,17 +1097,8 @@ public final class LinkProperties implements Parcelable {
          * are in target but not in mLinkAddresses are placed in the
          * addedAddresses.
          */
-        CompareResult<LinkAddress> result = new CompareResult<LinkAddress>();
-        result.removed = new ArrayList<LinkAddress>(mLinkAddresses);
-        result.added.clear();
-        if (target != null) {
-            for (LinkAddress newAddress : target.getLinkAddresses()) {
-                if (! result.removed.remove(newAddress)) {
-                    result.added.add(newAddress);
-                }
-            }
-        }
-        return result;
+        return new CompareResult<>(mLinkAddresses,
+                target != null ? target.getLinkAddresses() : null);
     }
 
     /**
@@ -1019,18 +1117,7 @@ public final class LinkProperties implements Parcelable {
          * are in target but not in mDnses are placed in the
          * addedAddresses.
          */
-        CompareResult<InetAddress> result = new CompareResult<InetAddress>();
-
-        result.removed = new ArrayList<InetAddress>(mDnses);
-        result.added.clear();
-        if (target != null) {
-            for (InetAddress newAddress : target.getDnsServers()) {
-                if (! result.removed.remove(newAddress)) {
-                    result.added.add(newAddress);
-                }
-            }
-        }
-        return result;
+        return new CompareResult<>(mDnses, target != null ? target.getDnsServers() : null);
     }
 
     /**
@@ -1048,18 +1135,7 @@ public final class LinkProperties implements Parcelable {
          * leaving the routes that are different. And route address which
          * are in target but not in mRoutes are placed in added.
          */
-        CompareResult<RouteInfo> result = new CompareResult<RouteInfo>();
-
-        result.removed = getAllRoutes();
-        result.added.clear();
-        if (target != null) {
-            for (RouteInfo r : target.getAllRoutes()) {
-                if (! result.removed.remove(r)) {
-                    result.added.add(r);
-                }
-            }
-        }
-        return result;
+        return new CompareResult<>(getAllRoutes(), target != null ? target.getAllRoutes() : null);
     }
 
     /**
@@ -1077,18 +1153,8 @@ public final class LinkProperties implements Parcelable {
          * leaving the interface names that are different. And interface names which
          * are in target but not in this are placed in added.
          */
-        CompareResult<String> result = new CompareResult<String>();
-
-        result.removed = getAllInterfaceNames();
-        result.added.clear();
-        if (target != null) {
-            for (String r : target.getAllInterfaceNames()) {
-                if (! result.removed.remove(r)) {
-                    result.added.add(r);
-                }
-            }
-        }
-        return result;
+        return new CompareResult<>(getAllInterfaceNames(),
+                target != null ? target.getAllInterfaceNames() : null);
     }
 
 
@@ -1107,7 +1173,9 @@ public final class LinkProperties implements Parcelable {
                 + ((null == mHttpProxy) ? 0 : mHttpProxy.hashCode())
                 + mStackedLinks.hashCode() * 47)
                 + mMtu * 51
-                + ((null == mTcpBufferSizes) ? 0 : mTcpBufferSizes.hashCode());
+                + ((null == mTcpBufferSizes) ? 0 : mTcpBufferSizes.hashCode())
+                + (mUsePrivateDns ? 57 : 0)
+                + ((null == mPrivateDnsServerName) ? 0 : mPrivateDnsServerName.hashCode());
     }
 
     /**
@@ -1124,6 +1192,8 @@ public final class LinkProperties implements Parcelable {
         for(InetAddress d : mDnses) {
             dest.writeByteArray(d.getAddress());
         }
+        dest.writeBoolean(mUsePrivateDns);
+        dest.writeString(mPrivateDnsServerName);
         dest.writeString(mDomains);
         dest.writeInt(mMtu);
         dest.writeString(mTcpBufferSizes);
@@ -1164,6 +1234,8 @@ public final class LinkProperties implements Parcelable {
                         netProp.addDnsServer(InetAddress.getByAddress(in.createByteArray()));
                     } catch (UnknownHostException e) { }
                 }
+                netProp.setUsePrivateDns(in.readBoolean());
+                netProp.setPrivateDnsServerName(in.readString());
                 netProp.setDomains(in.readString());
                 netProp.setMtu(in.readInt());
                 netProp.setTcpBufferSizes(in.readString());

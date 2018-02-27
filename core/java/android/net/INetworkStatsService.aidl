@@ -18,6 +18,7 @@ package android.net;
 
 import android.net.DataUsageRequest;
 import android.net.INetworkStatsSession;
+import android.net.Network;
 import android.net.NetworkStats;
 import android.net.NetworkStatsHistory;
 import android.net.NetworkTemplate;
@@ -36,7 +37,7 @@ interface INetworkStatsService {
      *  PACKAGE_USAGE_STATS permission is always checked. If PACKAGE_USAGE_STATS is not granted
      *  READ_NETWORK_USAGE_STATS is checked for.
      */
-    INetworkStatsSession openSessionForUsageStats(String callingPackage);
+    INetworkStatsSession openSessionForUsageStats(int flags, String callingPackage);
 
     /** Return network layer usage total for traffic that matches template. */
     long getNetworkTotalBytes(in NetworkTemplate template, long start, long end);
@@ -53,7 +54,7 @@ interface INetworkStatsService {
     void setUidForeground(int uid, boolean uidForeground);
 
     /** Force update of ifaces. */
-    void forceUpdateIfaces();
+    void forceUpdateIfaces(in Network[] defaultNetworks);
     /** Force update of statistics. */
     void forceUpdate();
 
@@ -66,5 +67,14 @@ interface INetworkStatsService {
 
     /** Unregisters a callback on data usage. */
     void unregisterUsageRequest(in DataUsageRequest request);
+
+    /** Get the uid stats information since boot */
+    long getUidStats(int uid, int type);
+
+    /** Get the iface stats information since boot */
+    long getIfaceStats(String iface, int type);
+
+    /** Get the total network stats information since boot */
+    long getTotalStats(int type);
 
 }

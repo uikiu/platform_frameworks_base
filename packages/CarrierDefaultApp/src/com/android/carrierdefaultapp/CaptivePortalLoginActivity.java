@@ -20,6 +20,9 @@ import android.app.Activity;
 import android.app.LoadedApk;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.ConnectivityManager.NetworkCallback;
@@ -34,6 +37,7 @@ import android.os.Bundle;
 import android.telephony.CarrierConfigManager;
 import android.telephony.Rlog;
 import android.telephony.SubscriptionManager;
+import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.util.TypedValue;
@@ -77,6 +81,8 @@ public class CaptivePortalLoginActivity extends Activity {
     private WebView mWebView;
     private MyWebViewClient mWebViewClient;
     private boolean mLaunchBrowser = false;
+    private Thread mTestingThread = null;
+    private boolean mReload = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +97,15 @@ public class CaptivePortalLoginActivity extends Activity {
         setContentView(R.layout.activity_captive_portal_login);
         getActionBar().setDisplayShowHomeEnabled(false);
 
-        mWebView = (WebView) findViewById(R.id.webview);
+        mWebView = findViewById(R.id.webview);
         mWebView.clearCache(true);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
         mWebViewClient = new MyWebViewClient();
         mWebView.setWebViewClient(mWebViewClient);
         mWebView.setWebChromeClient(new MyWebChromeClient());
@@ -113,7 +123,7 @@ public class CaptivePortalLoginActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        WebView myWebView = (WebView) findViewById(R.id.webview);
+        WebView myWebView = findViewById(R.id.webview);
         if (myWebView.canGoBack() && mWebViewClient.allowBack()) {
             myWebView.goBack();
         } else {
@@ -123,8 +133,6 @@ public class CaptivePortalLoginActivity extends Activity {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        releaseNetworkRequest();
         if (mLaunchBrowser) {
             // Give time for this network to become default. After 500ms just proceed.
             for (int i = 0; i < 5; i++) {
@@ -139,6 +147,13 @@ public class CaptivePortalLoginActivity extends Activity {
             if (DBG) logd("starting activity with intent ACTION_VIEW for " + url);
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         }
+
+        if (mTestingThread != null) {
+            mTestingThread.interrupt();
+        }
+        mWebView.destroy();
+        releaseNetworkRequest();
+        super.onDestroy();
     }
 
     // Find WebView's proxy BroadcastReceiver and prompt it to read proxy system properties.
@@ -166,7 +181,8 @@ public class CaptivePortalLoginActivity extends Activity {
     }
 
     private void done(boolean success) {
-        if (DBG) logd(String.format("Result success %b for %s", success, mUrl.toString()));
+        if (DBG) logd(String.format("Result success %b for %s", success,
+                mUrl != null ? mUrl.toString() : "null"));
         if (success) {
             // Trigger re-evaluation upon success http response code
             CarrierActionUtils.applyCarrierAction(
@@ -178,16 +194,19 @@ public class CaptivePortalLoginActivity extends Activity {
             CarrierActionUtils.applyCarrierAction(
                     CarrierActionUtils.CARRIER_ACTION_CANCEL_ALL_NOTIFICATIONS, getIntent(),
                     getApplicationContext());
-
+            CarrierActionUtils.applyCarrierAction(
+                    CarrierActionUtils.CARRIER_ACTION_DISABLE_DEFAULT_URL_HANDLER, getIntent(),
+                    getApplicationContext());
+            CarrierActionUtils.applyCarrierAction(
+                    CarrierActionUtils.CARRIER_ACTION_DEREGISTER_DEFAULT_NETWORK_AVAIL, getIntent(),
+                    getApplicationContext());
         }
         finishAndRemoveTask();
     }
 
     private URL getUrlForCaptivePortal() {
         String url = getIntent().getStringExtra(TelephonyIntents.EXTRA_REDIRECTION_URL_KEY);
-        if (url.isEmpty()) {
-            url = mCm.getCaptivePortalServerUrl();
-        }
+        if (TextUtils.isEmpty(url)) url = mCm.getCaptivePortalServerUrl();
         final CarrierConfigManager configManager = getApplicationContext()
                 .getSystemService(CarrierConfigManager.class);
         final int subId = getIntent().getIntExtra(PhoneConstants.SUBSCRIPTION_KEY,
@@ -211,18 +230,20 @@ public class CaptivePortalLoginActivity extends Activity {
     }
 
     private void testForCaptivePortal() {
-        new Thread(new Runnable() {
+        mTestingThread = new Thread(new Runnable() {
             public void run() {
                 // Give time for captive portal to open.
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                 }
+                if (isFinishing() || isDestroyed()) return;
                 HttpURLConnection urlConnection = null;
                 int httpResponseCode = 500;
-                TrafficStats.setThreadStatsTag(TrafficStats.TAG_SYSTEM_PROBE);
+                int oldTag = TrafficStats.getAndSetThreadStatsTag(TrafficStats.TAG_SYSTEM_PROBE);
                 try {
-                    urlConnection = (HttpURLConnection) mNetwork.openConnection(mUrl);
+                    urlConnection = (HttpURLConnection) mNetwork.openConnection(
+                            new URL(mCm.getCaptivePortalServerUrl()));
                     urlConnection.setInstanceFollowRedirects(false);
                     urlConnection.setConnectTimeout(SOCKET_TIMEOUT_MS);
                     urlConnection.setReadTimeout(SOCKET_TIMEOUT_MS);
@@ -230,14 +251,17 @@ public class CaptivePortalLoginActivity extends Activity {
                     urlConnection.getInputStream();
                     httpResponseCode = urlConnection.getResponseCode();
                 } catch (IOException e) {
+                    loge(e.getMessage());
                 } finally {
                     if (urlConnection != null) urlConnection.disconnect();
+                    TrafficStats.setThreadStatsTag(oldTag);
                 }
                 if (httpResponseCode == 204) {
                     done(true);
                 }
             }
-        }).start();
+        });
+        mTestingThread.start();
     }
 
     private Network getNetworkForCaptivePortal() {
@@ -268,9 +292,13 @@ public class CaptivePortalLoginActivity extends Activity {
                 mCm.bindProcessToNetwork(network);
                 mNetwork = network;
                 runOnUiThreadIfNotFinishing(() -> {
-                    // Start initial page load so WebView finishes loading proxy settings.
-                    // Actual load of mUrl is initiated by MyWebViewClient.
-                    mWebView.loadData("", "text/html", null);
+                    if (mReload) {
+                        mWebView.reload();
+                    } else {
+                        // Start initial page load so WebView finishes loading proxy settings.
+                        // Actual load of mUrl is initiated by MyWebViewClient.
+                        mWebView.loadData("", "text/html", null);
+                    }
                 });
             }
 
@@ -282,6 +310,12 @@ public class CaptivePortalLoginActivity extends Activity {
                     // HTTP error page in the absence of network connection.
                     mWebView.loadUrl(mUrl.toString());
                 });
+            }
+
+            @Override
+            public void onLost(Network lostNetwork) {
+                if (DBG) logd("Network lost");
+                mReload = true;
             }
         };
         logd("request Network for captive portal");
@@ -327,7 +361,7 @@ public class CaptivePortalLoginActivity extends Activity {
             // For internally generated pages, leave URL bar listing prior URL as this is the URL
             // the page refers to.
             if (!url.startsWith(INTERNAL_ASSETS)) {
-                final TextView myUrlBar = (TextView) findViewById(R.id.url_bar);
+                final TextView myUrlBar = findViewById(R.id.url_bar);
                 myUrlBar.setText(url);
             }
             if (mNetwork != null) {
@@ -411,7 +445,7 @@ public class CaptivePortalLoginActivity extends Activity {
     private class MyWebChromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            final ProgressBar myProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+            final ProgressBar myProgressBar = findViewById(R.id.progress_bar);
             myProgressBar.setProgress(newProgress);
         }
     }
@@ -420,6 +454,27 @@ public class CaptivePortalLoginActivity extends Activity {
         if (!isFinishing()) {
             runOnUiThread(r);
         }
+    }
+
+    /**
+     * This alias presents the target activity, CaptivePortalLoginActivity, as a independent
+     * entity with its own intent filter to handle URL links. This alias will be enabled/disabled
+     * dynamically to handle url links based on the network conditions.
+     */
+    public static String getAlias(Context context) {
+        try {
+            PackageInfo p = context.getPackageManager().getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_ACTIVITIES | PackageManager.MATCH_DISABLED_COMPONENTS);
+            for (ActivityInfo activityInfo : p.activities) {
+                String targetActivity = activityInfo.targetActivity;
+                if (CaptivePortalLoginActivity.class.getName().equals(targetActivity)) {
+                    return activityInfo.name;
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static void logd(String s) {

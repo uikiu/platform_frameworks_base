@@ -33,7 +33,7 @@ import java.lang.ref.WeakReference;
  * This class represents a Wi-Fi Aware session - an attachment to the Wi-Fi Aware service through
  * which the app can execute discovery operations.
  */
-public class WifiAwareSession {
+public class WifiAwareSession implements AutoCloseable {
     private static final String TAG = "WifiAwareSession";
     private static final boolean DBG = false;
     private static final boolean VDBG = false; // STOPSHIP if true
@@ -54,7 +54,7 @@ public class WifiAwareSession {
         mClientId = clientId;
         mTerminated = false;
 
-        mCloseGuard.open("destroy");
+        mCloseGuard.open("close");
     }
 
     /**
@@ -67,7 +67,8 @@ public class WifiAwareSession {
      * An application may re-attach after a destroy using
      * {@link WifiAwareManager#attach(AttachCallback, Handler)} .
      */
-    public void destroy() {
+    @Override
+    public void close() {
         WifiAwareManager mgr = mMgr.get();
         if (mgr == null) {
             Log.w(TAG, "destroy: called post GC on WifiAwareManager");
@@ -83,9 +84,12 @@ public class WifiAwareSession {
     @Override
     protected void finalize() throws Throwable {
         try {
-            if (!mTerminated) {
+            if (mCloseGuard != null) {
                 mCloseGuard.warnIfOpen();
-                destroy();
+            }
+
+            if (!mTerminated) {
+                close();
             }
         } finally {
             super.finalize();
@@ -110,7 +114,7 @@ public class WifiAwareSession {
      * on the {@code callback} object. The resulting publish session can be modified using
      * {@link PublishDiscoverySession#updatePublish(PublishConfig)}.
      * <p>
-     *      An application must use the {@link DiscoverySession#destroy()} to
+     *      An application must use the {@link DiscoverySession#close()} to
      *      terminate the publish discovery session once it isn't needed. This will free
      *      resources as well terminate any on-air transmissions.
      * <p>The application must have the {@link android.Manifest.permission#ACCESS_COARSE_LOCATION}
@@ -156,7 +160,7 @@ public class WifiAwareSession {
      * on the {@code callback} object. The resulting subscribe session can be modified using
      * {@link SubscribeDiscoverySession#updateSubscribe(SubscribeConfig)}.
      * <p>
-     *      An application must use the {@link DiscoverySession#destroy()} to
+     *      An application must use the {@link DiscoverySession#close()} to
      *      terminate the subscribe discovery session once it isn't needed. This will free
      *      resources as well terminate any on-air transmissions.
      * <p>The application must have the {@link android.Manifest.permission#ACCESS_COARSE_LOCATION}
@@ -266,9 +270,10 @@ public class WifiAwareSession {
             Log.e(TAG, "createNetworkSpecifierPassphrase: called after termination");
             return null;
         }
-        if (passphrase == null || passphrase.length() == 0) {
-            throw new IllegalArgumentException("Passphrase must not be null or empty");
+        if (!WifiAwareUtils.validatePassphrase(passphrase)) {
+            throw new IllegalArgumentException("Passphrase must meet length requirements");
         }
+
         return mgr.createNetworkSpecifier(mClientId, role, peer, null, passphrase);
     }
 
@@ -316,8 +321,8 @@ public class WifiAwareSession {
             Log.e(TAG, "createNetworkSpecifierPmk: called after termination");
             return null;
         }
-        if (pmk == null || pmk.length == 0) {
-            throw new IllegalArgumentException("PMK must not be null or empty");
+        if (!WifiAwareUtils.validatePmk(pmk)) {
+            throw new IllegalArgumentException("PMK must 32 bytes");
         }
         return mgr.createNetworkSpecifier(mClientId, role, peer, pmk, null);
     }

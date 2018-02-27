@@ -52,6 +52,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MtpDatabase implements AutoCloseable {
     private static final String TAG = "MtpDatabase";
 
+    private final Context mUserContext;
     private final Context mContext;
     private final String mPackageName;
     private final ContentProviderClient mMediaProvider;
@@ -159,13 +160,14 @@ public class MtpDatabase implements AutoCloseable {
         }
     };
 
-    public MtpDatabase(Context context, String volumeName, String storagePath,
+    public MtpDatabase(Context context, Context userContext, String volumeName, String storagePath,
             String[] subDirectories) {
         native_setup();
 
         mContext = context;
+        mUserContext = userContext;
         mPackageName = context.getPackageName();
-        mMediaProvider = context.getContentResolver()
+        mMediaProvider = userContext.getContentResolver()
                 .acquireContentProviderClient(MediaStore.AUTHORITY);
         mVolumeName = volumeName;
         mMediaStoragePath = storagePath;
@@ -233,7 +235,10 @@ public class MtpDatabase implements AutoCloseable {
     @Override
     protected void finalize() throws Throwable {
         try {
-            mCloseGuard.warnIfOpen();
+            if (mCloseGuard != null) {
+                mCloseGuard.warnIfOpen();
+            }
+
             close();
         } finally {
             super.finalize();
@@ -418,6 +423,12 @@ public class MtpDatabase implements AutoCloseable {
         }
     }
 
+    private void doScanDirectory(String path) {
+        String[] scanPath;
+        scanPath = new String[] { path };
+        mMediaScanner.scanDirectories(scanPath);
+    }
+
     private Cursor createObjectQuery(int storageID, int format, int parent) throws RemoteException {
         String where;
         String[] whereArgs;
@@ -466,10 +477,14 @@ public class MtpDatabase implements AutoCloseable {
                     if (parent == 0xFFFFFFFF) {
                         // all objects in root of store
                         parent = 0;
+                        where = STORAGE_PARENT_WHERE;
+                        whereArgs = new String[]{Integer.toString(storageID),
+                                Integer.toString(parent)};
+                    }  else {
+                        // If a parent is specified, the storage is redundant
+                        where = PARENT_WHERE;
+                        whereArgs = new String[]{Integer.toString(parent)};
                     }
-                    where = STORAGE_PARENT_WHERE;
-                    whereArgs = new String[] { Integer.toString(storageID),
-                                               Integer.toString(parent) };
                 }
             } else {
                 // query specific format
@@ -482,11 +497,16 @@ public class MtpDatabase implements AutoCloseable {
                     if (parent == 0xFFFFFFFF) {
                         // all objects in root of store
                         parent = 0;
+                        where = STORAGE_FORMAT_PARENT_WHERE;
+                        whereArgs = new String[]{Integer.toString(storageID),
+                                Integer.toString(format),
+                                Integer.toString(parent)};
+                    } else {
+                        // If a parent is specified, the storage is redundant
+                        where = FORMAT_PARENT_WHERE;
+                        whereArgs = new String[]{Integer.toString(format),
+                                Integer.toString(parent)};
                     }
-                    where = STORAGE_FORMAT_PARENT_WHERE;
-                    whereArgs = new String[] { Integer.toString(storageID),
-                                               Integer.toString(format),
-                                               Integer.toString(parent) };
                 }
             }
         }
@@ -592,6 +612,7 @@ public class MtpDatabase implements AutoCloseable {
             MtpConstants.FORMAT_XML_DOCUMENT,
             MtpConstants.FORMAT_FLAC,
             MtpConstants.FORMAT_DNG,
+            MtpConstants.FORMAT_HEIF,
         };
     }
 
@@ -702,6 +723,7 @@ public class MtpDatabase implements AutoCloseable {
             case MtpConstants.FORMAT_PNG:
             case MtpConstants.FORMAT_BMP:
             case MtpConstants.FORMAT_DNG:
+            case MtpConstants.FORMAT_HEIF:
                 return IMAGE_PROPERTIES;
             default:
                 return FILE_PROPERTIES;
@@ -835,6 +857,34 @@ public class MtpDatabase implements AutoCloseable {
             }
         }
 
+        return MtpConstants.RESPONSE_OK;
+    }
+
+    private int moveObject(int handle, int newParent, int newStorage, String newPath) {
+        String[] whereArgs = new String[] {  Integer.toString(handle) };
+
+        // do not allow renaming any of the special subdirectories
+        if (isStorageSubDirectory(newPath)) {
+            return MtpConstants.RESPONSE_OBJECT_WRITE_PROTECTED;
+        }
+
+        // update database
+        ContentValues values = new ContentValues();
+        values.put(Files.FileColumns.DATA, newPath);
+        values.put(Files.FileColumns.PARENT, newParent);
+        values.put(Files.FileColumns.STORAGE_ID, newStorage);
+        int updated = 0;
+        try {
+            // note - we are relying on a special case in MediaProvider.update() to update
+            // the paths for all children in the case where this is a directory.
+            updated = mMediaProvider.update(mObjectsUri, values, ID_WHERE, whereArgs);
+        } catch (RemoteException e) {
+            Log.e(TAG, "RemoteException in mMediaProvider.update", e);
+        }
+        if (updated == 0) {
+            Log.e(TAG, "Unable to update path for " + handle + " to " + newPath);
+            return MtpConstants.RESPONSE_GENERAL_ERROR;
+        }
         return MtpConstants.RESPONSE_OK;
     }
 
@@ -1109,7 +1159,7 @@ public class MtpDatabase implements AutoCloseable {
 
     private void sessionEnded() {
         if (mDatabaseModified) {
-            mContext.sendBroadcast(new Intent(MediaStore.ACTION_MTP_SESSION_END));
+            mUserContext.sendBroadcast(new Intent(MediaStore.ACTION_MTP_SESSION_END));
             mDatabaseModified = false;
         }
     }

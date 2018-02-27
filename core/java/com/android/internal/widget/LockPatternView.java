@@ -39,6 +39,7 @@ import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.IntArray;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.DisplayListCanvas;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
@@ -54,7 +55,6 @@ import android.view.animation.Interpolator;
 import com.android.internal.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -278,7 +278,8 @@ public class LockPatternView extends View {
     public LockPatternView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LockPatternView);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LockPatternView,
+                R.attr.lockPatternStyle, R.style.Widget_LockPatternView);
 
         final String aspect = a.getString(R.styleable.LockPatternView_aspect);
 
@@ -298,12 +299,9 @@ public class LockPatternView extends View {
         mPathPaint.setAntiAlias(true);
         mPathPaint.setDither(true);
 
-        mRegularColor = context.getColor(R.color.lock_pattern_view_regular_color);
-        mErrorColor = context.getColor(R.color.lock_pattern_view_error_color);
-        mSuccessColor = context.getColor(R.color.lock_pattern_view_success_color);
-        mRegularColor = a.getColor(R.styleable.LockPatternView_regularColor, mRegularColor);
-        mErrorColor = a.getColor(R.styleable.LockPatternView_errorColor, mErrorColor);
-        mSuccessColor = a.getColor(R.styleable.LockPatternView_successColor, mSuccessColor);
+        mRegularColor = a.getColor(R.styleable.LockPatternView_regularColor, 0);
+        mErrorColor = a.getColor(R.styleable.LockPatternView_errorColor, 0);
+        mSuccessColor = a.getColor(R.styleable.LockPatternView_successColor, 0);
 
         int pathColor = a.getColor(R.styleable.LockPatternView_pathColor, mRegularColor);
         mPathPaint.setColor(pathColor);
@@ -1342,8 +1340,7 @@ public class LockPatternView extends View {
 
     private final class PatternExploreByTouchHelper extends ExploreByTouchHelper {
         private Rect mTempRect = new Rect();
-        private HashMap<Integer, VirtualViewContainer> mItems = new HashMap<Integer,
-                VirtualViewContainer>();
+        private final SparseArray<VirtualViewContainer> mItems = new SparseArray<>();
 
         class VirtualViewContainer {
             public VirtualViewContainer(CharSequence description) {
@@ -1354,6 +1351,9 @@ public class LockPatternView extends View {
 
         public PatternExploreByTouchHelper(View forView) {
             super(forView);
+            for (int i = VIRTUAL_BASE_VIEW_ID; i < VIRTUAL_BASE_VIEW_ID + 9; i++) {
+                mItems.put(i, new VirtualViewContainer(getTextForVirtualView(i)));
+            }
         }
 
         @Override
@@ -1371,10 +1371,6 @@ public class LockPatternView extends View {
                 return;
             }
             for (int i = VIRTUAL_BASE_VIEW_ID; i < VIRTUAL_BASE_VIEW_ID + 9; i++) {
-                if (!mItems.containsKey(i)) {
-                    VirtualViewContainer item = new VirtualViewContainer(getTextForVirtualView(i));
-                    mItems.put(i, item);
-                }
                 // Add all views. As views are added to the pattern, we remove them
                 // from notification by making them non-clickable below.
                 virtualViewIds.add(i);
@@ -1385,9 +1381,9 @@ public class LockPatternView extends View {
         protected void onPopulateEventForVirtualView(int virtualViewId, AccessibilityEvent event) {
             if (DEBUG_A11Y) Log.v(TAG, "onPopulateEventForVirtualView(" + virtualViewId + ")");
             // Announce this view
-            if (mItems.containsKey(virtualViewId)) {
-                CharSequence contentDescription = mItems.get(virtualViewId).description;
-                event.getText().add(contentDescription);
+            VirtualViewContainer container = mItems.get(virtualViewId);
+            if (container != null) {
+                event.getText().add(container.description);
             }
         }
 
@@ -1489,21 +1485,10 @@ public class LockPatternView extends View {
             return bounds;
         }
 
-        private boolean shouldSpeakPassword() {
-            final boolean speakPassword = Settings.Secure.getIntForUser(
-                    mContext.getContentResolver(), Settings.Secure.ACCESSIBILITY_SPEAK_PASSWORD, 0,
-                    UserHandle.USER_CURRENT_OR_SELF) != 0;
-            final boolean hasHeadphones = mAudioManager != null ?
-                    (mAudioManager.isWiredHeadsetOn() || mAudioManager.isBluetoothA2dpOn())
-                    : false;
-            return speakPassword || hasHeadphones;
-        }
-
         private CharSequence getTextForVirtualView(int virtualViewId) {
             final Resources res = getResources();
-            return shouldSpeakPassword() ? res.getString(
-                R.string.lockscreen_access_pattern_cell_added_verbose, virtualViewId)
-                : res.getString(R.string.lockscreen_access_pattern_cell_added);
+            return res.getString(R.string.lockscreen_access_pattern_cell_added_verbose,
+                    virtualViewId);
         }
 
         /**

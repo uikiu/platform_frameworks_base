@@ -39,7 +39,7 @@ extern "C" {
 #include <android_runtime/AndroidRuntime.h>
 #include <android_runtime/Log.h>
 #include <jni.h>
-#include <JNIHelp.h>
+#include <nativehelper/JNIHelp.h>
 #include <nativehelper/ScopedLocalRef.h>
 
 #include <assert.h>
@@ -55,6 +55,7 @@ using namespace android;
 
 static jmethodID method_beginSendObject;
 static jmethodID method_endSendObject;
+static jmethodID method_doScanDirectory;
 static jmethodID method_getObjectList;
 static jmethodID method_getNumObjects;
 static jmethodID method_getSupportedPlaybackFormats;
@@ -68,6 +69,7 @@ static jmethodID method_getObjectPropertyList;
 static jmethodID method_getObjectInfo;
 static jmethodID method_getObjectFilePath;
 static jmethodID method_deleteFile;
+static jmethodID method_moveObject;
 static jmethodID method_getObjectReferences;
 static jmethodID method_setObjectReferences;
 static jmethodID method_sessionStarted;
@@ -117,6 +119,8 @@ public:
                                             MtpObjectHandle handle,
                                             MtpObjectFormat format,
                                             bool succeeded);
+
+    virtual void                    doScanDirectory(const char* path);
 
     virtual MtpObjectHandleList*    getObjectList(MtpStorageID storageID,
                                     MtpObjectFormat format,
@@ -177,6 +181,9 @@ public:
                                             MtpObjectFormat format);
 
     virtual MtpProperty*            getDevicePropertyDesc(MtpDeviceProperty property);
+
+    virtual MtpResponseCode         moveObject(MtpObjectHandle handle, MtpObjectHandle newParent,
+                                            MtpStorageID newStorage, MtpString& newPath);
 
     virtual void                    sessionStarted();
 
@@ -255,6 +262,16 @@ void MyMtpDatabase::endSendObject(const char* path, MtpObjectHandle handle,
     jstring pathStr = env->NewStringUTF(path);
     env->CallVoidMethod(mDatabase, method_endSendObject, pathStr,
                         (jint)handle, (jint)format, (jboolean)succeeded);
+
+    if (pathStr)
+        env->DeleteLocalRef(pathStr);
+    checkAndClearExceptionFromCallback(env, __FUNCTION__);
+}
+
+void MyMtpDatabase::doScanDirectory(const char* path) {
+    JNIEnv* env = AndroidRuntime::getJNIEnv();
+    jstring pathStr = env->NewStringUTF(path);
+    env->CallVoidMethod(mDatabase, method_doScanDirectory, pathStr);
 
     if (pathStr)
         env->DeleteLocalRef(pathStr);
@@ -849,6 +866,7 @@ MtpResponseCode MyMtpDatabase::getObjectInfo(MtpObjectHandle handle,
     // read EXIF data for thumbnail information
     switch (info.mFormat) {
         case MTP_FORMAT_EXIF_JPEG:
+        case MTP_FORMAT_HEIF:
         case MTP_FORMAT_JFIF: {
             ExifData *exifdata = exif_data_new_from_file(path);
             if (exifdata) {
@@ -906,6 +924,7 @@ void* MyMtpDatabase::getThumbnail(MtpObjectHandle handle, size_t& outThumbSize) 
     if (getObjectFilePath(handle, path, length, format) == MTP_RESPONSE_OK) {
         switch (format) {
             case MTP_FORMAT_EXIF_JPEG:
+            case MTP_FORMAT_HEIF:
             case MTP_FORMAT_JFIF: {
                 ExifData *exifdata = exif_data_new_from_file(path);
                 if (exifdata) {
@@ -990,6 +1009,18 @@ MtpResponseCode MyMtpDatabase::deleteFile(MtpObjectHandle handle) {
     MtpResponseCode result = env->CallIntMethod(mDatabase, method_deleteFile, (jint)handle);
 
     checkAndClearExceptionFromCallback(env, __FUNCTION__);
+    return result;
+}
+
+MtpResponseCode MyMtpDatabase::moveObject(MtpObjectHandle handle, MtpObjectHandle newParent,
+        MtpStorageID newStorage, MtpString &newPath) {
+    JNIEnv* env = AndroidRuntime::getJNIEnv();
+    jstring stringValue = env->NewStringUTF((const char *) newPath);
+    MtpResponseCode result = env->CallIntMethod(mDatabase, method_moveObject,
+                (jint)handle, (jint)newParent, (jint) newStorage, stringValue);
+
+    checkAndClearExceptionFromCallback(env, __FUNCTION__);
+    env->DeleteLocalRef(stringValue);
     return result;
 }
 
@@ -1292,6 +1323,11 @@ int register_android_mtp_MtpDatabase(JNIEnv *env)
         ALOGE("Can't find endSendObject");
         return -1;
     }
+    method_doScanDirectory = env->GetMethodID(clazz, "doScanDirectory", "(Ljava/lang/String;)V");
+    if (method_doScanDirectory == NULL) {
+        ALOGE("Can't find doScanDirectory");
+        return -1;
+    }
     method_getObjectList = env->GetMethodID(clazz, "getObjectList", "(III)[I");
     if (method_getObjectList == NULL) {
         ALOGE("Can't find getObjectList");
@@ -1356,6 +1392,11 @@ int register_android_mtp_MtpDatabase(JNIEnv *env)
     method_deleteFile = env->GetMethodID(clazz, "deleteFile", "(I)I");
     if (method_deleteFile == NULL) {
         ALOGE("Can't find deleteFile");
+        return -1;
+    }
+    method_moveObject = env->GetMethodID(clazz, "moveObject", "(IIILjava/lang/String;)I");
+    if (method_moveObject == NULL) {
+        ALOGE("Can't find moveObject");
         return -1;
     }
     method_getObjectReferences = env->GetMethodID(clazz, "getObjectReferences", "(I)[I");

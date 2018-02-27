@@ -16,12 +16,12 @@
 
 package com.android.ims.internal;
 
-import com.android.ims.ImsStreamMediaProfile;
-import com.android.ims.ImsCallProfile;
-import com.android.ims.ImsReasonInfo;
-import com.android.ims.ImsConferenceState;
+import android.telephony.ims.ImsStreamMediaProfile;
+import android.telephony.ims.ImsCallProfile;
+import android.telephony.ims.ImsReasonInfo;
+import android.telephony.ims.ImsConferenceState;
 import com.android.ims.internal.IImsCallSession;
-import com.android.ims.ImsSuppServiceNotification;
+import android.telephony.ims.ImsSuppServiceNotification;
 
 /**
  * A listener type for receiving notification on IMS call session events.
@@ -29,7 +29,7 @@ import com.android.ims.ImsSuppServiceNotification;
  * by having one of the methods called on the {@link IImsCallSessionListener}.
  * {@hide}
  */
-interface IImsCallSessionListener {
+oneway interface IImsCallSessionListener {
     /**
      * Notifies the result of the basic session operation (setup / terminate).
      */
@@ -106,6 +106,8 @@ interface IImsCallSessionListener {
             in int srcAccessTech, in int targetAccessTech, in ImsReasonInfo reasonInfo);
     void callSessionHandoverFailed(in IImsCallSession session,
             in int srcAccessTech, in int targetAccessTech, in ImsReasonInfo reasonInfo);
+    void callSessionMayHandover(in IImsCallSession session,
+            in int srcAccessTech, in int targetAccessTech);
 
     /**
      * Notifies the TTY mode change by remote party.

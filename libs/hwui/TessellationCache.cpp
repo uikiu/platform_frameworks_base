@@ -18,7 +18,6 @@
 #include <utils/Trace.h>
 
 #include "Caches.h"
-#include "OpenGLRenderer.h"
 #include "PathTessellator.h"
 #include "ShadowTessellator.h"
 #include "TessellationCache.h"
@@ -291,7 +290,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 TessellationCache::TessellationCache()
-        : mMaxSize(Properties::tessellationCacheSize)
+        : mMaxSize(MB(1))
         , mCache(LruCache<Description, Buffer*>::kUnlimitedCapacity)
         , mShadowCache(LruCache<ShadowDescription, Task<vertexBuffer_pair_t*>*>::kUnlimitedCapacity) {
     mCache.setOnEntryRemovedListener(&mBufferRemovedListener);
@@ -369,21 +368,6 @@ void TessellationCache::precacheShadows(const Matrix4* drawTransform, const Rect
     mShadowCache.put(key, task.get());
 }
 
-void TessellationCache::getShadowBuffers(const Matrix4* drawTransform, const Rect& localClip,
-        bool opaque, const SkPath* casterPerimeter,
-        const Matrix4* transformXY, const Matrix4* transformZ,
-        const Vector3& lightCenter, float lightRadius, vertexBuffer_pair_t& outBuffers) {
-    ShadowDescription key(casterPerimeter, drawTransform);
-    ShadowTask* task = static_cast<ShadowTask*>(mShadowCache.get(key));
-    if (!task) {
-        precacheShadows(drawTransform, localClip, opaque, casterPerimeter,
-                transformXY, transformZ, lightCenter, lightRadius);
-        task = static_cast<ShadowTask*>(mShadowCache.get(key));
-    }
-    LOG_ALWAYS_FATAL_IF(task == nullptr, "shadow not precached");
-    outBuffers = task->getResult();
-}
-
 sp<TessellationCache::ShadowTask> TessellationCache::getShadowTask(
         const Matrix4* drawTransform, const Rect& localClip,
         bool opaque, const SkPath* casterPerimeter,
@@ -416,7 +400,9 @@ TessellationCache::Buffer* TessellationCache::getOrCreateBuffer(
             mProcessor = new TessellationProcessor(Caches::getInstance());
         }
         mProcessor->add(task);
-        mCache.put(entry, buffer);
+        bool inserted = mCache.put(entry, buffer);
+        // Note to the static analyzer that this insert should always succeed.
+        LOG_ALWAYS_FATAL_IF(!inserted, "buffers shouldn't spontaneously appear in the cache");
     }
     return buffer;
 }

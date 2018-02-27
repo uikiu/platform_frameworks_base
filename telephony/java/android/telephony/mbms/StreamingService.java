@@ -16,94 +16,180 @@
 
 package android.telephony.mbms;
 
+import android.annotation.IntDef;
+import android.annotation.Nullable;
 import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.telephony.SignalStrength;
+import android.os.RemoteException;
+import android.telephony.MbmsStreamingSession;
+import android.telephony.mbms.vendor.IMbmsStreamingService;
+import android.util.Log;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * @hide
+ * Class used to represent a single MBMS stream. After a stream has been started with
+ * {@link MbmsStreamingSession#startStreaming(StreamingServiceInfo, java.util.concurrent.Executor,
+ * StreamingServiceCallback)},
+ * this class is used to hold information about the stream and control it.
  */
-public class StreamingService {
+public class StreamingService implements AutoCloseable {
+    private static final String LOG_TAG = "MbmsStreamingService";
 
+    /**
+     * The state of a stream, reported via {@link StreamingServiceCallback#onStreamStateUpdated}
+     * @hide
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef(prefix = { "STATE_" }, value = {STATE_STOPPED, STATE_STARTED, STATE_STALLED})
+    public @interface StreamingState {}
     public final static int STATE_STOPPED = 1;
     public final static int STATE_STARTED = 2;
     public final static int STATE_STALLED = 3;
 
     /**
+     * The reason for a stream state change, reported via
+     * {@link StreamingServiceCallback#onStreamStateUpdated}
+     * @hide
      */
-    StreamingService(StreamingServiceInfo streamingServiceInfo,
-            IStreamingServiceListener listener) {
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef(prefix = { "REASON_" },
+            value = {REASON_BY_USER_REQUEST, REASON_END_OF_SESSION, REASON_FREQUENCY_CONFLICT,
+            REASON_OUT_OF_MEMORY, REASON_NOT_CONNECTED_TO_HOMECARRIER_LTE,
+            REASON_LEFT_MBMS_BROADCAST_AREA, REASON_NONE})
+    public @interface StreamingStateChangeReason {}
+
+    /**
+     * Indicates that the middleware does not have a reason to provide for the state change.
+     */
+    public static final int REASON_NONE = 0;
+
+    /**
+     * State changed due to a call to {@link #close()} or
+     * {@link MbmsStreamingSession#startStreaming(StreamingServiceInfo,
+     * java.util.concurrent.Executor, StreamingServiceCallback)}
+     */
+    public static final int REASON_BY_USER_REQUEST = 1;
+
+    /**
+     * State changed due to the streaming session ending at the carrier.
+     */
+    public static final int REASON_END_OF_SESSION = 2;
+
+    /**
+     * State changed due to a frequency conflict with another requested stream.
+     */
+    public static final int REASON_FREQUENCY_CONFLICT = 3;
+
+    /**
+     * State changed due to the middleware running out of memory
+     */
+    public static final int REASON_OUT_OF_MEMORY = 4;
+
+    /**
+     * State changed due to the device leaving the home carrier's LTE network.
+     */
+    public static final int REASON_NOT_CONNECTED_TO_HOMECARRIER_LTE = 5;
+
+    /**
+     * State changed due to the device leaving the where this stream is being broadcast.
+     */
+    public static final int REASON_LEFT_MBMS_BROADCAST_AREA = 6;
+
+    /**
+     * The method of transmission currently used for a stream,
+     * reported via {@link StreamingServiceCallback#onStreamMethodUpdated}
+     */
+    public final static int BROADCAST_METHOD = 1;
+    public final static int UNICAST_METHOD   = 2;
+
+    private final int mSubscriptionId;
+    private final MbmsStreamingSession mParentSession;
+    private final StreamingServiceInfo mServiceInfo;
+    private final InternalStreamingServiceCallback mCallback;
+
+    private IMbmsStreamingService mService;
+
+    /**
+     * @hide
+     */
+    public StreamingService(int subscriptionId,
+            IMbmsStreamingService service,
+            MbmsStreamingSession session,
+            StreamingServiceInfo streamingServiceInfo,
+            InternalStreamingServiceCallback callback) {
+        mSubscriptionId = subscriptionId;
+        mParentSession = session;
+        mService = service;
+        mServiceInfo = streamingServiceInfo;
+        mCallback = callback;
     }
 
     /**
-     * Retreive the Uri used to play this stream.
+     * Retrieve the Uri used to play this stream.
      *
-     * This may throw a RemoteException.
+     * May throw an {@link IllegalArgumentException} or an {@link IllegalStateException}.
+     *
+     * @return The {@link Uri} to pass to the streaming client, or {@code null} if an error
+     *         occurred.
      */
-    public Uri getPlaybackUri() {
-        return null;
+    public @Nullable Uri getPlaybackUri() {
+        if (mService == null) {
+            throw new IllegalStateException("No streaming service attached");
+        }
+
+        try {
+            return mService.getPlaybackUri(mSubscriptionId, mServiceInfo.getServiceId());
+        } catch (RemoteException e) {
+            Log.w(LOG_TAG, "Remote process died");
+            mService = null;
+            mParentSession.onStreamingServiceStopped(this);
+            sendErrorToApp(MbmsErrors.ERROR_MIDDLEWARE_LOST, null);
+            return null;
+        }
     }
 
     /**
-     * Retreive the info for this StreamingService.
+     * Retrieve the {@link StreamingServiceInfo} corresponding to this stream.
      */
     public StreamingServiceInfo getInfo() {
-        return null;
+        return mServiceInfo;
     }
 
     /**
-     * Retreive the current state of this stream.
+     * Stop streaming this service. Further operations on this object will fail with an
+     * {@link IllegalStateException}.
      *
-     * This may throw a RemoteException.
+     * May throw an {@link IllegalArgumentException} or an {@link IllegalStateException}
      */
-    public int getState() {
-        return STATE_STOPPED;
-    }
-
-    /**
-     * Stop streaming this service.  Terminal.
-     *
-     * This may throw a RemoteException.
-     */
-    public void stopStreaming() {
-    }
-
-    /**
-     * Switch this stream to a different service.  Used for smooth transitions.
-     *
-     * This may throw a RemoteException.
-     *
-     * Asynchronous errors through the listener include any of the errors except
-     * <li>ERROR_MSDC_UNABLE_TO_INITIALIZE</li>
-     */
-    public void switchStream(StreamingServiceInfo streamingServiceInfo) {
-    }
-
-    public void dispose() {
-    }
-
-    public static final Parcelable.Creator<StreamingService> CREATOR =
-            new Parcelable.Creator<StreamingService>() {
-        @Override
-        public StreamingService createFromParcel(Parcel in) {
-            return new StreamingService(in);
+    @Override
+    public void close() {
+        if (mService == null) {
+            throw new IllegalStateException("No streaming service attached");
         }
 
-        @Override
-        public StreamingService[] newArray(int size) {
-            return new StreamingService[size];
+        try {
+            mService.stopStreaming(mSubscriptionId, mServiceInfo.getServiceId());
+        } catch (RemoteException e) {
+            Log.w(LOG_TAG, "Remote process died");
+            mService = null;
+            sendErrorToApp(MbmsErrors.ERROR_MIDDLEWARE_LOST, null);
+        } finally {
+            mParentSession.onStreamingServiceStopped(this);
         }
-    };
-
-    private StreamingService(Parcel in) {
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    /** @hide */
+    public InternalStreamingServiceCallback getCallback() {
+        return mCallback;
     }
 
-    public int describeContents() {
-        return 0;
+    private void sendErrorToApp(int errorCode, String message) {
+        try {
+            mCallback.onError(errorCode, message);
+        } catch (RemoteException e) {
+            // Ignore, should not happen locally.
+        }
     }
 }
 

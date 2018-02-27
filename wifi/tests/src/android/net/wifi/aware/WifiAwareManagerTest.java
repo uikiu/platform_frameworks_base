@@ -32,6 +32,7 @@ import android.net.wifi.RttManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcel;
+import android.os.RemoteException;
 import android.os.test.TestLooper;
 import android.test.suitebuilder.annotation.SmallTest;
 
@@ -150,7 +151,7 @@ public class WifiAwareManagerTest {
         inOrder.verify(mockAwareService).publish(eq(clientId), eq(publishConfig), any());
 
         // (3) disconnect
-        session.destroy();
+        session.close();
         inOrder.verify(mockAwareService).disconnect(eq(clientId), eq(binder.getValue()));
 
         // (4) try publishing again - fails silently
@@ -329,7 +330,7 @@ public class WifiAwareManagerTest {
         inOrder.verify(mockSessionCallback).onSessionConfigFailed();
 
         // (5) terminate
-        publishSession.getValue().destroy();
+        publishSession.getValue().close();
         mMockLooper.dispatchAll();
         inOrder.verify(mockAwareService).terminateSession(clientId, sessionId);
 
@@ -466,7 +467,7 @@ public class WifiAwareManagerTest {
         inOrder.verify(mockSessionCallback).onSessionConfigFailed();
 
         // (5) terminate
-        subscribeSession.getValue().destroy();
+        subscribeSession.getValue().close();
         mMockLooper.dispatchAll();
         inOrder.verify(mockAwareService).terminateSession(clientId, sessionId);
 
@@ -687,8 +688,6 @@ public class WifiAwareManagerTest {
         collector.checkThat("mSubscribeType", subscribeConfig.mSubscribeType,
                 equalTo(SubscribeConfig.SUBSCRIBE_TYPE_PASSIVE));
         collector.checkThat("mTtlSec", subscribeConfig.mTtlSec, equalTo(0));
-        collector.checkThat("mMatchStyle", subscribeConfig.mMatchStyle,
-                equalTo(SubscribeConfig.MATCH_STYLE_ALL));
         collector.checkThat("mEnableTerminateNotification",
                 subscribeConfig.mEnableTerminateNotification, equalTo(true));
     }
@@ -701,14 +700,13 @@ public class WifiAwareManagerTest {
         final int subscribeType = SubscribeConfig.SUBSCRIBE_TYPE_PASSIVE;
         final int subscribeCount = 10;
         final int subscribeTtl = 15;
-        final int matchStyle = SubscribeConfig.MATCH_STYLE_FIRST_ONLY;
         final boolean enableTerminateNotification = false;
 
         SubscribeConfig subscribeConfig = new SubscribeConfig.Builder().setServiceName(serviceName)
                 .setServiceSpecificInfo(serviceSpecificInfo.getBytes()).setMatchFilter(
                         new TlvBufferUtils.TlvIterable(0, 1, matchFilter).toList())
                 .setSubscribeType(subscribeType)
-                .setTtlSec(subscribeTtl).setMatchStyle(matchStyle)
+                .setTtlSec(subscribeTtl)
                 .setTerminateNotificationEnabled(enableTerminateNotification).build();
 
         collector.checkThat("mServiceName", serviceName.getBytes(),
@@ -719,7 +717,6 @@ public class WifiAwareManagerTest {
         collector.checkThat("mSubscribeType", subscribeType,
                 equalTo(subscribeConfig.mSubscribeType));
         collector.checkThat("mTtlSec", subscribeTtl, equalTo(subscribeConfig.mTtlSec));
-        collector.checkThat("mMatchStyle", matchStyle, equalTo(subscribeConfig.mMatchStyle));
         collector.checkThat("mEnableTerminateNotification", enableTerminateNotification,
                 equalTo(subscribeConfig.mEnableTerminateNotification));
     }
@@ -730,16 +727,14 @@ public class WifiAwareManagerTest {
         final String serviceSpecificInfo = "long arbitrary string with some info";
         final byte[] matchFilter = { 1, 16, 1, 22 };
         final int subscribeType = SubscribeConfig.SUBSCRIBE_TYPE_PASSIVE;
-        final int subscribeCount = 10;
         final int subscribeTtl = 15;
-        final int matchStyle = SubscribeConfig.MATCH_STYLE_FIRST_ONLY;
         final boolean enableTerminateNotification = true;
 
         SubscribeConfig subscribeConfig = new SubscribeConfig.Builder().setServiceName(serviceName)
                 .setServiceSpecificInfo(serviceSpecificInfo.getBytes()).setMatchFilter(
                         new TlvBufferUtils.TlvIterable(0, 1, matchFilter).toList())
                 .setSubscribeType(subscribeType)
-                .setTtlSec(subscribeTtl).setMatchStyle(matchStyle)
+                .setTtlSec(subscribeTtl)
                 .setTerminateNotificationEnabled(enableTerminateNotification).build();
 
         Parcel parcelW = Parcel.obtain();
@@ -763,14 +758,6 @@ public class WifiAwareManagerTest {
     @Test(expected = IllegalArgumentException.class)
     public void testSubscribeConfigBuilderNegativeTtl() {
         new SubscribeConfig.Builder().setTtlSec(-100);
-    }
-
-    /**
-     * Validate that a bad match style configuration throws an exception.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testSubscribeConfigBuilderBadMatchStyle() {
-        new SubscribeConfig.Builder().setMatchStyle(10);
     }
 
     /*
@@ -952,7 +939,7 @@ public class WifiAwareManagerTest {
         final int sessionId = 123;
         final PeerHandle peerHandle = new PeerHandle(123412);
         final int role = WifiAwareManager.WIFI_AWARE_DATA_PATH_ROLE_RESPONDER;
-        final byte[] pmk = "Some arbitrary byte array".getBytes();
+        final byte[] pmk = "01234567890123456789012345678901".getBytes();
         final String passphrase = "A really bad password";
         final ConfigRequest configRequest = new ConfigRequest.Builder().build();
         final PublishConfig publishConfig = new PublishConfig.Builder().build();
@@ -1033,7 +1020,7 @@ public class WifiAwareManagerTest {
         final ConfigRequest configRequest = new ConfigRequest.Builder().build();
         final byte[] someMac = HexEncoding.decode("000102030405".toCharArray(), false);
         final int role = WifiAwareManager.WIFI_AWARE_DATA_PATH_ROLE_INITIATOR;
-        final byte[] pmk = "Some arbitrary pmk data".getBytes();
+        final byte[] pmk = "01234567890123456789012345678901".getBytes();
         final String passphrase = "A really bad password";
 
         ArgumentCaptor<WifiAwareSession> sessionCaptor = ArgumentCaptor.forClass(
@@ -1083,5 +1070,163 @@ public class WifiAwareManagerTest {
 
         verifyNoMoreInteractions(mockCallback, mockSessionCallback, mockAwareService,
                 mockPublishSession, mockRttListener);
+    }
+
+    /**
+     * Validate that a null PMK triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierWithClientNullPmk() throws Exception {
+        executeNetworkSpecifierWithClient(true, null, null);
+    }
+
+    /**
+     * Validate that a non-32-bytes PMK triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierWithClientIncorrectLengthPmk() throws Exception {
+        executeNetworkSpecifierWithClient(true, "012".getBytes(), null);
+    }
+
+    /**
+     * Validate that a null Passphrase triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierWithClientNullPassphrase() throws Exception {
+        executeNetworkSpecifierWithClient(false, null, null);
+    }
+
+    /**
+     * Validate that a too short Passphrase triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierWithClientShortPassphrase() throws Exception {
+        executeNetworkSpecifierWithClient(false, null, "012");
+    }
+
+    /**
+     * Validate that a too long Passphrase triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierWithClientLongPassphrase() throws Exception {
+        executeNetworkSpecifierWithClient(false, null,
+                "0123456789012345678901234567890123456789012345678901234567890123456789");
+    }
+
+    private void executeNetworkSpecifierWithClient(boolean doPmk, byte[] pmk, String passphrase)
+            throws Exception {
+        final int clientId = 4565;
+        final int sessionId = 123;
+        final PeerHandle peerHandle = new PeerHandle(123412);
+        final ConfigRequest configRequest = new ConfigRequest.Builder().build();
+        final PublishConfig publishConfig = new PublishConfig.Builder().build();
+
+        ArgumentCaptor<WifiAwareSession> sessionCaptor = ArgumentCaptor.forClass(
+                WifiAwareSession.class);
+        ArgumentCaptor<IWifiAwareEventCallback> clientProxyCallback = ArgumentCaptor
+                .forClass(IWifiAwareEventCallback.class);
+        ArgumentCaptor<IWifiAwareDiscoverySessionCallback> sessionProxyCallback = ArgumentCaptor
+                .forClass(IWifiAwareDiscoverySessionCallback.class);
+        ArgumentCaptor<PublishDiscoverySession> publishSession = ArgumentCaptor
+                .forClass(PublishDiscoverySession.class);
+
+        InOrder inOrder = inOrder(mockCallback, mockSessionCallback, mockAwareService,
+                mockPublishSession, mockRttListener);
+
+        // (1) connect successfully
+        mDut.attach(mMockLooperHandler, configRequest, mockCallback, null);
+        inOrder.verify(mockAwareService).connect(any(), any(), clientProxyCallback.capture(),
+                eq(configRequest), eq(false));
+        clientProxyCallback.getValue().onConnectSuccess(clientId);
+        mMockLooper.dispatchAll();
+        inOrder.verify(mockCallback).onAttached(sessionCaptor.capture());
+        WifiAwareSession session = sessionCaptor.getValue();
+
+        // (2) publish successfully
+        session.publish(publishConfig, mockSessionCallback, mMockLooperHandler);
+        inOrder.verify(mockAwareService).publish(eq(clientId), eq(publishConfig),
+                sessionProxyCallback.capture());
+        sessionProxyCallback.getValue().onSessionStarted(sessionId);
+        mMockLooper.dispatchAll();
+        inOrder.verify(mockSessionCallback).onPublishStarted(publishSession.capture());
+
+        // (3) create network specifier
+        if (doPmk) {
+            publishSession.getValue().createNetworkSpecifierPmk(peerHandle, pmk);
+        } else {
+            publishSession.getValue().createNetworkSpecifierPassphrase(peerHandle, passphrase);
+        }
+    }
+
+    /**
+     * Validate that a null PMK triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierDirectNullPmk() throws Exception {
+        executeNetworkSpecifierDirect(true, null, null);
+    }
+
+    /**
+     * Validate that a non-32-bytes PMK triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierDirectIncorrectLengthPmk() throws Exception {
+        executeNetworkSpecifierDirect(true, "012".getBytes(), null);
+    }
+
+    /**
+     * Validate that a null Passphrase triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierDirectNullPassphrase() throws Exception {
+        executeNetworkSpecifierDirect(false, null, null);
+    }
+
+    /**
+     * Validate that a too short Passphrase triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierDirectShortPassphrase() throws Exception {
+        executeNetworkSpecifierDirect(false, null, "012");
+    }
+
+    /**
+     * Validate that a too long Passphrase triggers an exception.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNetworkSpecifierDirectLongPassphrase() throws Exception {
+        executeNetworkSpecifierDirect(false, null,
+                "0123456789012345678901234567890123456789012345678901234567890123456789");
+    }
+
+    private void executeNetworkSpecifierDirect(boolean doPmk, byte[] pmk, String passphrase)
+            throws Exception {
+        final int clientId = 134;
+        final byte[] someMac = HexEncoding.decode("000102030405".toCharArray(), false);
+        final int role = WifiAwareManager.WIFI_AWARE_DATA_PATH_ROLE_INITIATOR;
+        final ConfigRequest configRequest = new ConfigRequest.Builder().build();
+
+        ArgumentCaptor<WifiAwareSession> sessionCaptor = ArgumentCaptor.forClass(
+                WifiAwareSession.class);
+        ArgumentCaptor<IWifiAwareEventCallback> clientProxyCallback = ArgumentCaptor
+                .forClass(IWifiAwareEventCallback.class);
+
+        InOrder inOrder = inOrder(mockCallback, mockSessionCallback, mockAwareService,
+                mockPublishSession, mockRttListener);
+
+        // (1) connect successfully
+        mDut.attach(mMockLooperHandler, configRequest, mockCallback, null);
+        inOrder.verify(mockAwareService).connect(any(), any(), clientProxyCallback.capture(),
+                eq(configRequest), eq(false));
+        clientProxyCallback.getValue().onConnectSuccess(clientId);
+        mMockLooper.dispatchAll();
+        inOrder.verify(mockCallback).onAttached(sessionCaptor.capture());
+
+        // (2) create network specifier
+        if (doPmk) {
+            sessionCaptor.getValue().createNetworkSpecifierPmk(role, someMac, pmk);
+        } else {
+            sessionCaptor.getValue().createNetworkSpecifierPassphrase(role, someMac, passphrase);
+        }
     }
 }

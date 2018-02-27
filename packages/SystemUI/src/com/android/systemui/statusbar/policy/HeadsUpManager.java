@@ -20,10 +20,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.v4.util.ArraySet;
 import android.util.ArrayMap;
-import android.util.ArraySet;
 import android.util.Log;
 import android.util.Pools;
 import android.view.View;
@@ -37,7 +38,7 @@ import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.notification.VisualStabilityManager;
 import com.android.systemui.statusbar.phone.NotificationGroupManager;
-import com.android.systemui.statusbar.phone.PhoneStatusBar;
+import com.android.systemui.statusbar.phone.StatusBar;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -65,7 +66,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
     private final ArrayMap<String, Long> mSnoozedPackages;
     private final HashSet<OnHeadsUpChangedListener> mListeners = new HashSet<>();
     private final int mDefaultSnoozeLengthMs;
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private final Pools.Pool<HeadsUpEntry> mEntryPool = new Pools.Pool<HeadsUpEntry>() {
 
         private Stack<HeadsUpEntry> mPoolObjects = new Stack<>();
@@ -90,7 +91,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
     private final int mStatusBarHeight;
     private final Context mContext;
     private final NotificationGroupManager mGroupManager;
-    private PhoneStatusBar mBar;
+    private StatusBar mBar;
     private int mSnoozeLengthMs;
     private ContentObserver mSettingsObserver;
     private HashMap<String, HeadsUpEntry> mHeadsUpEntries = new HashMap<>();
@@ -109,6 +110,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
     private boolean mWaitingOnCollapseWhenGoingAway;
     private boolean mIsObserving;
     private boolean mRemoteInputActive;
+    private float mExpandedHeight;
     private VisualStabilityManager mVisualStabilityManager;
     private int mStatusBarState;
 
@@ -161,7 +163,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
         mIsObserving = shouldObserve;
     }
 
-    public void setBar(PhoneStatusBar bar) {
+    public void setBar(StatusBar bar) {
         mBar = bar;
     }
 
@@ -169,7 +171,11 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
         mListeners.add(listener);
     }
 
-    public PhoneStatusBar getBar() {
+    public void removeListener(OnHeadsUpChangedListener listener) {
+        mListeners.remove(listener);
+    }
+
+    public StatusBar getBar() {
         return mBar;
     }
 
@@ -250,6 +256,12 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
             listener.onHeadsUpStateChanged(entry, false);
         }
         mEntryPool.release(remove);
+    }
+
+    public void removeAllHeadsUpEntries() {
+        for (String key : mHeadsUpEntries.keySet()) {
+            removeHeadsUpEntry(mHeadsUpEntries.get(key).entry);
+        }
     }
 
     private void updatePinnedMode() {
@@ -522,7 +534,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
                 row = groupSummary;
             }
         }
-        return row.getPinnedHeadsUpHeight(true /* atLeastMinHeight */);
+        return row.getPinnedHeadsUpHeight();
     }
 
     /**
@@ -601,7 +613,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
      */
     public void setExpanded(NotificationData.Entry entry, boolean expanded) {
         HeadsUpEntry headsUpEntry = mHeadsUpEntries.get(entry.key);
-        if (headsUpEntry != null && headsUpEntry.expanded != expanded) {
+        if (headsUpEntry != null && headsUpEntry.expanded != expanded && entry.row.isPinned()) {
             headsUpEntry.expanded = expanded;
             if (expanded) {
                 headsUpEntry.removeAutoRemovalCallbacks();
@@ -613,6 +625,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
 
     @Override
     public void onReorderingAllowed() {
+        mBar.getNotificationScrollLayout().setHeadsUpGoingAwayAnimationsAllowed(false);
         for (NotificationData.Entry entry : mEntriesToRemoveWhenReorderingAllowed) {
             if (isHeadsUp(entry.key)) {
                 // Maybe the heads-up was removed already
@@ -620,6 +633,7 @@ public class HeadsUpManager implements ViewTreeObserver.OnComputeInternalInsetsL
             }
         }
         mEntriesToRemoveWhenReorderingAllowed.clear();
+        mBar.getNotificationScrollLayout().setHeadsUpGoingAwayAnimationsAllowed(true);
     }
 
     public void setVisualStabilityManager(VisualStabilityManager visualStabilityManager) {

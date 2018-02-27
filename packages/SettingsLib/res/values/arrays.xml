@@ -105,6 +105,7 @@
     <!-- Titles for Bluetooth AVRCP Versions -->
     <string-array name="bluetooth_avrcp_versions">
         <item>AVRCP 1.4 (Default)</item>
+        <item>AVRCP 1.3</item>
         <item>AVRCP 1.5</item>
         <item>AVRCP 1.6</item>
     </string-array>
@@ -112,6 +113,7 @@
     <!-- Values for Bluetooth AVRCP Versions -->
     <string-array name="bluetooth_avrcp_version_values">
         <item>avrcp14</item>
+        <item>avrcp13</item>
         <item>avrcp15</item>
         <item>avrcp16</item>
     </string-array>
@@ -121,8 +123,8 @@
         <item>Use System Selection (Default)</item>
         <item>SBC</item>
         <item>AAC</item>
-        <item>aptX</item>
-        <item>aptX HD</item>
+        <item><xliff:g id="qualcomm">Qualcomm®</xliff:g> <xliff:g id="aptx">aptX™</xliff:g> audio</item>
+        <item><xliff:g id="qualcomm">Qualcomm®</xliff:g> <xliff:g id="aptx_hd">aptX™ HD</xliff:g> audio</item>
         <item>LDAC</item>
         <item>Enable Optional Codecs</item>
         <item>Disable Optional Codecs</item>
@@ -145,8 +147,8 @@
         <item>Use System Selection (Default)</item>
         <item>SBC</item>
         <item>AAC</item>
-        <item>aptX</item>
-        <item>aptX HD</item>
+        <item><xliff:g id="qualcomm">Qualcomm®</xliff:g> <xliff:g id="aptx">aptX™</xliff:g> audio</item>
+        <item><xliff:g id="qualcomm">Qualcomm®</xliff:g> <xliff:g id="aptx_hd">aptX™ HD</xliff:g> audio</item>
         <item>LDAC</item>
         <item>Enable Optional Codecs</item>
         <item>Disable Optional Codecs</item>
@@ -246,6 +248,19 @@
         <item>Balanced Audio And Connection Quality</item>
         <item>Optimized for Connection Quality</item>
         <item>Best Effort (Adaptive Bit Rate)</item>
+    </string-array>
+
+    <!-- TODO: Enable for translation per b/73007419 -->
+    <!-- Summaries for Bluetooth Audio Active Device status. [CHAR LIMIT=50]-->
+    <string-array name="bluetooth_audio_active_device_summaries" translatable="false" >
+        <!-- Status message when the device is not Active. -->
+        <item></item>
+        <!-- Status message when the device is Active for Media and Phone. -->
+        <item>, active</item>
+        <!-- Status message when the device is Active for Media only. -->
+        <item>, active(media)</item>
+        <!-- Status message when the device is Active for Phone only. -->
+        <item>, active(phone)</item>
     </string-array>
 
     <!-- Titles for logd limit size selection preference. [CHAR LIMIT=14] -->
@@ -438,11 +453,11 @@
         <item>highlight</item>
     </string-array>
 
-    <!-- Titles for frame time tracking preference. [CHAR LIMIT=35] -->
+    <!-- Titles for frame time tracking preference. [CHAR LIMIT=50] -->
     <string-array name="track_frame_time_entries">
         <item>Off</item>
         <item>On screen as bars</item>
-        <item>In adb shell dumpsys gfxinfo</item>
+        <item>In <xliff:g id="as_typed_command">adb shell dumpsys gfxinfo</xliff:g></item>
     </string-array>
 
     <!-- Values for frame time tracking preference. -->
@@ -464,6 +479,18 @@
         <item>false</item>
         <item>show</item>
         <item>show_deuteranomaly</item>
+    </string-array>
+
+    <!-- Titles for debug renderer preference. [CHAR LIMIT=50] -->
+    <string-array name="debug_hw_renderer_entries">
+        <item>OpenGL (Default)</item>
+        <item>OpenGL (Skia)</item>
+    </string-array>
+
+    <!-- Values for debug renderer preference. -->
+    <string-array name="debug_hw_renderer_values" translatable="false" >
+        <item>opengl</item>
+        <item>skiagl</item>
     </string-array>
 
     <!-- Titles for app process limit preference. [CHAR LIMIT=35] -->
@@ -541,5 +568,38 @@
         <item>-1</item>
         <item>7</item>
     </integer-array>
+
+    <!-- BatteryMeterView parameters -->
+    <array name="batterymeter_color_levels">
+        <item>15</item>
+        <item>100</item>
+    </array>
+    <array name="batterymeter_color_values">
+        <item>?android:attr/colorError</item>
+        <item>@android:color/white</item>
+    </array>
+    <array name="batterymeter_bolt_points">
+        <item>73</item> <item>0</item>
+        <item>392</item><item>0</item>
+        <item>201</item><item>259</item>
+        <item>442</item><item>259</item>
+        <item>4</item>  <item>703</item>
+        <item>157</item><item>334</item>
+        <item>0</item>  <item>334</item>
+    </array>
+    <array name="batterymeter_plus_points">
+        <item>3</item><item>0</item>
+        <item>5</item><item>0</item>
+        <item>5</item><item>3</item>
+        <item>8</item><item>3</item>
+        <item>8</item><item>5</item>
+        <item>5</item><item>5</item>
+        <item>5</item><item>8</item>
+        <item>3</item><item>8</item>
+        <item>3</item><item>5</item>
+        <item>0</item><item>5</item>
+        <item>0</item><item>3</item>
+        <item>3</item><item>3</item>
+    </array>
 
 </resources>

@@ -38,10 +38,10 @@ import java.lang.ref.WeakReference;
  *     {@link #createNetworkSpecifierOpen(PeerHandle)} or
  *     {@link #createNetworkSpecifierPassphrase(PeerHandle, String)}.
  * </ul>
- * The {@link #destroy()} method must be called to destroy discovery sessions once they are
+ * The {@link #close()} method must be called to destroy discovery sessions once they are
  * no longer needed.
  */
-public class DiscoverySession {
+public class DiscoverySession implements AutoCloseable {
     private static final String TAG = "DiscoverySession";
     private static final boolean DBG = false;
     private static final boolean VDBG = false; // STOPSHIP if true
@@ -82,7 +82,7 @@ public class DiscoverySession {
         mClientId = clientId;
         mSessionId = sessionId;
 
-        mCloseGuard.open("destroy");
+        mCloseGuard.open("close");
     }
 
     /**
@@ -96,7 +96,8 @@ public class DiscoverySession {
      *     exception is a session for which we received a termination callback,
      *     {@link DiscoverySessionCallback#onSessionTerminated()}.
      */
-    public void destroy() {
+    @Override
+    public void close() {
         WifiAwareManager mgr = mMgr.get();
         if (mgr == null) {
             Log.w(TAG, "destroy: called post GC on WifiAwareManager");
@@ -129,9 +130,12 @@ public class DiscoverySession {
     @Override
     protected void finalize() throws Throwable {
         try {
-            if (!mTerminated) {
+            if (mCloseGuard != null) {
                 mCloseGuard.warnIfOpen();
-                destroy();
+            }
+
+            if (!mTerminated) {
+                close();
             }
         } finally {
             super.finalize();
@@ -338,8 +342,8 @@ public class DiscoverySession {
      */
     public NetworkSpecifier createNetworkSpecifierPassphrase(
             @Nullable PeerHandle peerHandle, @NonNull String passphrase) {
-        if (passphrase == null || passphrase.length() == 0) {
-            throw new IllegalArgumentException("Passphrase must not be null or empty");
+        if (!WifiAwareUtils.validatePassphrase(passphrase)) {
+            throw new IllegalArgumentException("Passphrase must meet length requirements");
         }
 
         if (mTerminated) {
@@ -401,8 +405,8 @@ public class DiscoverySession {
     @SystemApi
     public NetworkSpecifier createNetworkSpecifierPmk(@Nullable PeerHandle peerHandle,
             @NonNull byte[] pmk) {
-        if (pmk == null || pmk.length == 0) {
-            throw new IllegalArgumentException("PMK must not be null or empty");
+        if (!WifiAwareUtils.validatePmk(pmk)) {
+            throw new IllegalArgumentException("PMK must 32 bytes");
         }
 
         if (mTerminated) {

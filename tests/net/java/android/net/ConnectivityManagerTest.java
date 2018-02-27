@@ -38,6 +38,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
@@ -45,6 +46,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.PendingIntent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.content.Context;
@@ -65,8 +67,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest
@@ -218,7 +218,8 @@ public class ConnectivityManagerTest {
 
         // callback triggers
         captor.getValue().send(makeMessage(request, ConnectivityManager.CALLBACK_AVAILABLE));
-        verify(callback, timeout(500).times(1)).onAvailable(any());
+        verify(callback, timeout(500).times(1)).onAvailable(any(Network.class),
+                any(NetworkCapabilities.class), any(LinkProperties.class));
 
         // unregister callback
         manager.unregisterNetworkCallback(callback);
@@ -245,7 +246,8 @@ public class ConnectivityManagerTest {
 
         // callback triggers
         captor.getValue().send(makeMessage(req1, ConnectivityManager.CALLBACK_AVAILABLE));
-        verify(callback, timeout(100).times(1)).onAvailable(any());
+        verify(callback, timeout(100).times(1)).onAvailable(any(Network.class),
+                any(NetworkCapabilities.class), any(LinkProperties.class));
 
         // unregister callback
         manager.unregisterNetworkCallback(callback);
@@ -296,9 +298,50 @@ public class ConnectivityManagerTest {
         manager.requestNetwork(request, callback);
     }
 
+    @Test
+    public void testArgumentValidation() throws Exception {
+        ConnectivityManager manager = new ConnectivityManager(mCtx, mService);
+
+        NetworkRequest request = mock(NetworkRequest.class);
+        NetworkCallback callback = mock(NetworkCallback.class);
+        Handler handler = mock(Handler.class);
+        NetworkCallback nullCallback = null;
+        PendingIntent nullIntent = null;
+
+        mustFail(() -> { manager.requestNetwork(null, callback); });
+        mustFail(() -> { manager.requestNetwork(request, nullCallback); });
+        mustFail(() -> { manager.requestNetwork(request, callback, null); });
+        mustFail(() -> { manager.requestNetwork(request, callback, -1); });
+        mustFail(() -> { manager.requestNetwork(request, nullIntent); });
+
+        mustFail(() -> { manager.registerNetworkCallback(null, callback, handler); });
+        mustFail(() -> { manager.registerNetworkCallback(request, null, handler); });
+        mustFail(() -> { manager.registerNetworkCallback(request, callback, null); });
+        mustFail(() -> { manager.registerNetworkCallback(request, nullIntent); });
+
+        mustFail(() -> { manager.registerDefaultNetworkCallback(null, handler); });
+        mustFail(() -> { manager.registerDefaultNetworkCallback(callback, null); });
+
+        mustFail(() -> { manager.unregisterNetworkCallback(nullCallback); });
+        mustFail(() -> { manager.unregisterNetworkCallback(nullIntent); });
+        mustFail(() -> { manager.releaseNetworkRequest(nullIntent); });
+    }
+
+    static void mustFail(Runnable fn) {
+        try {
+            fn.run();
+            fail();
+        } catch (Exception expected) {
+        }
+    }
+
     static Message makeMessage(NetworkRequest req, int messageType) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(NetworkRequest.class.getSimpleName(), req);
+        // Pass default objects as we don't care which get passed here
+        bundle.putParcelable(Network.class.getSimpleName(), new Network(1));
+        bundle.putParcelable(NetworkCapabilities.class.getSimpleName(), new NetworkCapabilities());
+        bundle.putParcelable(LinkProperties.class.getSimpleName(), new LinkProperties());
         Message msg = Message.obtain();
         msg.what = messageType;
         msg.setData(bundle);

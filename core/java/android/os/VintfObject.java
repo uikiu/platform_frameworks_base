@@ -16,33 +16,30 @@
 
 package android.os;
 
-import java.util.ArrayList;
+import java.util.Map;
 
-import android.util.Log;
 
-/** @hide */
+/**
+ * Java API for libvintf.
+ * @hide
+ */
 public class VintfObject {
 
-    private static final String LOG_TAG = "VintfObject";
+    /// ---------- OTA
 
     /**
-     * Slurps all device information (both manifests)
-     * and report it.
+     * Slurps all device information (both manifests and both matrices)
+     * and report them.
      * If any error in getting one of the manifests, it is not included in
      * the list.
      */
-    public static String[] report() {
-        ArrayList<String> ret = new ArrayList<>();
-        put(ret, getDeviceManifest(), "device manifest");
-        put(ret, getFrameworkManifest(), "framework manifest");
-        return ret.toArray(new String[0]);
-    }
+    public static native String[] report();
 
     /**
      * Verify that the given metadata for an OTA package is compatible with
      * this device.
      *
-     * @param packageInfo a list of serialized form of HalMaanifest's /
+     * @param packageInfo a list of serialized form of HalManifest's /
      * CompatibilityMatri'ces (XML).
      * @return = 0 if success (compatible)
      *         > 0 if incompatible
@@ -50,15 +47,44 @@ public class VintfObject {
      */
     public static native int verify(String[] packageInfo);
 
-    // return null if any error, otherwise XML string.
-    private static native String getDeviceManifest();
-    private static native String getFrameworkManifest();
+    /**
+     * Verify Vintf compatibility on the device without checking AVB
+     * (Android Verified Boot). It is useful to verify a running system
+     * image where AVB check is irrelevant.
+     *
+     * @return = 0 if success (compatible)
+     *         > 0 if incompatible
+     *         < 0 if any error (mount partition fails, illformed XML, etc.)
+     */
+    public static native int verifyWithoutAvb();
 
-    private static void put(ArrayList<String> list, String content, String message) {
-        if (content == null || content.length() == 0) {
-            Log.e(LOG_TAG, "Cannot get;" + message + "; check native logs for details.");
-            return;
-        }
-        list.add(content);
-    }
+    /// ---------- CTS Device Info
+
+    /**
+     * @return a list of HAL names and versions that is supported by this
+     * device as stated in device and framework manifests. For example,
+     * ["android.hidl.manager@1.0", "android.hardware.camera.device@1.0",
+     *  "android.hardware.camera.device@3.2"]. There are no duplicates.
+     */
+    public static native String[] getHalNamesAndVersions();
+
+    /**
+     * @return the BOARD_SEPOLICY_VERS build flag available in device manifest.
+     */
+    public static native String getSepolicyVersion();
+
+    /**
+     * @return a list of VNDK snapshots supported by the framework, as
+     * specified in framework manifest. For example,
+     * [("27", ["libjpeg.so", "libbase.so"]),
+     *  ("28", ["libjpeg.so", "libbase.so"])]
+     */
+    public static native Map<String, String[]> getVndkSnapshots();
+
+    /**
+     * @return target FCM version, a number specified in the device manifest
+     * indicating the FCM version that the device manifest implements. Null if
+     * device manifest doesn't specify this number (for legacy devices).
+     */
+    public static native Long getTargetFrameworkCompatibilityMatrixVersion();
 }

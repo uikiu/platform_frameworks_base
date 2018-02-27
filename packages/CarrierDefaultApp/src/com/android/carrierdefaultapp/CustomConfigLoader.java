@@ -22,7 +22,6 @@ import android.telephony.CarrierConfigManager;
 import android.telephony.Rlog;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.util.ArrayUtils;
@@ -90,6 +89,16 @@ public class CustomConfigLoader {
                             .KEY_CARRIER_DEFAULT_ACTIONS_ON_DCFAILURE_STRING_ARRAY);
                     arg1 = intent.getStringExtra(TelephonyIntents.EXTRA_APN_TYPE_KEY);
                     arg2 = intent.getStringExtra(TelephonyIntents.EXTRA_ERROR_CODE_KEY);
+                    break;
+                case TelephonyIntents.ACTION_CARRIER_SIGNAL_RESET:
+                    configs = b.getStringArray(CarrierConfigManager
+                            .KEY_CARRIER_DEFAULT_ACTIONS_ON_RESET);
+                    break;
+                case TelephonyIntents.ACTION_CARRIER_SIGNAL_DEFAULT_NETWORK_AVAILABLE:
+                    configs = b.getStringArray(CarrierConfigManager
+                            .KEY_CARRIER_DEFAULT_ACTIONS_ON_DEFAULT_NETWORK_AVAILABLE);
+                    arg1 = String.valueOf(intent.getBooleanExtra(TelephonyIntents
+                            .EXTRA_DEFAULT_NETWORK_AVAILABLE_KEY, false));
                     break;
                 default:
                     Rlog.e(TAG, "load carrier config failure with un-configured key: " +

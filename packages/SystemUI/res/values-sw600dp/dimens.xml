@@ -18,7 +18,6 @@
 <resources>
     <!-- Standard notification width + gravity -->
     <dimen name="notification_panel_width">@dimen/standard_notification_panel_width</dimen>
-    <integer name="notification_panel_layout_gravity">@integer/standard_notification_panel_layout_gravity</integer>
 
     <!-- Diameter of outer shape drawable shown in navbar search-->
     <dimen name="navbar_search_outerring_diameter">430dip</dimen>
@@ -99,4 +98,7 @@
 
     <!-- The offsets the tasks animate from when recents is launched while docking -->
     <dimen name="recents_task_stack_animation_launched_while_docking_offset">192dp</dimen>
+
+    <!-- Home button padding for sizing -->
+    <dimen name="home_padding">0dp</dimen>
 </resources>

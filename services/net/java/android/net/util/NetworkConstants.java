@@ -87,6 +87,7 @@ public final class NetworkConstants {
     public static final int IPV4_PROTOCOL_OFFSET = 9;
     public static final int IPV4_SRC_ADDR_OFFSET = 12;
     public static final int IPV4_DST_ADDR_OFFSET = 16;
+    public static final int IPV4_ADDR_BITS = 32;
     public static final int IPV4_ADDR_LEN = 4;
 
     /**
@@ -99,9 +100,33 @@ public final class NetworkConstants {
     public static final int IPV6_PROTOCOL_OFFSET = 6;
     public static final int IPV6_SRC_ADDR_OFFSET = 8;
     public static final int IPV6_DST_ADDR_OFFSET = 24;
+    public static final int IPV6_ADDR_BITS = 128;
     public static final int IPV6_ADDR_LEN = 16;
     public static final int IPV6_MIN_MTU = 1280;
     public static final int RFC7421_PREFIX_LENGTH = 64;
+    public static final int RFC6177_MIN_PREFIX_LENGTH = 48;
+
+    /**
+     * ICMP common (v4/v6) constants.
+     *
+     * See also:
+     *     - https://tools.ietf.org/html/rfc792
+     *     - https://tools.ietf.org/html/rfc4443
+     */
+    public static final int ICMP_HEADER_TYPE_OFFSET = 0;
+    public static final int ICMP_HEADER_CODE_OFFSET = 1;
+    public static final int ICMP_HEADER_CHECKSUM_OFFSET = 2;
+    public static final int ICMP_ECHO_IDENTIFIER_OFFSET = 4;
+    public static final int ICMP_ECHO_SEQUENCE_NUMBER_OFFSET = 6;
+    public static final int ICMP_ECHO_DATA_OFFSET = 8;
+
+    /**
+     * ICMPv4 constants.
+     *
+     * See also:
+     *     - https://tools.ietf.org/html/rfc792
+     */
+    public static final int ICMPV4_ECHO_REQUEST_TYPE = 8;
 
     /**
      * ICMPv6 constants.
@@ -122,6 +147,8 @@ public final class NetworkConstants {
     public static final int ICMPV6_ND_OPTION_TLLA = 2;
     public static final int ICMPV6_ND_OPTION_MTU  = 5;
 
+    public static final int ICMPV6_ECHO_REQUEST_TYPE = 128;
+
     /**
      * UDP constants.
      *
@@ -138,6 +165,14 @@ public final class NetworkConstants {
      */
     public static final int DHCP4_SERVER_PORT = 67;
     public static final int DHCP4_CLIENT_PORT = 68;
+
+    /**
+     * DNS constants.
+     *
+     * See also:
+     *     - https://tools.ietf.org/html/rfc1035
+     */
+    public static final int DNS_SERVER_PORT = 53;
 
     /**
      * Utility functions.

@@ -16,7 +16,7 @@
 
 package com.android.ims.internal;
 
-import com.android.ims.ImsReasonInfo;
+import android.telephony.ims.ImsReasonInfo;
 
 import android.net.Uri;
 
@@ -26,7 +26,7 @@ import android.net.Uri;
  *
  * {@hide}
  */
-interface IImsRegistrationListener {
+oneway interface IImsRegistrationListener {
     /**
      * Notifies the application when the device is connected to the IMS network.
      *

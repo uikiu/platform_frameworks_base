@@ -16,10 +16,18 @@
 
 package com.android.mediaframeworktest.integration;
 
+import static android.hardware.camera2.CameraDevice.TEMPLATE_PREVIEW;
+
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
+
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.ICameraService;
-import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CaptureRequest;
@@ -41,13 +49,10 @@ import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 import android.view.Surface;
 
-import static android.hardware.camera2.CameraDevice.TEMPLATE_PREVIEW;
-
 import com.android.mediaframeworktest.MediaFrameworkIntegrationTestRunner;
 
 import org.mockito.ArgumentCaptor;
-import org.mockito.compat.ArgumentMatcher;
-import static org.mockito.Mockito.*;
+import org.mockito.ArgumentMatcher;
 
 public class CameraDeviceBinderTest extends AndroidTestCase {
     private static String TAG = "CameraDeviceBinderTest";
@@ -66,7 +71,7 @@ public class CameraDeviceBinderTest extends AndroidTestCase {
     private static final int DEFAULT_IMAGE_HEIGHT = 480;
     private static final int MAX_NUM_IMAGES = 5;
 
-    private int mCameraId;
+    private String mCameraId;
     private ICameraDeviceUser mCameraUser;
     private CameraBinderTestUtils mUtils;
     private ICameraDeviceCallbacks.Stub mMockCb;
@@ -148,18 +153,28 @@ public class CameraDeviceBinderTest extends AndroidTestCase {
 
         /*
          * (non-Javadoc)
+         * @see android.hardware.camera2.ICameraDeviceCallbacks#onRequestQueueEmpty()
+         */
+        @Override
+        public void onRequestQueueEmpty() throws RemoteException {
+            // TODO Auto-generated method stub
+
+        }
+
+        /*
+         * (non-Javadoc)
          * @see android.hardware.camera2.ICameraDeviceCallbacks#onRepeatingRequestError()
          */
         @Override
-        public void onRepeatingRequestError(long lastFrameNumber) {
+        public void onRepeatingRequestError(long lastFrameNumber, int repeatingRequestId) {
             // TODO Auto-generated method stub
         }
     }
 
-    class IsMetadataNotEmpty extends ArgumentMatcher<CameraMetadataNative> {
+    class IsMetadataNotEmpty implements ArgumentMatcher<CameraMetadataNative> {
         @Override
-        public boolean matchesObject(Object obj) {
-            return !((CameraMetadataNative) obj).isEmpty();
+        public boolean matches(CameraMetadataNative obj) {
+            return !obj.isEmpty();
         }
     }
 

@@ -16,14 +16,18 @@
 package com.android.carrierdefaultapp;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Log;
 import com.android.internal.telephony.PhoneConstants;
 import com.android.carrierdefaultapp.R;
@@ -35,6 +39,7 @@ public class CarrierActionUtils {
 
     private static final String PORTAL_NOTIFICATION_TAG = "CarrierDefault.Portal.Notification";
     private static final String NO_DATA_NOTIFICATION_TAG = "CarrierDefault.NoData.Notification";
+    private static final String NOTIFICATION_CHANNEL_ID_MOBILE_DATA_STATUS = "mobile_data_status";
     private static final int PORTAL_NOTIFICATION_ID = 0;
     private static final int NO_DATA_NOTIFICATION_ID = 1;
     private static boolean ENABLE = true;
@@ -47,6 +52,10 @@ public class CarrierActionUtils {
     public static final int CARRIER_ACTION_SHOW_PORTAL_NOTIFICATION          = 4;
     public static final int CARRIER_ACTION_SHOW_NO_DATA_SERVICE_NOTIFICATION = 5;
     public static final int CARRIER_ACTION_CANCEL_ALL_NOTIFICATIONS          = 6;
+    public static final int CARRIER_ACTION_ENABLE_DEFAULT_URL_HANDLER        = 7;
+    public static final int CARRIER_ACTION_DISABLE_DEFAULT_URL_HANDLER       = 8;
+    public static final int CARRIER_ACTION_REGISTER_DEFAULT_NETWORK_AVAIL    = 9;
+    public static final int CARRIER_ACTION_DEREGISTER_DEFAULT_NETWORK_AVAIL  = 10;
 
     public static void applyCarrierAction(int actionIdx, Intent intent, Context context) {
         switch (actionIdx) {
@@ -71,6 +80,18 @@ public class CarrierActionUtils {
             case CARRIER_ACTION_CANCEL_ALL_NOTIFICATIONS:
                 onCancelAllNotifications(context);
                 break;
+            case CARRIER_ACTION_ENABLE_DEFAULT_URL_HANDLER:
+                onEnableDefaultURLHandler(context);
+                break;
+            case CARRIER_ACTION_DISABLE_DEFAULT_URL_HANDLER:
+                onDisableDefaultURLHandler(context);
+                break;
+            case CARRIER_ACTION_REGISTER_DEFAULT_NETWORK_AVAIL:
+                onRegisterDefaultNetworkAvail(intent, context);
+                break;
+            case CARRIER_ACTION_DEREGISTER_DEFAULT_NETWORK_AVAIL:
+                onDeregisterDefaultNetworkAvail(intent, context);
+                break;
             default:
                 loge("unsupported carrier action index: " + actionIdx);
         }
@@ -92,6 +113,38 @@ public class CarrierActionUtils {
         telephonyMgr.carrierActionSetMeteredApnsEnabled(subId, ENABLE);
     }
 
+    private static void onEnableDefaultURLHandler(Context context) {
+        logd("onEnableDefaultURLHandler");
+        final PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(
+                new ComponentName(context, CaptivePortalLoginActivity.getAlias(context)),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+    }
+
+    private static void onDisableDefaultURLHandler(Context context) {
+        logd("onDisableDefaultURLHandler");
+        final PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(
+                new ComponentName(context, CaptivePortalLoginActivity.getAlias(context)),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+    }
+
+    private static void onRegisterDefaultNetworkAvail(Intent intent, Context context) {
+        int subId = intent.getIntExtra(PhoneConstants.SUBSCRIPTION_KEY,
+                SubscriptionManager.getDefaultVoiceSubscriptionId());
+        logd("onRegisterDefaultNetworkAvail subId: " + subId);
+        final TelephonyManager telephonyMgr = context.getSystemService(TelephonyManager.class);
+        telephonyMgr.carrierActionReportDefaultNetworkStatus(subId, true);
+    }
+
+    private static void onDeregisterDefaultNetworkAvail(Intent intent, Context context) {
+        int subId = intent.getIntExtra(PhoneConstants.SUBSCRIPTION_KEY,
+                SubscriptionManager.getDefaultVoiceSubscriptionId());
+        logd("onDeregisterDefaultNetworkAvail subId: " + subId);
+        final TelephonyManager telephonyMgr = context.getSystemService(TelephonyManager.class);
+        telephonyMgr.carrierActionReportDefaultNetworkStatus(subId, false);
+    }
+
     private static void onDisableRadio(Intent intent, Context context) {
         int subId = intent.getIntExtra(PhoneConstants.SUBSCRIPTION_KEY,
                 SubscriptionManager.getDefaultVoiceSubscriptionId());
@@ -110,8 +163,6 @@ public class CarrierActionUtils {
 
     private static void onShowCaptivePortalNotification(Intent intent, Context context) {
         logd("onShowCaptivePortalNotification");
-        final NotificationManager notificationMgr = context.getSystemService(
-                NotificationManager.class);
         Intent portalIntent = new Intent(context, CaptivePortalLoginActivity.class);
         portalIntent.putExtras(intent);
         portalIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
@@ -121,7 +172,8 @@ public class CarrierActionUtils {
         Notification notification = getNotification(context, R.string.portal_notification_id,
                 R.string.portal_notification_detail, pendingIntent);
         try {
-            notificationMgr.notify(PORTAL_NOTIFICATION_TAG, PORTAL_NOTIFICATION_ID, notification);
+            context.getSystemService(NotificationManager.class)
+                    .notify(PORTAL_NOTIFICATION_TAG, PORTAL_NOTIFICATION_ID, notification);
         } catch (NullPointerException npe) {
             loge("setNotificationVisible: " + npe);
         }
@@ -129,12 +181,11 @@ public class CarrierActionUtils {
 
     private static void onShowNoDataServiceNotification(Context context) {
         logd("onShowNoDataServiceNotification");
-        final NotificationManager notificationMgr = context.getSystemService(
-                NotificationManager.class);
         Notification notification = getNotification(context, R.string.no_data_notification_id,
                 R.string.no_data_notification_detail, null);
         try {
-            notificationMgr.notify(NO_DATA_NOTIFICATION_TAG, NO_DATA_NOTIFICATION_ID, notification);
+            context.getSystemService(NotificationManager.class)
+                    .notify(NO_DATA_NOTIFICATION_TAG, NO_DATA_NOTIFICATION_ID, notification);
         } catch (NullPointerException npe) {
             loge("setNotificationVisible: " + npe);
         }
@@ -142,21 +193,26 @@ public class CarrierActionUtils {
 
     private static void onCancelAllNotifications(Context context) {
         logd("onCancelAllNotifications");
-        final NotificationManager notificationMgr = context.getSystemService(
-                NotificationManager.class);
-        notificationMgr.cancelAll();
+        context.getSystemService(NotificationManager.class).cancelAll();
     }
 
     private static Notification getNotification(Context context, int titleId, int textId,
                                          PendingIntent pendingIntent) {
         final TelephonyManager telephonyMgr = context.getSystemService(TelephonyManager.class);
         final Resources resources = context.getResources();
+        String spn = telephonyMgr.getSimOperatorName();
+        if (TextUtils.isEmpty(spn)) {
+            // There is no consistent way to get the current carrier name as MNOs didn't
+            // bother to set EF_SPN. in the long term, we should display a generic wording if
+            // spn from subscription is not set.
+            spn = telephonyMgr.getNetworkOperatorName();
+        }
         final Bundle extras = Bundle.forPair(Notification.EXTRA_SUBSTITUTE_APP_NAME,
                 resources.getString(R.string.android_system_label));
+        createNotificationChannels(context);
         Notification.Builder builder = new Notification.Builder(context)
                 .setContentTitle(resources.getString(titleId))
-                .setContentText(String.format(resources.getString(textId),
-                        telephonyMgr.getNetworkOperatorName()))
+                .setContentText(String.format(resources.getString(textId), spn))
                 .setSmallIcon(R.drawable.ic_sim_card)
                 .setColor(context.getColor(
                         com.android.internal.R.color.system_notification_accent_color))
@@ -167,12 +223,26 @@ public class CarrierActionUtils {
                 .setLocalOnly(true)
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(false)
-                .setExtras(extras);
+                .setExtras(extras)
+                .setChannel(NOTIFICATION_CHANNEL_ID_MOBILE_DATA_STATUS);
 
         if (pendingIntent != null) {
             builder.setContentIntent(pendingIntent);
         }
         return builder.build();
+    }
+
+    /**
+     * Creates the notification channel and registers it with NotificationManager. Also used to
+     * update an existing channel's name.
+     */
+    static void createNotificationChannels(Context context) {
+        context.getSystemService(NotificationManager.class)
+                .createNotificationChannel(new NotificationChannel(
+                NOTIFICATION_CHANNEL_ID_MOBILE_DATA_STATUS,
+                context.getResources().getString(
+                        R.string.mobile_data_status_notification_channel_name),
+                NotificationManager.IMPORTANCE_DEFAULT));
     }
 
     private static void logd(String s) {

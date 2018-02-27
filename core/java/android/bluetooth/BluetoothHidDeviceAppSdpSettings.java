@@ -19,19 +19,39 @@ package android.bluetooth;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Random;
+import java.util.Arrays;
 
-/** @hide */
+/**
+ * Represents the Service Discovery Protocol (SDP) settings for a Bluetooth HID Device application.
+ *
+ * <p>The BluetoothHidDevice framework adds the SDP record during app registration, so that the
+ * Android device can be discovered as a Bluetooth HID Device.
+ *
+ * <p>{@see BluetoothHidDevice}
+ */
 public final class BluetoothHidDeviceAppSdpSettings implements Parcelable {
 
-    final public String name;
-    final public String description;
-    final public String provider;
-    final public byte subclass;
-    final public byte[] descriptors;
+    public final String name;
+    public final String description;
+    public final String provider;
+    public final byte subclass;
+    public final byte[] descriptors;
 
-    public BluetoothHidDeviceAppSdpSettings(String name, String description, String provider,
-            byte subclass, byte[] descriptors) {
+    /**
+     * Create a BluetoothHidDeviceAppSdpSettings object for the Bluetooth SDP record.
+     *
+     * @param name Name of this Bluetooth HID device. Maximum length is 50 bytes.
+     * @param description Description for this Bluetooth HID device. Maximum length is 50 bytes.
+     * @param provider Provider of this Bluetooth HID device. Maximum length is 50 bytes.
+     * @param subclass Subclass of this Bluetooth HID device. See <a
+     *     href="www.usb.org/developers/hidpage/HID1_11.pdf">
+     *     www.usb.org/developers/hidpage/HID1_11.pdf Section 4.2</a>
+     * @param descriptors Descriptors of this Bluetooth HID device. See <a
+     *     href="www.usb.org/developers/hidpage/HID1_11.pdf">
+     *     www.usb.org/developers/hidpage/HID1_11.pdf Chapter 6</a> Maximum length is 2048 bytes.
+     */
+    public BluetoothHidDeviceAppSdpSettings(
+            String name, String description, String provider, byte subclass, byte[] descriptors) {
         this.name = name;
         this.description = description;
         this.provider = provider;
@@ -43,7 +63,11 @@ public final class BluetoothHidDeviceAppSdpSettings implements Parcelable {
     public boolean equals(Object o) {
         if (o instanceof BluetoothHidDeviceAppSdpSettings) {
             BluetoothHidDeviceAppSdpSettings sdp = (BluetoothHidDeviceAppSdpSettings) o;
-            return false;
+            return this.name.equals(sdp.name)
+                    && this.description.equals(sdp.description)
+                    && this.provider.equals(sdp.provider)
+                    && this.subclass == sdp.subclass
+                    && Arrays.equals(this.descriptors, sdp.descriptors);
         }
         return false;
     }
@@ -54,20 +78,24 @@ public final class BluetoothHidDeviceAppSdpSettings implements Parcelable {
     }
 
     public static final Parcelable.Creator<BluetoothHidDeviceAppSdpSettings> CREATOR =
-        new Parcelable.Creator<BluetoothHidDeviceAppSdpSettings>() {
+            new Parcelable.Creator<BluetoothHidDeviceAppSdpSettings>() {
 
-        @Override
-        public BluetoothHidDeviceAppSdpSettings createFromParcel(Parcel in) {
+                @Override
+                public BluetoothHidDeviceAppSdpSettings createFromParcel(Parcel in) {
 
-            return new BluetoothHidDeviceAppSdpSettings(in.readString(), in.readString(),
-                    in.readString(), in.readByte(), in.createByteArray());
-        }
+                    return new BluetoothHidDeviceAppSdpSettings(
+                            in.readString(),
+                            in.readString(),
+                            in.readString(),
+                            in.readByte(),
+                            in.createByteArray());
+                }
 
-        @Override
-        public BluetoothHidDeviceAppSdpSettings[] newArray(int size) {
-            return new BluetoothHidDeviceAppSdpSettings[size];
-        }
-    };
+                @Override
+                public BluetoothHidDeviceAppSdpSettings[] newArray(int size) {
+                    return new BluetoothHidDeviceAppSdpSettings[size];
+                }
+            };
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
