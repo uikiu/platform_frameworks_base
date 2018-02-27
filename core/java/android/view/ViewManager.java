@@ -16,11 +16,11 @@
 
 package android.view;
 
-/** Interface to let you add and remove child views to an Activity. To get an instance
-  * of this class, call {@link android.content.Context#getSystemService(java.lang.String) Context.getSystemService()}.
-  */
-public interface ViewManager
-{
+/**
+ * Interface to let you add and remove child views to an Activity. To get an instance
+ * of this class, call {@link android.content.Context#getSystemService(java.lang.String) Context.getSystemService()}.
+ */
+public interface ViewManager {
     /**
      * Assign the passed LayoutParams to the passed View and add the view to the window.
      * <p>Throws {@link android.view.WindowManager.BadTokenException} for certain programming
@@ -28,10 +28,14 @@ public interface ViewManager
      * <p>Throws {@link android.view.WindowManager.InvalidDisplayException} if the window is on a
      * secondary {@link Display} and the specified display can't be found
      * (see {@link android.app.Presentation}).
-     * @param view The view to be added to this window.
+     *
+     * @param view   The view to be added to this window.这里的vew可以是悬浮框
      * @param params The LayoutParams to assign to view.
+     *               ---------------------------------------------------------------------------------------------
      */
     public void addView(View view, ViewGroup.LayoutParams params);
+
     public void updateViewLayout(View view, ViewGroup.LayoutParams params);
+
     public void removeView(View view);
 }
