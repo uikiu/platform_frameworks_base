@@ -1177,6 +1177,9 @@ public class Fragment implements ComponentCallbacks2, OnCreateContextMenuListene
      *                   through its setResult().
      * @param data An Intent, which can return result data to the caller
      *               (various data can be attached to Intent "extras").
+     * ---------------------------------------------------------------------------------------------
+     * 翻译：previous 之前的，早先的。
+     * 接收之前从fragment中调用{@link #startActivityForResult(Intent, int)}
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
     }

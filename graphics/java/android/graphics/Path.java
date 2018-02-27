@@ -368,6 +368,7 @@ public class Path {
      * @param x The x-coordinate of the end of a line
      * @param y The y-coordinate of the end of a line
      * ---------------------------------------------------------------------------------------------
+     * 翻译：从最后一个点到指定点（x,y）添加一行。
      * 用于进行直线绘制。
      */
     public void lineTo(float x, float y) {

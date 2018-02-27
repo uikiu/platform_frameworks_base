@@ -26,7 +26,7 @@ package android.os;
  *
  */
 public class HandlerThread extends Thread {
-    int mPriority;//优先级--默认级别
+    int mPriority;//优先级--这里使用默认级别
     int mTid = -1;//线程ID
     Looper mLooper;
 

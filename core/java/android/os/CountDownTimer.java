@@ -82,6 +82,7 @@ public abstract class CountDownTimer {
 
     /**
      * Start the countdown.
+     * 开启倒计时
      */
     public synchronized final CountDownTimer start() {
         mCancelled = false;
