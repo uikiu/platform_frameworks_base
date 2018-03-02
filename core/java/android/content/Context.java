@@ -92,15 +92,15 @@ public abstract class Context {
      * As of {@link android.os.Build.VERSION_CODES#N} attempting to use this
      * mode will throw a {@link SecurityException}.
      *
-     * @deprecated Creating world-readable files is very dangerous, and likely
-     *             to cause security holes in applications. It is strongly
-     *             discouraged; instead, applications should use more formal
-     *             mechanism for interactions such as {@link ContentProvider},
-     *             {@link BroadcastReceiver}, and {@link android.app.Service}.
-     *             There are no guarantees that this access mode will remain on
-     *             a file, such as when it goes through a backup and restore.
      * @see android.support.v4.content.FileProvider
      * @see Intent#FLAG_GRANT_WRITE_URI_PERMISSION
+     * @deprecated Creating world-readable files is very dangerous, and likely
+     * to cause security holes in applications. It is strongly
+     * discouraged; instead, applications should use more formal
+     * mechanism for interactions such as {@link ContentProvider},
+     * {@link BroadcastReceiver}, and {@link android.app.Service}.
+     * There are no guarantees that this access mode will remain on
+     * a file, such as when it goes through a backup and restore.
      */
     @Deprecated
     public static final int MODE_WORLD_READABLE = 0x0001;
@@ -112,15 +112,15 @@ public abstract class Context {
      * As of {@link android.os.Build.VERSION_CODES#N} attempting to use this
      * mode will throw a {@link SecurityException}.
      *
-     * @deprecated Creating world-writable files is very dangerous, and likely
-     *             to cause security holes in applications. It is strongly
-     *             discouraged; instead, applications should use more formal
-     *             mechanism for interactions such as {@link ContentProvider},
-     *             {@link BroadcastReceiver}, and {@link android.app.Service}.
-     *             There are no guarantees that this access mode will remain on
-     *             a file, such as when it goes through a backup and restore.
      * @see android.support.v4.content.FileProvider
      * @see Intent#FLAG_GRANT_WRITE_URI_PERMISSION
+     * @deprecated Creating world-writable files is very dangerous, and likely
+     * to cause security holes in applications. It is strongly
+     * discouraged; instead, applications should use more formal
+     * mechanism for interactions such as {@link ContentProvider},
+     * {@link BroadcastReceiver}, and {@link android.app.Service}.
+     * There are no guarantees that this access mode will remain on
+     * a file, such as when it goes through a backup and restore.
      */
     @Deprecated
     public static final int MODE_WORLD_WRITEABLE = 0x0002;
@@ -129,10 +129,11 @@ public abstract class Context {
      * File creation mode: for use with {@link #openFileOutput}, if the file
      * already exists then write data to the end of the existing file
      * instead of erasing it.
+     *
      * @see #openFileOutput
-	 * //---------------------------------------------------------------------
-	 * File创建模式：在{@link #openFileOutput}方法中使用。类似于StringBuilder.append("");
-	 * 如果文件已经存在那么在已存在文件后面写入数据以代替清除这个文件中内容。
+     * //---------------------------------------------------------------------
+     * File创建模式：在{@link #openFileOutput}方法中使用。类似于StringBuilder.append("");
+     * 如果文件已经存在那么在已存在文件后面写入数据以代替清除这个文件中内容。
      */
     public static final int MODE_APPEND = 0x8000;
 
@@ -144,7 +145,7 @@ public abstract class Context {
      * processes, all writing to the same SharedPreferences file.
      * Generally there are better forms of communication between
      * processes, though.
-     *
+     * <p>
      * <p>This was the legacy (but undocumented) behavior in and
      * before Gingerbread (Android 2.3) and this flag is implied when
      * targetting such releases.  For applications targetting SDK
@@ -152,7 +153,6 @@ public abstract class Context {
      * explicitly set if desired.
      *
      * @see #getSharedPreferences
-     *
      * @deprecated MODE_MULTI_PROCESS does not work reliably in
      * some versions of Android, and furthermore does not provide any
      * mechanism for reconciling concurrent modifications across
@@ -183,20 +183,23 @@ public abstract class Context {
      */
     public static final int MODE_NO_LOCALIZED_COLLATORS = 0x0010;
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @IntDef(flag = true,
             value = {
-                BIND_AUTO_CREATE,
-                BIND_DEBUG_UNBIND,
-                BIND_NOT_FOREGROUND,
-                BIND_ABOVE_CLIENT,
-                BIND_ALLOW_OOM_MANAGEMENT,
-                BIND_WAIVE_PRIORITY,
-                BIND_IMPORTANT,
-                BIND_ADJUST_WITH_ACTIVITY
+                    BIND_AUTO_CREATE,
+                    BIND_DEBUG_UNBIND,
+                    BIND_NOT_FOREGROUND,
+                    BIND_ABOVE_CLIENT,
+                    BIND_ALLOW_OOM_MANAGEMENT,
+                    BIND_WAIVE_PRIORITY,
+                    BIND_IMPORTANT,
+                    BIND_ADJUST_WITH_ACTIVITY
             })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface BindServiceFlags {}
+    public @interface BindServiceFlags {
+    }
 
     /**
      * Flag for {@link #bindService}: automatically create the service as long
@@ -206,7 +209,7 @@ public abstract class Context {
      * explicit call to {@link #startService}.  Even without that, though,
      * this still provides you with access to the service object while the
      * service is created.
-     *
+     * <p>
      * <p>Note that prior to {@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH},
      * not supplying this flag would also impact how important the system
      * consider's the target service's process to be.  When set, the only way
@@ -332,8 +335,7 @@ public abstract class Context {
     public static final int BIND_VISIBLE = 0x10000000;
 
     /**
-     * @hide
-     * Flag for {@link #bindService}: Consider this binding to be causing the target
+     * @hide Flag for {@link #bindService}: Consider this binding to be causing the target
      * process to be showing UI, so it will be do a UI_HIDDEN memory trim when it goes
      * away.
      */
@@ -342,6 +344,7 @@ public abstract class Context {
     /**
      * Flag for {@link #bindService}: Don't consider the bound service to be
      * visible, even if the caller is visible.
+     *
      * @hide
      */
     public static final int BIND_NOT_VISIBLE = 0x40000000;
@@ -355,7 +358,7 @@ public abstract class Context {
      * When using this flag, the code for the service being bound will execute under the calling
      * application's package name and user ID.  Because the service must be an isolated process,
      * it will not have direct access to the application's data, though.
-     *
+     * <p>
      * The purpose of this flag is to allow applications to provide services that are attributed
      * to the app using the service, rather than the application providing the service.
      * </p>
@@ -388,10 +391,14 @@ public abstract class Context {
      */
     public abstract Resources getResources();
 
-    /** Return PackageManager instance to find global package information. */
+    /**
+     * Return PackageManager instance to find global package information.
+     */
     public abstract PackageManager getPackageManager();
 
-    /** Return a ContentResolver instance for your application's package. */
+    /**
+     * Return a ContentResolver instance for your application's package.
+     */
     public abstract ContentResolver getContentResolver();
 
     /**
@@ -412,7 +419,7 @@ public abstract class Context {
      * current process.  This generally should only be used if you need a
      * Context whose lifecycle is separate from the current context, that is
      * tied to the lifetime of the process rather than the current component.
-     *
+     * <p>
      * <p>Consider for example how this interacts with
      * {@link #registerReceiver(BroadcastReceiver, IntentFilter)}:
      * <ul>
@@ -442,7 +449,7 @@ public abstract class Context {
      * appropriate in the future; this will not be removed for you.
      *
      * @param callback The interface to call.  This can be either a
-     * {@link ComponentCallbacks} or {@link ComponentCallbacks2} interface.
+     *                 {@link ComponentCallbacks} or {@link ComponentCallbacks2} interface.
      */
     public void registerComponentCallbacks(ComponentCallbacks callback) {
         getApplicationContext().registerComponentCallbacks(callback);
@@ -472,7 +479,7 @@ public abstract class Context {
      *
      * @param resId Resource id for the string
      * @return The string data associated with the resource, stripped of styled
-     *         text information.
+     * text information.
      */
     @NonNull
     public final String getString(@StringRes int resId) {
@@ -484,11 +491,11 @@ public abstract class Context {
      * default string table, substituting the format arguments as defined in
      * {@link java.util.Formatter} and {@link java.lang.String#format}.
      *
-     * @param resId Resource id for the format string
+     * @param resId      Resource id for the format string
      * @param formatArgs The format arguments that will be used for
      *                   substitution.
      * @return The string data associated with the resource, formatted and
-     *         stripped of styled text information.
+     * stripped of styled text information.
      */
     @NonNull
     public final String getString(@StringRes int resId, Object... formatArgs) {
@@ -504,7 +511,7 @@ public abstract class Context {
      *           entry. The value 0 is an invalid identifier.
      * @return A single color value in the form 0xAARRGGBB.
      * @throws android.content.res.Resources.NotFoundException if the given ID
-     *         does not exist.
+     *                                                         does not exist.
      */
     @ColorInt
     public final int getColor(@ColorRes int id) {
@@ -519,9 +526,9 @@ public abstract class Context {
      *           tool. This integer encodes the package, type, and resource
      *           entry. The value 0 is an invalid identifier.
      * @return An object that can be used to draw this resource, or
-     *         {@code null} if the resource could not be resolved.
+     * {@code null} if the resource could not be resolved.
      * @throws android.content.res.Resources.NotFoundException if the given ID
-     *         does not exist.
+     *                                                         does not exist.
      */
     @Nullable
     public final Drawable getDrawable(@DrawableRes int id) {
@@ -536,16 +543,16 @@ public abstract class Context {
      *           tool. This integer encodes the package, type, and resource
      *           entry. The value 0 is an invalid identifier.
      * @return A color state list, or {@code null} if the resource could not be
-     *         resolved.
+     * resolved.
      * @throws android.content.res.Resources.NotFoundException if the given ID
-     *         does not exist.
+     *                                                         does not exist.
      */
     @Nullable
     public final ColorStateList getColorStateList(@ColorRes int id) {
         return getResources().getColorStateList(id, getTheme());
     }
 
-     /**
+    /**
      * Set the base theme for this context.  Note that this should be called
      * before any views are instantiated in the Context (for example before
      * calling {@link android.app.Activity#setContentView} or
@@ -555,8 +562,10 @@ public abstract class Context {
      */
     public abstract void setTheme(@StyleRes int resid);
 
-    /** @hide Needed for some internal implementation...  not public because
-     * you can't assume this actually means anything. */
+    /**
+     * @hide Needed for some internal implementation...  not public because
+     * you can't assume this actually means anything.
+     */
     public int getThemeResId() {
         return 0;
     }
@@ -613,7 +622,7 @@ public abstract class Context {
             AttributeSet set, @StyleableRes int[] attrs, @AttrRes int defStyleAttr,
             @StyleRes int defStyleRes) {
         return getTheme().obtainStyledAttributes(
-            set, attrs, defStyleAttr, defStyleRes);
+                set, attrs, defStyleAttr, defStyleRes);
     }
 
     /**
@@ -621,27 +630,36 @@ public abstract class Context {
      */
     public abstract ClassLoader getClassLoader();
 
-    /** Return the name of this application's package. */
+    /**
+     * Return the name of this application's package.
+     * 这里的包名，其实就是applicationID,而非java的路径包名。
+     */
     public abstract String getPackageName();
 
-    /** @hide Return the name of the base context this context is derived from. */
+    /**
+     * @hide Return the name of the base context this context is derived from.
+     */
     public abstract String getBasePackageName();
 
-    /** @hide Return the package name that should be used for app ops calls from
+    /**
+     * @hide Return the package name that should be used for app ops calls from
      * this context.  This is the same as {@link #getBasePackageName()} except in
      * cases where system components are loaded into other app processes, in which
      * case this will be the name of the primary package in that process (so that app
-     * ops uid verification will work with the name). */
+     * ops uid verification will work with the name).
+     */
     public abstract String getOpPackageName();
 
-    /** Return the full application info for this context's package. */
+    /**
+     * Return the full application info for this context's package.
+     */
     public abstract ApplicationInfo getApplicationInfo();
 
     /**
      * Return the full path to this context's primary Android package.
      * The Android package is a ZIP file which contains the application's
      * primary resources.
-     *
+     * <p>
      * <p>Note: this is not generally useful for applications, since they should
      * not be directly accessing the file system.
      *
@@ -653,7 +671,7 @@ public abstract class Context {
      * Return the full path to this context's primary Android package.
      * The Android package is a ZIP file which contains application's
      * primary code and assets.
-     *
+     * <p>
      * <p>Note: this is not generally useful for applications, since they should
      * not be directly accessing the file system.
      *
@@ -678,18 +696,15 @@ public abstract class Context {
      * edits as soon as they are made.
      *
      * @param name Desired preferences file. If a preferences file by this name
-     * does not exist, it will be created when you retrieve an
-     * editor (SharedPreferences.edit()) and then commit changes (Editor.commit()).
+     *             does not exist, it will be created when you retrieve an
+     *             editor (SharedPreferences.edit()) and then commit changes (Editor.commit()).
      * @param mode Operating mode.  Use 0 or {@link #MODE_PRIVATE} for the
-     * default operation.
-     *
+     *             default operation.
      * @return The single {@link SharedPreferences} instance that can be used
-     *         to retrieve and modify the preference values.
-     *
+     * to retrieve and modify the preference values.
      * @see #MODE_PRIVATE
-	 * //---------------------------------------------------------------------------
-	 * 获取并持有一个指定名称的SharedPreferences，
-	 *
+     * //---------------------------------------------------------------------------
+     * 获取并持有一个指定名称的SharedPreferences，
      */
     public abstract SharedPreferences getSharedPreferences(String name, int mode);
 
@@ -701,17 +716,15 @@ public abstract class Context {
      * edits as soon as they are made.
      *
      * @param file Desired preferences file. If a preferences file by this name
-     * does not exist, it will be created when you retrieve an
-     * editor (SharedPreferences.edit()) and then commit changes (Editor.commit()).
+     *             does not exist, it will be created when you retrieve an
+     *             editor (SharedPreferences.edit()) and then commit changes (Editor.commit()).
      * @param mode Operating mode.  Use 0 or {@link #MODE_PRIVATE} for the
-     * default operation.
-     *
+     *             default operation.
      * @return The single {@link SharedPreferences} instance that can be used
-     *         to retrieve and modify the preference values.
-     *
+     * to retrieve and modify the preference values.
+     * @removed
      * @see #getSharedPreferencesPath(String)
      * @see #MODE_PRIVATE
-     * @removed
      */
     public abstract SharedPreferences getSharedPreferences(File file, int mode);
 
@@ -722,16 +735,18 @@ public abstract class Context {
      * storage.
      *
      * @param sourceContext The source context which contains the existing
-     *            shared preferences to move.
-     * @param name The name of the shared preferences file.
+     *                      shared preferences to move.
+     * @param name          The name of the shared preferences file.
      * @return {@code true} if the move was successful or if the shared
-     *         preferences didn't exist in the source context, otherwise
-     *         {@code false}.
+     * preferences didn't exist in the source context, otherwise
+     * {@code false}.
      * @see #createDeviceProtectedStorageContext()
      */
     public abstract boolean moveSharedPreferencesFrom(Context sourceContext, String name);
 
-    /** @removed */
+    /**
+     * @removed
+     */
     @Deprecated
     public boolean migrateSharedPreferencesFrom(Context sourceContext, String name) {
         return moveSharedPreferencesFrom(sourceContext, name);
@@ -741,9 +756,9 @@ public abstract class Context {
      * Delete an existing shared preferences file.
      *
      * @param name The name (unique in the application package) of the shared
-     *            preferences file.
+     *             preferences file.
      * @return {@code true} if the shared preferences file was successfully
-     *         deleted; else {@code false}.
+     * deleted; else {@code false}.
      * @see #getSharedPreferences(String, int)
      */
     public abstract boolean deleteSharedPreferences(String name);
@@ -754,16 +769,14 @@ public abstract class Context {
      *
      * @param name The name of the file to open; can not contain path
      *             separators.
-     *
      * @return The resulting {@link FileInputStream}.
-     *
      * @see #openFileOutput
      * @see #fileList
      * @see #deleteFile
      * @see java.io.FileInputStream#FileInputStream(String)
      */
     public abstract FileInputStream openFileInput(String name)
-        throws FileNotFoundException;
+            throws FileNotFoundException;
 
     /**
      * Open a private file associated with this Context's application package
@@ -773,10 +786,14 @@ public abstract class Context {
      * write the returned file.
      *
      * @param name The name of the file to open; can not contain path
-     *            separators.
+     *             separators.
      * @param mode Operating mode. Use 0 or {@link #MODE_PRIVATE} for the
-     *            default operation. Use {@link #MODE_APPEND} to append to an
-     *            existing file.
+     *             default operation. Use {@link #MODE_APPEND} to append to an
+     *             existing file.
+     * @param name 要打开的私有文件的名称，不能包含路径分隔符“/”
+     * @param mode 操作模式。两种操作模式具体见下面
+     *             MODE_PRIVATE = 0 : 每次都会重写文件中的内容。
+     *             MODE_APPEND = 0x8000 : 如果文件已经存在，则在文件的末尾继续拼接数据
      * @return The resulting {@link FileOutputStream}.
      * @see #MODE_APPEND
      * @see #MODE_PRIVATE
@@ -784,17 +801,12 @@ public abstract class Context {
      * @see #fileList
      * @see #deleteFile
      * @see java.io.FileOutputStream#FileOutputStream(String)
-	 * //-----------------------------------------------------------------
-	 * 打开本app内部指定名称的私有文件等待写入。如果文件不存在则创建。
-	 * 无需任何额外权限。
-	 * @param name 要打开的私有文件的名称，不能包含路径分隔符“/”
-	 * @param mode 操作模式。两种操作模式具体见下面
-	 * MODE_PRIVATE = 0 : 每次都会重写文件中的内容。
-	 * MODE_APPEND = 0x8000 : 如果文件已经存在，则在文件的末尾继续拼接数据
-	 * 
+     * //-----------------------------------------------------------------
+     * 打开本app内部指定名称的私有文件等待写入。如果文件不存在则创建。
+     * 无需任何额外权限。
      */
     public abstract FileOutputStream openFileOutput(String name, int mode)
-        throws FileNotFoundException;
+            throws FileNotFoundException;
 
     /**
      * Delete the given private file associated with this Context's
@@ -802,20 +814,14 @@ public abstract class Context {
      *
      * @param name The name of the file to delete; can not contain path
      *             separators.
-     *
-     * @return {@code true} if the file was successfully deleted; else
-     *         {@code false}.
-     *
+     * @param name 要删除的文件名称。
+     * @return 如果删除成功则返回true，否则返回false。
      * @see #openFileInput
      * @see #openFileOutput
      * @see #fileList
      * @see java.io.File#delete()
-	 * //------------------------------------------------------------------------
-	 * 与{@link #getFilesOutput}相对应。getFilesOutput是打开指定的文件，本方法是删除file目录下指定的文件。
-	 * @param name 要删除的文件名称。
-	 * @return 如果删除成功则返回true，否则返回false。
-	 *
-	 *
+     * //------------------------------------------------------------------------
+     * 与{@link #getFilesOutput}相对应。getFilesOutput是打开指定的文件，本方法是删除file目录下指定的文件。
      */
     public abstract boolean deleteFile(String name);
 
@@ -827,10 +833,8 @@ public abstract class Context {
      * adopted storage device, so only relative paths should be persisted.
      *
      * @param name The name of the file for which you would like to get
-     *          its path.
-     *
+     *             its path.
      * @return An absolute path to the given file.
-     *
      * @see #openFileOutput
      * @see #getFilesDir
      * @see #getDir
@@ -845,10 +849,10 @@ public abstract class Context {
      * adopted storage device, so only relative paths should be persisted.
      *
      * @param name The name of the shared preferences for which you would like
-     *            to get a path.
+     *             to get a path.
      * @return An absolute path to the given file.
-     * @see #getSharedPreferences(String, int)
      * @removed
+     * @see #getSharedPreferences(String, int)
      */
     public abstract File getSharedPreferencesPath(String name);
 
@@ -883,13 +887,12 @@ public abstract class Context {
      * @see #openFileOutput
      * @see #getFileStreamPath
      * @see #getDir
-	 * //-----------------------------------------------------------------------------
-	 * 该方法与{@link openFileOutput}方法相对应。返回/data/data/包名/files/这个目录。
-	 * android系统会在/data/data/包名/下面创建三个子目录：1>cache;2>code_cache;3>files 。而本方法返回
-	 * 所有子目录中的files。
-	 * 如果app被移动到外部存储：这个路径可能会变更。
-	 * 仅相对路径应该被持久化。
-	 *
+     * //-----------------------------------------------------------------------------
+     * 该方法与{@link openFileOutput}方法相对应。返回/data/data/包名/files/这个目录。
+     * android系统会在/data/data/包名/下面创建三个子目录：1>cache;2>code_cache;3>files 。而本方法返回
+     * 所有子目录中的files。
+     * 如果app被移动到外部存储：这个路径可能会变更。
+     * 仅相对路径应该被持久化。
      */
     public abstract File getFilesDir();
 
@@ -907,7 +910,7 @@ public abstract class Context {
      * write files under the returned path.
      *
      * @return The path of the directory holding application files that will not
-     *         be automatically backed up to remote storage.
+     * be automatically backed up to remote storage.
      * @see #openFileOutput
      * @see #getFileStreamPath
      * @see #getDir
@@ -983,33 +986,28 @@ public abstract class Context {
      * private_picture}
      *
      * @param type The type of files directory to return. May be {@code null}
-     *            for the root of the files directory or one of the following
-     *            constants for a subdirectory:
-     *            {@link android.os.Environment#DIRECTORY_MUSIC},//音乐
-     *            {@link android.os.Environment#DIRECTORY_PODCASTS},//播客
-     *            {@link android.os.Environment#DIRECTORY_RINGTONES},//铃声
-     *            {@link android.os.Environment#DIRECTORY_ALARMS},//闹钟
-     *            {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},//通知
-     *            {@link android.os.Environment#DIRECTORY_PICTURES}, or//图片
-     *            {@link android.os.Environment#DIRECTORY_MOVIES}.//视频
-     *            {@link android.os.Environment#DIRECTORY_DOWNLOADS}.//下载
-	 *            ...
+     *             for the root of the files directory or one of the following
+     *             constants for a subdirectory:
+     *             {@link android.os.Environment#DIRECTORY_MUSIC},//音乐
+     *             {@link android.os.Environment#DIRECTORY_PODCASTS},//播客
+     *             {@link android.os.Environment#DIRECTORY_RINGTONES},//铃声
+     *             {@link android.os.Environment#DIRECTORY_ALARMS},//闹钟
+     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},//通知
+     *             {@link android.os.Environment#DIRECTORY_PICTURES}, or//图片
+     *             {@link android.os.Environment#DIRECTORY_MOVIES}.//视频
+     *             {@link android.os.Environment#DIRECTORY_DOWNLOADS}.//下载
+     *             ...
      * @return the absolute path to application-specific directory. May return
-     *         {@code null} if shared storage is not currently available.
+     * {@code null} if shared storage is not currently available.
      * @see #getFilesDir
      * @see #getExternalFilesDirs(String)
      * @see Environment#getExternalStorageState(File)
      * @see Environment#isExternalStorageEmulated(File)
      * @see Environment#isExternalStorageRemovable(File)
-	 * 
-	 * //------------------------------------------------------------------
-	 *  返回：SDCard/Android/data/你的应用的包名/files/这个目录。如果传入null则返回这个根目录。如果传入type类型，则返回这个目录下制定类型的目录。
-	 *  上面提到的常量其实不全，我们可以使用的常量很多，可以在Environment.STANDARD_DIRECTORIES字符数组常量中查看。
-	 *  
-	 *  
-	 *  
-	 *  
-	 *  
+     * <p>
+     * //------------------------------------------------------------------
+     * 返回：SDCard/Android/data/你的应用的包名/files/这个目录。如果传入null则返回这个根目录。如果传入type类型，则返回这个目录下制定类型的目录。
+     * 上面提到的常量其实不全，我们可以使用的常量很多，可以在Environment.STANDARD_DIRECTORIES字符数组常量中查看。
      */
     @Nullable
     public abstract File getExternalFilesDir(@Nullable String type);
@@ -1056,19 +1054,19 @@ public abstract class Context {
      * is inserted, so only relative paths should be persisted.
      *
      * @param type The type of files directory to return. May be {@code null}
-     *            for the root of the files directory or one of the following
-     *            constants for a subdirectory:
-     *            {@link android.os.Environment#DIRECTORY_MUSIC},
-     *            {@link android.os.Environment#DIRECTORY_PODCASTS},
-     *            {@link android.os.Environment#DIRECTORY_RINGTONES},
-     *            {@link android.os.Environment#DIRECTORY_ALARMS},
-     *            {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
-     *            {@link android.os.Environment#DIRECTORY_PICTURES}, or
-     *            {@link android.os.Environment#DIRECTORY_MOVIES}.
+     *             for the root of the files directory or one of the following
+     *             constants for a subdirectory:
+     *             {@link android.os.Environment#DIRECTORY_MUSIC},
+     *             {@link android.os.Environment#DIRECTORY_PODCASTS},
+     *             {@link android.os.Environment#DIRECTORY_RINGTONES},
+     *             {@link android.os.Environment#DIRECTORY_ALARMS},
+     *             {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
+     *             {@link android.os.Environment#DIRECTORY_PICTURES}, or
+     *             {@link android.os.Environment#DIRECTORY_MOVIES}.
      * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is
-     *         not currently available. The first path returned is the same as
-     *         {@link #getExternalFilesDir(String)}.
+     * individual paths may be {@code null} if that shared storage is
+     * not currently available. The first path returned is the same as
+     * {@link #getExternalFilesDir(String)}.
      * @see #getExternalFilesDir(String)
      * @see Environment#getExternalStorageState(File)
      * @see Environment#isExternalStorageEmulated(File)
@@ -1108,7 +1106,7 @@ public abstract class Context {
      * interfere with each other.
      *
      * @return the absolute path to application-specific directory. May return
-     *         {@code null} if shared storage is not currently available.
+     * {@code null} if shared storage is not currently available.
      * @see #getObbDirs()
      * @see Environment#getExternalStorageState(File)
      * @see Environment#isExternalStorageEmulated(File)
@@ -1149,9 +1147,9 @@ public abstract class Context {
      * on secondary external storage devices is not available.
      *
      * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is
-     *         not currently available. The first path returned is the same as
-     *         {@link #getObbDir()}
+     * individual paths may be {@code null} if that shared storage is
+     * not currently available. The first path returned is the same as
+     * {@link #getObbDir()}
      * @see #getObbDir()
      * @see Environment#getExternalStorageState(File)
      * @see Environment#isExternalStorageEmulated(File)
@@ -1183,13 +1181,13 @@ public abstract class Context {
      * @see #getFileStreamPath
      * @see #getDir
      * @see #getExternalCacheDir
-	 * //------------------------------------------------------------------------
-	 * 返回私有缓存目录：/data/data/包名/cache
-	 * 这些文件将是设备在存储空间不足时首先被删除的文件。
-	 * 注意：你不应该等待cache目录下系统去给删除这些文件。你应该有自己的一个合理值，当达到这个合理值就去修改这些缓存文件。
-	 * 例如，你可以将缓存目录最大值设定为1M，你应该使用{@link #getExternalCacheDir()}
-	 * 与{@ink  #getFilesDir}如果app被移动到外部存储，这个目录的路径会发生变化。
-	 * app不需要额外的权限读写缓存文件。
+     * //------------------------------------------------------------------------
+     * 返回私有缓存目录：/data/data/包名/cache
+     * 这些文件将是设备在存储空间不足时首先被删除的文件。
+     * 注意：你不应该等待cache目录下系统去给删除这些文件。你应该有自己的一个合理值，当达到这个合理值就去修改这些缓存文件。
+     * 例如，你可以将缓存目录最大值设定为1M，你应该使用{@link #getExternalCacheDir()}
+     * 与{@ink #getFilesDir}如果app被移动到外部存储，这个目录的路径会发生变化。
+     * app不需要额外的权限读写缓存文件。
      */
     public abstract File getCacheDir();
 
@@ -1259,7 +1257,7 @@ public abstract class Context {
      * is inserted, so only relative paths should be persisted.
      *
      * @return the absolute path to application-specific directory. May return
-     *         {@code null} if shared storage is not currently available.
+     * {@code null} if shared storage is not currently available.
      * @see #getCacheDir
      * @see #getExternalCacheDirs()
      * @see Environment#getExternalStorageState(File)
@@ -1317,9 +1315,9 @@ public abstract class Context {
      * is inserted, so only relative paths should be persisted.
      *
      * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is
-     *         not currently available. The first path returned is the same as
-     *         {@link #getExternalCacheDir()}.
+     * individual paths may be {@code null} if that shared storage is
+     * not currently available. The first path returned is the same as
+     * {@link #getExternalCacheDir()}.
      * @see #getExternalCacheDir()
      * @see Environment#getExternalStorageState(File)
      * @see Environment#isExternalStorageEmulated(File)
@@ -1363,8 +1361,8 @@ public abstract class Context {
      * is inserted, so only relative paths should be persisted.
      *
      * @return the absolute paths to application-specific directories. Some
-     *         individual paths may be {@code null} if that shared storage is
-     *         not currently available.
+     * individual paths may be {@code null} if that shared storage is
+     * not currently available.
      * @see Environment#getExternalStorageState(File)
      * @see Environment#isExternalStorageEmulated(File)
      * @see Environment#isExternalStorageRemovable(File)
@@ -1376,13 +1374,11 @@ public abstract class Context {
      * this Context's application package.
      *
      * @return Array of strings naming the private files.
-     *
      * @see #openFileInput
      * @see #openFileOutput
      * @see #deleteFile
-	 * //------------------------------------------------------------------------
-	 * 返回/data/data/包名/files 目录下的所有的文件名称。以数组形式返回。
-	 * 
+     * //------------------------------------------------------------------------
+     * 返回/data/data/包名/files 目录下的所有的文件名称。以数组形式返回。
      */
     public abstract String[] fileList();
 
@@ -1401,13 +1397,11 @@ public abstract class Context {
      * since this path lives in their private storage.
      *
      * @param name Name of the directory to retrieve.  This is a directory
-     * that is created as part of your application data.
+     *             that is created as part of your application data.
      * @param mode Operating mode.  Use 0 or {@link #MODE_PRIVATE} for the
-     * default operation.
-     *
+     *             default operation.
      * @return A {@link File} object for the requested directory.  The directory
      * will have been created if it does not already exist.
-     *
      * @see #openFileOutput(String, int)
      */
     public abstract File getDir(String name, int mode);
@@ -1416,24 +1410,24 @@ public abstract class Context {
      * Open a new private SQLiteDatabase associated with this Context's
      * application package. Create the database file if it doesn't exist.
      *
-     * @param name The name (unique in the application package) of the database.
-     * @param mode Operating mode. Use 0 or {@link #MODE_PRIVATE} for the
-     *            default operation. Use
-     *            {@link #MODE_ENABLE_WRITE_AHEAD_LOGGING} to enable write-ahead
-     *            logging by default. Use {@link #MODE_NO_LOCALIZED_COLLATORS}
-     *            to disable localized collators.
+     * @param name    The name (unique in the application package) of the database.
+     * @param mode    Operating mode. Use 0 or {@link #MODE_PRIVATE} for the
+     *                default operation. Use
+     *                {@link #MODE_ENABLE_WRITE_AHEAD_LOGGING} to enable write-ahead
+     *                logging by default. Use {@link #MODE_NO_LOCALIZED_COLLATORS}
+     *                to disable localized collators.
      * @param factory An optional factory class that is called to instantiate a
-     *            cursor when query is called.
+     *                cursor when query is called.
      * @return The contents of a newly created database with the given name.
      * @throws android.database.sqlite.SQLiteException if the database file
-     *             could not be opened.
+     *                                                 could not be opened.
      * @see #MODE_PRIVATE
      * @see #MODE_ENABLE_WRITE_AHEAD_LOGGING
      * @see #MODE_NO_LOCALIZED_COLLATORS
      * @see #deleteDatabase
      */
     public abstract SQLiteDatabase openOrCreateDatabase(String name,
-            int mode, CursorFactory factory);
+                                                        int mode, CursorFactory factory);
 
     /**
      * Open a new private SQLiteDatabase associated with this Context's
@@ -1443,29 +1437,29 @@ public abstract class Context {
      * to be used to handle corruption when sqlite reports database corruption.
      * </p>
      *
-     * @param name The name (unique in the application package) of the database.
-     * @param mode Operating mode. Use 0 or {@link #MODE_PRIVATE} for the
-     *            default operation. Use
-     *            {@link #MODE_ENABLE_WRITE_AHEAD_LOGGING} to enable write-ahead
-     *            logging by default. Use {@link #MODE_NO_LOCALIZED_COLLATORS}
-     *            to disable localized collators.
-     * @param factory An optional factory class that is called to instantiate a
-     *            cursor when query is called.
+     * @param name         The name (unique in the application package) of the database.
+     * @param mode         Operating mode. Use 0 or {@link #MODE_PRIVATE} for the
+     *                     default operation. Use
+     *                     {@link #MODE_ENABLE_WRITE_AHEAD_LOGGING} to enable write-ahead
+     *                     logging by default. Use {@link #MODE_NO_LOCALIZED_COLLATORS}
+     *                     to disable localized collators.
+     * @param factory      An optional factory class that is called to instantiate a
+     *                     cursor when query is called.
      * @param errorHandler the {@link DatabaseErrorHandler} to be used when
-     *            sqlite reports database corruption. if null,
-     *            {@link android.database.DefaultDatabaseErrorHandler} is
-     *            assumed.
+     *                     sqlite reports database corruption. if null,
+     *                     {@link android.database.DefaultDatabaseErrorHandler} is
+     *                     assumed.
      * @return The contents of a newly created database with the given name.
      * @throws android.database.sqlite.SQLiteException if the database file
-     *             could not be opened.
+     *                                                 could not be opened.
      * @see #MODE_PRIVATE
      * @see #MODE_ENABLE_WRITE_AHEAD_LOGGING
      * @see #MODE_NO_LOCALIZED_COLLATORS
      * @see #deleteDatabase
      */
     public abstract SQLiteDatabase openOrCreateDatabase(String name,
-            int mode, CursorFactory factory,
-            @Nullable DatabaseErrorHandler errorHandler);
+                                                        int mode, CursorFactory factory,
+                                                        @Nullable DatabaseErrorHandler errorHandler);
 
     /**
      * Move an existing database file from the given source storage context to
@@ -1476,15 +1470,17 @@ public abstract class Context {
      * The database must be closed before being moved.
      *
      * @param sourceContext The source context which contains the existing
-     *            database to move.
-     * @param name The name of the database file.
+     *                      database to move.
+     * @param name          The name of the database file.
      * @return {@code true} if the move was successful or if the database didn't
-     *         exist in the source context, otherwise {@code false}.
+     * exist in the source context, otherwise {@code false}.
      * @see #createDeviceProtectedStorageContext()
      */
     public abstract boolean moveDatabaseFrom(Context sourceContext, String name);
 
-    /** @removed */
+    /**
+     * @removed
+     */
     @Deprecated
     public boolean migrateDatabaseFrom(Context sourceContext, String name) {
         return moveDatabaseFrom(sourceContext, name);
@@ -1496,9 +1492,7 @@ public abstract class Context {
      *
      * @param name The name (unique in the application package) of the
      *             database.
-     *
      * @return {@code true} if the database was successfully deleted; else {@code false}.
-     *
      * @see #openOrCreateDatabase
      */
     public abstract boolean deleteDatabase(String name);
@@ -1511,10 +1505,8 @@ public abstract class Context {
      * adopted storage device, so only relative paths should be persisted.
      *
      * @param name The name of the database for which you would like to get
-     *          its path.
-     *
+     *             its path.
      * @return An absolute path to the given database.
-     *
      * @see #openOrCreateDatabase
      */
     public abstract File getDatabasePath(String name);
@@ -1524,7 +1516,6 @@ public abstract class Context {
      * this Context's application package.
      *
      * @return Array of strings naming the private databases.
-     *
      * @see #openOrCreateDatabase
      * @see #deleteDatabase
      */
@@ -1590,9 +1581,8 @@ public abstract class Context {
      * specified.
      *
      * @param intent The description of the activity to start.
-     *
      * @throws ActivityNotFoundException &nbsp;
-     *`
+     *                                   `
      * @see #startActivity(Intent, Bundle)
      * @see PackageManager#resolveActivity
      */
@@ -1603,8 +1593,9 @@ public abstract class Context {
      * user the activity will be started for.  This is not available to applications
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS_FULL permission.
+     *
      * @param intent The description of the activity to start.
-     * @param user The UserHandle of the user to start this activity for.
+     * @param user   The UserHandle of the user to start this activity for.
      * @throws ActivityNotFoundException &nbsp;
      * @hide
      */
@@ -1615,61 +1606,61 @@ public abstract class Context {
     /**
      * Launch a new activity.  You will not receive any information about when
      * the activity exits.
-     *
+     * <p>
      * <p>Note that if this method is being called from outside of an
      * {@link android.app.Activity} Context, then the Intent must include
      * the {@link Intent#FLAG_ACTIVITY_NEW_TASK} launch flag.  This is because,
      * without being started from an existing Activity, there is no existing
      * task in which to place the new activity and thus it needs to be placed
      * in its own separate task.
-     *
+     * <p>
      * <p>This method throws {@link ActivityNotFoundException}
      * if there was no Activity found to run the given Intent.
      *
-     * @param intent The description of the activity to start.
+     * @param intent  The description of the activity to start.
      * @param options Additional options for how the Activity should be started.
-     * May be null if there are no options.  See {@link android.app.ActivityOptions}
-     * for how to build the Bundle supplied here; there are no supported definitions
-     * for building it manually.
-     *
+     *                May be null if there are no options.  See {@link android.app.ActivityOptions}
+     *                for how to build the Bundle supplied here; there are no supported definitions
+     *                for building it manually.
      * @throws ActivityNotFoundException &nbsp;
-     *
      * @see #startActivity(Intent)
      * @see PackageManager#resolveActivity
      */
     public abstract void startActivity(@RequiresPermission Intent intent,
-            @Nullable Bundle options);
+                                       @Nullable Bundle options);
 
     /**
      * Version of {@link #startActivity(Intent, Bundle)} that allows you to specify the
      * user the activity will be started for.  This is not available to applications
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS_FULL permission.
-     * @param intent The description of the activity to start.
+     *
+     * @param intent  The description of the activity to start.
      * @param options Additional options for how the Activity should be started.
-     * May be null if there are no options.  See {@link android.app.ActivityOptions}
-     * for how to build the Bundle supplied here; there are no supported definitions
-     * for building it manually.
-     * @param userId The UserHandle of the user to start this activity for.
+     *                May be null if there are no options.  See {@link android.app.ActivityOptions}
+     *                for how to build the Bundle supplied here; there are no supported definitions
+     *                for building it manually.
+     * @param userId  The UserHandle of the user to start this activity for.
      * @throws ActivityNotFoundException &nbsp;
      * @hide
      */
     public void startActivityAsUser(@RequiresPermission Intent intent, @Nullable Bundle options,
-            UserHandle userId) {
+                                    UserHandle userId) {
         throw new RuntimeException("Not implemented. Must override in a subclass.");
     }
 
     /**
      * Version of {@link #startActivity(Intent, Bundle)} that returns a result to the caller. This
      * is only supported for Views and Fragments.
-     * @param who The identifier for the calling element that will receive the result.
-     * @param intent The intent to start.
+     *
+     * @param who         The identifier for the calling element that will receive the result.
+     * @param intent      The intent to start.
      * @param requestCode The code that will be returned with onActivityResult() identifying this
-     *          request.
-     * @param options Additional options for how the Activity should be started.
-     *          May be null if there are no options.  See {@link android.app.ActivityOptions}
-     *          for how to build the Bundle supplied here; there are no supported definitions
-     *          for building it manually.
+     *                    request.
+     * @param options     Additional options for how the Activity should be started.
+     *                    May be null if there are no options.  See {@link android.app.ActivityOptions}
+     *                    for how to build the Bundle supplied here; there are no supported definitions
+     *                    for building it manually.
      * @hide
      */
     public void startActivityForResult(
@@ -1681,6 +1672,7 @@ public abstract class Context {
     /**
      * Identifies whether this Context instance will be able to process calls to
      * {@link #startActivityForResult(String, Intent, int, Bundle)}.
+     *
      * @hide
      */
     public boolean canStartActivityForResult() {
@@ -1692,9 +1684,7 @@ public abstract class Context {
      * specified.
      *
      * @param intents An array of Intents to be started.
-     *
      * @throws ActivityNotFoundException &nbsp;
-     *
      * @see #startActivities(Intent[], Bundle)
      * @see PackageManager#resolveActivity
      */
@@ -1708,7 +1698,7 @@ public abstract class Context {
      * none of the activities except the last in the array will be created
      * at this point, but rather will be created when the user first visits
      * them (due to pressing back from the activity on top).
-     *
+     * <p>
      * <p>This method throws {@link ActivityNotFoundException}
      * if there was no Activity found for <em>any</em> given Intent.  In this
      * case the state of the activity stack is undefined (some Intents in the
@@ -1716,39 +1706,33 @@ public abstract class Context {
      *
      * @param intents An array of Intents to be started.
      * @param options Additional options for how the Activity should be started.
-     * See {@link android.content.Context#startActivity(Intent, Bundle)}
-     * Context.startActivity(Intent, Bundle)} for more details.
-     *
+     *                See {@link android.content.Context#startActivity(Intent, Bundle)}
+     *                Context.startActivity(Intent, Bundle)} for more details.
      * @throws ActivityNotFoundException &nbsp;
-     *
      * @see #startActivities(Intent[])
      * @see PackageManager#resolveActivity
      */
     public abstract void startActivities(@RequiresPermission Intent[] intents, Bundle options);
 
     /**
-     * @hide
-     * Launch multiple new activities.  This is generally the same as calling
+     * @param intents    An array of Intents to be started.
+     * @param options    Additional options for how the Activity should be started.
+     * @param userHandle The user for whom to launch the activities
+     *                   See {@link android.content.Context#startActivity(Intent, Bundle)}
+     *                   Context.startActivity(Intent, Bundle)} for more details.
+     * @throws ActivityNotFoundException &nbsp;
+     * @hide Launch multiple new activities.  This is generally the same as calling
      * {@link #startActivity(Intent)} for the first Intent in the array,
      * that activity during its creation calling {@link #startActivity(Intent)}
      * for the second entry, etc.  Note that unlike that approach, generally
      * none of the activities except the last in the array will be created
      * at this point, but rather will be created when the user first visits
      * them (due to pressing back from the activity on top).
-     *
+     * <p>
      * <p>This method throws {@link ActivityNotFoundException}
      * if there was no Activity found for <em>any</em> given Intent.  In this
      * case the state of the activity stack is undefined (some Intents in the
      * list may be on it, some not), so you probably want to avoid such situations.
-     *
-     * @param intents An array of Intents to be started.
-     * @param options Additional options for how the Activity should be started.
-     * @param userHandle The user for whom to launch the activities
-     * See {@link android.content.Context#startActivity(Intent, Bundle)}
-     * Context.startActivity(Intent, Bundle)} for more details.
-     *
-     * @throws ActivityNotFoundException &nbsp;
-     *
      * @see #startActivities(Intent[])
      * @see PackageManager#resolveActivity
      */
@@ -1760,20 +1744,19 @@ public abstract class Context {
      * Same as {@link #startIntentSender(IntentSender, Intent, int, int, int, Bundle)}
      * with no options specified.
      *
-     * @param intent The IntentSender to launch.
+     * @param intent       The IntentSender to launch.
      * @param fillInIntent If non-null, this will be provided as the
-     * intent parameter to {@link IntentSender#sendIntent}.
-     * @param flagsMask Intent flags in the original IntentSender that you
-     * would like to change.
-     * @param flagsValues Desired values for any bits set in
-     * <var>flagsMask</var>
-     * @param extraFlags Always set to 0.
-     *
+     *                     intent parameter to {@link IntentSender#sendIntent}.
+     * @param flagsMask    Intent flags in the original IntentSender that you
+     *                     would like to change.
+     * @param flagsValues  Desired values for any bits set in
+     *                     <var>flagsMask</var>
+     * @param extraFlags   Always set to 0.
      * @see #startActivity(Intent)
      * @see #startIntentSender(IntentSender, Intent, int, int, int, Bundle)
      */
     public abstract void startIntentSender(IntentSender intent,
-            Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags)
+                                           Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags)
             throws IntentSender.SendIntentException;
 
     /**
@@ -1784,26 +1767,25 @@ public abstract class Context {
      * sending a broadcast) as if you had called
      * {@link IntentSender#sendIntent IntentSender.sendIntent} on it.
      *
-     * @param intent The IntentSender to launch.
+     * @param intent       The IntentSender to launch.
      * @param fillInIntent If non-null, this will be provided as the
-     * intent parameter to {@link IntentSender#sendIntent}.
-     * @param flagsMask Intent flags in the original IntentSender that you
-     * would like to change.
-     * @param flagsValues Desired values for any bits set in
-     * <var>flagsMask</var>
-     * @param extraFlags Always set to 0.
-     * @param options Additional options for how the Activity should be started.
-     * See {@link android.content.Context#startActivity(Intent, Bundle)}
-     * Context.startActivity(Intent, Bundle)} for more details.  If options
-     * have also been supplied by the IntentSender, options given here will
-     * override any that conflict with those given by the IntentSender.
-     *
+     *                     intent parameter to {@link IntentSender#sendIntent}.
+     * @param flagsMask    Intent flags in the original IntentSender that you
+     *                     would like to change.
+     * @param flagsValues  Desired values for any bits set in
+     *                     <var>flagsMask</var>
+     * @param extraFlags   Always set to 0.
+     * @param options      Additional options for how the Activity should be started.
+     *                     See {@link android.content.Context#startActivity(Intent, Bundle)}
+     *                     Context.startActivity(Intent, Bundle)} for more details.  If options
+     *                     have also been supplied by the IntentSender, options given here will
+     *                     override any that conflict with those given by the IntentSender.
      * @see #startActivity(Intent, Bundle)
      * @see #startIntentSender(IntentSender, Intent, int, int, int)
      */
     public abstract void startIntentSender(IntentSender intent,
-            @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags,
-            Bundle options) throws IntentSender.SendIntentException;
+                                           @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags,
+                                           Bundle options) throws IntentSender.SendIntentException;
 
     /**
      * Broadcast the given intent to all interested BroadcastReceivers.  This
@@ -1813,12 +1795,11 @@ public abstract class Context {
      * to allow receivers to propagate results or abort the broadcast, you must
      * send an ordered broadcast using
      * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
      * @param intent The Intent to broadcast; all receivers matching this
      *               Intent will receive the broadcast.
-     *
      * @see android.content.BroadcastReceiver
      * @see #registerReceiver
      * @see #sendBroadcast(Intent, String)
@@ -1836,15 +1817,14 @@ public abstract class Context {
      * to allow receivers to propagate results or abort the broadcast, you must
      * send an ordered broadcast using
      * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
      * @param receiverPermission (optional) String naming a permission that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     *
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
      * @see android.content.BroadcastReceiver
      * @see #registerReceiver
      * @see #sendBroadcast(Intent)
@@ -1852,7 +1832,7 @@ public abstract class Context {
      * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
      */
     public abstract void sendBroadcast(@RequiresPermission Intent intent,
-            @Nullable String receiverPermission);
+                                       @Nullable String receiverPermission);
 
 
     /**
@@ -1862,24 +1842,23 @@ public abstract class Context {
      * propagated from receivers and receivers can not abort the broadcast. If you want to allow
      * receivers to propagate results or abort the broadcast, you must send an ordered broadcast
      * using {@link #sendOrderedBroadcast(Intent, String)}.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
+     * @param intent              The Intent to broadcast; all receivers matching this
+     *                            Intent will receive the broadcast.
      * @param receiverPermissions Array of names of permissions that a receiver must hold
      *                            in order to receive your broadcast.
      *                            If null or empty, no permissions are required.
-     *
+     * @hide
      * @see android.content.BroadcastReceiver
      * @see #registerReceiver
      * @see #sendBroadcast(Intent)
      * @see #sendOrderedBroadcast(Intent, String)
      * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
-     * @hide
      */
     public abstract void sendBroadcastMultiplePermissions(Intent intent,
-            String[] receiverPermissions);
+                                                          String[] receiverPermissions);
 
     /**
      * Broadcast the given intent to all interested BroadcastReceivers, allowing
@@ -1890,36 +1869,36 @@ public abstract class Context {
      * to allow receivers to propagate results or abort the broadcast, you must
      * send an ordered broadcast using
      * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
      * @param receiverPermission (optional) String naming a permission that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     * @param options (optional) Additional sending options, generated from a
-     * {@link android.app.BroadcastOptions}.
-     *
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
+     * @param options            (optional) Additional sending options, generated from a
+     *                           {@link android.app.BroadcastOptions}.
+     * @hide
      * @see android.content.BroadcastReceiver
      * @see #registerReceiver
      * @see #sendBroadcast(Intent)
      * @see #sendOrderedBroadcast(Intent, String)
      * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
-     * @hide
      */
     @SystemApi
     public abstract void sendBroadcast(Intent intent,
-            @Nullable String receiverPermission,
-            @Nullable Bundle options);
+                                       @Nullable String receiverPermission,
+                                       @Nullable Bundle options);
 
     /**
      * Like {@link #sendBroadcast(Intent, String)}, but also allows specification
      * of an associated app op as per {@link android.app.AppOpsManager}.
+     *
      * @hide
      */
     public abstract void sendBroadcast(Intent intent,
-            String receiverPermission, int appOp);
+                                       String receiverPermission, int appOp);
 
     /**
      * Broadcast the given intent to all interested BroadcastReceivers, delivering
@@ -1927,22 +1906,21 @@ public abstract class Context {
      * broadcast before it is delivered to less preferred receivers.  This
      * call is asynchronous; it returns immediately, and you will continue
      * executing while the receivers are run.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
      * @param receiverPermission (optional) String naming a permissions that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     *
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
      * @see android.content.BroadcastReceiver
      * @see #registerReceiver
      * @see #sendBroadcast(Intent)
      * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
      */
     public abstract void sendOrderedBroadcast(@RequiresPermission Intent intent,
-            @Nullable String receiverPermission);
+                                              @Nullable String receiverPermission);
 
     /**
      * Version of {@link #sendBroadcast(Intent)} that allows you to
@@ -1953,30 +1931,29 @@ public abstract class Context {
      * the result values collected from the other receivers.  The broadcast will
      * be serialized in the same way as calling
      * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
+     * <p>
      * <p>Like {@link #sendBroadcast(Intent)}, this method is
      * asynchronous; it will return before
      * resultReceiver.onReceive() is called.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
      * @param receiverPermission String naming a permissions that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     * @param resultReceiver Your own BroadcastReceiver to treat as the final
-     *                       receiver of the broadcast.
-     * @param scheduler A custom Handler with which to schedule the
-     *                  resultReceiver callback; if null it will be
-     *                  scheduled in the Context's main thread.
-     * @param initialCode An initial value for the result code.  Often
-     *                    Activity.RESULT_OK.
-     * @param initialData An initial value for the result data.  Often
-     *                    null.
-     * @param initialExtras An initial value for the result extras.  Often
-     *                      null.
-     *
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
+     * @param resultReceiver     Your own BroadcastReceiver to treat as the final
+     *                           receiver of the broadcast.
+     * @param scheduler          A custom Handler with which to schedule the
+     *                           resultReceiver callback; if null it will be
+     *                           scheduled in the Context's main thread.
+     * @param initialCode        An initial value for the result code.  Often
+     *                           Activity.RESULT_OK.
+     * @param initialData        An initial value for the result data.  Often
+     *                           null.
+     * @param initialExtras      An initial value for the result extras.  Often
+     *                           null.
      * @see #sendBroadcast(Intent)
      * @see #sendBroadcast(Intent, String)
      * @see #sendOrderedBroadcast(Intent, String)
@@ -1985,9 +1962,9 @@ public abstract class Context {
      * @see android.app.Activity#RESULT_OK
      */
     public abstract void sendOrderedBroadcast(@RequiresPermission @NonNull Intent intent,
-            @Nullable String receiverPermission, @Nullable BroadcastReceiver resultReceiver,
-            @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
-            @Nullable Bundle initialExtras);
+                                              @Nullable String receiverPermission, @Nullable BroadcastReceiver resultReceiver,
+                                              @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
+                                              @Nullable Bundle initialExtras);
 
     /**
      * Version of {@link #sendBroadcast(Intent)} that allows you to
@@ -1998,68 +1975,69 @@ public abstract class Context {
      * the result values collected from the other receivers.  The broadcast will
      * be serialized in the same way as calling
      * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
+     * <p>
      * <p>Like {@link #sendBroadcast(Intent)}, this method is
      * asynchronous; it will return before
      * resultReceiver.onReceive() is called.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
      * @param receiverPermission String naming a permissions that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     * @param options (optional) Additional sending options, generated from a
-     * {@link android.app.BroadcastOptions}.
-     * @param resultReceiver Your own BroadcastReceiver to treat as the final
-     *                       receiver of the broadcast.
-     * @param scheduler A custom Handler with which to schedule the
-     *                  resultReceiver callback; if null it will be
-     *                  scheduled in the Context's main thread.
-     * @param initialCode An initial value for the result code.  Often
-     *                    Activity.RESULT_OK.
-     * @param initialData An initial value for the result data.  Often
-     *                    null.
-     * @param initialExtras An initial value for the result extras.  Often
-     *                      null.
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
+     * @param options            (optional) Additional sending options, generated from a
+     *                           {@link android.app.BroadcastOptions}.
+     * @param resultReceiver     Your own BroadcastReceiver to treat as the final
+     *                           receiver of the broadcast.
+     * @param scheduler          A custom Handler with which to schedule the
+     *                           resultReceiver callback; if null it will be
+     *                           scheduled in the Context's main thread.
+     * @param initialCode        An initial value for the result code.  Often
+     *                           Activity.RESULT_OK.
+     * @param initialData        An initial value for the result data.  Often
+     *                           null.
+     * @param initialExtras      An initial value for the result extras.  Often
+     *                           null.
+     * @hide
      * @see #sendBroadcast(Intent)
      * @see #sendBroadcast(Intent, String)
      * @see #sendOrderedBroadcast(Intent, String)
      * @see android.content.BroadcastReceiver
      * @see #registerReceiver
      * @see android.app.Activity#RESULT_OK
-     * @hide
      */
     @SystemApi
     public abstract void sendOrderedBroadcast(@NonNull Intent intent,
-            @Nullable String receiverPermission, @Nullable Bundle options,
-            @Nullable BroadcastReceiver resultReceiver, @Nullable Handler scheduler,
-            int initialCode, @Nullable String initialData, @Nullable Bundle initialExtras);
+                                              @Nullable String receiverPermission, @Nullable Bundle options,
+                                              @Nullable BroadcastReceiver resultReceiver, @Nullable Handler scheduler,
+                                              int initialCode, @Nullable String initialData, @Nullable Bundle initialExtras);
 
     /**
      * Like {@link #sendOrderedBroadcast(Intent, String, BroadcastReceiver, android.os.Handler,
      * int, String, android.os.Bundle)}, but also allows specification
      * of an associated app op as per {@link android.app.AppOpsManager}.
+     *
      * @hide
      */
     public abstract void sendOrderedBroadcast(Intent intent,
-            String receiverPermission, int appOp, BroadcastReceiver resultReceiver,
-            Handler scheduler, int initialCode, String initialData,
-            Bundle initialExtras);
+                                              String receiverPermission, int appOp, BroadcastReceiver resultReceiver,
+                                              Handler scheduler, int initialCode, String initialData,
+                                              Bundle initialExtras);
 
     /**
      * Version of {@link #sendBroadcast(Intent)} that allows you to specify the
      * user the broadcast will be sent to.  This is not available to applications
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS permission.
+     *
      * @param intent The intent to broadcast
-     * @param user UserHandle to send the intent to.
+     * @param user   UserHandle to send the intent to.
      * @see #sendBroadcast(Intent)
      */
     public abstract void sendBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user);
+                                             UserHandle user);
 
     /**
      * Version of {@link #sendBroadcast(Intent, String)} that allows you to specify the
@@ -2067,17 +2045,16 @@ public abstract class Context {
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS permission.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
-     * @param user UserHandle to send the intent to.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
+     * @param user               UserHandle to send the intent to.
      * @param receiverPermission (optional) String naming a permission that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     *
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
      * @see #sendBroadcast(Intent, String)
      */
     public abstract void sendBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user, @Nullable String receiverPermission);
+                                             UserHandle user, @Nullable String receiverPermission);
 
 
     /**
@@ -2086,20 +2063,18 @@ public abstract class Context {
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS permission.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
-     * @param user UserHandle to send the intent to.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
+     * @param user               UserHandle to send the intent to.
      * @param receiverPermission (optional) String naming a permission that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     * @param appOp The app op associated with the broadcast.
-     *
-     * @see #sendBroadcast(Intent, String)
-     *
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
+     * @param appOp              The app op associated with the broadcast.
      * @hide
+     * @see #sendBroadcast(Intent, String)
      */
     public abstract void sendBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user, @Nullable String receiverPermission, int appOp);
+                                             UserHandle user, @Nullable String receiverPermission, int appOp);
 
     /**
      * Version of
@@ -2108,55 +2083,56 @@ public abstract class Context {
      * user the broadcast will be sent to.  This is not available to applications
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS permission.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
-     * @param user UserHandle to send the intent to.
+     * @param intent             The Intent to broadcast; all receivers matching this
+     *                           Intent will receive the broadcast.
+     * @param user               UserHandle to send the intent to.
      * @param receiverPermission String naming a permissions that
-     *               a receiver must hold in order to receive your broadcast.
-     *               If null, no permission is required.
-     * @param resultReceiver Your own BroadcastReceiver to treat as the final
-     *                       receiver of the broadcast.
-     * @param scheduler A custom Handler with which to schedule the
-     *                  resultReceiver callback; if null it will be
-     *                  scheduled in the Context's main thread.
-     * @param initialCode An initial value for the result code.  Often
-     *                    Activity.RESULT_OK.
-     * @param initialData An initial value for the result data.  Often
-     *                    null.
-     * @param initialExtras An initial value for the result extras.  Often
-     *                      null.
-     *
+     *                           a receiver must hold in order to receive your broadcast.
+     *                           If null, no permission is required.
+     * @param resultReceiver     Your own BroadcastReceiver to treat as the final
+     *                           receiver of the broadcast.
+     * @param scheduler          A custom Handler with which to schedule the
+     *                           resultReceiver callback; if null it will be
+     *                           scheduled in the Context's main thread.
+     * @param initialCode        An initial value for the result code.  Often
+     *                           Activity.RESULT_OK.
+     * @param initialData        An initial value for the result data.  Often
+     *                           null.
+     * @param initialExtras      An initial value for the result extras.  Often
+     *                           null.
      * @see #sendOrderedBroadcast(Intent, String, BroadcastReceiver, Handler, int, String, Bundle)
      */
     public abstract void sendOrderedBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user, @Nullable String receiverPermission, BroadcastReceiver resultReceiver,
-            @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
-            @Nullable  Bundle initialExtras);
+                                                    UserHandle user, @Nullable String receiverPermission, BroadcastReceiver resultReceiver,
+                                                    @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
+                                                    @Nullable Bundle initialExtras);
 
     /**
      * Similar to above but takes an appOp as well, to enforce restrictions.
-     * @see #sendOrderedBroadcastAsUser(Intent, UserHandle, String,
-     *       BroadcastReceiver, Handler, int, String, Bundle)
+     *
      * @hide
+     * @see #sendOrderedBroadcastAsUser(Intent, UserHandle, String,
+     * BroadcastReceiver, Handler, int, String, Bundle)
      */
     public abstract void sendOrderedBroadcastAsUser(Intent intent, UserHandle user,
-            @Nullable String receiverPermission, int appOp, BroadcastReceiver resultReceiver,
-            @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
-            @Nullable  Bundle initialExtras);
+                                                    @Nullable String receiverPermission, int appOp, BroadcastReceiver resultReceiver,
+                                                    @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
+                                                    @Nullable Bundle initialExtras);
 
     /**
      * Similar to above but takes an appOp as well, to enforce restrictions, and an options Bundle.
-     * @see #sendOrderedBroadcastAsUser(Intent, UserHandle, String,
-     *       BroadcastReceiver, Handler, int, String, Bundle)
+     *
      * @hide
+     * @see #sendOrderedBroadcastAsUser(Intent, UserHandle, String,
+     * BroadcastReceiver, Handler, int, String, Bundle)
      */
     public abstract void sendOrderedBroadcastAsUser(Intent intent, UserHandle user,
-            @Nullable String receiverPermission, int appOp, @Nullable Bundle options,
-            BroadcastReceiver resultReceiver, @Nullable Handler scheduler, int initialCode,
-            @Nullable String initialData, @Nullable  Bundle initialExtras);
+                                                    @Nullable String receiverPermission, int appOp, @Nullable Bundle options,
+                                                    BroadcastReceiver resultReceiver, @Nullable Handler scheduler, int initialCode,
+                                                    @Nullable String initialData, @Nullable Bundle initialExtras);
 
     /**
      * <p>Perform a {@link #sendBroadcast(Intent)} that is "sticky," meaning the
@@ -2165,23 +2141,21 @@ public abstract class Context {
      * value of {@link #registerReceiver(BroadcastReceiver, IntentFilter)}.  In
      * all other ways, this behaves the same as
      * {@link #sendBroadcast(Intent)}.
-     *
+     * <p>
      * <p>You must hold the {@link android.Manifest.permission#BROADCAST_STICKY}
      * permission in order to use this API.  If you do not hold that
      * permission, {@link SecurityException} will be thrown.
      *
+     * @param intent The Intent to broadcast; all receivers matching this
+     *               Intent will receive the broadcast, and the Intent will be held to
+     *               be re-broadcast to future receivers.
+     * @see #sendBroadcast(Intent)
+     * @see #sendStickyOrderedBroadcast(Intent, BroadcastReceiver, Handler, int, String, Bundle)
      * @deprecated Sticky broadcasts should not be used.  They provide no security (anyone
      * can access them), no protection (anyone can modify them), and many other problems.
      * The recommended pattern is to use a non-sticky broadcast to report that <em>something</em>
      * has changed, with another mechanism for apps to retrieve the current value whenever
      * desired.
-     *
-     * @param intent The Intent to broadcast; all receivers matching this
-     * Intent will receive the broadcast, and the Intent will be held to
-     * be re-broadcast to future receivers.
-     *
-     * @see #sendBroadcast(Intent)
-     * @see #sendStickyOrderedBroadcast(Intent, BroadcastReceiver, Handler, int, String, Bundle)
      */
     @Deprecated
     public abstract void sendStickyBroadcast(@RequiresPermission Intent intent);
@@ -2195,35 +2169,28 @@ public abstract class Context {
      * the result values collected from the other receivers.  The broadcast will
      * be serialized in the same way as calling
      * {@link #sendOrderedBroadcast(Intent, String)}.
-     *
+     * <p>
      * <p>Like {@link #sendBroadcast(Intent)}, this method is
      * asynchronous; it will return before
      * resultReceiver.onReceive() is called.  Note that the sticky data
      * stored is only the data you initially supply to the broadcast, not
      * the result of any changes made by the receivers.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
-     * @deprecated Sticky broadcasts should not be used.  They provide no security (anyone
-     * can access them), no protection (anyone can modify them), and many other problems.
-     * The recommended pattern is to use a non-sticky broadcast to report that <em>something</em>
-     * has changed, with another mechanism for apps to retrieve the current value whenever
-     * desired.
-     *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
+     * @param intent         The Intent to broadcast; all receivers matching this
+     *                       Intent will receive the broadcast.
      * @param resultReceiver Your own BroadcastReceiver to treat as the final
      *                       receiver of the broadcast.
-     * @param scheduler A custom Handler with which to schedule the
-     *                  resultReceiver callback; if null it will be
-     *                  scheduled in the Context's main thread.
-     * @param initialCode An initial value for the result code.  Often
-     *                    Activity.RESULT_OK.
-     * @param initialData An initial value for the result data.  Often
-     *                    null.
-     * @param initialExtras An initial value for the result extras.  Often
-     *                      null.
-     *
+     * @param scheduler      A custom Handler with which to schedule the
+     *                       resultReceiver callback; if null it will be
+     *                       scheduled in the Context's main thread.
+     * @param initialCode    An initial value for the result code.  Often
+     *                       Activity.RESULT_OK.
+     * @param initialData    An initial value for the result data.  Often
+     *                       null.
+     * @param initialExtras  An initial value for the result extras.  Often
+     *                       null.
      * @see #sendBroadcast(Intent)
      * @see #sendBroadcast(Intent, String)
      * @see #sendOrderedBroadcast(Intent, String)
@@ -2231,30 +2198,33 @@ public abstract class Context {
      * @see android.content.BroadcastReceiver
      * @see #registerReceiver
      * @see android.app.Activity#RESULT_OK
-     */
-    @Deprecated
-    public abstract void sendStickyOrderedBroadcast(@RequiresPermission Intent intent,
-            BroadcastReceiver resultReceiver,
-            @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
-            @Nullable Bundle initialExtras);
-
-    /**
-     * <p>Remove the data previously sent with {@link #sendStickyBroadcast},
-     * so that it is as if the sticky broadcast had never happened.
-     *
-     * <p>You must hold the {@link android.Manifest.permission#BROADCAST_STICKY}
-     * permission in order to use this API.  If you do not hold that
-     * permission, {@link SecurityException} will be thrown.
-     *
      * @deprecated Sticky broadcasts should not be used.  They provide no security (anyone
      * can access them), no protection (anyone can modify them), and many other problems.
      * The recommended pattern is to use a non-sticky broadcast to report that <em>something</em>
      * has changed, with another mechanism for apps to retrieve the current value whenever
      * desired.
+     */
+    @Deprecated
+    public abstract void sendStickyOrderedBroadcast(@RequiresPermission Intent intent,
+                                                    BroadcastReceiver resultReceiver,
+                                                    @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
+                                                    @Nullable Bundle initialExtras);
+
+    /**
+     * <p>Remove the data previously sent with {@link #sendStickyBroadcast},
+     * so that it is as if the sticky broadcast had never happened.
+     * <p>
+     * <p>You must hold the {@link android.Manifest.permission#BROADCAST_STICKY}
+     * permission in order to use this API.  If you do not hold that
+     * permission, {@link SecurityException} will be thrown.
      *
      * @param intent The Intent that was previously broadcast.
-     *
      * @see #sendStickyBroadcast
+     * @deprecated Sticky broadcasts should not be used.  They provide no security (anyone
+     * can access them), no protection (anyone can modify them), and many other problems.
+     * The recommended pattern is to use a non-sticky broadcast to report that <em>something</em>
+     * has changed, with another mechanism for apps to retrieve the current value whenever
+     * desired.
      */
     @Deprecated
     public abstract void removeStickyBroadcast(@RequiresPermission Intent intent);
@@ -2265,30 +2235,27 @@ public abstract class Context {
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS permission.
      *
+     * @param intent The Intent to broadcast; all receivers matching this
+     *               Intent will receive the broadcast, and the Intent will be held to
+     *               be re-broadcast to future receivers.
+     * @param user   UserHandle to send the intent to.
+     * @see #sendBroadcast(Intent)
      * @deprecated Sticky broadcasts should not be used.  They provide no security (anyone
      * can access them), no protection (anyone can modify them), and many other problems.
      * The recommended pattern is to use a non-sticky broadcast to report that <em>something</em>
      * has changed, with another mechanism for apps to retrieve the current value whenever
      * desired.
-     *
-     * @param intent The Intent to broadcast; all receivers matching this
-     * Intent will receive the broadcast, and the Intent will be held to
-     * be re-broadcast to future receivers.
-     * @param user UserHandle to send the intent to.
-     *
-     * @see #sendBroadcast(Intent)
      */
     @Deprecated
     public abstract void sendStickyBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user);
+                                                   UserHandle user);
 
     /**
-     * @hide
-     * This is just here for sending CONNECTIVITY_ACTION.
+     * @hide This is just here for sending CONNECTIVITY_ACTION.
      */
     @Deprecated
     public abstract void sendStickyBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user, Bundle options);
+                                                   UserHandle user, Bundle options);
 
     /**
      * <p>Version of
@@ -2297,94 +2264,90 @@ public abstract class Context {
      * user the broadcast will be sent to.  This is not available to applications
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS permission.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
      *
+     * @param intent         The Intent to broadcast; all receivers matching this
+     *                       Intent will receive the broadcast.
+     * @param user           UserHandle to send the intent to.
+     * @param resultReceiver Your own BroadcastReceiver to treat as the final
+     *                       receiver of the broadcast.
+     * @param scheduler      A custom Handler with which to schedule the
+     *                       resultReceiver callback; if null it will be
+     *                       scheduled in the Context's main thread.
+     * @param initialCode    An initial value for the result code.  Often
+     *                       Activity.RESULT_OK.
+     * @param initialData    An initial value for the result data.  Often
+     *                       null.
+     * @param initialExtras  An initial value for the result extras.  Often
+     *                       null.
+     * @see #sendStickyOrderedBroadcast(Intent, BroadcastReceiver, Handler, int, String, Bundle)
      * @deprecated Sticky broadcasts should not be used.  They provide no security (anyone
      * can access them), no protection (anyone can modify them), and many other problems.
      * The recommended pattern is to use a non-sticky broadcast to report that <em>something</em>
      * has changed, with another mechanism for apps to retrieve the current value whenever
      * desired.
-     *
-     * @param intent The Intent to broadcast; all receivers matching this
-     *               Intent will receive the broadcast.
-     * @param user UserHandle to send the intent to.
-     * @param resultReceiver Your own BroadcastReceiver to treat as the final
-     *                       receiver of the broadcast.
-     * @param scheduler A custom Handler with which to schedule the
-     *                  resultReceiver callback; if null it will be
-     *                  scheduled in the Context's main thread.
-     * @param initialCode An initial value for the result code.  Often
-     *                    Activity.RESULT_OK.
-     * @param initialData An initial value for the result data.  Often
-     *                    null.
-     * @param initialExtras An initial value for the result extras.  Often
-     *                      null.
-     *
-     * @see #sendStickyOrderedBroadcast(Intent, BroadcastReceiver, Handler, int, String, Bundle)
      */
     @Deprecated
     public abstract void sendStickyOrderedBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user, BroadcastReceiver resultReceiver,
-            @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
-            @Nullable Bundle initialExtras);
+                                                          UserHandle user, BroadcastReceiver resultReceiver,
+                                                          @Nullable Handler scheduler, int initialCode, @Nullable String initialData,
+                                                          @Nullable Bundle initialExtras);
 
     /**
      * <p>Version of {@link #removeStickyBroadcast(Intent)} that allows you to specify the
      * user the broadcast will be sent to.  This is not available to applications
      * that are not pre-installed on the system image.  Using it requires holding
      * the INTERACT_ACROSS_USERS permission.
-     *
+     * <p>
      * <p>You must hold the {@link android.Manifest.permission#BROADCAST_STICKY}
      * permission in order to use this API.  If you do not hold that
      * permission, {@link SecurityException} will be thrown.
      *
+     * @param intent The Intent that was previously broadcast.
+     * @param user   UserHandle to remove the sticky broadcast from.
+     * @see #sendStickyBroadcastAsUser
      * @deprecated Sticky broadcasts should not be used.  They provide no security (anyone
      * can access them), no protection (anyone can modify them), and many other problems.
      * The recommended pattern is to use a non-sticky broadcast to report that <em>something</em>
      * has changed, with another mechanism for apps to retrieve the current value whenever
      * desired.
-     *
-     * @param intent The Intent that was previously broadcast.
-     * @param user UserHandle to remove the sticky broadcast from.
-     *
-     * @see #sendStickyBroadcastAsUser
      */
     @Deprecated
     public abstract void removeStickyBroadcastAsUser(@RequiresPermission Intent intent,
-            UserHandle user);
+                                                     UserHandle user);
 
     /**
      * Register a BroadcastReceiver to be run in the main activity thread.  The
      * <var>receiver</var> will be called with any broadcast Intent that
      * matches <var>filter</var>, in the main application thread.
-     *
+     * <p>
      * <p>The system may broadcast Intents that are "sticky" -- these stay
      * around after the broadcast as finished, to be sent to any later
      * registrations. If your IntentFilter matches one of these sticky
      * Intents, that Intent will be returned by this function
      * <strong>and</strong> sent to your <var>receiver</var> as if it had just
      * been broadcast.
-     *
+     * <p>
      * <p>There may be multiple sticky Intents that match <var>filter</var>,
      * in which case each of these will be sent to <var>receiver</var>.  In
      * this case, only one of these can be returned directly by the function;
      * which of these that is returned is arbitrarily decided by the system.
-     *
+     * <p>
      * <p>If you know the Intent your are registering for is sticky, you can
      * supply null for your <var>receiver</var>.  In this case, no receiver is
      * registered -- the function simply returns the sticky Intent that
      * matches <var>filter</var>.  In the case of multiple matches, the same
      * rules as described above apply.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
-     *
+     * <p>
      * <p>As of {@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH}, receivers
      * registered with this method will correctly respect the
      * {@link Intent#setPackage(String)} specified for an Intent being broadcast.
      * Prior to that, it would be ignored and delivered to all matching registered
      * receivers.  Be careful if using this for security.</p>
-     *
+     * <p>
      * <p class="note">Note: this method <em>cannot be called from a
      * {@link BroadcastReceiver} component;</em> that is, from a BroadcastReceiver
      * that is declared in an application's manifest.  It is okay, however, to call
@@ -2393,11 +2356,9 @@ public abstract class Context {
      * registered BroadcastReceiver is tied to the object that registered it.</p>
      *
      * @param receiver The BroadcastReceiver to handle the broadcast.
-     * @param filter Selects the Intent broadcasts to be received.
-     *
+     * @param filter   Selects the Intent broadcasts to be received.
      * @return The first sticky intent found that matches <var>filter</var>,
-     *         or null if there are none.
-     *
+     * or null if there are none.
      * @see #registerReceiver(BroadcastReceiver, IntentFilter, String, Handler)
      * @see #sendBroadcast
      * @see #unregisterReceiver
@@ -2413,63 +2374,57 @@ public abstract class Context {
      * information.  This allows you to enforce permissions on who can
      * broadcast intents to your receiver, or have the receiver run in
      * a different thread than the main application thread.
-     *
+     * <p>
      * <p>See {@link BroadcastReceiver} for more information on Intent broadcasts.
-     *
+     * <p>
      * <p>As of {@link android.os.Build.VERSION_CODES#ICE_CREAM_SANDWICH}, receivers
      * registered with this method will correctly respect the
      * {@link Intent#setPackage(String)} specified for an Intent being broadcast.
      * Prior to that, it would be ignored and delivered to all matching registered
      * receivers.  Be careful if using this for security.</p>
      *
-     * @param receiver The BroadcastReceiver to handle the broadcast.
-     * @param filter Selects the Intent broadcasts to be received.
+     * @param receiver            The BroadcastReceiver to handle the broadcast.
+     * @param filter              Selects the Intent broadcasts to be received.
      * @param broadcastPermission String naming a permissions that a
-     *      broadcaster must hold in order to send an Intent to you.  If null,
-     *      no permission is required.
-     * @param scheduler Handler identifying the thread that will receive
-     *      the Intent.  If null, the main thread of the process will be used.
-     *
+     *                            broadcaster must hold in order to send an Intent to you.  If null,
+     *                            no permission is required.
+     * @param scheduler           Handler identifying the thread that will receive
+     *                            the Intent.  If null, the main thread of the process will be used.
      * @return The first sticky intent found that matches <var>filter</var>,
-     *         or null if there are none.
-     *
+     * or null if there are none.
      * @see #registerReceiver(BroadcastReceiver, IntentFilter)
      * @see #sendBroadcast
      * @see #unregisterReceiver
      */
     @Nullable
     public abstract Intent registerReceiver(BroadcastReceiver receiver,
-            IntentFilter filter, @Nullable String broadcastPermission,
-            @Nullable Handler scheduler);
+                                            IntentFilter filter, @Nullable String broadcastPermission,
+                                            @Nullable Handler scheduler);
 
     /**
-     * @hide
-     * Same as {@link #registerReceiver(BroadcastReceiver, IntentFilter, String, Handler)
+     * @param receiver            The BroadcastReceiver to handle the broadcast.
+     * @param user                UserHandle to send the intent to.
+     * @param filter              Selects the Intent broadcasts to be received.
+     * @param broadcastPermission String naming a permissions that a
+     *                            broadcaster must hold in order to send an Intent to you.  If null,
+     *                            no permission is required.
+     * @param scheduler           Handler identifying the thread that will receive
+     *                            the Intent.  If null, the main thread of the process will be used.
+     * @return The first sticky intent found that matches <var>filter</var>,
+     * or null if there are none.
+     * @hide Same as {@link #registerReceiver(BroadcastReceiver, IntentFilter, String, Handler)
      * but for a specific user.  This receiver will receiver broadcasts that
      * are sent to the requested user.  It
      * requires holding the {@link android.Manifest.permission#INTERACT_ACROSS_USERS_FULL}
      * permission.
-     *
-     * @param receiver The BroadcastReceiver to handle the broadcast.
-     * @param user UserHandle to send the intent to.
-     * @param filter Selects the Intent broadcasts to be received.
-     * @param broadcastPermission String naming a permissions that a
-     *      broadcaster must hold in order to send an Intent to you.  If null,
-     *      no permission is required.
-     * @param scheduler Handler identifying the thread that will receive
-     *      the Intent.  If null, the main thread of the process will be used.
-     *
-     * @return The first sticky intent found that matches <var>filter</var>,
-     *         or null if there are none.
-     *
      * @see #registerReceiver(BroadcastReceiver, IntentFilter, String, Handler)
      * @see #sendBroadcast
      * @see #unregisterReceiver
      */
     @Nullable
     public abstract Intent registerReceiverAsUser(BroadcastReceiver receiver,
-            UserHandle user, IntentFilter filter, @Nullable String broadcastPermission,
-            @Nullable Handler scheduler);
+                                                  UserHandle user, IntentFilter filter, @Nullable String broadcastPermission,
+                                                  @Nullable Handler scheduler);
 
     /**
      * Unregister a previously registered BroadcastReceiver.  <em>All</em>
@@ -2477,7 +2432,6 @@ public abstract class Context {
      * removed.
      *
      * @param receiver The BroadcastReceiver to unregister.
-     *
      * @see #registerReceiver
      */
     public abstract void unregisterReceiver(BroadcastReceiver receiver);
@@ -2490,29 +2444,29 @@ public abstract class Context {
      * multiple matching services may be used.  If this service
      * is not already running, it will be instantiated and started (creating a
      * process for it if needed); if it is running then it remains running.
-     *
+     * <p>
      * <p>Every call to this method will result in a corresponding call to
      * the target service's {@link android.app.Service#onStartCommand} method,
      * with the <var>intent</var> given here.  This provides a convenient way
      * to submit jobs to a service without having to bind and call on to its
      * interface.
-     *
+     * <p>
      * <p>Using startService() overrides the default service lifetime that is
      * managed by {@link #bindService}: it requires the service to remain
      * running until {@link #stopService} is called, regardless of whether
      * any clients are connected to it.  Note that calls to startService()
      * do not nest: no matter how many times you call startService(),
      * a single call to {@link #stopService} will stop it.
-     *
+     * <p>
      * <p>The system attempts to keep running services around as much as
      * possible.  The only time they should be stopped is if the current
      * foreground application is using so many resources that the service needs
      * to be killed.  If any errors happen in the service's process, it will
      * automatically be restarted.
-     *
+     * <p>
      * <p>This function will throw {@link SecurityException} if you do not
      * have permission to start the given service.
-     *
+     * <p>
      * <p class="note"><strong>Note:</strong> Each call to startService()
      * results in significant work done by the system to manage service
      * lifecycle surrounding the processing of the intent, which can take
@@ -2523,16 +2477,13 @@ public abstract class Context {
      * </p>
      *
      * @param service Identifies the service to be started.  The Intent must be
-     *      fully explicit (supplying a component name).  Additional values
-     *      may be included in the Intent extras to supply arguments along with
-     *      this specific start call.
-     *
+     *                fully explicit (supplying a component name).  Additional values
+     *                may be included in the Intent extras to supply arguments along with
+     *                this specific start call.
      * @return If the service is being started or is already running, the
      * {@link ComponentName} of the actual service that was started is
      * returned; else if the service does not exist null is returned.
-     *
      * @throws SecurityException &nbsp;
-     *
      * @see #stopService
      * @see #bindService
      */
@@ -2544,25 +2495,22 @@ public abstract class Context {
      * not running, nothing happens.  Otherwise it is stopped.  Note that calls
      * to startService() are not counted -- this stops the service no matter
      * how many times it was started.
-     *
+     * <p>
      * <p>Note that if a stopped service still has {@link ServiceConnection}
      * objects bound to it with the {@link #BIND_AUTO_CREATE} set, it will
      * not be destroyed until all of these bindings are removed.  See
      * the {@link android.app.Service} documentation for more details on a
      * service's lifecycle.
-     *
+     * <p>
      * <p>This function will throw {@link SecurityException} if you do not
      * have permission to stop the given service.
      *
      * @param service Description of the service to be stopped.  The Intent must be either
-     *      fully explicit (supplying a component name) or specify a specific package
-     *      name it is targetted to.
-     *
+     *                fully explicit (supplying a component name) or specify a specific package
+     *                name it is targetted to.
      * @return If there is a service matching the given Intent that is already
      * running, then it is stopped and {@code true} is returned; else {@code false} is returned.
-     *
      * @throws SecurityException &nbsp;
-     *
      * @see #startService
      */
     public abstract boolean stopService(Intent service);
@@ -2585,10 +2533,10 @@ public abstract class Context {
      * by the system only for as long as the calling context exists.  For
      * example, if this Context is an Activity that is stopped, the service will
      * not be required to continue running until the Activity is resumed.
-     *
+     * <p>
      * <p>This function will throw {@link SecurityException} if you do not
      * have permission to bind to the given service.
-     *
+     * <p>
      * <p class="note">Note: this method <em>can not be called from a
      * {@link BroadcastReceiver} component</em>.  A pattern you can use to
      * communicate from a BroadcastReceiver to a Service is to call
@@ -2602,20 +2550,18 @@ public abstract class Context {
      * is tied to another object (the one that registered it).</p>
      *
      * @param service Identifies the service to connect to.  The Intent must
-     *      specify an explicit component name.
-     * @param conn Receives information as the service is started and stopped.
-     *      This must be a valid ServiceConnection object; it must not be null.
-     * @param flags Operation options for the binding.  May be 0,
-     *          {@link #BIND_AUTO_CREATE}, {@link #BIND_DEBUG_UNBIND},
-     *          {@link #BIND_NOT_FOREGROUND}, {@link #BIND_ABOVE_CLIENT},
-     *          {@link #BIND_ALLOW_OOM_MANAGEMENT}, or
-     *          {@link #BIND_WAIVE_PRIORITY}.
+     *                specify an explicit component name.
+     * @param conn    Receives information as the service is started and stopped.
+     *                This must be a valid ServiceConnection object; it must not be null.
+     * @param flags   Operation options for the binding.  May be 0,
+     *                {@link #BIND_AUTO_CREATE}, {@link #BIND_DEBUG_UNBIND},
+     *                {@link #BIND_NOT_FOREGROUND}, {@link #BIND_ABOVE_CLIENT},
+     *                {@link #BIND_ALLOW_OOM_MANAGEMENT}, or
+     *                {@link #BIND_WAIVE_PRIORITY}.
      * @return If you have successfully bound to the service, {@code true} is returned;
-     *         {@code false} is returned if the connection is not made so you will not
-     *         receive the service object.
-     *
+     * {@code false} is returned if the connection is not made so you will not
+     * receive the service object.
      * @throws SecurityException &nbsp;
-     *
      * @see #unbindService
      * @see #startService
      * @see #BIND_AUTO_CREATE
@@ -2623,17 +2569,18 @@ public abstract class Context {
      * @see #BIND_NOT_FOREGROUND
      */
     public abstract boolean bindService(@RequiresPermission Intent service,
-            @NonNull ServiceConnection conn, @BindServiceFlags int flags);
+                                        @NonNull ServiceConnection conn, @BindServiceFlags int flags);
 
     /**
      * Same as {@link #bindService(Intent, ServiceConnection, int)}, but with an explicit userHandle
      * argument for use by system server and other multi-user aware code.
+     *
      * @hide
      */
     @SystemApi
     @SuppressWarnings("unused")
     public boolean bindServiceAsUser(@RequiresPermission Intent service, ServiceConnection conn,
-            int flags, UserHandle user) {
+                                     int flags, UserHandle user) {
         throw new RuntimeException("Not implemented. Must override in a subclass.");
     }
 
@@ -2644,7 +2591,7 @@ public abstract class Context {
      * @hide
      */
     public boolean bindServiceAsUser(Intent service, ServiceConnection conn, int flags,
-            Handler handler, UserHandle user) {
+                                     Handler handler, UserHandle user) {
         throw new RuntimeException("Not implemented. Must override in a subclass.");
     }
 
@@ -2655,7 +2602,6 @@ public abstract class Context {
      *
      * @param conn The connection interface previously supplied to
      *             bindService().  This parameter must not be null.
-     *
      * @see #bindService
      */
     public abstract void unbindService(@NonNull ServiceConnection conn);
@@ -2665,28 +2611,29 @@ public abstract class Context {
      * Instrumentation component will be run by killing its target application
      * (if currently running), starting the target process, instantiating the
      * instrumentation component, and then letting it drive the application.
-     *
+     * <p>
      * <p>This function is not synchronous -- it returns as soon as the
      * instrumentation has started and while it is running.
-     *
+     * <p>
      * <p>Instrumentation is normally only allowed to run against a package
      * that is either unsigned or signed with a signature that the
      * the instrumentation package is also signed with (ensuring the target
      * trusts the instrumentation).
      *
-     * @param className Name of the Instrumentation component to be run.
+     * @param className   Name of the Instrumentation component to be run.
      * @param profileFile Optional path to write profiling data as the
-     * instrumentation runs, or null for no profiling.
-     * @param arguments Additional optional arguments to pass to the
-     * instrumentation, or null.
-     *
+     *                    instrumentation runs, or null for no profiling.
+     * @param arguments   Additional optional arguments to pass to the
+     *                    instrumentation, or null.
      * @return {@code true} if the instrumentation was successfully started,
      * else {@code false} if it could not be found.
      */
     public abstract boolean startInstrumentation(@NonNull ComponentName className,
-            @Nullable String profileFile, @Nullable Bundle arguments);
+                                                 @Nullable String profileFile, @Nullable Bundle arguments);
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @StringDef({
             POWER_SERVICE,
             WINDOW_SERVICE,
@@ -2770,55 +2717,56 @@ public abstract class Context {
             //@hide: CONTEXTHUB_SERVICE,
     })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface ServiceName {}
+    public @interface ServiceName {
+    }
 
     /**
      * Return the handle to a system-level service by name. The class of the
      * returned object varies by the requested name. Currently available names
      * are:
-     *
+     * <p>
      * <dl>
-     *  <dt> {@link #WINDOW_SERVICE} ("window")
-     *  <dd> The top-level window manager in which you can place custom
-     *  windows.  The returned object is a {@link android.view.WindowManager}.
-     *  <dt> {@link #LAYOUT_INFLATER_SERVICE} ("layout_inflater")
-     *  <dd> A {@link android.view.LayoutInflater} for inflating layout resources
-     *  in this context.
-     *  <dt> {@link #ACTIVITY_SERVICE} ("activity")
-     *  <dd> A {@link android.app.ActivityManager} for interacting with the
-     *  global activity state of the system.
-     *  <dt> {@link #POWER_SERVICE} ("power")
-     *  <dd> A {@link android.os.PowerManager} for controlling power
-     *  management.
-     *  <dt> {@link #ALARM_SERVICE} ("alarm")
-     *  <dd> A {@link android.app.AlarmManager} for receiving intents at the
-     *  time of your choosing.
-     *  <dt> {@link #NOTIFICATION_SERVICE} ("notification")
-     *  <dd> A {@link android.app.NotificationManager} for informing the user
-     *   of background events.
-     *  <dt> {@link #KEYGUARD_SERVICE} ("keyguard")
-     *  <dd> A {@link android.app.KeyguardManager} for controlling keyguard.
-     *  <dt> {@link #LOCATION_SERVICE} ("location")
-     *  <dd> A {@link android.location.LocationManager} for controlling location
-     *   (e.g., GPS) updates.
-     *  <dt> {@link #SEARCH_SERVICE} ("search")
-     *  <dd> A {@link android.app.SearchManager} for handling search.
-     *  <dt> {@link #VIBRATOR_SERVICE} ("vibrator")
-     *  <dd> A {@link android.os.Vibrator} for interacting with the vibrator
-     *  hardware.
-     *  <dt> {@link #CONNECTIVITY_SERVICE} ("connection")
-     *  <dd> A {@link android.net.ConnectivityManager ConnectivityManager} for
-     *  handling management of network connections.
-     *  <dt> {@link #WIFI_SERVICE} ("wifi")
-     *  <dd> A {@link android.net.wifi.WifiManager WifiManager} for management of Wi-Fi
-     *  connectivity.  On releases before NYC, it should only be obtained from an application
-     *  context, and not from any other derived context to avoid memory leaks within the calling
-     *  process.
-     *  <dt> {@link #WIFI_AWARE_SERVICE} ("wifiaware")
-     *  <dd> A {@link android.net.wifi.aware.WifiAwareManager WifiAwareManager} for management of
+     * <dt> {@link #WINDOW_SERVICE} ("window")
+     * <dd> The top-level window manager in which you can place custom
+     * windows.  The returned object is a {@link android.view.WindowManager}.
+     * <dt> {@link #LAYOUT_INFLATER_SERVICE} ("layout_inflater")
+     * <dd> A {@link android.view.LayoutInflater} for inflating layout resources
+     * in this context.
+     * <dt> {@link #ACTIVITY_SERVICE} ("activity")
+     * <dd> A {@link android.app.ActivityManager} for interacting with the
+     * global activity state of the system.
+     * <dt> {@link #POWER_SERVICE} ("power")
+     * <dd> A {@link android.os.PowerManager} for controlling power
+     * management.
+     * <dt> {@link #ALARM_SERVICE} ("alarm")
+     * <dd> A {@link android.app.AlarmManager} for receiving intents at the
+     * time of your choosing.
+     * <dt> {@link #NOTIFICATION_SERVICE} ("notification")
+     * <dd> A {@link android.app.NotificationManager} for informing the user
+     * of background events.
+     * <dt> {@link #KEYGUARD_SERVICE} ("keyguard")
+     * <dd> A {@link android.app.KeyguardManager} for controlling keyguard.
+     * <dt> {@link #LOCATION_SERVICE} ("location")
+     * <dd> A {@link android.location.LocationManager} for controlling location
+     * (e.g., GPS) updates.
+     * <dt> {@link #SEARCH_SERVICE} ("search")
+     * <dd> A {@link android.app.SearchManager} for handling search.
+     * <dt> {@link #VIBRATOR_SERVICE} ("vibrator")
+     * <dd> A {@link android.os.Vibrator} for interacting with the vibrator
+     * hardware.
+     * <dt> {@link #CONNECTIVITY_SERVICE} ("connection")
+     * <dd> A {@link android.net.ConnectivityManager ConnectivityManager} for
+     * handling management of network connections.
+     * <dt> {@link #WIFI_SERVICE} ("wifi")
+     * <dd> A {@link android.net.wifi.WifiManager WifiManager} for management of Wi-Fi
+     * connectivity.  On releases before NYC, it should only be obtained from an application
+     * context, and not from any other derived context to avoid memory leaks within the calling
+     * process.
+     * <dt> {@link #WIFI_AWARE_SERVICE} ("wifiaware")
+     * <dd> A {@link android.net.wifi.aware.WifiAwareManager WifiAwareManager} for management of
      * Wi-Fi Aware discovery and connectivity.
-     *  <dt> {@link #WIFI_P2P_SERVICE} ("wifip2p")
-     *  <dd> A {@link android.net.wifi.p2p.WifiP2pManager WifiP2pManager} for management of
+     * <dt> {@link #WIFI_P2P_SERVICE} ("wifip2p")
+     * <dd> A {@link android.net.wifi.p2p.WifiP2pManager WifiP2pManager} for management of
      * Wi-Fi Direct connectivity.
      * <dt> {@link #INPUT_METHOD_SERVICE} ("input_method")
      * <dd> An {@link android.view.inputmethod.InputMethodManager InputMethodManager}
@@ -2837,16 +2785,14 @@ public abstract class Context {
      * <dt> {@link #HARDWARE_PROPERTIES_SERVICE} ("hardware_properties")
      * <dd> A {@link android.os.HardwarePropertiesManager} for accessing hardware properties.
      * </dl>
-     *
+     * <p>
      * <p>Note:  System services obtained via this API may be closely associated with
      * the Context in which they are obtained from.  In general, do not share the
      * service objects between various different contexts (Activities, Applications,
      * Services, Providers, etc.)
      *
      * @param name The name of the desired service.
-     *
      * @return The service or null if the name does not exist.
-     *
      * @see #WINDOW_SERVICE
      * @see android.view.WindowManager
      * @see #LAYOUT_INFLATER_SERVICE
@@ -2935,7 +2881,7 @@ public abstract class Context {
         // perform a lookup by class alone.  We must first map the class to its
         // service name then invoke the string-based method.
         String serviceName = getSystemServiceName(serviceClass);
-        return serviceName != null ? (T)getSystemService(serviceName) : null;
+        return serviceName != null ? (T) getSystemService(serviceName) : null;
     }
 
     /**
@@ -2959,8 +2905,8 @@ public abstract class Context {
      * {@link android.os.RecoverySystem} for accessing the recovery system
      * service.
      *
-     * @see #getSystemService
      * @hide
+     * @see #getSystemService
      */
     public static final String RECOVERY_SERVICE = "recovery";
 
@@ -3122,9 +3068,9 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a {@link
      * android.app.StatusBarManager} for interacting with the status bar.
      *
+     * @hide
      * @see #getSystemService
      * @see android.app.StatusBarManager
-     * @hide
      */
     public static final String STATUS_BAR_SERVICE = "statusbar";
 
@@ -3161,6 +3107,7 @@ public abstract class Context {
 
     /**
      * Constant for the internal network management service, not really a Context service.
+     *
      * @hide
      */
     public static final String NETWORKMANAGEMENT_SERVICE = "network_management";
@@ -3173,7 +3120,9 @@ public abstract class Context {
      * @see android.app.usage.NetworkStatsManager
      */
     public static final String NETWORK_STATS_SERVICE = "netstats";
-    /** {@hide} */
+    /**
+     * {@hide}
+     */
     public static final String NETWORK_POLICY_SERVICE = "netpolicy";
 
     /**
@@ -3210,9 +3159,9 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a {@link
      * android.net.wifi.WifiScanner} for scanning the wifi universe
      *
+     * @hide
      * @see #getSystemService
      * @see android.net.wifi.WifiScanner
-     * @hide
      */
     @SystemApi
     public static final String WIFI_SCANNING_SERVICE = "wifiscanner";
@@ -3221,9 +3170,9 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a {@link
      * android.net.wifi.RttManager} for ranging devices with wifi
      *
+     * @hide
      * @see #getSystemService
      * @see android.net.wifi.RttManager
-     * @hide
      */
     @SystemApi
     public static final String WIFI_RTT_SERVICE = "rttmanager";
@@ -3233,10 +3182,9 @@ public abstract class Context {
      * android.net.EthernetManager} for handling management of
      * Ethernet access.
      *
+     * @hide
      * @see #getSystemService
      * @see android.net.EthernetManager
-     *
-     * @hide
      */
     public static final String ETHERNET_SERVICE = "ethernet";
 
@@ -3387,8 +3335,8 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve an
      * {@link android.app.backup.IBackupManager IBackupManager} for communicating
      * with the backup mechanism.
-     * @hide
      *
+     * @hide
      * @see #getSystemService
      */
     @SystemApi
@@ -3398,14 +3346,16 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a
      * {@link android.os.DropBoxManager} instance for recording
      * diagnostic logs.
+     *
      * @see #getSystemService
      */
     public static final String DROPBOX_SERVICE = "dropbox";
 
     /**
      * System service name for the DeviceIdleController.  There is no Java API for this.
-     * @see #getSystemService
+     *
      * @hide
+     * @see #getSystemService
      */
     public static final String DEVICE_IDLE_CONTROLLER = "deviceidle";
 
@@ -3464,7 +3414,9 @@ public abstract class Context {
      *
      * @see #getSystemService
      */
-    /** @hide */
+    /**
+     * @hide
+     */
     public static final String SIP_SERVICE = "sip";
 
     /**
@@ -3481,10 +3433,9 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a {@link
      * android.hardware.SerialManager} for access to serial ports.
      *
+     * @hide
      * @see #getSystemService
      * @see android.hardware.SerialManager
-     *
-     * @hide
      */
     public static final String SERIAL_SERVICE = "serial";
 
@@ -3493,9 +3444,9 @@ public abstract class Context {
      * {@link android.hardware.hdmi.HdmiControlManager} for controlling and managing
      * HDMI-CEC protocol.
      *
+     * @hide
      * @see #getSystemService
      * @see android.hardware.hdmi.HdmiControlManager
-     * @hide
      */
     @SystemApi
     public static final String HDMI_CONTROL_SERVICE = "hdmi_control";
@@ -3541,6 +3492,7 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a
      * {@link android.content.RestrictionsManager} for retrieving application restrictions
      * and requesting permissions for restricted operations.
+     *
      * @see #getSystemService
      * @see android.content.RestrictionsManager
      */
@@ -3587,9 +3539,10 @@ public abstract class Context {
 
     /**
      * {@link android.app.trust.TrustManager} for managing trust agents.
+     *
+     * @hide
      * @see #getSystemService
      * @see android.app.trust.TrustManager
-     * @hide
      */
     public static final String TRUST_SERVICE = "trust";
 
@@ -3605,9 +3558,10 @@ public abstract class Context {
 
     /**
      * {@link android.net.NetworkScoreManager} for managing network scoring.
+     *
+     * @hide
      * @see #getSystemService
      * @see android.net.NetworkScoreManager
-     * @hide
      */
     @SystemApi
     public static final String NETWORK_SCORE_SERVICE = "network_score";
@@ -3625,6 +3579,7 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a {@link
      * android.app.job.JobScheduler} instance for managing occasional
      * background tasks.
+     *
      * @see #getSystemService
      * @see android.app.job.JobScheduler
      */
@@ -3635,9 +3590,9 @@ public abstract class Context {
      * android.service.persistentdata.PersistentDataBlockManager} instance
      * for interacting with a storage device that lives across factory resets.
      *
+     * @hide
      * @see #getSystemService
      * @see android.service.persistentdata.PersistentDataBlockManager
-     * @hide
      */
     @SystemApi
     public static final String PERSISTENT_DATA_BLOCK_SERVICE = "persistent_data_block";
@@ -3646,6 +3601,7 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a {@link
      * android.media.projection.MediaProjectionManager} instance for managing
      * media projection sessions.
+     *
      * @see #getSystemService
      * @see android.media.projection.MediaProjectionManager
      */
@@ -3664,8 +3620,8 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a
      * {@link android.hardware.radio.RadioManager} for accessing the broadcast radio service.
      *
-     * @see #getSystemService
      * @hide
+     * @see #getSystemService
      */
     public static final String RADIO_SERVICE = "radio";
 
@@ -3690,10 +3646,9 @@ public abstract class Context {
      * Use with {@link #getSystemService} to retrieve a {@link
      * android.hardware.location.ContextHubManager} for accessing context hubs.
      *
+     * @hide
      * @see #getSystemService
      * @see android.hardware.location.ContextHubManager
-     *
-     * @hide
      */
     @SystemApi
     public static final String CONTEXTHUB_SERVICE = "contexthub";
@@ -3709,6 +3664,7 @@ public abstract class Context {
 
     /**
      * Gatekeeper Service.
+     *
      * @hide
      */
     public static final String GATEKEEPER_SERVICE = "android.service.gatekeeper.IGateKeeperService";
@@ -3718,25 +3674,25 @@ public abstract class Context {
      * process and user ID running in the system.
      *
      * @param permission The name of the permission being checked.
-     * @param pid The process ID being checked against.  Must be > 0.
-     * @param uid The user ID being checked against.  A uid of 0 is the root
-     * user, which will pass every permission check.
-     *
+     * @param pid        The process ID being checked against.  Must be > 0.
+     * @param uid        The user ID being checked against.  A uid of 0 is the root
+     *                   user, which will pass every permission check.
      * @return {@link PackageManager#PERMISSION_GRANTED} if the given
      * pid/uid is allowed that permission, or
      * {@link PackageManager#PERMISSION_DENIED} if it is not.
-     *
      * @see PackageManager#checkPermission(String, String)
      * @see #checkCallingPermission
      */
-    @CheckResult(suggest="#enforcePermission(String,int,int,String)")
+    @CheckResult(suggest = "#enforcePermission(String,int,int,String)")
     @PackageManager.PermissionResult
     public abstract int checkPermission(@NonNull String permission, int pid, int uid);
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @PackageManager.PermissionResult
     public abstract int checkPermission(@NonNull String permission, int pid, int uid,
-            IBinder callerToken);
+                                        IBinder callerToken);
 
     /**
      * Determine whether the calling process of an IPC you are handling has been
@@ -3750,16 +3706,14 @@ public abstract class Context {
      * to avoid this protection.
      *
      * @param permission The name of the permission being checked.
-     *
      * @return {@link PackageManager#PERMISSION_GRANTED} if the calling
      * pid/uid is allowed that permission, or
      * {@link PackageManager#PERMISSION_DENIED} if it is not.
-     *
      * @see PackageManager#checkPermission(String, String)
      * @see #checkPermission
      * @see #checkCallingOrSelfPermission
      */
-    @CheckResult(suggest="#enforceCallingPermission(String,String)")
+    @CheckResult(suggest = "#enforceCallingPermission(String,String)")
     @PackageManager.PermissionResult
     public abstract int checkCallingPermission(@NonNull String permission);
 
@@ -3770,16 +3724,14 @@ public abstract class Context {
      * if you are not currently processing an IPC.  Use with care!
      *
      * @param permission The name of the permission being checked.
-     *
      * @return {@link PackageManager#PERMISSION_GRANTED} if the calling
      * pid/uid is allowed that permission, or
      * {@link PackageManager#PERMISSION_DENIED} if it is not.
-     *
      * @see PackageManager#checkPermission(String, String)
      * @see #checkPermission
      * @see #checkCallingPermission
      */
-    @CheckResult(suggest="#enforceCallingOrSelfPermission(String,String)")
+    @CheckResult(suggest = "#enforceCallingOrSelfPermission(String,String)")
     @PackageManager.PermissionResult
     public abstract int checkCallingOrSelfPermission(@NonNull String permission);
 
@@ -3787,10 +3739,8 @@ public abstract class Context {
      * Determine whether <em>you</em> have been granted a particular permission.
      *
      * @param permission The name of the permission being checked.
-     *
      * @return {@link PackageManager#PERMISSION_GRANTED} if you have the
      * permission, or {@link PackageManager#PERMISSION_DENIED} if not.
-     *
      * @see PackageManager#checkPermission(String, String)
      * @see #checkCallingPermission(String)
      */
@@ -3802,11 +3752,10 @@ public abstract class Context {
      * and user ID running in the system, throw a {@link SecurityException}.
      *
      * @param permission The name of the permission being checked.
-     * @param pid The process ID being checked against.  Must be &gt; 0.
-     * @param uid The user ID being checked against.  A uid of 0 is the root
-     * user, which will pass every permission check.
-     * @param message A message to include in the exception if it is thrown.
-     *
+     * @param pid        The process ID being checked against.  Must be &gt; 0.
+     * @param uid        The user ID being checked against.  A uid of 0 is the root
+     *                   user, which will pass every permission check.
+     * @param message    A message to include in the exception if it is thrown.
      * @see #checkPermission(String, int, int)
      */
     public abstract void enforcePermission(
@@ -3826,8 +3775,7 @@ public abstract class Context {
      * protection.
      *
      * @param permission The name of the permission being checked.
-     * @param message A message to include in the exception if it is thrown.
-     *
+     * @param message    A message to include in the exception if it is thrown.
      * @see #checkCallingPermission(String)
      */
     public abstract void enforceCallingPermission(
@@ -3842,8 +3790,7 @@ public abstract class Context {
      * with care!
      *
      * @param permission The name of the permission being checked.
-     * @param message A message to include in the exception if it is thrown.
-     *
+     * @param message    A message to include in the exception if it is thrown.
      * @see #checkCallingOrSelfPermission(String)
      */
     public abstract void enforceCallingOrSelfPermission(
@@ -3856,7 +3803,7 @@ public abstract class Context {
      * permissions, typically in response to user interaction (such as the
      * user opening an attachment that you would like someone else to
      * display).
-     *
+     * <p>
      * <p>Normally you should use {@link Intent#FLAG_GRANT_READ_URI_PERMISSION
      * Intent.FLAG_GRANT_READ_URI_PERMISSION} or
      * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION
@@ -3865,7 +3812,7 @@ public abstract class Context {
      * function directly, you should be sure to call
      * {@link #revokeUriPermission} when the target should no longer be allowed
      * to access it.
-     *
+     * <p>
      * <p>To succeed, the content provider owning the Uri must have set the
      * {@link android.R.styleable#AndroidManifestProvider_grantUriPermissions
      * grantUriPermissions} attribute in its manifest or included the
@@ -3873,21 +3820,20 @@ public abstract class Context {
      * &lt;grant-uri-permissions&gt;} tag.
      *
      * @param toPackage The package you would like to allow to access the Uri.
-     * @param uri The Uri you would like to grant access to.
+     * @param uri       The Uri you would like to grant access to.
      * @param modeFlags The desired access modes.  Any combination of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION
-     * Intent.FLAG_GRANT_READ_URI_PERMISSION},
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION
-     * Intent.FLAG_GRANT_WRITE_URI_PERMISSION},
-     * {@link Intent#FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-     * Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION}, or
-     * {@link Intent#FLAG_GRANT_PREFIX_URI_PERMISSION
-     * Intent.FLAG_GRANT_PREFIX_URI_PERMISSION}.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION
+     *                  Intent.FLAG_GRANT_READ_URI_PERMISSION},
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION
+     *                  Intent.FLAG_GRANT_WRITE_URI_PERMISSION},
+     *                  {@link Intent#FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+     *                  Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION}, or
+     *                  {@link Intent#FLAG_GRANT_PREFIX_URI_PERMISSION
+     *                  Intent.FLAG_GRANT_PREFIX_URI_PERMISSION}.
      * @see #revokeUriPermission
      */
     public abstract void grantUriPermission(String toPackage, Uri uri,
-            @Intent.GrantUriMode int modeFlags);
+                                            @Intent.GrantUriMode int modeFlags);
 
     /**
      * Remove all permissions to access a particular content provider Uri
@@ -3897,7 +3843,7 @@ public abstract class Context {
      * revoke both "content://foo/target" and "content://foo/target/sub", but not
      * "content://foo".  It will not remove any prefix grants that exist at a
      * higher level.
-     *
+     * <p>
      * <p>Prior to {@link android.os.Build.VERSION_CODES#LOLLIPOP}, if you did not have
      * regular permission access to a Uri, but had received access to it through
      * a specific Uri permission grant, you could not revoke that grant with this
@@ -3906,13 +3852,12 @@ public abstract class Context {
      * but will remove whatever permission grants to the Uri had been given to the app
      * (or none).</p>
      *
-     * @param uri The Uri you would like to revoke access to.
+     * @param uri       The Uri you would like to revoke access to.
      * @param modeFlags The desired access modes.  Any combination of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION
-     * Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION
-     * Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION
+     *                  Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION
+     *                  Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
      * @see #grantUriPermission
      */
     public abstract void revokeUriPermission(Uri uri, @Intent.AccessUriMode int modeFlags);
@@ -3924,27 +3869,27 @@ public abstract class Context {
      * more general access to the URI's content provider then this check will
      * always fail.
      *
-     * @param uri The uri that is being checked.
-     * @param pid The process ID being checked against.  Must be &gt; 0.
-     * @param uid The user ID being checked against.  A uid of 0 is the root
-     * user, which will pass every permission check.
+     * @param uri       The uri that is being checked.
+     * @param pid       The process ID being checked against.  Must be &gt; 0.
+     * @param uid       The user ID being checked against.  A uid of 0 is the root
+     *                  user, which will pass every permission check.
      * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
      * @return {@link PackageManager#PERMISSION_GRANTED} if the given
      * pid/uid is allowed to access that uri, or
      * {@link PackageManager#PERMISSION_DENIED} if it is not.
-     *
      * @see #checkCallingUriPermission
      */
-    @CheckResult(suggest="#enforceUriPermission(Uri,int,int,String)")
+    @CheckResult(suggest = "#enforceUriPermission(Uri,int,int,String)")
     public abstract int checkUriPermission(Uri uri, int pid, int uid,
-            @Intent.AccessUriMode int modeFlags);
+                                           @Intent.AccessUriMode int modeFlags);
 
-    /** @hide */
+    /**
+     * @hide
+     */
     public abstract int checkUriPermission(Uri uri, int pid, int uid,
-            @Intent.AccessUriMode int modeFlags, IBinder callerToken);
+                                           @Intent.AccessUriMode int modeFlags, IBinder callerToken);
 
     /**
      * Determine whether the calling process and user ID has been
@@ -3956,18 +3901,16 @@ public abstract class Context {
      * that if you are not currently processing an IPC, this function
      * will always fail.
      *
-     * @param uri The uri that is being checked.
+     * @param uri       The uri that is being checked.
      * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
      * @return {@link PackageManager#PERMISSION_GRANTED} if the caller
      * is allowed to access that uri, or
      * {@link PackageManager#PERMISSION_DENIED} if it is not.
-     *
      * @see #checkUriPermission(Uri, int, int, int)
      */
-    @CheckResult(suggest="#enforceCallingUriPermission(Uri,int,String)")
+    @CheckResult(suggest = "#enforceCallingUriPermission(Uri,int,String)")
     public abstract int checkCallingUriPermission(Uri uri, @Intent.AccessUriMode int modeFlags);
 
     /**
@@ -3976,47 +3919,44 @@ public abstract class Context {
      * {@link #checkCallingUriPermission}, except it grants your own permissions
      * if you are not currently processing an IPC.  Use with care!
      *
-     * @param uri The uri that is being checked.
+     * @param uri       The uri that is being checked.
      * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
      * @return {@link PackageManager#PERMISSION_GRANTED} if the caller
      * is allowed to access that uri, or
      * {@link PackageManager#PERMISSION_DENIED} if it is not.
-     *
      * @see #checkCallingUriPermission
      */
-    @CheckResult(suggest="#enforceCallingOrSelfUriPermission(Uri,int,String)")
+    @CheckResult(suggest = "#enforceCallingOrSelfUriPermission(Uri,int,String)")
     public abstract int checkCallingOrSelfUriPermission(Uri uri,
-            @Intent.AccessUriMode int modeFlags);
+                                                        @Intent.AccessUriMode int modeFlags);
 
     /**
      * Check both a Uri and normal permission.  This allows you to perform
      * both {@link #checkPermission} and {@link #checkUriPermission} in one
      * call.
      *
-     * @param uri The Uri whose permission is to be checked, or null to not
-     * do this check.
-     * @param readPermission The permission that provides overall read access,
-     * or null to not do this check.
+     * @param uri             The Uri whose permission is to be checked, or null to not
+     *                        do this check.
+     * @param readPermission  The permission that provides overall read access,
+     *                        or null to not do this check.
      * @param writePermission The permission that provides overall write
-     * access, or null to not do this check.
-     * @param pid The process ID being checked against.  Must be &gt; 0.
-     * @param uid The user ID being checked against.  A uid of 0 is the root
-     * user, which will pass every permission check.
-     * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     *
+     *                        access, or null to not do this check.
+     * @param pid             The process ID being checked against.  Must be &gt; 0.
+     * @param uid             The user ID being checked against.  A uid of 0 is the root
+     *                        user, which will pass every permission check.
+     * @param modeFlags       The type of access to grant.  May be one or both of
+     *                        {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                        {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
      * @return {@link PackageManager#PERMISSION_GRANTED} if the caller
      * is allowed to access that uri or holds one of the given permissions, or
      * {@link PackageManager#PERMISSION_DENIED} if it is not.
      */
-    @CheckResult(suggest="#enforceUriPermission(Uri,String,String,int,int,int,String)")
+    @CheckResult(suggest = "#enforceUriPermission(Uri,String,String,int,int,int,String)")
     public abstract int checkUriPermission(@Nullable Uri uri, @Nullable String readPermission,
-            @Nullable String writePermission, int pid, int uid,
-            @Intent.AccessUriMode int modeFlags);
+                                           @Nullable String writePermission, int pid, int uid,
+                                           @Intent.AccessUriMode int modeFlags);
 
     /**
      * If a particular process and user ID has not been granted
@@ -4026,15 +3966,14 @@ public abstract class Context {
      * general access to the URI's content provider then this check
      * will always fail.
      *
-     * @param uri The uri that is being checked.
-     * @param pid The process ID being checked against.  Must be &gt; 0.
-     * @param uid The user ID being checked against.  A uid of 0 is the root
-     * user, which will pass every permission check.
+     * @param uri       The uri that is being checked.
+     * @param pid       The process ID being checked against.  Must be &gt; 0.
+     * @param uid       The user ID being checked against.  A uid of 0 is the root
+     *                  user, which will pass every permission check.
      * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     * @param message A message to include in the exception if it is thrown.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
+     * @param message   A message to include in the exception if it is thrown.
      * @see #checkUriPermission(Uri, int, int, int)
      */
     public abstract void enforceUriPermission(
@@ -4051,12 +3990,11 @@ public abstract class Context {
      * that if you are not currently processing an IPC, this function
      * will always throw a SecurityException.
      *
-     * @param uri The uri that is being checked.
+     * @param uri       The uri that is being checked.
      * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     * @param message A message to include in the exception if it is thrown.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
+     * @param message   A message to include in the exception if it is thrown.
      * @see #checkCallingUriPermission(Uri, int)
      */
     public abstract void enforceCallingUriPermission(
@@ -4070,12 +4008,11 @@ public abstract class Context {
      * permissions if you are not currently processing an IPC.  Use
      * with care!
      *
-     * @param uri The uri that is being checked.
+     * @param uri       The uri that is being checked.
      * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     * @param message A message to include in the exception if it is thrown.
-     *
+     *                  {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                  {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
+     * @param message   A message to include in the exception if it is thrown.
      * @see #checkCallingOrSelfUriPermission(Uri, int)
      */
     public abstract void enforceCallingOrSelfUriPermission(
@@ -4086,20 +4023,19 @@ public abstract class Context {
      * both {@link #enforcePermission} and {@link #enforceUriPermission} in one
      * call.
      *
-     * @param uri The Uri whose permission is to be checked, or null to not
-     * do this check.
-     * @param readPermission The permission that provides overall read access,
-     * or null to not do this check.
+     * @param uri             The Uri whose permission is to be checked, or null to not
+     *                        do this check.
+     * @param readPermission  The permission that provides overall read access,
+     *                        or null to not do this check.
      * @param writePermission The permission that provides overall write
-     * access, or null to not do this check.
-     * @param pid The process ID being checked against.  Must be &gt; 0.
-     * @param uid The user ID being checked against.  A uid of 0 is the root
-     * user, which will pass every permission check.
-     * @param modeFlags The type of access to grant.  May be one or both of
-     * {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
-     * {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
-     * @param message A message to include in the exception if it is thrown.
-     *
+     *                        access, or null to not do this check.
+     * @param pid             The process ID being checked against.  Must be &gt; 0.
+     * @param uid             The user ID being checked against.  A uid of 0 is the root
+     *                        user, which will pass every permission check.
+     * @param modeFlags       The type of access to grant.  May be one or both of
+     *                        {@link Intent#FLAG_GRANT_READ_URI_PERMISSION Intent.FLAG_GRANT_READ_URI_PERMISSION} or
+     *                        {@link Intent#FLAG_GRANT_WRITE_URI_PERMISSION Intent.FLAG_GRANT_WRITE_URI_PERMISSION}.
+     * @param message         A message to include in the exception if it is thrown.
      * @see #checkUriPermission(Uri, String, String, int, int, int)
      */
     public abstract void enforceUriPermission(
@@ -4107,11 +4043,14 @@ public abstract class Context {
             @Nullable String writePermission, int pid, int uid, @Intent.AccessUriMode int modeFlags,
             @Nullable String message);
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @IntDef(flag = true,
             value = {CONTEXT_INCLUDE_CODE, CONTEXT_IGNORE_SECURITY, CONTEXT_RESTRICTED})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface CreatePackageOptions {}
+    public @interface CreatePackageOptions {
+    }
 
     /**
      * Flag for use with {@link #createPackageContext}: include the application
@@ -4172,26 +4111,24 @@ public abstract class Context {
      * this method returns a new instance of a Context object; Context objects
      * are not shared, however they share common state (Resources, ClassLoader,
      * etc) so the Context instance itself is fairly lightweight.
-     *
+     * <p>
      * <p>Throws {@link android.content.pm.PackageManager.NameNotFoundException} if there is no
      * application with the given package name.
-     *
+     * <p>
      * <p>Throws {@link java.lang.SecurityException} if the Context requested
      * can not be loaded into the caller's process for security reasons (see
      * {@link #CONTEXT_INCLUDE_CODE} for more information}.
      *
      * @param packageName Name of the application's package.
-     * @param flags Option flags, one of {@link #CONTEXT_INCLUDE_CODE}
-     *              or {@link #CONTEXT_IGNORE_SECURITY}.
-     *
+     * @param flags       Option flags, one of {@link #CONTEXT_INCLUDE_CODE}
+     *                    or {@link #CONTEXT_IGNORE_SECURITY}.
      * @return A {@link Context} for the application.
-     *
-     * @throws SecurityException &nbsp;
+     * @throws SecurityException                    &nbsp;
      * @throws PackageManager.NameNotFoundException if there is no application with
-     * the given package name.
+     *                                              the given package name.
      */
     public abstract Context createPackageContext(String packageName,
-            @CreatePackageOptions int flags) throws PackageManager.NameNotFoundException;
+                                                 @CreatePackageOptions int flags) throws PackageManager.NameNotFoundException;
 
     /**
      * Similar to {@link #createPackageContext(String, int)}, but with a
@@ -4210,16 +4147,17 @@ public abstract class Context {
      * @hide
      */
     public abstract Context createApplicationContext(ApplicationInfo application,
-            int flags) throws PackageManager.NameNotFoundException;
+                                                     int flags) throws PackageManager.NameNotFoundException;
 
     /**
      * Get the userId associated with this context
-     * @return user id
      *
+     * @return user id
      * @hide
      */
     @TestApi
-    public abstract @UserIdInt int getUserId();
+    public abstract @UserIdInt
+    int getUserId();
 
     /**
      * Return a new Context object for the current Context but whose resources
@@ -4229,11 +4167,10 @@ public abstract class Context {
      * same configuration) may be so the Context itself can be fairly lightweight.
      *
      * @param overrideConfiguration A {@link Configuration} specifying what
-     * values to modify in the base Configuration of the original Context's
-     * resources.  If the base configuration changes (such as due to an
-     * orientation change), the resources of this context will also change except
-     * for those that have been explicitly overridden with a value here.
-     *
+     *                              values to modify in the base Configuration of the original Context's
+     *                              resources.  If the base configuration changes (such as due to an
+     *                              orientation change), the resources of this context will also change except
+     *                              for those that have been explicitly overridden with a value here.
      * @return A {@link Context} with the given configuration override.
      */
     public abstract Context createConfigurationContext(
@@ -4245,16 +4182,15 @@ public abstract class Context {
      * returns a new instance of a Context object; Context objects are not
      * shared, however common state (ClassLoader, other Resources for the
      * same configuration) may be so the Context itself can be fairly lightweight.
-     *
+     * <p>
      * The returned display Context provides a {@link WindowManager}
      * (see {@link #getSystemService(String)}) that is configured to show windows
      * on the given display.  The WindowManager's {@link WindowManager#getDefaultDisplay}
      * method can be used to retrieve the Display from the returned Context.
      *
      * @param display A {@link Display} object specifying the display
-     * for whose metrics the Context's resources should be tailored and upon which
-     * new windows should be shown.
-     *
+     *                for whose metrics the Context's resources should be tailored and upon which
+     *                new windows should be shown.
      * @return A {@link Context} for the display.
      */
     public abstract Context createDisplayContext(@NonNull Display display);
@@ -4289,7 +4225,9 @@ public abstract class Context {
      */
     public abstract Context createDeviceProtectedStorageContext();
 
-    /** @removed */
+    /**
+     * @removed
+     */
     @Deprecated
     public Context createDeviceEncryptedStorageContext() {
         return createDeviceProtectedStorageContext();
@@ -4317,13 +4255,15 @@ public abstract class Context {
      * Resources for the same configuration) may be so the Context itself can be
      * fairly lightweight.
      *
-     * @see #isCredentialProtectedStorage()
      * @hide
+     * @see #isCredentialProtectedStorage()
      */
     @SystemApi
     public abstract Context createCredentialProtectedStorageContext();
 
-    /** @removed */
+    /**
+     * @removed
+     */
     @Deprecated
     public Context createCredentialEncryptedStorageContext() {
         return createCredentialProtectedStorageContext();
@@ -4349,7 +4289,6 @@ public abstract class Context {
      * Indicates whether this Context is restricted.
      *
      * @return {@code true} if this Context is restricted, {@code false} otherwise.
-     *
      * @see #CONTEXT_RESTRICTED
      */
     public boolean isRestricted() {
@@ -4364,7 +4303,9 @@ public abstract class Context {
      */
     public abstract boolean isDeviceProtectedStorage();
 
-    /** @removed */
+    /**
+     * @removed
+     */
     @Deprecated
     public boolean isDeviceEncryptedStorage() {
         return isDeviceProtectedStorage();
@@ -4374,13 +4315,15 @@ public abstract class Context {
      * Indicates if the storage APIs of this Context are backed by
      * credential-protected storage.
      *
-     * @see #createCredentialProtectedStorageContext()
      * @hide
+     * @see #createCredentialProtectedStorageContext()
      */
     @SystemApi
     public abstract boolean isCredentialProtectedStorage();
 
-    /** @removed */
+    /**
+     * @removed
+     */
     @Deprecated
     public boolean isCredentialEncryptedStorage() {
         return isCredentialProtectedStorage();
