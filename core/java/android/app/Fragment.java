@@ -1588,6 +1588,9 @@ public class Fragment implements ComponentCallbacks2, OnCreateContextMenuListene
      *
      * @param savedInstanceState If the fragment is being re-created from
      *                           a previous saved state, this is the state.
+     * ---------------------------------------------------------------------------------------------
+     * Fragment创建阶段的最后一步。Fragment的创建阶段依次分为：onAttach()、onCreate()、onCreateView()、onActivityCreated
+     *
      */
     @CallSuper
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
