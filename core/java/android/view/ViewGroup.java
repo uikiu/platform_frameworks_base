@@ -2140,6 +2140,16 @@ public abstract class ViewGroup extends View implements ViewParent, ViewManager 
         return transformedEvent;
     }
 
+    /**
+     * 分发事件
+     * 事件分发顺序：Activity ——> Window ——> DecorView ——> ViewGroup
+     * 本方法中会调用onInterceptTouchEvent()以判断是否要拦截事件，如果onInterceptTouchEvent()返回true。则拦截
+     * 事件（不会再往下层ViewGrop或者View）。如果onInterceptTouchEvent()返回false则表明不拦截，继续往下层的ViewGroup
+     * 或者View分发事件。
+     *
+     * @param ev
+     * @return
+     */
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (mInputEventConsistencyVerifier != null) {

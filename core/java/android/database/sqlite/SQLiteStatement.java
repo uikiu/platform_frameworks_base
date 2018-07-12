@@ -25,6 +25,8 @@ import android.os.ParcelFileDescriptor;
  * <p>
  * This class is not thread-safe.
  * </p>
+ * -------------------------------------------------------------------------------------------------
+ *
  */
 public final class SQLiteStatement extends SQLiteProgram {
     SQLiteStatement(SQLiteDatabase db, String sql, Object[] bindArgs) {

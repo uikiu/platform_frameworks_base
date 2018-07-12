@@ -168,6 +168,8 @@ import dalvik.annotation.optimization.FastNative;
  * situations such as receiving a new {@link #ACTION_DOWN} without first having
  * received an {@link #ACTION_UP} for the prior gesture.
  * </p>
+ * -------------------------------------------------------------------------------------------------
+ * 事件触发的细节，包含：触发的时间、触发的位置、触发类型
  */
 public final class MotionEvent extends InputEvent implements Parcelable {
     private static final long NS_PER_MS = 1000000;
@@ -195,6 +197,8 @@ public final class MotionEvent extends InputEvent implements Parcelable {
      * secondary and tertiary button clicks and handle them appropriately.
      * Use {@link #getButtonState} to retrieve the button state.
      * </p>
+     * ---------------------------------------------------------------------------------------------
+     * 按下View，所有事件的开始
      */
     public static final int ACTION_DOWN             = 0;
 
@@ -202,6 +206,8 @@ public final class MotionEvent extends InputEvent implements Parcelable {
      * Constant for {@link #getActionMasked}: A pressed gesture has finished, the
      * motion contains the final release location as well as any intermediate
      * points since the last down or move event.
+     * ---------------------------------------------------------------------------------------------
+     * 抬起view，所有事件的结束，与ACTION_DOWN对应
      */
     public static final int ACTION_UP               = 1;
 
@@ -210,6 +216,8 @@ public final class MotionEvent extends InputEvent implements Parcelable {
      * press gesture (between {@link #ACTION_DOWN} and {@link #ACTION_UP}).
      * The motion contains the most recent point, as well as any intermediate
      * points since the last down or move event.
+     * ---------------------------------------------------------------------------------------------
+     * 滑动view
      */
     public static final int ACTION_MOVE             = 2;
 
@@ -217,6 +225,8 @@ public final class MotionEvent extends InputEvent implements Parcelable {
      * Constant for {@link #getActionMasked}: The current gesture has been aborted.
      * You will not receive any more points in it.  You should treat this as
      * an up event, but not perform any action that you normally would.
+     * ---------------------------------------------------------------------------------------------
+     * 中断时间
      */
     public static final int ACTION_CANCEL           = 3;
 

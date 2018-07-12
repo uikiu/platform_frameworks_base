@@ -770,6 +770,9 @@ public class Activity extends ContextThemeWrapper
     }
     /* package */ NonConfigurationInstances mLastNonConfigurationInstances;
 
+    /**
+     * 实质为PhoneWindow
+     */
     private Window mWindow;
 
     private WindowManager mWindowManager;
@@ -2778,6 +2781,7 @@ public class Activity extends ContextThemeWrapper
      *
      * @return Return true if you have consumed the event, false if you haven't.
      * The default implementation always returns false.
+     * ---------------------------------------------------------------------------------------------
      */
     public boolean onTouchEvent(MotionEvent event) {
         if (mWindow.shouldCloseOnTouch(this, event)) {
@@ -3056,11 +3060,16 @@ public class Activity extends ContextThemeWrapper
      * @param ev The touch screen event.
      *
      * @return boolean Return true if this event was consumed.
+     * ---------------------------------------------------------------------------------------------
+     * 事件派发的起始位置。
      */
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             onUserInteraction();
         }
+        //如果getWindow().superDispatchTouchEvent(ev)的返回true返回true，则本方法直接返回true,意即：
+        //该点击事件停止往下传递，该事件传递过程结束。
+        //这里的window其实是：PhoneWindow
         if (getWindow().superDispatchTouchEvent(ev)) {
             return true;
         }

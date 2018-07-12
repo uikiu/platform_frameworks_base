@@ -9986,6 +9986,14 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      *
      * @param event The motion event to be dispatched.
      * @return True if the event was handled by the view, false otherwise.
+     * ---------------------------------------------------------------------------------------------
+     * 本view的事件MotionEvent来自上层的ViewGroup。
+     * 1. 先判断OnTouchListener监听中的boolean onTouch(View v, MotionEvent event)方法是否返回true，
+     *    如果返回true则不再允许下一步中onTouchEvent()执行。
+     * 2. 然后交由onTouchEvent()方法进行事件处理。
+     * 如果onTouchEvent()方法返回true则表示消耗此事件，不再向下传递。
+     * 如果返回onTouchEvent()方法false则表示不消耗此事件，交由上层处理。
+     *
      */
     public boolean dispatchTouchEvent(MotionEvent event) {
         // If the event should be handled by accessibility focus first.
@@ -11157,6 +11165,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      *
      * @param event The motion event.
      * @return True if the event was handled, false otherwise.
+     * ---------------------------------------------------------------------------------------------
+     * 翻译：motion 动作。
+     * ---------------------------------------------------------------------------------------------
+     * 事件触发的细节，时间、位置等信息会封装到MotionEvent当中。
+     * 开始--->down事件--->move事件---->up事件---->结束
+     *                    cacel事件
      */
     public boolean onTouchEvent(MotionEvent event) {
         final float x = event.getX();
@@ -22304,20 +22318,21 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
      * MeasureSpecs are implemented as ints to reduce object allocation. This class
      * is provided to pack and unpack the &lt;size, mode&gt; tuple into the int.
      * ---------------------------------------------------------------------------------------------
-     * 名词翻译：MeasureSpec 测量规格、测量要求；encapsulates封装；requirements需要；
+     * 名词翻译：MeasureSpec 测量规范、测量要求；encapsulates封装；requirements需要；
      *
-     * MeasureSpec定义：父容器对子view测量规则的封装。服务于测量流程，便于父容器对子View的限制以及控制。
+     * 度量规格MeasureSpec：父容器对子view测量规则的封装。服务于测量流程，便于父容器对子View的限制以及控制。
      * 一个子View的宽高的测量，由两个因素决定：1、父容器的提供的测量规则；2、子View自身的LayoutParams属性。
      * 而子View宽高的测量就是基于以上两点，将view的LayoutParams根据父容器所要求的规则转换为对应的MesureSpec。
      * 它的0-30位表示size，31-32位表示模式。
      *
      * 一、测量规则之测量模式（父布局对子布局的要求）：
-     * 1. EXACTLY:父布局已经决定了子布局的确切大小，这也是childView的最终大小。-----match_parent
-     * 2. ATMOST:父布局已经给出了子布局的边界值，即最大值。-----wrap_content
-     * 3. UNSPECIFIED:父布局未对子布局添加任何约束。子布局可以动态测量，经常为滑动的View内部使用。
+     * 1. EXACTLY最严限制: 父布局已经决定了子布局的确切大小，这也是childView的最终大小。-----match_parent
+     * 2. ATMOST限制最大值: 父布局已经给出了子布局的边界值，即最大值。-----wrap_content
+     * 3. UNSPECIFIED最宽松限制: 父布局未对子布局添加任何约束。子布局可以动态测量，经常为滑动的View内部使用。
      * 例如：scrollView，listView
      *
      * 主要有getMode和getSize方法。
+     *
      * ---------------------------------------------------------------------------------------------
      * 一、复习java中的位运算
      * 1. 与运算符"&"
@@ -22346,6 +22361,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
         /**
          * Measure specification mode: The parent has not imposed any constraint
          * on the child. It can be whatever size it wants.
+         * -----------------------------------------------------------------------------------------
+         * 测量模式：父View没有对子View施加任何限制，子View可以是它想要的任何值。
          */
         public static final int UNSPECIFIED = 0 << MODE_SHIFT;
 
@@ -22603,6 +22620,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback,
          * @param event The MotionEvent object containing full information about
          *        the event.
          * @return True if the listener has consumed the event, false otherwise.
+         * -----------------------------------------------------------------------------------------
          */
         boolean onTouch(View v, MotionEvent event);
     }

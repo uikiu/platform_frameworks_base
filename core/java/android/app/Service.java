@@ -539,6 +539,7 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
 	 * START_FLAG_RETRY=2 代表重启但不重新投递intent.所以intent可能为空，需要非空判断。
 	 * @param startId 每次请求启动服务的唯一的id。这个id会在stopSelfResult(int)方法中作为参数。详见：stopSelfResult(int)方法
 	 * //----------------------------------------------------------------------------------------
+     * 返回值决定
 	 * 三种模式：
 		1.不重启不重新投递： 
 		returnValue : START_NOT_STICKY=2 
@@ -548,7 +549,7 @@ public abstract class Service extends ContextWrapper implements ComponentCallbac
 		flag：START_FLAG_RETRY=2
 		这种模式intent需要非空判断。
 		3.重启并重新投递： 
-		returnValue：START_REDELIVER_INTENT=3 
+		returnValue：START_REDELIVER_INTENT=3
 		flag：START_FLAG_REDELIVERY=1
 	 * 
      */

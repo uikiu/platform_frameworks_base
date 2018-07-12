@@ -79,6 +79,8 @@ public final class HttpConnectionParams implements CoreConnectionPNames {
      * method parameters. 
      *
      * @param timeout Timeout in milliseconds
+     * ---------------------------------------------------------------------------------------------
+     * soTimeout:read time out
      */
     public static void setSoTimeout(final HttpParams params, int timeout) {
         if (params == null) {

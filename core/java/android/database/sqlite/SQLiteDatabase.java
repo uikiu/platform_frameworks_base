@@ -1352,6 +1352,8 @@ public final class SQLiteDatabase extends SQLiteClosable {
      *            row. The keys should be the column names and the values the
      *            column values
      * @return the row ID of the newly inserted row, or -1 if an error occurred
+     * ---------------------------------------------------------------------------------------------
+     * 插入数据，如果插入成功则返回表的index，如果插入失败则返回-1
      */
     public long insert(String table, String nullColumnHack, ContentValues values) {
         try {
@@ -1542,6 +1544,9 @@ public final class SQLiteDatabase extends SQLiteClosable {
      *            will be replaced by the values from whereArgs. The values
      *            will be bound as Strings.
      * @return the number of rows affected
+     * ---------------------------------------------------------------------------------------------
+     * @param table tableName
+     * @param values 列名为key，列的新值为value，组合成ContentValues
      */
     public int update(String table, ContentValues values, String whereClause, String[] whereArgs) {
         return updateWithOnConflict(table, values, whereClause, whereArgs, CONFLICT_NONE);
