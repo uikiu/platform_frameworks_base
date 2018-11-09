@@ -433,10 +433,12 @@ public abstract class AsyncTask<Params, Progress, Result> {
      * Runs on the UI thread after {@link #publishProgress} is invoked.
      * The specified values are the values passed to {@link #publishProgress}.
      *
-     * @param values The values indicating progress.
+     * @param values The values indicating progress. values代表进度
      *
      * @see #publishProgress
      * @see #doInBackground
+     * ---------------------------------------------------------------------------------------------
+     * 当触发publishProgress方法后，在UI线程执行
      */
     @SuppressWarnings({"UnusedDeclaration"})
     @MainThread
@@ -679,6 +681,9 @@ public abstract class AsyncTask<Params, Progress, Result> {
      *
      * @see #onProgressUpdate
      * @see #doInBackground
+     * ---------------------------------------------------------------------------------------------
+     * 当后台还在运行时，这个方法可以在{@link #doInBackground}中触发以便更新UI。
+     * 每次调用此方法都会触发onProgressUpdate方法
      */
     @WorkerThread
     protected final void publishProgress(Progress... values) {

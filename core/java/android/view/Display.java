@@ -61,6 +61,8 @@ import java.util.Arrays;
  * display may be presented on one or more physical displays according to the devices
  * that are currently attached and whether mirroring has been enabled.
  * </p>
+ * -------------------------------------------------------------------------------------------------
+ *
  */
 public final class Display {
     private static final String TAG = "Display";

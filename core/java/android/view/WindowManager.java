@@ -109,6 +109,8 @@ public interface WindowManager extends ViewManager {
      * </p>
      *
      * @return The display that this window manager is managing.
+     * ---------------------------------------------------------------------------------------------
+     *
      */
     public Display getDefaultDisplay();
 
@@ -167,6 +169,8 @@ public interface WindowManager extends ViewManager {
          * X position for this window.  With the default gravity it is ignored.
          * When using {@link Gravity#LEFT} or {@link Gravity#START} or {@link Gravity#RIGHT} or
          * {@link Gravity#END} it provides an offset from the given edge.
+         * -----------------------------------------------------------------------------------------
+         *
          */
         @ViewDebug.ExportedProperty
         public int x;

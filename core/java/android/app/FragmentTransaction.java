@@ -93,6 +93,10 @@ public abstract class FragmentTransaction {
      * @param fragment The fragment to be hidden.
      *
      * @return Returns the same FragmentTransaction instance.
+     * ---------------------------------------------------------------------------------------------
+     * 将fragment隐藏，但是隐藏的前提是，你传入的参数fragment已经添加到容器中，也就是说在调用本方法隐藏之前，你
+     * 曾经对这个faragment对象执行过add操作。
+     * @param fragment 你要隐藏的fragment对象
      */
     public abstract FragmentTransaction hide(Fragment fragment);
 
@@ -104,6 +108,10 @@ public abstract class FragmentTransaction {
      * @param fragment The fragment to be shown.
      *
      * @return Returns the same FragmentTransaction instance.
+     * ---------------------------------------------------------------------------------------------
+     * 显示以前隐藏的的fragment，前提是，你传入的参数fragment已经添加到容器中，也就是说在调用本方法隐藏之前，你
+     * 曾经对这个faragment对象执行过add操作。
+     * @param fragment 你要显示的fragment对象
      */
     public abstract FragmentTransaction show(Fragment fragment);
 
