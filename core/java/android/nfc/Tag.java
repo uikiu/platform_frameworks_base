@@ -108,6 +108,8 @@ import java.util.HashMap;
  * code executing on the tag. Use {@link TagTechnology} classes to access a broad
  * range of capabilities available in NFC tags.
  * <p>
+ * -------------------------------------------------------------------------------------------------
+ * NFC的tag，包含有数据格式，比如Ndef
  */
 public final class Tag implements Parcelable {
     final byte[] mId;

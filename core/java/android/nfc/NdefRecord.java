@@ -84,6 +84,8 @@ import java.util.Locale;
  *
  * @see NfcAdapter#ACTION_NDEF_DISCOVERED
  * @see NdefMessage
+ * -------------------------------------------------------------------------------------------------
+ *
  */
 public final class NdefRecord implements Parcelable {
     /**

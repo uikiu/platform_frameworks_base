@@ -67,6 +67,8 @@ import java.io.IOException;
  *
  * <p class="note"><strong>Note:</strong> Methods that perform I/O operations
  * require the {@link android.Manifest.permission#NFC} permission.
+ * -------------------------------------------------------------------------------------------------
+ * 自身包含有NdefMessage，自身又属于Tag
  */
 public final class Ndef extends BasicTagTechnology {
     private static final String TAG = "NFC";

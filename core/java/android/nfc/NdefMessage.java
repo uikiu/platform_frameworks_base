@@ -57,6 +57,8 @@ import android.os.Parcelable;
  *
  * @see NfcAdapter#ACTION_NDEF_DISCOVERED
  * @see NdefRecord
+ * -------------------------------------------------------------------------------------------------
+ * NDEF消息，包含NDEF记录
  */
 public final class NdefMessage implements Parcelable {
     private final NdefRecord[] mRecords;
