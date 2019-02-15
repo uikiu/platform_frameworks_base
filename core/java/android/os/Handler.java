@@ -350,6 +350,9 @@ public class Handler {
      * @return Returns true if the Runnable was successfully placed in to the 
      *         message queue.  Returns false on failure, usually because the
      *         looper processing the message queue is exiting.
+     *  --------------------------------------------------------------------------------------------
+     *  异步线程切换到主线程
+     *  @param r 异步线程切换到主线程后要执行的操作
      */
     public final boolean post(Runnable r)
     {

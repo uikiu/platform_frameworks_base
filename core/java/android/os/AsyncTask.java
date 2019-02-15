@@ -234,6 +234,10 @@ public abstract class AsyncTask<Params, Progress, Result> {
 
     private final Handler mHandler;
 
+    /**
+     * Serial '串行'的意思
+     * Deque '双端队列'的意思
+     */
     private static class SerialExecutor implements Executor {
         final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
         Runnable mActive;
