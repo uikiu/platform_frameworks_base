@@ -157,6 +157,9 @@ public final class BluetoothServerSocket implements Closeable {
      *
      * @return a connected {@link BluetoothSocket}
      * @throws IOException on error, for example this call was aborted, or timeout
+     * ---------------------------------------------------------------------------------------------
+     * 阻塞方法，直到建立连接超时。如果连接成功则返回客户端的监听接口对象：BluetoothSocket
+     * 由于本方法是阻塞的，所以只有等本方法返回后才可以接收新的连接请求。
      */
     public BluetoothSocket accept(int timeout) throws IOException {
         return mSocket.accept(timeout);
@@ -168,6 +171,9 @@ public final class BluetoothServerSocket implements Closeable {
      * throw an IOException.
      * <p>Closing the {@link BluetoothServerSocket} will <em>not</em>
      * close any {@link BluetoothSocket} received from {@link #accept()}.
+     * ---------------------------------------------------------------------------------------------
+     * 在其他线程中立即阻止对此套接字的调用。
+     * 关闭从{@link #accept()}.接收到的任意 {@link BluetoothSocket}
      */
     public void close() throws IOException {
         if (DBG) Log.d(TAG, "BluetoothServerSocket:close() called. mChannel=" + mChannel);

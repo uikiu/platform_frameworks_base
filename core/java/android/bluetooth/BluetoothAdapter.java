@@ -101,6 +101,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * {@see BluetoothDevice}
  * {@see BluetoothServerSocket}
+ * -------------------------------------------------------------------------------------------------
+ * 本地蓝牙适配器(蓝牙无线装置)
+ * BluetoothAdapter 是所有蓝牙交互的入口点。利用它可以发现其他蓝牙设备。具有以下功能：
+ * 1. 发现其他设备列表
+ * 2. 配对其他设备
+ * 3. 使用已知的MAC地址(会扫描到)实例化BluetoothDevice
+ * 4. 创建BluetoothServerSocket,server端监听来自client的通信
+ *
  */
 public final class BluetoothAdapter {
     private static final String TAG = "BluetoothAdapter";
@@ -1393,6 +1401,8 @@ public final class BluetoothAdapter {
      * to get the updated value.
      *
      * @return true on success, false on error
+     * ---------------------------------------------------------------------------------------------
+     *
      */
     @RequiresPermission(Manifest.permission.BLUETOOTH_ADMIN)
     public boolean startDiscovery() {

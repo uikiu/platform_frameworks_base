@@ -375,6 +375,8 @@ public class Instrumentation {
      * 
      * @param recipient Called the next time the thread's message queue is
      *                  idle.
+     * ---------------------------------------------------------------------------------------------
+     *
      */
     public void waitForIdle(Runnable recipient) {
         mMessageQueue.addIdleHandler(new Idler(recipient));
@@ -400,6 +402,8 @@ public class Instrumentation {
      * looking at or modifying the view hierarchy.
      * 
      * @param runner The code to run on the main thread.
+     * ---------------------------------------------------------------------------------------------
+     *  阻塞线程，在
      */
     public void runOnMainSync(Runnable runner) {
         validateNotAppThread();

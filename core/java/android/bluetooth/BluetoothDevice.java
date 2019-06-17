@@ -69,6 +69,8 @@ import java.util.UUID;
  *
  * {@see BluetoothAdapter}
  * {@see BluetoothSocket}
+ * -------------------------------------------------------------------------------------------------
+ * 代表远端设备，即连接后的对方设备。
  */
 public final class BluetoothDevice implements Parcelable {
     private static final String TAG = "BluetoothDevice";
