@@ -43,6 +43,12 @@ import java.util.Map;
  * permission.
  *
  * @see AdvertiseData
+ * -------------------------------------------------------------------------------------------------
+ * 1. 发送广播
+ * 2. 关闭广播
+ *
+ * 每一个广播可以传播31字节数据,通过{@link AdvertiseData}.
+ * 获取本实例方法:{@link BluetoothAdapter#getBluetoothLeAdvertiser()}
  */
 public final class BluetoothLeAdvertiser {
 
@@ -105,6 +111,9 @@ public final class BluetoothLeAdvertiser {
      * @param advertiseData Advertisement data to be advertised in advertisement packet.
      * @param scanResponse Scan response associated with the advertisement data.
      * @param callback Callback for advertising status.
+     * ---------------------------------------------------------------------------------------------
+     * 开启广播
+     *
      */
     public void startAdvertising(AdvertiseSettings settings,
             AdvertiseData advertiseData, AdvertiseData scanResponse,

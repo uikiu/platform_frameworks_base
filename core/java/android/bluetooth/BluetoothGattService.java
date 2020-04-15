@@ -28,11 +28,14 @@ import java.util.UUID;
  *
  * <p> Gatt Service contains a collection of {@link BluetoothGattCharacteristic},
  * as well as referenced services.
+ * -------------------------------------------------------------------------------------------------
+ * 代表Gatt 服务。包含有{@link BluetoothGattCharacteristic}
  */
 public class BluetoothGattService implements Parcelable {
 
     /**
      * Primary service
+     * 主服务
      */
     public static final int SERVICE_TYPE_PRIMARY = 0;
 

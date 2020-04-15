@@ -28,6 +28,10 @@ import java.util.UUID;
  * <p> GATT Descriptors contain additional information and attributes of a GATT
  * characteristic, {@link BluetoothGattCharacteristic}. They can be used to describe
  * the characteristic's features or to control certain behaviours of the characteristic.
+ * -------------------------------------------------------------------------------------------------
+ * 翻译：Descriptor描述，certain某些
+ *
+ *Descriptor包含characteristic的附加信息和一些参数。用于描述characteristic的特性和characteristic行为。
  */
 public class BluetoothGattDescriptor implements Parcelable {
 

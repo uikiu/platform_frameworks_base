@@ -23,6 +23,7 @@ import android.os.Parcelable;
  * The {@link AdvertiseSettings} provide a way to adjust advertising preferences for each
  * Bluetooth LE advertisement instance. Use {@link AdvertiseSettings.Builder} to create an
  * instance of this class.
+ * -------------------------------------------------------------------------------------------------
  */
 public final class AdvertiseSettings implements Parcelable {
     /**
@@ -169,6 +170,10 @@ public final class AdvertiseSettings implements Parcelable {
          * {@link AdvertiseSettings#ADVERTISE_MODE_BALANCED},
          * or {@link AdvertiseSettings#ADVERTISE_MODE_LOW_LATENCY}.
          * @throws IllegalArgumentException If the advertiseMode is invalid.
+         * -----------------------------------------------------------------------------------------
+         * 设置广播的模式，低功耗，平衡和低延迟三种模式；
+         * 对应  AdvertiseSettings.ADVERTISE_MODE_LOW_POWER  ,ADVERTISE_MODE_BALANCED ,ADVERTISE_MODE_LOW_LATENCY
+         * 从左右到右，广播的间隔会越来越短
          */
         public Builder setAdvertiseMode(int advertiseMode) {
             if (advertiseMode < ADVERTISE_MODE_LOW_POWER
@@ -188,6 +193,14 @@ public final class AdvertiseSettings implements Parcelable {
          * {@link AdvertiseSettings#ADVERTISE_TX_POWER_MEDIUM}
          * or {@link AdvertiseSettings#ADVERTISE_TX_POWER_HIGH}.
          * @throws IllegalArgumentException If the {@code txPowerLevel} is invalid.
+         * -----------------------------------------------------------------------------------------
+         * 设置广播的信号强度
+         * 常量有AdvertiseSettings.ADVERTISE_TX_POWER_ULTRA_LOW,ADVERTISE_TX_POWER_LOW,ADVERTISE_TX_POWER_MEDIUM,ADVERTISE_TX_POWER_HIGH
+         * 从左到右分别表示强度越来越强.
+         * 举例：当设置为ADVERTISE_TX_POWER_ULTRA_LOW时，
+         * 手机1和手机2放在一起，手机2扫描到的rssi信号强度为-56左右，
+         * 当设置为ADVERTISE_TX_POWER_HIGH  时， 扫描到的信号强度为-33左右，
+         * 信号强度越大，表示手机和设备靠的越近
          */
         public Builder setTxPowerLevel(int txPowerLevel) {
             if (txPowerLevel < ADVERTISE_TX_POWER_ULTRA_LOW
@@ -203,6 +216,9 @@ public final class AdvertiseSettings implements Parcelable {
          *
          * @param connectable Controls whether the advertisment type will be connectable (true) or
          * non-connectable (false).
+         * -----------------------------------------------------------------------------------------
+         * 本广播是否可连接
+         * 广播分为可连接广播和不可连接广播，一般不可连接广播应用在iBeacon设备上，这样APP无法连接上iBeacon设备
          */
         public Builder setConnectable(boolean connectable) {
             mConnectable = connectable;
@@ -215,6 +231,9 @@ public final class AdvertiseSettings implements Parcelable {
          * @param timeoutMillis Advertising time limit. May not exceed 180000 milliseconds. A value
          * of 0 will disable the time limit.
          * @throws IllegalArgumentException If the provided timeout is over 180000 ms.
+         * -----------------------------------------------------------------------------------------
+         * 设置广播的最长时间，最大值为常量AdvertiseSettings.LIMITED_ADVERTISING_MAX_MILLIS = 180 * 1000;  180秒
+         * 设为0时，代表无时间限制会一直广播
          */
         public Builder setTimeout(int timeoutMillis) {
             if (timeoutMillis < 0 || timeoutMillis > LIMITED_ADVERTISING_MAX_MILLIS) {

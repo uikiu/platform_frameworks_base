@@ -678,6 +678,8 @@ public final class BluetoothAdapter {
      * <p>
      * Use {@link #isMultipleAdvertisementSupported()} to check whether LE Advertising is supported
      * on this device before calling this method.
+     * ---------------------------------------------------------------------------------------------
+     * 获取蓝牙广告(广播)
      */
     public BluetoothLeAdvertiser getBluetoothLeAdvertiser() {
         if (!getLeAccess()) {
@@ -1987,6 +1989,8 @@ public final class BluetoothAdapter {
      * @return a listening RFCOMM BluetoothServerSocket
      * @throws IOException on error, for example Bluetooth not available, or insufficient
      * permissions, or channel in use.
+     * ---------------------------------------------------------------------------------------------
+     *
      */
     @RequiresPermission(Manifest.permission.BLUETOOTH)
     public BluetoothServerSocket listenUsingRfcommWithServiceRecord(String name, UUID uuid)
@@ -2656,6 +2660,8 @@ public final class BluetoothAdapter {
      * @return true, if the scan was started successfully
      * @deprecated use {@link BluetoothLeScanner#startScan(List, ScanSettings, ScanCallback)}
      * instead.
+     * ---------------------------------------------------------------------------------------------
+     *  已被废弃，请使用{@link BluetoothLeScanner#startScan(List, ScanSettings, ScanCallback)}代替
      */
     @Deprecated
     @RequiresPermission(Manifest.permission.BLUETOOTH_ADMIN)

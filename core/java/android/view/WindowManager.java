@@ -170,7 +170,7 @@ public interface WindowManager extends ViewManager {
          * When using {@link Gravity#LEFT} or {@link Gravity#START} or {@link Gravity#RIGHT} or
          * {@link Gravity#END} it provides an offset from the given edge.
          * -----------------------------------------------------------------------------------------
-         *
+         *窗口在X轴上的位置
          */
         @ViewDebug.ExportedProperty
         public int x;
@@ -179,6 +179,8 @@ public interface WindowManager extends ViewManager {
          * Y position for this window.  With the default gravity it is ignored.
          * When using {@link Gravity#TOP} or {@link Gravity#BOTTOM} it provides
          * an offset from the given edge.
+         * -----------------------------------------------------------------------------------------
+         * 窗口在Y轴上的位置
          */
         @ViewDebug.ExportedProperty
         public int y;

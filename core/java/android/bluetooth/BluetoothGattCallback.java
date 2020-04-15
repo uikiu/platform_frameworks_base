@@ -18,6 +18,7 @@ package android.bluetooth;
 
 /**
  * This abstract class is used to implement {@link BluetoothGatt} callbacks.
+ *
  */
 public abstract class BluetoothGattCallback {
 

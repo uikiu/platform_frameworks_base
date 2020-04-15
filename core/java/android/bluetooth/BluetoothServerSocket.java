@@ -64,6 +64,8 @@ import java.io.IOException;
  * </div>
  *
  * {@see BluetoothSocket}
+ * -------------------------------------------------------------------------------------------------
+ *
  */
 public final class BluetoothServerSocket implements Closeable {
 
@@ -172,6 +174,7 @@ public final class BluetoothServerSocket implements Closeable {
      * <p>Closing the {@link BluetoothServerSocket} will <em>not</em>
      * close any {@link BluetoothSocket} received from {@link #accept()}.
      * ---------------------------------------------------------------------------------------------
+     * 服务端关闭RFCOMM连接监听
      * 在其他线程中立即阻止对此套接字的调用。
      * 关闭从{@link #accept()}.接收到的任意 {@link BluetoothSocket}
      */

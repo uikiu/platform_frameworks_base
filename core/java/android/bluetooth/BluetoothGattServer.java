@@ -34,6 +34,16 @@ import java.util.UUID;
  * <p>BluetoothGattServer is a proxy object for controlling the Bluetooth Service
  * via IPC.  Use {@link BluetoothManager#openGattServer} to get an instance
  * of this class.
+ * -------------------------------------------------------------------------------------------------
+ * 1. 首先要找到设备，类似于先要连接到指定IP设备；2. 找到指定的服务，类似于不同的应用；3. 找到服务中指定的指定的profile
+ * ，类似于不同的接口；4. 向接口中写数据需要使用characterstic类似于tcp/ip通信数据包
+ *
+ * BLE的server端。一个server包含多个service，即mServices。
+ * 一个gatt server包含多个service，每一个service的具有唯一的标识uuid
+ * 一个service 中有多个Characteristic，每一个Characteristic具有唯一的标识uuid
+ * 所以，在数据传输的时候，需要先连接设备，找到特定服务，找到特定characteristic，通过Characteristic执行数据读写
+ *
+ * 获取实例：通过BluetoothManager获取实例。{@link BluetoothManager#openGattServer}
  */
 public final class BluetoothGattServer implements BluetoothProfile {
     private static final String TAG = "BluetoothGattServer";
@@ -534,6 +544,7 @@ public final class BluetoothGattServer implements BluetoothProfile {
      * @param autoConnect Whether to directly connect to the remote device (false) or to
      * automatically connect as soon as the remote device becomes available (true).
      * @return true, if the connection attempt was initiated successfully
+     * ---------------------------------------------------------------------------------------------
      */
     public boolean connect(BluetoothDevice device, boolean autoConnect) {
         if (DBG) {
@@ -705,6 +716,10 @@ public final class BluetoothGattServer implements BluetoothProfile {
      *
      * @param service Service to be added to the list of services provided by this device.
      * @return true, if the service has been added successfully
+     * ---------------------------------------------------------------------------------------------
+     * 服务端添加特定的服务。如果本服务已经被添加，则会更新并通知客户端。
+     *
+     * 如果服务添加成功则返回true,否则false
      */
     public boolean addService(BluetoothGattService service) {
         if (DBG) Log.d(TAG, "addService() - service: " + service.getUuid());

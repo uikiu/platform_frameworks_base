@@ -1665,9 +1665,15 @@ public final class BluetoothDevice implements Parcelable {
      * your own unique UUID.
      *
      * @param uuid service record uuid to lookup RFCOMM channel
-     * @return a RFCOMM BluetoothServerSocket ready for an outgoing connection
+     * @return a RFCOMM BluetoothServerSocket ready for an outgoin connection
      * @throws IOException on error, for example Bluetooth not available, or insufficient
      * permissions
+     * ---------------------------------------------------------------------------------------------------------
+     *  RFCOMM是一种通信通道，创建安全通道
+     *  well-know:众所周知
+     *  Android与Android通信:使用自定义的UUID
+     *  Android与蓝牙串行板通信:使用默认的SPP UUID:00001101-0000-1000-8000-00805F9B34FB
+     * 
      */
     @RequiresPermission(Manifest.permission.BLUETOOTH)
     public BluetoothSocket createRfcommSocketToServiceRecord(UUID uuid) throws IOException {
@@ -1706,6 +1712,9 @@ public final class BluetoothDevice implements Parcelable {
      * @return a RFCOMM BluetoothServerSocket ready for an outgoing connection
      * @throws IOException on error, for example Bluetooth not available, or insufficient
      * permissions
+     * ---------------------------------------------------------------------------------------------
+     * Insecure不安全的
+     * 创建一个不安全的通道
      */
     @RequiresPermission(Manifest.permission.BLUETOOTH)
     public BluetoothSocket createInsecureRfcommSocketToServiceRecord(UUID uuid) throws IOException {

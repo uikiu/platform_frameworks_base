@@ -276,6 +276,8 @@ public final class ScanResult implements Parcelable {
      * Returns the advertising set id.
      * May return {@link ScanResult#SID_NOT_PRESENT} if
      * no set id was is present.
+     * ---------------------------------------------------------------------------------------------
+     * 获取广播id，如果没有设置会获取到{@link ScanResult#SID_NOT_PRESENT}
      */
     public int getAdvertisingSid() {
         return mAdvertisingSid;

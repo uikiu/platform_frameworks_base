@@ -184,8 +184,11 @@ public abstract class AsyncTask<Params, Progress, Result> {
     // We want at least 2 threads and at most 4 threads in the core pool,
     // preferring to have 1 less than the CPU count to avoid saturating
     // the CPU with background work
+    //核心线程数:最少2个,最多4个,最好比CPU个数少1个
     private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));
+    //最大线程数
     private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
+    //存活时长(针对最大线程数)
     private static final int KEEP_ALIVE_SECONDS = 30;
 
     private static final ThreadFactory sThreadFactory = new ThreadFactory() {
@@ -196,11 +199,15 @@ public abstract class AsyncTask<Params, Progress, Result> {
         }
     };
 
+    /**
+     * 阻塞线程队列，默认长度128
+     */
     private static final BlockingQueue<Runnable> sPoolWorkQueue =
             new LinkedBlockingQueue<Runnable>(128);
 
     /**
      * An {@link Executor} that can be used to execute tasks in parallel.
+     * 执行器，这里在类加载的时候进行的初始化。但是并没有立即激活核心线程
      */
     public static final Executor THREAD_POOL_EXECUTOR;
 
@@ -224,6 +231,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
     private static volatile Executor sDefaultExecutor = SERIAL_EXECUTOR;
     private static InternalHandler sHandler;
 
+    //入参和结果的封装
     private final WorkerRunnable<Params, Result> mWorker;
     private final FutureTask<Result> mFuture;
 
@@ -239,25 +247,31 @@ public abstract class AsyncTask<Params, Progress, Result> {
      * Deque '双端队列'的意思
      */
     private static class SerialExecutor implements Executor {
+        //任务队列
         final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
+        //当前激活的任务，或者说：当前正在执行的任务
         Runnable mActive;
 
         public synchronized void execute(final Runnable r) {
+            //向任务队列中添加任务
             mTasks.offer(new Runnable() {
                 public void run() {
                     try {
                         r.run();
                     } finally {
+                        //如果任务执行完毕：执行下一个任务
                         scheduleNext();
                     }
                 }
             });
+            //如果当前没有可执行的任务则执行下一个任务
             if (mActive == null) {
                 scheduleNext();
             }
         }
-
+        //执行下一个任务
         protected synchronized void scheduleNext() {
+            //
             if ((mActive = mTasks.poll()) != null) {
                 THREAD_POOL_EXECUTOR.execute(mActive);
             }
@@ -267,23 +281,32 @@ public abstract class AsyncTask<Params, Progress, Result> {
     /**
      * Indicates the current status of the task. Each status will be set only once
      * during the lifetime of a task.
+     * 任务状态。每一个任务状态只会被设置一次。
      */
     public enum Status {
         /**
          * Indicates that the task has not been executed yet.
+         * 等待，未执行
          */
         PENDING,
         /**
          * Indicates that the task is running.
+         * 正在执行
          */
         RUNNING,
         /**
          * Indicates that {@link AsyncTask#onPostExecute} has finished.
+         * 已完成
          */
         FINISHED,
     }
 
+    /**
+     * 获取发往主线程消息的Handler
+     * @return
+     */
     private static Handler getMainHandler() {
+        //锁对象为本类class
         synchronized (AsyncTask.class) {
             if (sHandler == null) {
                 sHandler = new InternalHandler(Looper.getMainLooper());
@@ -303,6 +326,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
+     * 构造函数：本函数必须在主线程中调用。使用默认handler
      */
     public AsyncTask() {
         this((Looper) null);
@@ -310,7 +334,8 @@ public abstract class AsyncTask<Params, Progress, Result> {
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
-     *
+     * 构造函数：本函数必须在主线程中调用。使用指定handler。
+     * 主线程，主looper。handler在主线程中初始化也就绑定到了主looper。
      * @hide
      */
     public AsyncTask(@Nullable Handler handler) {
@@ -319,14 +344,20 @@ public abstract class AsyncTask<Params, Progress, Result> {
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
-     *
+     *构造函数：本函数必须在主线程中调用。使用指定Looper。
+     * 在构造函数中执行或者说确定了三件事：
+     *      1>handler与looper的绑定关系
+     *      2>创建入参Params和回调结果Result的封装体WorkerRunnable
+     *      3>使用第二步中的WorkerRunnable创建FutureTask
      * @hide
      */
     public AsyncTask(@Nullable Looper callbackLooper) {
+        //1. 如果handler为空或者Looper为主looper则handler使用主handler。否则使用指定的Looper创建Handler
         mHandler = callbackLooper == null || callbackLooper == Looper.getMainLooper()
             ? getMainHandler()
             : new Handler(callbackLooper);
 
+        //2. 在构造函数中创建：WorkRunnable
         mWorker = new WorkerRunnable<Params, Result>() {
             public Result call() throws Exception {
                 mTaskInvoked.set(true);
@@ -346,6 +377,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
             }
         };
 
+        //3. 使用第二步中的WorkerRunnable创建FutureTask
         mFuture = new FutureTask<Result>(mWorker) {
             @Override
             protected void done() {
@@ -595,9 +627,12 @@ public abstract class AsyncTask<Params, Progress, Result> {
      *
      * @see #executeOnExecutor(java.util.concurrent.Executor, Object[])
      * @see #execute(Runnable)
+     * ---------------------------------------------------------------------------------------------
+     * 真正调用者的入口
      */
     @MainThread
     public final AsyncTask<Params, Progress, Result> execute(Params... params) {
+        //使用默认的Executor，即：SerialExecutor
         return executeOnExecutor(sDefaultExecutor, params);
     }
 
@@ -633,10 +668,14 @@ public abstract class AsyncTask<Params, Progress, Result> {
      *         {@link AsyncTask.Status#RUNNING} or {@link AsyncTask.Status#FINISHED}.
      *
      * @see #execute(Object[])
+     * ---------------------------------------------------------------------------------------------
+     * 使用指定的Executor
      */
     @MainThread
     public final AsyncTask<Params, Progress, Result> executeOnExecutor(Executor exec,
             Params... params) {
+
+        //1. 一个任务只能执行一次
         if (mStatus != Status.PENDING) {
             switch (mStatus) {
                 case RUNNING:
@@ -649,6 +688,7 @@ public abstract class AsyncTask<Params, Progress, Result> {
             }
         }
 
+        //2. 将任务置为开始执行状态
         mStatus = Status.RUNNING;
 
         onPreExecute();
@@ -727,6 +767,12 @@ public abstract class AsyncTask<Params, Progress, Result> {
         }
     }
 
+    /**
+     * 真正执行任务的封装体。封装了：1>入参Params；2>回调结果Result
+     * 也是用户应该传入的值(用户只需要入参和出参无需知道内部逻辑)
+     * @param <Params> 参数数组，即AsyncTask使用的时候传入的可变参数
+     * @param <Result>
+     */
     private static abstract class WorkerRunnable<Params, Result> implements Callable<Result> {
         Params[] mParams;
     }

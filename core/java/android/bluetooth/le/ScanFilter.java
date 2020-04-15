@@ -43,6 +43,8 @@ import java.util.UUID;
  *
  * @see ScanResult
  * @see BluetoothLeScanner
+ * -------------------------------------------------------------------------------------------------
+ *
  */
 public final class ScanFilter implements Parcelable {
 
@@ -73,7 +75,19 @@ public final class ScanFilter implements Parcelable {
     /** @hide */
     public static final ScanFilter EMPTY = new ScanFilter.Builder().build();
 
-
+    /**
+     * 私有构造函数，因为本类构造通过构建者模式。见Builder
+     * @param name
+     * @param deviceAddress
+     * @param uuid
+     * @param uuidMask
+     * @param serviceDataUuid
+     * @param serviceData
+     * @param serviceDataMask
+     * @param manufacturerId
+     * @param manufacturerData
+     * @param manufacturerDataMask
+     */
     private ScanFilter(String name, String deviceAddress, ParcelUuid uuid,
             ParcelUuid uuidMask, ParcelUuid serviceDataUuid,
             byte[] serviceData, byte[] serviceDataMask,

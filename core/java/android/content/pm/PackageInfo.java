@@ -39,6 +39,7 @@ public class PackageInfo implements Parcelable {
      * The version number of this package, as specified by the &lt;manifest&gt;
      * tag's {@link android.R.styleable#AndroidManifest_versionCode versionCode}
      * attribute.
+     * 获取app的版本号，在manifest中定义的，如果是使用gradle管理则是gradle定义的
      */
     public int versionCode;
 
@@ -97,6 +98,7 @@ public class PackageInfo implements Parcelable {
     /**
      * The time at which the app was last updated.  Units are as
      * per {@link System#currentTimeMillis()}.
+     * 最后更新时间
      */
     public long lastUpdateTime;
 

@@ -50,6 +50,12 @@ import java.util.Map;
  * {@link android.Manifest.permission#BLUETOOTH_ADMIN} permission.
  *
  * @see ScanFilter
+ *--------------------------------------------------------------------------------------------------
+ * 顾名思义：BLE扫描器
+ * 1. 可以扫描BLE设备
+ * 2. 可以通过{@link ScanFilter}扫描特定类型的BLE设备
+ *
+ * 获取本类实例：{@link BluetoothAdapter#getBluetoothLeScanner()}
  */
 public final class BluetoothLeScanner {
 
@@ -110,6 +116,9 @@ public final class BluetoothLeScanner {
      *
      * @param callback Callback used to deliver scan results.
      * @throws IllegalArgumentException If {@code callback} is null.
+     * ---------------------------------------------------------------------------------------------
+     *  请不要使用此函数，否则此函数会一直扫描。因为没有设置ScannFilter。
+     *  请使用{@link #startScan(List, ScanSettings, ScanCallback)}
      */
     @RequiresPermission(Manifest.permission.BLUETOOTH_ADMIN)
     public void startScan(final ScanCallback callback) {
@@ -131,6 +140,8 @@ public final class BluetoothLeScanner {
      * @param settings Settings for the scan.
      * @param callback Callback used to deliver scan results.
      * @throws IllegalArgumentException If {@code settings} or {@code callback} is null.
+     * ---------------------------------------------------------------------------------------------
+     *
      */
     @RequiresPermission(Manifest.permission.BLUETOOTH_ADMIN)
     public void startScan(List<ScanFilter> filters, ScanSettings settings,

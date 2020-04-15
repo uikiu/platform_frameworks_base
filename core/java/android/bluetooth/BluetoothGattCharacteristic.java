@@ -29,6 +29,24 @@ import java.util.UUID;
  * <p>A GATT characteristic is a basic data element used to construct a GATT service,
  * {@link BluetoothGattService}. The characteristic contains a value as well as
  * additional information and optional GATT descriptors, {@link BluetoothGattDescriptor}.
+ * -------------------------------------------------------------------------------------------------
+ * 翻译：characteristic特性，Descriptor描述
+ *
+ * 服务端要开启gatt service 接收数据，数据的载体就是本类。也就是gatt client和gatt server之间数据传输的载体。
+ * 
+ * 本载体包含以下内容：
+ * 1. 一个值：setValue
+ * 2. 描述信息：addDescriptor
+ * 3. 其他信息：
+ *    3.1>getUuid(): 要写入的service的uuid
+ *    3.2>getProperties(): charasteristic的权限：广播、读、写、通知、指示、加密读写
+ *
+ *
+ * characteristic的特性和行为是在Descriptor当中的。
+ * 1. 添加描述：addDescriptor
+ * 2. 获取描述：getDescriptors() || getDescriptor(UUID uuid)
+ *
+ *
  */
 public class BluetoothGattCharacteristic implements Parcelable {
 
@@ -239,6 +257,12 @@ public class BluetoothGattCharacteristic implements Parcelable {
      * @param uuid The UUID for this characteristic
      * @param properties Properties of this characteristic
      * @param permissions Permissions for this characteristic
+     * ---------------------------------------------------------------------------------------------
+     * 翻译：
+     * characteristic特性
+     * properties属性
+     * permissions权限
+     *
      */
     public BluetoothGattCharacteristic(UUID uuid, int properties, int permissions) {
         initCharacteristic(null, uuid, 0, properties, permissions);

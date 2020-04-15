@@ -245,6 +245,8 @@ public final class AdvertiseData implements Parcelable {
          * @param manufacturerSpecificData Manufacturer specific data
          * @throws IllegalArgumentException If the {@code manufacturerId} is negative or {@code
          * manufacturerSpecificData} is null.
+         *------------------------------------------------------------------------------------------
+         * 添加制造商特定数据
          */
         public Builder addManufacturerData(int manufacturerId, byte[] manufacturerSpecificData) {
             if (manufacturerId < 0) {

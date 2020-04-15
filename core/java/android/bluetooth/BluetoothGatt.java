@@ -35,6 +35,13 @@ import java.util.UUID;
  * and call {@link BluetoothDevice#connectGatt} to get a instance of this class.
  * GATT capable devices can be discovered using the Bluetooth device discovery or BLE
  * scan process.
+ *--------------------------------------------------------------------------------------------------
+ * profile：概述,简介
+ * 获取本实例：通过BluetoothDevice.connectGatt连接的时候会返回本实例。
+ *
+ * 通过本实例可以做如下工作：
+ * 关闭gatt: #disconnect()
+ *
  */
 public final class BluetoothGatt implements BluetoothProfile {
     private static final String TAG = "BluetoothGatt";

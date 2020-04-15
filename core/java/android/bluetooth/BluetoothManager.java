@@ -45,6 +45,8 @@ import java.util.List;
  *
  * @see Context#getSystemService
  * @see BluetoothAdapter#getDefaultAdapter()
+ * -------------------------------------------------------------------------------------------------
+ * 通过系统服务获取本实例：{@link android.content.Context#getSystemService(java.lang.String)}
  */
 @SystemService(Context.BLUETOOTH_SERVICE)
 public final class BluetoothManager {
@@ -190,6 +192,9 @@ public final class BluetoothManager {
      * @param context App context
      * @param callback GATT server callback handler that will receive asynchronous callbacks.
      * @return BluetoothGattServer instance
+     *----------------------------------------------------------------------------------------------
+     * 打开GATT Server
+     * 打开结果会在BluetoothGattServerCallback回调通知
      */
     public BluetoothGattServer openGattServer(Context context,
             BluetoothGattServerCallback callback) {

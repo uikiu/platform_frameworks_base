@@ -890,7 +890,7 @@ public abstract class Context {
      * //-----------------------------------------------------------------------------
      * 该方法与{@link openFileOutput}方法相对应。返回/data/data/包名/files/这个目录。
      * android系统会在/data/data/包名/下面创建三个子目录：1>cache;2>code_cache;3>files 。而本方法返回
-     * 所有子目录中的files。
+     * 所有子目录中的files,即：/data/data/包名/files目录。
      * 如果app被移动到外部存储：这个路径可能会变更。
      * 仅相对路径应该被持久化。
      */
@@ -1403,6 +1403,19 @@ public abstract class Context {
      * @return A {@link File} object for the requested directory.  The directory
      * will have been created if it does not already exist.
      * @see #openFileOutput(String, int)
+     * ---------------------------------------------------------------------------------------------
+     * name 是目录名称
+     * mode 是操作类型，默认为私有：MODE_PRIVAT 这里直接传入私有即可。
+     *
+     * 完整路径：/data/data/包名/app_name/name
+     *
+     * 示例：
+     * Context context ;
+     * private final String APP_CONFIG ="config";
+     * File dirConf= context.getDir(APP_CONFIG, Context.MODE_PRIVATE);
+     * File conf = new File(dirConf, APP_CONFIG);
+     *
+     * 结果：data/data/包名/app_+APP_CONFIG /APP_CONFIG
      */
     public abstract File getDir(String name, int mode);
 
